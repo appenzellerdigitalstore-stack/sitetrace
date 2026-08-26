@@ -233,18 +233,18 @@
   }
 
   // ---- Wire up --------------------------------------------------
+  // The /dns-tools/ page now runs in "all records" mode by default —
+  // the type dropdown is gone. Every record type is queried in parallel.
   function boot() {
     const form = $('#dns-form');
     if (!form) return;
     const input = $('#dns-input');
-    const typeSel = $('#dns-type');
     const submit = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const raw = input.value;
       const domain = cleanDomain(raw);
-      const type = (typeSel && typeSel.value) || 'A';
       if (!isValidDomain(domain)) {
         showError(t_('dns_error'));
         return;
@@ -258,28 +258,8 @@
         submit.dataset.orig = submit.dataset.orig || orig;
       }
       try {
-        if (type === 'ALL') {
-          const entries = await resolveAllTypes(domain);
-          renderAllResult(domain, entries);
-        } else {
-          // Use the first provider that returns a meaningful response (back-compat)
-          let provider = null, data = null;
-          for (const p of PROVIDERS) {
-            try {
-              const r = await resolveWith(p, domain, type);
-              if (r && (r.Answer || typeof r.Status !== 'undefined')) {
-                provider = p.name;
-                data = r;
-                break;
-              }
-            } catch (_) { /* try next */ }
-          }
-          if (!data) {
-            showError(t_('dns_error'));
-          } else {
-            renderSingleResult(domain, type, provider, data);
-          }
-        }
+        const entries = await resolveAllTypes(domain);
+        renderAllResult(domain, entries);
       } catch (err) {
         showError(err && err.message);
       } finally {
@@ -295,9 +275,6 @@
       window.I18N.onChange(() => {
         const empty = $('#dns-empty');
         if (empty && !empty.classList.contains('hidden')) empty.textContent = t_('dns_empty');
-        // Also re-translate the "All records" option
-        const allOpt = typeSel && typeSel.querySelector('option[value="ALL"]');
-        if (allOpt) allOpt.textContent = t_('dns_type_all');
       });
     }
   }

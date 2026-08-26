@@ -300,58 +300,146 @@
     if (!slot) return;
     slot.classList.remove('hidden');
 
-    // Build the inner HTML
-    const statusOfficialLine = known && known.state
-      ? (known.state.ok
-          ? '<span class="check-pill check-pill--up"><span class="dot"></span>' + t('isitdown_pill_official_ok') + '</span>'
-          : '<span class="check-pill check-pill--unknown"><span class="dot"></span>' + t('isitdown_pill_official_issue') + '</span>')
-      : '';
+    // ---- Your-network pill (reachable / unreachable / CORS-readable / not) ----
+    let networkPill;
+    if (result.reachable && result.readable) {
+      networkPill = '<span class="check-pill check-pill--up"><span class="dot"></span>' + escapeHtml(t('isitdown_pill_up')) + '</span>';
+    } else if (result.reachable) {
+      networkPill = '<span class="check-pill check-pill--up"><span class="dot"></span>' + escapeHtml(t('isitdown_pill_up')) + ' · ' + escapeHtml(t('isitdown_reachable_cors')) + '</span>';
+    } else {
+      networkPill = '<span class="check-pill check-pill--down"><span class="dot"></span>' + escapeHtml(t('isitdown_unreachable')) + '</span>';
+    }
 
-    const ddUrl = 'https://downdetector.com/status/' + slugify(hostFromUrl(url) || url) + '/';
-    const openNewTab = '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="btn-ghost">' + t('ping_open_in_tab') + ' ↗</a>';
+    // ---- Status detail lines ----
+    let statusDetail;
+    if (result.reachable && result.readable) {
+      statusDetail = t('isitdown_summary_reachable').replace('{ms}', result.ms).replace('{status}', result.status);
+    } else if (result.reachable) {
+      statusDetail = t('isitdown_summary_cors').replace('{ms}', result.ms);
+    } else {
+      statusDetail = result.ms + ' ' + t('ping_ms_label') + ' · ' + (result.error || t('isitdown_inconclusive'));
+    }
 
+    // ---- Official status block (only when the service is tracked) ----
+    let officialBlock = '';
+    let incidentListHtml = '';
+    if (known && known.state && known.state.ok && known.state.data) {
+      // Service is in our tracker AND we have a fresh response
+      const status = known.state.data.status || {};
+      const indicator = status.indicator || 'none';
+      const description = status.description || t('isitdown_all_systems_ok');
+      const incidents = (known.state.data.incidents || []).filter((inc) => inc.created_at);
+
+      let officialPill;
+      if (indicator === 'none') {
+        officialPill = '<span class="check-pill check-pill--up"><span class="dot"></span>' + escapeHtml(t('isitdown_pill_official_ok')) + '</span>';
+      } else if (indicator === 'critical') {
+        officialPill = '<span class="check-pill check-pill--down"><span class="dot"></span>' + escapeHtml(t('isitdown_pill_official_issue')) + '</span>';
+      } else {
+        officialPill = '<span class="check-pill check-pill--unknown"><span class="dot"></span>' + escapeHtml(t('isitdown_pill_official_issue')) + '</span>';
+      }
+
+      // Build a list of active incidents (open, not yet resolved)
+      const openIncidents = incidents.filter((inc) => !inc.resolved_at);
+      if (openIncidents.length) {
+        incidentListHtml = '<ul class="mt-2 space-y-2 text-sm">'
+          + openIncidents.slice(0, 4).map((inc) => {
+              const impact = inc.impact || 'minor';
+              const impactPill = impact === 'critical'
+                ? '<span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-danger-500/15 text-danger-400">critical</span>'
+                : impact === 'major'
+                  ? '<span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn-500/15 text-warn-400">major</span>'
+                  : '<span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400">minor</span>';
+              const status = inc.status || 'investigating';
+              const statusTxt = status === 'investigating' ? 'Investigating'
+                : status === 'identified' ? 'Identified'
+                : status === 'monitoring' ? 'Monitoring'
+                : status === 'resolved' ? 'Resolved'
+                : status;
+              const link = inc.shortlink || (known && known.page) || '#';
+              return '<li class="rounded-md border border-white/5 bg-white/[0.02] p-2.5">'
+                + '<div class="flex flex-wrap items-center gap-2">'
+                + '<span class="text-slate-200 font-medium">' + escapeHtml(inc.name || 'Incident') + '</span>'
+                + impactPill
+                + '<span class="text-[10px] text-slate-500 uppercase tracking-wider">·</span>'
+                + '<span class="text-[10px] text-slate-400 uppercase tracking-wider">' + escapeHtml(statusTxt) + '</span>'
+                + '<a href="' + escapeHtml(link) + '" target="_blank" rel="noopener noreferrer" class="ml-auto text-[11px] text-brand-300 hover:text-brand-200">' + escapeHtml(t('isitdown_view_incident')) + ' ↗</a>'
+                + '</div></li>';
+            }).join('')
+          + '</ul>';
+      }
+
+      officialBlock = ''
+        + '<div class="rounded-lg border border-white/5 bg-white/[0.02] p-3 mt-3">'
+        + '  <div class="flex flex-wrap items-center gap-2">'
+        +      officialPill
+        + '    <span class="text-xs text-slate-300">' + escapeHtml(description) + '</span>'
+        + '    <a href="' + escapeHtml(known.page) + '" target="_blank" rel="noopener noreferrer" class="ml-auto text-[11px] text-brand-300 hover:text-brand-200">' + escapeHtml(t('isitdown_view_status_page')) + ' ↗</a>'
+        + '  </div>'
+        +    (openIncidents.length
+              ? '<div class="mt-2 text-[11px] uppercase tracking-wider text-slate-500 font-semibold">' + escapeHtml(t('isitdown_official_incidents_title')) + '</div>' + incidentListHtml
+              : '')
+        + '</div>';
+    } else if (known) {
+      // Service is in our tracker but we couldn't fetch its status right now
+      officialBlock = ''
+        + '<div class="rounded-lg border border-white/5 bg-white/[0.02] p-3 mt-3 text-sm text-slate-400">'
+        + '  ' + escapeHtml(t('downdetector_loading'))
+        + '</div>';
+    }
+
+    // ---- Tracked / untracked note ----
     const knownLine = known
-      ? '<div class="text-xs text-slate-400">' + t('isitdown_match_known') + ' → ' + escapeHtml(known.name) + '</div>'
-      : '<div class="text-xs text-slate-400">' + t('isitdown_match_unknown') + '</div>';
+      ? '<div class="text-xs text-slate-400">' + escapeHtml(t('isitdown_match_known')) + ' → <span class="text-slate-200 font-medium">' + escapeHtml(known.name) + '</span></div>'
+      : '<div class="text-xs text-slate-400">' + escapeHtml(t('isitdown_match_unknown')) + '</div>';
+
+    // ---- Buttons ----
+    const ddUrl = 'https://downdetector.com/status/' + slugify(hostFromUrl(url) || url) + '/';
+    const openNewTab = '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="btn-ghost">'
+      + escapeHtml(t('ping_open_in_tab')) + ' ↗</a>';
+    const ddBtn = '<a href="' + escapeHtml(ddUrl) + '" target="_blank" rel="noopener noreferrer sponsored" class="btn-ghost">'
+      + escapeHtml(t('downdetector_view_on_dd')) + ' ↗</a>';
+
+    // ---- Data list (Target / Status / Latency / Protocol) ----
+    const dataList = ''
+      + '<dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-1 text-sm mt-3">'
+      + '  <div><dt class="text-slate-500 text-[11px] uppercase tracking-wider">' + escapeHtml(t('isitdown_status_label')) + '</dt><dd class="font-mono">' + (result.readable ? ('HTTP ' + result.status) : escapeHtml(t('isitdown_reachable_cors'))) + '</dd></div>'
+      + '  <div><dt class="text-slate-500 text-[11px] uppercase tracking-wider">' + escapeHtml(t('isitdown_latency_label')) + '</dt><dd class="font-mono">' + result.ms + ' ' + escapeHtml(t('ping_ms_label')) + '</dd></div>'
+      + '  <div><dt class="text-slate-500 text-[11px] uppercase tracking-wider">' + escapeHtml(t('isitdown_protocol_label')) + '</dt><dd class="font-mono">' + escapeHtml(result.protocol) + '</dd></div>'
+      + '  <div><dt class="text-slate-500 text-[11px] uppercase tracking-wider">' + escapeHtml(t('ping_target_label')) + '</dt><dd class="font-mono truncate">' + escapeHtml(hostFromUrl(url) || url) + '</dd></div>'
+      + '</dl>';
 
     slot.innerHTML = ''
       + '<div class="card p-5 border-brand-500/30">'
       + '  <div class="flex flex-wrap items-center justify-between gap-3">'
       + '    <div class="min-w-0">'
-      + '      <div class="text-xs text-slate-500">' + t('isitdown_your_network') + '</div>'
+      + '      <div class="text-xs text-slate-500">' + escapeHtml(t('isitdown_your_network')) + '</div>'
       + '      <div class="font-mono text-sm sm:text-base break-all">' + escapeHtml(url) + '</div>'
       + '    </div>'
       + '    <div class="flex flex-wrap items-center gap-2">'
-      + '      <span class="' + pillClass(result) + '"><span class="dot"></span>' + pillLabel(result) + '</span>'
-      +      statusOfficialLine
+      +        networkPill
       + '    </div>'
       + '  </div>'
+      +      dataList
       + '  <div class="mt-3 flex flex-wrap items-center justify-between gap-3">'
       + '    <div class="flex flex-col gap-1">'
       +        knownLine
-      + '      <div class="text-xs text-slate-500">' + result.ms + ' ms · ' + (result.readable ? ('HTTP ' + (result.status || '')) : 'CORS-blocked response') + '</div>'
+      + '      <div class="text-xs text-slate-500">' + escapeHtml(statusDetail) + '</div>'
       + '    </div>'
       + '    <div class="flex flex-wrap items-center gap-2">'
       +        openNewTab
-      + '      <a href="' + ddUrl + '" target="_blank" rel="noopener noreferrer sponsored" class="btn-ghost">' + t('downdetector_view_on_dd') + ' ↗</a>'
+      +        ddBtn
       + '    </div>'
       + '  </div>'
+      +    officialBlock
       + '</div>';
 
     // Show the troubleshooting tips only when the result is "down"
     if (tips) tips.classList.toggle('hidden', result.reachable);
 
-    // If the URL matched a tracked service, scroll to its card and highlight it
-    if (known) {
-      const target = document.querySelector('[data-service-id="' + known.id + '"]');
-      if (target) {
-        setTimeout(() => {
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          target.classList.add('ring-2', 'ring-brand-500/50');
-          setTimeout(() => target.classList.remove('ring-2', 'ring-brand-500/50'), 1800);
-        }, 250);
-      }
-    }
+    // Smooth-scroll the result card into view (NOT the service card) so
+    // the user can see everything they searched for in one place.
+    slot.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   function bindCheck() {

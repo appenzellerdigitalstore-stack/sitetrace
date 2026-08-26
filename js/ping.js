@@ -1,11 +1,16 @@
 /* ================================================================
  * SiteTrace — Domain Inspector
  *
- * Two modes on the /ping/ page:
- *   1. URL inspector (default): type a hostname, get DNS, IPs,
- *      HTTP reachability, and round-trip latency in one shot.
- *   2. Live multi-server ping (collapsed under <details>): the
- *      original 9-server latency probe, kept for power users.
+ * Two things on the /ping/ page:
+ *   1. URL inspector (default): type a hostname, get its resolved
+ *      IPs, HTTP reachability, and round-trip latency in one shot.
+ *      (DNS record details live on /dns-tools/ — that page is the
+ *      dedicated home for that data.)
+ *   2. Live multi-server ping (below): a user-configurable list of
+ *      URLs to monitor. Each user manages their own list via
+ *      sessionStorage, polling only happens when Start is pressed,
+ *      and only the user's own browser makes the requests — we do
+ *      not centralise the load on any third party.
  * ================================================================ */
 (function () {
   'use strict';
@@ -16,7 +21,7 @@
   function t_(key) { return (window.I18N && window.I18N.t) ? window.I18N.t(key) : key; }
 
   // ----------------------------------------------------------------
-  // URL inspector
+  // URL inspector (DNS-over-HTTPS for IP lookup, then HTTP fetch)
   // ----------------------------------------------------------------
   const PROVIDERS = [
     {
@@ -43,7 +48,6 @@
   }
 
   function cleanHost(input) {
-    // Accept "github.com", "https://github.com/foo", "github.com:443", etc.
     return String(input || '').trim().toLowerCase()
       .replace(/^https?:\/\//, '')
       .replace(/\/.*$/, '')
@@ -54,92 +58,65 @@
     if (!input) return false;
     const s = cleanHost(input);
     if (s.length < 3 || s.length > 253) return false;
-    // Allow IPv4 / IPv6 literals too
     if (/^(\d{1,3}\.){3}\d{1,3}$/.test(s)) return s.split('.').every((p) => +p <= 255);
-    if (s.includes(':') && /^[0-9a-f:]+$/.test(s)) return true; // IPv6
+    if (s.includes(':') && /^[0-9a-f:]+$/.test(s)) return true;
     return /^(?=.{1,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i.test(s);
-  }
-
-  async function dnsResolveOne(p, host, type) {
-    const opts = { cache: 'no-store' };
-    if (p.headers) opts.headers = p.headers;
-    return withTimeout(
-      fetch(p.url(host, type), opts).then((r) => {
-        if (!r.ok) throw new Error('http ' + r.status);
-        return r.json();
-      }),
-      6000
-    );
   }
 
   async function dnsLookup(host, type) {
     let lastErr = null;
     for (const p of PROVIDERS) {
       try {
-        const j = await dnsResolveOne(p, host, type);
+        const opts = { cache: 'no-store' };
+        if (p.headers) opts.headers = p.headers;
+        const j = await withTimeout(
+          fetch(p.url(host, type), opts).then((r) => {
+            if (!r.ok) throw new Error('http ' + r.status);
+            return r.json();
+          }),
+          6000
+        );
         if (j && (j.Answer || typeof j.Status !== 'undefined')) {
-          return { provider: p.name, data: j };
+          return j;
         }
       } catch (e) { lastErr = e; }
     }
     throw lastErr || new Error('all providers failed');
   }
 
-  // Run a real HTTP fetch (CORS-enabled endpoints) so we can read the response.
-  // Fall back to no-cors to at least detect reachability.
+  // Try a real CORS fetch first; fall back to no-cors to still detect
+  // reachability even when the response is unreadable.
   async function httpProbe(url) {
     const start = performance.now();
-    // Attempt 1: real fetch (works only when CORS allows)
     try {
       const ctrl = new AbortController();
       const tid = setTimeout(() => ctrl.abort(), 8000);
       const resp = await fetch(url, {
-        method: 'GET',
-        cache: 'no-store',
-        mode: 'cors',
-        credentials: 'omit',
-        redirect: 'follow',
-        signal: ctrl.signal,
+        method: 'GET', cache: 'no-store', mode: 'cors',
+        credentials: 'omit', redirect: 'follow', signal: ctrl.signal,
       });
       clearTimeout(tid);
-      const ms = Math.round(performance.now() - start);
       return {
-        reachable: resp.ok || (resp.status >= 200 && resp.status < 500),
-        status: resp.status,
-        protocol: url.startsWith('https') ? 'HTTPS' : 'HTTP',
-        ms,
-        readable: true,
-        contentType: resp.headers.get('content-type') || '',
-        server: resp.headers.get('server') || '',
+        reachable: true, readable: true,
+        status: resp.status, protocol: url.startsWith('https') ? 'HTTPS' : 'HTTP',
+        ms: Math.round(performance.now() - start),
       };
-    } catch (e1) {
-      // Attempt 2: no-cors (opaque but tells us reachability)
+    } catch (_) {
       try {
-        const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 8000);
-        await fetch(url, {
-          method: 'GET',
-          cache: 'no-store',
-          mode: 'no-cors',
-          credentials: 'omit',
-          redirect: 'follow',
-          signal: ctrl.signal,
-        });
-        clearTimeout(tid);
-        const ms = Math.round(performance.now() - start);
+        const ctrl2 = new AbortController();
+        const tid2 = setTimeout(() => ctrl2.abort(), 8000);
+        await fetch(url, { method: 'GET', cache: 'no-store', mode: 'no-cors', credentials: 'omit', redirect: 'follow', signal: ctrl2.signal });
+        clearTimeout(tid2);
         return {
-          reachable: true,
+          reachable: true, readable: false,
           protocol: url.startsWith('https') ? 'HTTPS' : 'HTTP',
-          ms,
-          readable: false, // CORS blocked reading the response
+          ms: Math.round(performance.now() - start),
         };
       } catch (e2) {
         return {
-          reachable: false,
+          reachable: false, readable: false,
           protocol: url.startsWith('https') ? 'HTTPS' : 'HTTP',
-          ms: Math.round(performance.now() - start),
-          readable: false,
-          error: e2.message || e1.message,
+          ms: Math.round(performance.now() - start), error: e2.message,
         };
       }
     }
@@ -148,10 +125,10 @@
   function setText(id, value) {
     const node = document.getElementById(id);
     if (!node) return;
-    node.textContent = value == null || value === '' ? '—' : value;
+    node.textContent = (value == null || value === '') ? '—' : value;
   }
 
-  function renderInspector(target, host, dnsResults, httpResult) {
+  function renderInspector(target, host, ips, http) {
     const card = $('#ping-result-card');
     const empty = $('#ping-empty');
     if (empty) empty.classList.add('hidden');
@@ -165,16 +142,13 @@
     const ipsUl = $('#ping-ips');
     if (ipsUl) {
       ipsUl.innerHTML = '';
-      const aRecs = (dnsResults.A || []).map((r) => r.data);
-      const aaaaRecs = (dnsResults.AAAA || []).map((r) => r.data);
-      const allIps = aRecs.concat(aaaaRecs);
-      if (allIps.length === 0) {
+      if (!ips.length) {
         const li = document.createElement('li');
         li.className = 'text-slate-500 text-xs';
         li.textContent = '—';
         ipsUl.appendChild(li);
       } else {
-        allIps.forEach((ip) => {
+        ips.forEach((ip) => {
           const li = document.createElement('li');
           li.className = 'text-slate-200';
           li.textContent = ip;
@@ -183,83 +157,44 @@
       }
     }
 
-    // HTTP
-    setText('ping-proto', httpResult.protocol);
-    setText('ping-ms', String(httpResult.ms));
+    setText('ping-proto', http.protocol);
+    setText('ping-ms', String(http.ms));
     let statusTxt;
-    if (httpResult.reachable && httpResult.readable) {
-      statusTxt = String(httpResult.status);
-    } else if (httpResult.reachable) {
-      statusTxt = 'reachable (CORS)';
+    if (http.reachable && http.readable) {
+      statusTxt = String(http.status);
+    } else if (http.reachable) {
+      statusTxt = t_('ping_status_reachable_cors');
     } else {
-      statusTxt = 'unreachable';
+      statusTxt = t_('ping_unreachable');
     }
     setText('ping-status', statusTxt);
 
     // Pill
     const pill = $('#ping-reach-pill');
-    const dot  = $('#ping-pill-dot');
     const lbl  = $('#ping-pill-label');
-    if (pill && dot && lbl) {
-      pill.className = 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border';
-      if (httpResult.reachable) {
-        pill.classList.add('border-safe-500/40', 'text-safe-400', 'bg-safe-500/10');
-        dot.style.background = '#10b981';
+    if (pill && lbl) {
+      pill.classList.remove('ping-reach-pill--up', 'ping-reach-pill--down', 'ping-reach-pill--unknown');
+      if (http.reachable && http.readable) {
+        pill.classList.add('ping-reach-pill--up');
         lbl.textContent = t_('ping_reachable');
+      } else if (http.reachable) {
+        pill.classList.add('ping-reach-pill--unknown');
+        lbl.textContent = t_('ping_reachable') + ' (CORS)';
       } else {
-        pill.classList.add('border-danger-500/40', 'text-danger-400', 'bg-danger-500/10');
-        dot.style.background = '#ef4444';
+        pill.classList.add('ping-reach-pill--down');
         lbl.textContent = t_('ping_unreachable');
       }
     }
 
-    // Open in new tab link
     const open = $('#ping-open');
-    if (open) {
-      const tryUrl = target.includes('://') ? target : 'https://' + host;
-      open.href = tryUrl;
-    }
-
-    // DNS list
-    const dnsUl = $('#ping-dns');
-    if (dnsUl) {
-      dnsUl.innerHTML = '';
-      const groups = ['A', 'AAAA', 'MX', 'NS', 'TXT', 'CNAME', 'SOA'];
-      let any = false;
-      groups.forEach((type) => {
-        const recs = dnsResults[type] || [];
-        if (!recs.length) return;
-        any = true;
-        const head = document.createElement('li');
-        head.className = 'dns-answer-group-head';
-        head.textContent = type + '  ·  ' + recs.length;
-        dnsUl.appendChild(head);
-        recs.forEach((r) => {
-          const li = document.createElement('li');
-          li.className = 'dns-answer';
-          const ts = document.createElement('span');
-          ts.className = 'dns-answer__type';
-          ts.textContent = type;
-          const ds = document.createElement('span');
-          ds.textContent = r.data;
-          li.appendChild(ts); li.appendChild(ds);
-          dnsUl.appendChild(li);
-        });
-      });
-      if (!any) {
-        const li = document.createElement('li');
-        li.className = 'text-slate-500 text-xs';
-        li.textContent = t_('dns_no_records');
-        dnsUl.appendChild(li);
-      }
-    }
+    if (open) open.href = target.includes('://') ? target : 'https://' + host;
   }
 
   async function runInspector(inputValue) {
     const target = String(inputValue || '').trim();
     const host = cleanHost(target);
     if (!isValidHost(host)) {
-      // Show error
+      // Show error state
       const card = $('#ping-result-card');
       const empty = $('#ping-empty');
       if (empty) empty.classList.add('hidden');
@@ -271,70 +206,54 @@
         setText('ping-status', t_('dns_error'));
         setText('ping-ms', '—');
         const pill = $('#ping-reach-pill');
-        if (pill) {
-          pill.className = 'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border border-warn-500/40 text-warn-400 bg-warn-500/10';
-          $('#ping-pill-label').textContent = t_('dns_error');
-          const dot = $('#ping-pill-dot'); if (dot) dot.style.background = '#f59e0b';
+        const lbl  = $('#ping-pill-label');
+        if (pill && lbl) {
+          pill.classList.remove('ping-reach-pill--up', 'ping-reach-pill--down', 'ping-reach-pill--unknown');
+          pill.classList.add('ping-reach-pill--down');
+          lbl.textContent = t_('dns_error');
         }
       }
       return;
     }
 
-    // Loading state
     const submit = document.querySelector('#ping-form button[type="submit"]');
     const orig = submit ? submit.innerHTML : '';
-    if (submit) {
-      submit.disabled = true;
-      submit.innerHTML = '<span>' + t_('isitdown_checking') + '</span>';
-    }
+    if (submit) { submit.disabled = true; submit.innerHTML = '<span>…</span>'; }
 
     try {
-      // DNS in parallel for the most common types
-      const [a, aaaa, mx, ns, txt, cname, soa, http] = await Promise.all([
+      // Resolve A + AAAA in parallel for the IP list, then probe HTTP
+      const [a, aaaa, http] = await Promise.all([
         dnsLookup(host, 'A').catch(() => null),
         dnsLookup(host, 'AAAA').catch(() => null),
-        dnsLookup(host, 'MX').catch(() => null),
-        dnsLookup(host, 'NS').catch(() => null),
-        dnsLookup(host, 'TXT').catch(() => null),
-        dnsLookup(host, 'CNAME').catch(() => null),
-        dnsLookup(host, 'SOA').catch(() => null),
         httpProbe('https://' + host + '/'),
       ]);
-      const dnsResults = {
-        A:     (a     && a.data && a.data.Answer)     || [],
-        AAAA:  (aaaa  && aaaa.data && aaaa.data.Answer)  || [],
-        MX:    (mx    && mx.data && mx.data.Answer)    || [],
-        NS:    (ns    && ns.data && ns.data.Answer)    || [],
-        TXT:   (txt   && txt.data && txt.data.Answer)   || [],
-        CNAME: (cname && cname.data && cname.data.Answer) || [],
-        SOA:   (soa   && soa.data && soa.data.Answer)   || [],
-      };
-      renderInspector(target.includes('://') ? target : host, host, dnsResults, http);
+      const ips = [];
+      if (a   && a.Answer)   a.Answer.forEach((r) => ips.push(r.data));
+      if (aaaa && aaaa.Answer) aaaa.Answer.forEach((r) => ips.push(r.data));
+      renderInspector(target.includes('://') ? target : host, host, ips, http);
     } finally {
-      if (submit) {
-        submit.disabled = false;
-        submit.innerHTML = orig;
-      }
+      if (submit) { submit.disabled = false; submit.innerHTML = orig; }
     }
   }
 
   // ----------------------------------------------------------------
-  // Live multi-server ping (the legacy 9-server probe, kept in a
-  // collapsed <details> for power users).
+  // Live multi-server ping (user-configurable)
   // ----------------------------------------------------------------
-  const SERVERS = [
-    { id: 'cloudflare', name: 'Cloudflare',  url: 'https://www.cloudflare.com/cdn-cgi/trace', region: 'global' },
-    { id: 'google',     name: 'Google',      url: 'https://www.google.com/generate_204',      region: 'global' },
-    { id: 'github',     name: 'GitHub',      url: 'https://api.github.com',                   region: 'us' },
+  const DEFAULT_SERVERS = [
+    { id: 'cloudflare', name: 'Cloudflare',  url: 'https://www.cloudflare.com/cdn-cgi/trace',  region: 'global' },
+    { id: 'google',     name: 'Google',      url: 'https://www.google.com/generate_204',       region: 'global' },
+    { id: 'github',     name: 'GitHub',      url: 'https://api.github.com',                    region: 'us' },
     { id: 'wikipedia',  name: 'Wikipedia',   url: 'https://en.wikipedia.org/api/rest_v1/page/summary/Main_Page', region: 'global' },
-    { id: 'mozilla',    name: 'Mozilla',     url: 'https://www.mozilla.org',                  region: 'us' },
-    { id: 'duck',       name: 'DuckDuckGo',  url: 'https://duckduckgo.com',                   region: 'us' },
-    { id: 'amazon',     name: 'Amazon',      url: 'https://www.amazon.com',                   region: 'global' },
-    { id: 'msft',       name: 'Microsoft',   url: 'https://www.microsoft.com',                region: 'global' },
-    { id: 'apple',      name: 'Apple',       url: 'https://www.apple.com',                    region: 'us' },
+    { id: 'mozilla',    name: 'Mozilla',     url: 'https://www.mozilla.org',                   region: 'us' },
+    { id: 'duck',       name: 'DuckDuckGo',  url: 'https://duckduckgo.com',                    region: 'us' },
+    { id: 'amazon',     name: 'Amazon',      url: 'https://www.amazon.com',                    region: 'global' },
+    { id: 'msft',       name: 'Microsoft',   url: 'https://www.microsoft.com',                 region: 'global' },
+    { id: 'apple',      name: 'Apple',       url: 'https://www.apple.com',                     region: 'us' },
   ];
 
-  const state = {};
+  const STORE_KEY = 'sitetrace.ping.servers.v1';
+  const state = {}; // id -> { samples: [], last: null, errors: 0 }
+  let servers = []; // [{ id, name, url }]
   let timer = null;
   let running = false;
   let interval = 3000;
@@ -349,20 +268,29 @@
   function fmtMs(ms) {
     if (ms == null) return '—';
     if (ms < 0) return t_('ping_offline');
-    return Math.round(ms) + ' ms';
+    return Math.round(ms) + ' ' + t_('ping_ms_label');
   }
   function shortHost(url) {
     try { return new URL(url).host; } catch (_) { return url; }
   }
+
+  function loadServers() {
+    try {
+      const raw = sessionStorage.getItem(STORE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) return parsed;
+      }
+    } catch (_) {}
+    return DEFAULT_SERVERS.slice();
+  }
+  function saveServers() {
+    try { sessionStorage.setItem(STORE_KEY, JSON.stringify(servers)); } catch (_) {}
+  }
+
   function pingOne(server) {
     const start = performance.now();
-    return fetch(server.url, {
-      method: 'GET',
-      cache: 'no-store',
-      mode: 'cors',
-      credentials: 'omit',
-      redirect: 'follow',
-    })
+    return fetch(server.url, { method: 'GET', cache: 'no-store', mode: 'cors', credentials: 'omit', redirect: 'follow' })
       .then(() => ({ ok: true, ms: performance.now() - start }))
       .catch(() =>
         fetch(server.url, { method: 'GET', cache: 'no-store', mode: 'no-cors', credentials: 'omit' })
@@ -370,85 +298,63 @@
           .catch(() => ({ ok: false, ms: -1 }))
       );
   }
+
   function buildGrid() {
     const grid = $('#ping-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    SERVERS.forEach((s) => {
+    servers.forEach((s) => {
       const row = document.createElement('div');
-      row.className = 'ping-row';
-      row.id = 'ping-row-' + s.id;
+      row.className = 'ping-server-row';
+      row.dataset.id = s.id;
       row.innerHTML =
-        '<div class="ping-row__head">' +
-          '<div>' +
-            '<div class="ping-row__name">' + s.name + '</div>' +
-            '<div class="ping-row__url">' + shortHost(s.url) + '</div>' +
-          '</div>' +
-          '<div class="ping-row__lat ping-lat--idle" data-lat>—</div>' +
+        '<div class="min-w-0 flex-1">' +
+          '<div class="ping-server-row__name">' + escapeHtml(s.name) + '</div>' +
+          '<div class="ping-server-row__url">' + escapeHtml(shortHost(s.url)) + '</div>' +
         '</div>' +
-        '<div class="ping-row__bar"><span data-bar></span></div>' +
-        '<div class="ping-row__foot">' +
-          '<span data-status>' + t_('ping_idle') + '</span>' +
-          '<span data-stats>— / — / — · ' + t_('ping_jitter') + ' —</span>' +
-        '</div>';
+        '<div class="ping-server-row__lat ping-lat--idle" data-lat>—</div>' +
+        '<button type="button" class="ping-server-row__remove" data-remove="' + escapeHtml(s.id) + '" title="' + escapeHtml(t_('ping_remove')) + '">' +
+          '✕' +
+        '</button>';
       grid.appendChild(row);
-      state[s.id] = { samples: [], last: null, errors: 0 };
+      state[s.id] = state[s.id] || { samples: [], last: null, errors: 0 };
     });
   }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+  }
+
   function updateRow(server, s) {
-    const row = $('#ping-row-' + server.id);
+    const row = document.querySelector('[data-id="' + server.id + '"]');
     if (!row) return;
     const latEl = row.querySelector('[data-lat]');
-    const barEl = row.querySelector('[data-bar]');
-    const stEl  = row.querySelector('[data-status]');
-    const st2El = row.querySelector('[data-stats]');
     const rec = state[server.id];
     const cls = s.ok ? classifyLatency(s.ms) : 'err';
-    const msText = s.ok ? fmtMs(s.ms) : t_('ping_offline');
-    latEl.textContent = msText;
-    latEl.className = 'ping-row__lat ping-lat--' + cls;
+    latEl.textContent = s.ok ? fmtMs(s.ms) : t_('ping_offline');
+    latEl.className = 'ping-server-row__lat ping-lat--' + cls;
     if (s.ok) {
-      const pct = Math.max(2, Math.min(100, (s.ms / 500) * 100));
-      barEl.style.width = pct + '%';
-      barEl.className = 'ping-bar--' + classifyLatency(s.ms);
-      stEl.textContent = t_('ping_running');
+      rec.last = s.ms;
+      rec.samples.push(s.ms);
+      if (rec.samples.length > 30) rec.samples.shift();
+      rec.errors = 0;
     } else {
-      barEl.style.width = '0%';
-      barEl.className = '';
-      stEl.textContent = t_('ping_offline');
-    }
-    if (rec.samples.length) {
-      const xs = rec.samples.slice();
-      const min = Math.min(...xs);
-      const max = Math.max(...xs);
-      const avg = xs.reduce((a, b) => a + b, 0) / xs.length;
-      const jitter = xs.reduce((a, b) => a + Math.abs(b - avg), 0) / xs.length;
-      st2El.textContent = Math.round(avg) + ' / ' + Math.round(min) + ' / ' + Math.round(max) + ' ms · ' + t_('ping_jitter') + ' ' + Math.round(jitter) + ' ms';
-    } else {
-      st2El.textContent = '— / — / — · ' + t_('ping_jitter') + ' —';
+      rec.last = null;
+      rec.errors += 1;
     }
   }
+
   async function tick() {
-    await Promise.all(SERVERS.map(async (s) => {
-      const rec = state[s.id];
+    await Promise.all(servers.map(async (s) => {
       try {
         const r = await pingOne(s);
-        if (r.ok) {
-          rec.last = r.ms;
-          rec.samples.push(r.ms);
-          if (rec.samples.length > 30) rec.samples.shift();
-          rec.errors = 0;
-        } else {
-          rec.last = null;
-          rec.errors += 1;
-        }
         updateRow(s, r);
-      } catch (e) {
-        rec.errors += 1;
+      } catch (_) {
         updateRow(s, { ok: false });
       }
     }));
   }
+
   function setRunning(next) {
     running = next;
     const btn = $('#ping-toggle');
@@ -466,6 +372,36 @@
     }
   }
 
+  function addServer(name, url) {
+    const u = (url || '').trim();
+    if (!u) return false;
+    let normalized = u;
+    if (!/^https?:\/\//i.test(normalized)) normalized = 'https://' + normalized;
+    try { new URL(normalized); } catch (_) { return false; }
+    const id = 'user-' + Date.now() + '-' + Math.floor(Math.random() * 1e6);
+    const displayName = (name || '').trim() || shortHost(normalized);
+    servers.push({ id, name: displayName, url: normalized });
+    saveServers();
+    rebuildGrid();
+    return true;
+  }
+
+  function removeServer(id) {
+    const idx = servers.findIndex((s) => s.id === id);
+    if (idx === -1) return;
+    servers.splice(idx, 1);
+    saveServers();
+    rebuildGrid();
+  }
+
+  function rebuildGrid() {
+    const grid = $('#ping-grid');
+    if (!grid) return;
+    // Remove old rows
+    grid.innerHTML = '';
+    buildGrid();
+  }
+
   // ----------------------------------------------------------------
   // Boot
   // ----------------------------------------------------------------
@@ -480,12 +416,15 @@
       });
     }
 
-    // Live multi-server ping (only present if the <details> grid exists)
+    // Live multi-server ping
     const grid = $('#ping-grid');
     if (grid) {
+      servers = loadServers();
       buildGrid();
+
       const toggle = $('#ping-toggle');
       if (toggle) toggle.addEventListener('click', () => setRunning(!running));
+
       const sel = $('#ping-interval');
       if (sel) {
         sel.addEventListener('change', () => {
@@ -494,6 +433,37 @@
             clearInterval(timer);
             timer = setInterval(tick, interval);
           }
+        });
+      }
+
+      // Add-server form
+      const addForm = $('#ping-add-form');
+      if (addForm) {
+        addForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const nameEl = $('#ping-add-name');
+          const urlEl  = $('#ping-add-url');
+          if (!urlEl) return;
+          if (addServer(nameEl ? nameEl.value : '', urlEl.value)) {
+            if (nameEl) nameEl.value = '';
+            urlEl.value = '';
+          }
+        });
+      }
+
+      // Per-row remove
+      grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-remove]');
+        if (btn) removeServer(btn.getAttribute('data-remove'));
+      });
+
+      // Restore defaults
+      const restore = $('#ping-restore-defaults');
+      if (restore) {
+        restore.addEventListener('click', () => {
+          servers = DEFAULT_SERVERS.slice();
+          saveServers();
+          rebuildGrid();
         });
       }
     }

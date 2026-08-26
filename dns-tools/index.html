@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="dns_h1">DNS lookup — free A, AAAA, MX, TXT, NS, CNAME record tool — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_dns_desc" content="Free online DNS lookup tool. Resolve any domain to its A, AAAA, MX, TXT, NS, CNAME, or SOA records over DNS-over-HTTPS. No login, no tracking, results in under a second." />
-  <meta name="keywords" content="dns lookup, dns query, dig online, mx lookup, txt record, nslookup, doh, dns check, dns tool, dns resolver, dns propagation" />
+  <title data-i18n="dns_h1">DNS lookup — every record type in one shot — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:page_dns_desc" content="Free online DNS lookup. Get every common record (A, AAAA, MX, TXT, NS, CNAME, SOA) for any domain in one query, grouped for easy scanning. DNS-over-HTTPS, no login, no tracking." />
+  <meta name="keywords" content="dns lookup, dns query, dig online, mx lookup, txt record, nslookup, doh, dns check, dns tool, dns resolver, dns propagation, all dns records" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/dns-tools/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="DNS lookup tool — SiteTrace" />
-  <meta property="og:description" content="Resolve any domain to its DNS records (A, AAAA, MX, TXT, NS, CNAME, SOA) over DNS-over-HTTPS." />
+  <meta property="og:description" content="Get every DNS record (A, AAAA, MX, TXT, NS, CNAME, SOA) for any domain in one query." />
   <meta property="og:url" content="https://sitetrace.it.com/dns-tools/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="DNS lookup tool — SiteTrace" />
-  <meta name="twitter:description" content="Resolve any domain to its DNS records via DNS-over-HTTPS. Free, no login." />
+  <meta name="twitter:title" content="DNS lookup — SiteTrace" />
+  <meta name="twitter:description" content="Every DNS record type, one query. Free, no login." />
 
   <script type="application/ld+json">
   {
@@ -25,7 +25,7 @@
     "mainEntity": [
       {"@type":"Question","name":"What is a DNS lookup?","acceptedAnswer":{"@type":"Answer","text":"A DNS lookup is a query sent to a DNS resolver asking for the records associated with a domain name. The most common query is for the A record (the IPv4 address), but DNS also stores AAAA (IPv6), MX (mail servers), TXT (verification and policy), NS (name servers), CNAME (alias), and SOA (zone authority) records."}},
       {"@type":"Question","name":"What are the different DNS record types?","acceptedAnswer":{"@type":"Answer","text":"A maps a name to an IPv4 address. AAAA maps to IPv6. MX lists mail servers for the domain. TXT stores arbitrary text, commonly used for domain verification (Google, Microsoft, Facebook) and email policies like SPF/DKIM/DMARC. NS lists the authoritative name servers for the domain. CNAME creates an alias from one name to another. SOA holds administrative information about the zone."}},
-      {"@type":"Question","name":"Which record type should I look up?","acceptedAnswer":{"@type":"Answer","text":"For \"where does this domain point,\" use A or AAAA. For \"where does its email go,\" use MX. For \"who runs this domain's DNS,\" use NS. For \"is this domain verified by Google/Microsoft/etc.,\" use TXT. For \"is this subdomain an alias of something else,\" use CNAME."}},
+      {"@type":"Question","name":"Which record type should I look up?","acceptedAnswer":{"@type":"Answer","text":"You don't have to choose — this tool queries every common record type at once. For 'where does this domain point,' look at A and AAAA. For 'where does its email go,' look at MX. For 'who runs this domain's DNS,' look at NS. For 'is this domain verified by Google/Microsoft/etc.,' look at TXT. For 'is this subdomain an alias of something else,' look at CNAME."}},
       {"@type":"Question","name":"What is DNS-over-HTTPS?","acceptedAnswer":{"@type":"Answer","text":"DNS-over-HTTPS (DoH) encrypts DNS queries so that no one on the path between you and the resolver can see what domains you are looking up. Traditional DNS sends queries in cleartext, which means your ISP, coffee-shop Wi-Fi, or anyone else on the network can log every site you visit. This tool uses DoH (via Google and Cloudflare) so your lookups are private."}},
       {"@type":"Question","name":"Why are my DNS records different from what I configured?","acceptedAnswer":{"@type":"Answer","text":"DNS changes take time to propagate. Most resolvers respect the TTL (time to live) on each record and refresh from the authoritative server when it expires. Typical propagation is minutes to a few hours, but in some cases it can take up to 48 hours. If you just changed a record, wait and look up again later."}}
     ]
@@ -72,37 +72,28 @@
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="nav_dns">DNS Tools</p>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="dns_h1">What is a DNS lookup?</h1>
-        <p class="text-slate-400 text-sm sm:text-base" data-i18n="dns_subtitle">Resolve domains, inspect records, and see which resolver answered.</p>
+        <p class="text-slate-400 text-sm sm:text-base" data-i18n="dns_subtitle">Resolve domains and inspect every common record type at once.</p>
       </div>
     </section>
 
     <!-- Intro / About (SEO) -->
     <section class="mt-10 max-w-3xl mx-auto">
       <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="dns_intro_h2">About DNS lookups</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="dns_intro_text">DNS (Domain Name System) is the internet's address book. When you type example.com into a browser, DNS translates that human-readable name into the IP address the computer actually needs to connect. This tool lets you query any domain and see its A, AAAA, MX, TXT, NS, CNAME, or SOA records — all sent over DNS-over-HTTPS for privacy.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="dns_intro_text">DNS (Domain Name System) is the internet's address book. When you type example.com into a browser, DNS translates that human-readable name into the IP address the computer actually needs to connect. This tool queries every common record type — A, AAAA, MX, TXT, NS, CNAME, SOA — at the same time and groups the answers for easy scanning. All queries go over DNS-over-HTTPS (Google + Cloudflare) so your lookups are private.</p>
     </section>
 
     <div class="card mt-8">
-      <form id="dns-form" class="grid sm:grid-cols-[1fr_auto_auto] gap-3">
+      <form id="dns-form" class="grid sm:grid-cols-[1fr_auto] gap-3">
         <label class="block">
           <span class="sr-only" data-i18n="dns_input_label">Domain or hostname</span>
           <input id="dns-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="w-full bg-ink-700 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" data-i18n-attr="placeholder:dns_input_placeholder;aria-label:dns_input_label" />
         </label>
-        <select id="dns-type" class="bg-ink-700 border border-white/10 rounded-lg px-3 py-3 text-sm">
-          <option value="A">A</option>
-          <option value="AAAA">AAAA</option>
-          <option value="MX">MX</option>
-          <option value="TXT">TXT</option>
-          <option value="NS">NS</option>
-          <option value="CNAME">CNAME</option>
-          <option value="SOA">SOA</option>
-          <option value="ALL" data-i18n="dns_type_all">All records</option>
-        </select>
         <button type="submit" class="btn-primary">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
           <span data-i18n="dns_lookup">Lookup</span>
         </button>
       </form>
+      <p class="text-[11px] text-slate-500 mt-2" data-i18n="dns_all_records">Returns every record type (A, AAAA, MX, TXT, NS, CNAME, SOA).</p>
     </div>
 
     <div id="dns-result-card" class="card mt-5 hidden">
@@ -114,13 +105,30 @@
         <div class="text-right">
           <div class="text-xs text-slate-500" data-i18n="dns_resolver">Answered by</div>
           <div id="dns-resolver" class="text-sm font-medium text-brand-300"></div>
-          <div class="text-xs text-slate-500 mt-1"><span data-i18n="dns_ttl">TTL</span>: <span id="dns-ttl" class="font-mono"></span></div>
+          <div class="text-xs text-slate-500 mt-1"><span data-i18n="dns_ttl">TTL</span>: <span id="dns-ttl" class="font-mono">—</span></div>
         </div>
       </div>
       <ul id="dns-answers" class="space-y-2"></ul>
     </div>
 
     <div id="dns-empty" class="card text-center text-slate-500 py-10 mt-5" data-i18n="dns_empty">Enter a domain to begin.</div>
+
+    <!-- How DNS lookups work (explanation) -->
+    <section class="mt-12 card">
+      <h2 class="text-xl font-bold mb-3" data-i18n="dns_how_title">How DNS lookups work</h2>
+      <p class="text-slate-300 text-sm leading-relaxed mb-4" data-i18n="dns_how_text">DNS (Domain Name System) is the internet's address book. When you type example.com into a browser, DNS translates that human-readable name into the IP address the computer actually needs to connect. This page queries every common record type — A, AAAA, MX, TXT, NS, CNAME, SOA — in parallel and groups the answers for easy scanning. Queries are sent over DNS-over-HTTPS (Google + Cloudflare) so your lookups are private.</p>
+
+      <h3 class="text-base font-bold text-white mt-5 mb-2" data-i18n="dns_how_record_types">Record types</h3>
+      <ul class="space-y-1 text-sm text-slate-300 list-disc pl-5">
+        <li data-i18n="dns_how_record_a">A — maps a name to an IPv4 address.</li>
+        <li data-i18n="dns_how_record_aaaa">AAAA — maps a name to an IPv6 address.</li>
+        <li data-i18n="dns_how_record_mx">MX — lists the mail servers that accept email for the domain.</li>
+        <li data-i18n="dns_how_record_txt">TXT — arbitrary text, commonly used for domain verification (Google, Microsoft) and email policy (SPF, DKIM, DMARC).</li>
+        <li data-i18n="dns_how_record_ns">NS — lists the authoritative name servers for the domain.</li>
+        <li data-i18n="dns_how_record_cname">CNAME — creates an alias from one name to another.</li>
+        <li data-i18n="dns_how_record_soa">SOA — administrative information about the zone (serial, refresh, retry, expire, minimum TTL).</li>
+      </ul>
+    </section>
 
     <!-- FAQ (SEO) -->
     <section class="mt-12 card" aria-label="Frequently asked questions">
@@ -136,7 +144,7 @@
         </div>
         <div>
           <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_3_q">Which record type should I look up?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_3_a">For "where does this domain point," use A or AAAA. For "where does its email go," use MX. For "who runs this domain's DNS," use NS. For "is this domain verified by Google/Microsoft/etc.," use TXT. For "is this subdomain an alias of something else," use CNAME.</p>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_3_a">You don't have to choose — this tool queries every common record type at once. For "where does this domain point," look at A and AAAA. For "where does its email go," look at MX. For "who runs this domain's DNS," look at NS. For "is this domain verified by Google/Microsoft/etc.," look at TXT. For "is this subdomain an alias of something else," look at CNAME.</p>
         </div>
         <div>
           <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_4_q">What is DNS-over-HTTPS?</h3>
@@ -153,8 +161,8 @@
       <h2 class="text-base font-bold mb-3">More tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">
         <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ping">Ping test →</a>
-        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
+        <a href="/ping/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ping">Domain inspector →</a>
+        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Is it down? →</a>
         <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
@@ -162,9 +170,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=12"></script>
-  <script src="/js/layout.js?v=12"></script>
-  <script src="/js/dns.js?v=12"></script>
+  <script src="/js/i18n.js?v=13"></script>
+  <script src="/js/layout.js?v=13"></script>
+  <script src="/js/dns.js?v=13"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_dns' });

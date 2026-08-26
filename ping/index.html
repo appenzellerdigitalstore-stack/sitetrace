@@ -5,29 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
   <title data-i18n="ping_h1">Domain inspector — DNS, IP, reachability &amp; latency for any website — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online domain inspector. Type any website, get its DNS records, resolved IPs, reachability, HTTP latency, and TLS info — all from your browser, no install." />
-  <meta name="keywords" content="domain inspector, ping website, check website, dns lookup, ip lookup, http latency, reachability, check site, is site up, check domain, ping tool, ping online" />
+  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online domain inspector. Type any website, get its resolved IPs, HTTP reachability, and round-trip latency — all from your browser, no install." />
+  <meta name="keywords" content="domain inspector, ping website, check website, http latency, reachability, check site, is site up, check domain, ping tool, ping online, latency monitor" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/ping/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Domain inspector — DNS, IP, reachability, latency — SiteTrace" />
-  <meta property="og:description" content="Type any website, get DNS, IP, reachability, and HTTP latency in one shot." />
+  <meta property="og:title" content="Domain inspector — IP, reachability, latency — SiteTrace" />
+  <meta property="og:description" content="Type any website, get its resolved IPs, reachability, and HTTP latency in one shot." />
   <meta property="og:url" content="https://sitetrace.it.com/ping/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Domain inspector — SiteTrace" />
-  <meta name="twitter:description" content="Type any website, get DNS, IP, reachability, and HTTP latency in one shot." />
+  <meta name="twitter:description" content="Type any website, get its resolved IPs, reachability, and HTTP latency in one shot." />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {"@type":"Question","name":"What is a domain inspector?","acceptedAnswer":{"@type":"Answer","text":"A domain inspector runs several common network checks against a hostname in one shot: DNS records, resolved IP addresses, HTTP reachability, response time, and TLS / server headers (when CORS allows). It is the fastest way to answer 'what is going on with this website' without opening five different tools."}},
-      {"@type":"Question","name":"How do I ping a website?","acceptedAnswer":{"@type":"Answer","text":"Type the hostname (for example github.com) into the box above and press Enter. The inspector will resolve its DNS, list its IP addresses, and try to reach it over HTTP. The result is shown as reachable / unreachable / unknown, with the timing."}},
-      {"@type":"Question","name":"What can this tool detect that a normal ping cannot?","acceptedAnswer":{"@type":"Answer","text":"Traditional ICMP ping is blocked by most cloud providers (Cloudflare, AWS, Google), so it is rarely useful for testing real websites. This tool uses HTTP fetch timing instead, which works against virtually every site and gives you a result that is more representative of what your browser actually experiences."}},
+      {"@type":"Question","name":"What does the domain inspector do?","acceptedAnswer":{"@type":"Answer","text":"It runs three checks against a hostname in one shot: it resolves the IP addresses via DNS-over-HTTPS, attempts an HTTP fetch from your browser to measure reachability and round-trip time, and reports the result. The DNS record details live on the dedicated /dns-tools/ page."}},
       {"@type":"Question","name":"Why does the reachability sometimes show 'unknown'?","acceptedAnswer":{"@type":"Answer","text":"Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows 'reachable (response not readable)'."}},
-      {"@type":"Question","name":"What is a good HTTP latency?","acceptedAnswer":{"@type":"Answer","text":"Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time."}}
+      {"@type":"Question","name":"What is a good HTTP latency?","acceptedAnswer":{"@type":"Answer","text":"Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time."}},
+      {"@type":"Question","name":"Why is DNS not shown on this page?","acceptedAnswer":{"@type":"Answer","text":"The /dns-tools/ page is dedicated to that — it queries every record type (A, AAAA, MX, TXT, NS, CNAME, SOA) at once and renders a grouped view. The domain inspector here only needs the resolved IPs to do the HTTP check, so the rest stays out of the way."}},
+      {"@type":"Question","name":"What is the live multi-server ping below?","acceptedAnswer":{"@type":"Answer","text":"A power-user feature: add any URL you want to monitor, set a polling interval, and the tool will keep pinging each one from your browser. Polling only happens when you press Start, and only targets you — no central server, no third-party pings. The 9 popular services shown by default are just examples; you can remove them and add your own."}}
     ]
   }
   </script>
@@ -54,6 +54,26 @@
   <link rel="stylesheet" href="/styles.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
+  <style>
+    /* Pill colours reused from is-it-down for consistency */
+    .ping-reach-pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 600; border: 1px solid transparent; }
+    .ping-reach-pill--up      { background: rgba(16,185,129,0.10); border-color: rgba(16,185,129,0.30); color: #6ee7b7; }
+    .ping-reach-pill--down    { background: rgba(239,68,68,0.10);  border-color: rgba(239,68,68,0.30);  color: #fca5a5; }
+    .ping-reach-pill--unknown { background: rgba(245,158,11,0.10); border-color: rgba(245,158,11,0.30); color: #fcd34d; }
+    .ping-reach-pill .dot { width: 7px; height: 7px; border-radius: 9999px; }
+    .ping-reach-pill--up      .dot { background: #10b981; }
+    .ping-reach-pill--down    .dot { background: #ef4444; }
+    .ping-reach-pill--unknown .dot { background: #f59e0b; }
+
+    /* Custom-server row in the live multi-server ping */
+    .ping-server-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 0.9rem; border-radius: 0.7rem; border: 1px solid var(--hairline); background: rgba(255,255,255,0.02); }
+    .ping-server-row__name { font-weight: 600; font-size: 0.9rem; flex: 0 0 auto; max-width: 10rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ping-server-row__url  { font-size: 0.7rem; color: rgb(100 116 139); font-family: 'JetBrains Mono', monospace; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; }
+    .ping-server-row__lat  { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; min-width: 5rem; text-align: right; }
+    .ping-server-row__remove { background: transparent; border: 0; color: rgb(148 163 184); cursor: pointer; padding: 0.2rem 0.4rem; border-radius: 0.4rem; font-size: 0.75rem; }
+    .ping-server-row__remove:hover { color: #fca5a5; background: rgba(239,68,68,0.08); }
+  </style>
+
   <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
 </head>
@@ -72,14 +92,14 @@
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="nav_ping">Domain Inspector</p>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ping_h1">What's going on with this website?</h1>
-        <p class="text-slate-400 text-sm sm:text-base" data-i18n="ping_subtitle">Type a website, press Enter. Get DNS records, IP, reachability and HTTP latency in one shot.</p>
+        <p class="text-slate-400 text-sm sm:text-base" data-i18n="ping_subtitle">Type a website, press Enter. Get its resolved IPs, reachability, and HTTP latency in one shot.</p>
       </div>
     </section>
 
     <!-- Intro (SEO) -->
     <section class="mt-10 max-w-3xl mx-auto">
       <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="ping_intro_h2">How the domain inspector works</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ping_intro_text">Traditional ICMP ping is blocked by most cloud providers, so it rarely tells you what you want to know about a real website. This tool uses HTTP fetch timing instead — the same path your browser actually takes — and runs DNS-over-HTTPS in parallel. The result is a single, fast answer: where does this domain point, can I reach it, and how fast?</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ping_intro_text">Traditional ICMP ping is blocked by most cloud providers, so it rarely tells you what you want to know about a real website. This tool uses HTTP fetch timing instead — the same path your browser actually takes — and runs DNS-over-HTTPS in parallel to resolve the IP. The result is a single, fast answer: where does this domain point, can I reach it, and how fast? For full DNS record details (MX, TXT, NS, SOA, …) see the dedicated DNS page.</p>
     </section>
 
     <!-- URL input form -->
@@ -103,12 +123,12 @@
           <div class="text-xs text-slate-500" data-i18n="ping_target_label">Target</div>
           <div id="ping-target" class="text-lg font-mono font-semibold"></div>
         </div>
-        <div class="text-right">
-          <div id="ping-reach-pill" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border">
-            <span class="ping-pill-dot" id="ping-pill-dot"></span>
+        <div class="text-right flex flex-col items-end gap-1.5">
+          <div id="ping-reach-pill" class="ping-reach-pill">
+            <span class="dot"></span>
             <span id="ping-pill-label">—</span>
           </div>
-          <div class="text-xs text-slate-500 mt-1"><span id="ping-ms">—</span> ms</div>
+          <div class="text-xs text-slate-500"><span id="ping-ms">—</span> <span data-i18n="ping_ms_label">ms</span></div>
         </div>
       </div>
 
@@ -122,11 +142,11 @@
           <div class="space-y-1 text-sm">
             <div class="flex justify-between"><span class="text-slate-500" data-i18n="ping_protocol">Protocol</span><span id="ping-proto" class="font-mono">—</span></div>
             <div class="flex justify-between"><span class="text-slate-500" data-i18n="ping_target_label">Target</span><span id="ping-host" class="font-mono">—</span></div>
-            <div class="flex justify-between"><span class="text-slate-500">Status</span><span id="ping-status" class="font-mono">—</span></div>
+            <div class="flex justify-between"><span class="text-slate-500" data-i18n="ping_status_label">Status</span><span id="ping-status" class="font-mono">—</span></div>
           </div>
         </div>
         <div>
-          <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2">Quick tip</div>
+          <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2" data-i18n="ping_quick_tip_heading">Quick tip</div>
           <p class="text-sm text-slate-300" data-i18n="ping_tip_text">If reachability is unclear, try opening the site in a new tab to confirm. If the site is up but slow, your path to it may be congested.</p>
           <a id="ping-open" href="#" target="_blank" rel="noopener noreferrer" class="btn-ghost mt-3 inline-flex">
             <span data-i18n="ping_open_in_tab">Open in new tab</span>
@@ -134,23 +154,22 @@
           </a>
         </div>
       </div>
-
-      <div class="mt-5">
-        <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2" data-i18n="ping_dns_section">DNS records</div>
-        <ul id="ping-dns" class="space-y-1.5"></ul>
-      </div>
     </div>
 
     <div id="ping-empty" class="card text-center text-slate-500 py-10 mt-5" data-i18n="ping_empty">Enter a website to begin.</div>
 
-    <!-- Advanced: continuous multi-server ping (replaces the old start/stop grid) -->
-    <details class="mt-8 group">
+    <!-- Live multi-server ping: user-configurable. Polling only happens
+         when Start is pressed; each user manages their own list via
+         sessionStorage so we never centralise load on third parties. -->
+    <details class="mt-8 group" open>
       <summary class="cursor-pointer list-none flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-3 card">
         <span class="text-brand-300 group-open:rotate-90 transition-transform">▸</span>
         <span data-i18n="ping_advanced">Advanced (live multi-server ping)</span>
       </summary>
       <div class="card mt-3">
-        <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="text-xs text-slate-400 mb-3" data-i18n="ping_no_servers">Add a URL below to start monitoring. Polling only happens when you press Start.</p>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div class="flex items-center gap-3">
             <button id="ping-toggle" class="btn-primary">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -160,7 +179,7 @@
           </div>
           <div class="flex items-center gap-3 text-xs">
             <label class="flex items-center gap-2 text-slate-400">
-              <span>Interval</span>
+              <span data-i18n="ping_interval_label">Interval</span>
               <select id="ping-interval" class="bg-ink-700 border border-white/10 rounded-md px-2 py-1 text-xs">
                 <option value="2000">2s</option>
                 <option value="3000" selected>3s</option>
@@ -170,7 +189,23 @@
             </label>
           </div>
         </div>
-        <div id="ping-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+
+        <!-- Add a server -->
+        <form id="ping-add-form" class="flex flex-col sm:flex-row gap-2 mb-4" autocomplete="off">
+          <input id="ping-add-name" type="text" placeholder="Name (optional, e.g. Company site)" class="flex-1 bg-ink-700 border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50" />
+          <input id="ping-add-url" type="text" required data-i18n-attr="placeholder:ping_add_server_placeholder" placeholder="e.g. yourcompany.com" class="flex-[2] bg-ink-700 border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 font-mono" />
+          <button type="submit" class="btn-primary text-sm whitespace-nowrap">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            <span data-i18n="ping_add_server">Add URL to monitor</span>
+          </button>
+        </form>
+
+        <div id="ping-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+
+        <div class="mt-3 flex items-center justify-between text-xs">
+          <span class="text-slate-500" data-i18n="ping_your_monitors">Your monitors</span>
+          <button id="ping-restore-defaults" type="button" class="text-slate-500 hover:text-brand-300 underline" data-i18n="ping_restore_defaults">Restore defaults</button>
+        </div>
       </div>
     </details>
 
@@ -179,24 +214,24 @@
       <h2 class="text-xl font-bold mb-4" data-i18n="ping_faq_h2">Frequently asked questions</h2>
       <div class="space-y-5">
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_1_q">What is a domain inspector?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_1_a">A domain inspector runs several common network checks against a hostname in one shot: DNS records, resolved IP addresses, HTTP reachability, response time, and TLS / server headers (when CORS allows). It is the fastest way to answer "what is going on with this website" without opening five different tools.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_1_q">What does the domain inspector do?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_1_a">It runs three checks against a hostname in one shot: it resolves the IP addresses via DNS-over-HTTPS, attempts an HTTP fetch from your browser to measure reachability and round-trip time, and reports the result. The DNS record details live on the dedicated /dns-tools/ page.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_2_q">How do I ping a website?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_2_a">Type the hostname (for example github.com) into the box above and press Enter. The inspector will resolve its DNS, list its IP addresses, and try to reach it over HTTP. The result is shown as reachable / unreachable / unknown, with the timing.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_2_q">Why does the reachability sometimes show "unknown"?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_2_a">Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows "reachable (response not readable)".</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_3_q">What can this tool detect that a normal ping cannot?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_3_a">Traditional ICMP ping is blocked by most cloud providers (Cloudflare, AWS, Google), so it is rarely useful for testing real websites. This tool uses HTTP fetch timing instead, which works against virtually every site and gives you a result that is more representative of what your browser actually experiences.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_3_q">What is a good HTTP latency?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_3_a">Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_4_q">Why does the reachability sometimes show "unknown"?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_4_a">Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows "reachable (response not readable)".</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_4_q">Why is DNS not shown on this page?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_4_a">The /dns-tools/ page is dedicated to that — it queries every record type (A, AAAA, MX, TXT, NS, CNAME, SOA) at once and renders a grouped view. The domain inspector here only needs the resolved IPs to do the HTTP check, so the rest stays out of the way.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_5_q">What is a good HTTP latency?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_5_a">Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_5_q">What is the live multi-server ping below?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_5_a">A power-user feature: add any URL you want to monitor, set a polling interval, and the tool will keep pinging each one from your browser. Polling only happens when you press Start, and only targets you — no central server, no third-party pings. The 9 popular services shown by default are just examples; you can remove them and add your own.</p>
         </div>
       </div>
     </section>
@@ -206,7 +241,7 @@
       <div class="flex flex-wrap gap-3 text-sm">
         <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
         <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
-        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
+        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Is it down? →</a>
         <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
@@ -214,9 +249,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=12"></script>
-  <script src="/js/layout.js?v=12"></script>
-  <script src="/js/ping.js?v=12"></script>
+  <script src="/js/i18n.js?v=13"></script>
+  <script src="/js/layout.js?v=13"></script>
+  <script src="/js/ping.js?v=13"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_ping' });
