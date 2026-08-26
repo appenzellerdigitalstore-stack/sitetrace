@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title data-i18n="page_privacy_title">Privacy Policy — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:page_privacy_desc" content="SiteTrace's privacy policy: we don't log, we don't track, and we don't sell your data. Here are the details." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.sitetrace.it.com/privacy/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Privacy Policy — SiteTrace" />
+  <meta property="og:description" content="SiteTrace's privacy policy: we don't log, we don't track, and we don't sell your data." />
+  <meta property="og:url" content="https://www.sitetrace.it.com/privacy/" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft': '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-5">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="nav_privacy">Privacy</span>
+      </nav>
+
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight" data-i18n="privacy_h1">Privacy Policy</h1>
+
+      <div class="prose-content space-y-6 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <section>
+          <h2 class="text-lg font-semibold text-white mb-2" data-i18n="privacy_short_h2">The short version</h2>
+          <p data-i18n="privacy_short">We don't log your IP lookups. We don't set tracking cookies. We don't sell your data. We don't run third-party analytics on this site. The only data you see on this site is your own.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white mb-2" data-i18n="privacy_data_h2">What data is collected</h2>
+          <p data-i18n="privacy_data">When you open any tool on SiteTrace, your browser makes a request to a public IP-geo or DNS-over-HTTPS service. Those services have their own privacy policies. SiteTrace does not sit between you and them, does not log those requests, and does not store the responses. Cloudflare (our host) keeps standard HTTP request logs for security and abuse prevention, governed by the Cloudflare Privacy Policy.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white mb-2" data-i18n="privacy_cookies_h2">Cookies and storage</h2>
+          <p data-i18n="privacy_cookies">SiteTrace does not use cookies. It does not use localStorage, sessionStorage, IndexedDB, or any other persistent storage. The language preference is held in memory only and resets when you close the tab.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white mb-2" data-i18n="privacy_third_h2">Third-party services</h2>
+          <p data-i18n="privacy_third">To answer your queries, your browser talks to: ipwho.is, ip-api.com, Google DNS-over-HTTPS, and Cloudflare DNS-over-HTTPS. They see your IP, but SiteTrace does not. Each has its own privacy policy.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white mb-2" data-i18n="privacy_contact_h2">Contact</h2>
+          <p data-i18n="privacy_contact">Questions? Email appenzeller.digitalstore@gmail.com.</p>
+        </section>
+      </div>
+
+      <p class="text-xs text-slate-500 mt-8">Last updated: <span id="pp-updated"></span></p>
+
+      <div class="card mt-8">
+        <h2 class="text-base font-bold mb-3">More tools</h2>
+        <div class="flex flex-wrap gap-3 text-sm">
+          <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
+          <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping test →</a>
+          <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+          <a href="/about/" class="text-brand-300 hover:text-brand-200">About →</a>
+          <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    document.getElementById('pp-updated').textContent = new Date().toISOString().slice(0, 10);
+  </script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: 'nav_privacy' });
+    });
+  </script>
+</body>
+</html>

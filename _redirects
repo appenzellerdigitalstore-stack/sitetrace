@@ -1,6 +1,12 @@
 # Cloudflare Pages redirects
 # https://developers.cloudflare.com/pages/configuration/redirects/
-#
-# Examples (uncomment / edit as needed):
-# /old-page   /new-page   301
-# /api/*      https://api.example.com/:splat   200
+
+# Convenience: trailing-slash normalization (Pages already does this; here for safety)
+/home                /                  301
+/tools               /                  301
+
+# Old hash-routed URLs (from the previous single-page version) — redirect
+# to the new per-tool pages for SEO. 301 = permanent.
+/#/home              /what-is-my-ip/    301
+/#/ping               /ping/             301
+/#/dns                /dns-tools/        301

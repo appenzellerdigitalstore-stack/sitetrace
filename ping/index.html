@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title data-i18n="page_ping_title">Ping &amp; Latency Test — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Measure your connection latency to 9 major global servers. Live, lightweight, no install." />
+  <meta name="keywords" content="ping test, latency test, network speed, ping online, network latency, ms test" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.sitetrace.it.com/ping/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ping &amp; Latency Test — SiteTrace" />
+  <meta property="og:description" content="Measure your connection latency to 9 major global servers. Live, lightweight, no install." />
+  <meta property="og:url" content="https://www.sitetrace.it.com/ping/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ping &amp; Latency Test — SiteTrace" />
+  <meta name="twitter:description" content="Measure latency to Cloudflare, Google, GitHub, Amazon, Microsoft, Apple, and more." />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe: { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn: { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger: { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft': '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="nav_ping">Ping</span>
+      </nav>
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="nav_ping">Ping</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ping_title">Real-time latency test</h1>
+        <p class="text-slate-400 text-sm sm:text-base" data-i18n="ping_subtitle">Measure round-trip time to major global servers. Tap start to begin continuous probing.</p>
+      </div>
+    </section>
+
+    <div class="card mt-8">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <button id="ping-toggle" class="btn-primary">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <span id="ping-toggle-label" data-i18n="ping_start">Start test</span>
+          </button>
+          <span id="ping-status-text" class="text-sm text-slate-400" data-i18n="ping_idle">Idle</span>
+        </div>
+        <div class="flex items-center gap-3 text-xs">
+          <label class="flex items-center gap-2 text-slate-400">
+            <span>Interval</span>
+            <select id="ping-interval" class="bg-ink-700 border border-white/10 rounded-md px-2 py-1 text-xs">
+              <option value="2000">2s</option>
+              <option value="3000" selected>3s</option>
+              <option value="5000">5s</option>
+              <option value="10000">10s</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="ping-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    </div>
+
+    <aside class="ad-slot ad-slot--leaderboard mt-10" aria-label="Advertisement">
+      <span class="ad-slot__label" data-i18n="ad_label">Advertisement</span>
+      <span class="ad-slot__caption" data-i18n="ad_top_caption">Sponsored space — 728×90 leaderboard</span>
+    </aside>
+
+    <section class="mt-12 card">
+      <h2 class="text-base font-bold mb-3">More tools</h2>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/layout.js"></script>
+  <script src="/js/ping.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: 'nav_ping' });
+    });
+  </script>
+</body>
+</html>

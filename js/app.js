@@ -1,13 +1,12 @@
 /* ================================================================
- * SiteTrace — Main App
- * Routing, IP lookup (with fallbacks), geolocation, security
- * status detection, language switcher, copy-to-clipboard, toast.
+ * SiteTrace — IP Lookup Page
+ * Each tool now lives on its own URL (/what-is-my-ip/, /ping/, /dns-tools/).
+ * This module only runs on the IP lookup page.
  * ================================================================ */
 (function () {
   'use strict';
 
-  const $  = (sel, root) => (root || document).querySelector(sel);
-  const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+  const $ = (sel, root) => (root || document).querySelector(sel);
 
   // ---- Utilities -------------------------------------------------
   function el(tag, attrs, children) {
@@ -68,39 +67,7 @@
     } catch (_) { return false; }
   }
 
-  // ================================================================
-  // Routing (hash-based, no server config needed)
-  // ================================================================
-  const VIEWS = ['home', 'ping', 'dns'];
-
-  function setRoute(route) {
-    if (!VIEWS.includes(route)) route = 'home';
-    location.hash = '#/' + route;
-  }
-  function currentRoute() {
-    const h = (location.hash || '').replace(/^#\/?/, '').trim();
-    return VIEWS.includes(h) ? h : 'home';
-  }
-  function renderRoute() {
-    const route = currentRoute();
-    $$('[data-view]').forEach((node) => {
-      node.classList.toggle('hidden', node.getAttribute('data-view') !== route);
-    });
-    $$('.nav-link[data-route]').forEach((btn) => {
-      btn.classList.toggle('is-active', btn.getAttribute('data-route') === route);
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  window.addEventListener('hashchange', renderRoute);
-  document.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-route]');
-    if (t) { e.preventDefault(); setRoute(t.getAttribute('data-route')); }
-  });
-
-  // ================================================================
-  // IP / Network lookup
-  // ================================================================
-  // We try multiple free services in order. The first to succeed wins.
+  // ---- IP / Network lookup ---------------------------------------
   const IP_PROVIDERS = [
     {
       name: 'ipwho.is',
@@ -147,6 +114,7 @@
           org: j.org,
           asn: (j.as || '').split(' ')[0],
           timezone: j.timezone,
+          currentTime: null,
           security: {
             is_proxy: !!j.proxy,
             is_vpn: !!j.hosting,
@@ -190,15 +158,12 @@
         return Object.assign({ provider: p.name }, data);
       } catch (e) {
         lastErr = e;
-        // continue to next provider
       }
     }
     throw lastErr || new Error('all providers failed');
   }
 
-  // ================================================================
-  // Render
-  // ================================================================
+  // ---- Render ----------------------------------------------------
   function setText(id, value) {
     const node = document.getElementById(id);
     if (!node) return;
@@ -218,7 +183,6 @@
 
     const t = (window.I18N && window.I18N.t) || ((k) => k);
 
-    // Reset classes
     badge.className = 'status-badge';
 
     let state = 'exposed';
@@ -317,17 +281,6 @@
     renderSecurityList(data.security);
   }
 
-  function clearPlaceholders() {
-    // After a successful render, swap placeholder shimmer for plain text.
-    $$('.ip-placeholder').forEach((p) => {
-      const parent = p.parentNode;
-      // Only clear if the parent hasn't been overwritten with real content
-      if (p.parentElement && p.parentElement.contains(p)) {
-        // Leave as-is — the per-field setters above will replace text content.
-      }
-    });
-  }
-
   function showError(err) {
     const t = (window.I18N && window.I18N.t) || ((k) => k);
     const ip = $('#ip-display'); if (ip) ip.textContent = '—';
@@ -341,11 +294,6 @@
     const mini = $('#status-mini');
     if (mini) mini.textContent = t('err_network');
     setHTML('sec-vpn', '—'); setHTML('sec-proxy', '—'); setHTML('sec-tor', '—'); setHTML('sec-threat', '—');
-    // Provide a retry button
-    const recheck = $('#btn-recheck');
-    if (recheck) {
-      recheck.onclick = (e) => { e.preventDefault(); runLookup(); };
-    }
   }
 
   async function runLookup() {
@@ -354,7 +302,6 @@
     try {
       const data = await lookupIP();
       renderIP(data);
-      clearPlaceholders();
     } catch (e) {
       showError(e);
     } finally {
@@ -362,74 +309,25 @@
     }
   }
 
-  // ================================================================
-  // Language switcher wiring
-  // ================================================================
-  function wireLanguage() {
-    const wrap = $('#lang-wrap');
-    const btn  = $('#lang-toggle');
-    const menu = $('#lang-menu');
-    if (!wrap || !btn || !menu) return;
-
-    function setActive(lang) {
-      $$('.lang-option', menu).forEach((o) => {
-        o.classList.toggle('is-active', o.getAttribute('data-lang') === lang);
-      });
-      const cur = $('#lang-current');
-      if (cur) cur.textContent = lang.toUpperCase();
-    }
-
-    function open(open) {
-      menu.classList.toggle('hidden', !open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      open(menu.classList.contains('hidden'));
-    });
-    document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) open(false);
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') open(false);
-    });
-    menu.addEventListener('click', (e) => {
-      const b = e.target.closest('[data-lang]');
-      if (!b) return;
-      const lang = b.getAttribute('data-lang');
-      if (window.I18N) {
-        window.I18N.setLanguage(lang);
-        setActive(lang);
-      }
-      open(false);
-    });
-
-    // Footer language links (no dropdown, direct set)
-    $$('.lang-link').forEach((b) => {
-      b.addEventListener('click', (e) => {
-        e.preventDefault();
-        const lang = b.getAttribute('data-lang');
-        if (window.I18N) {
-          window.I18N.setLanguage(lang);
-          setActive(lang);
+  // ---- Live local-time tick ---------------------------------------
+  function startLocalClock() {
+    setInterval(() => {
+      const node = $('#local-time');
+      if (!node) return;
+      try {
+        const cached = (window.SiteState && window.SiteState.lastData) || null;
+        let str;
+        if (cached && cached.timezone) {
+          str = new Date().toLocaleTimeString([], { timeZone: cached.timezone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        } else {
+          str = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
-      });
-    });
-
-    if (window.I18N) {
-      setActive(window.I18N.getLanguage());
-      window.I18N.onChange((lang) => {
-        setActive(lang);
-        // re-render status badge text in new language if data already present
-        const cur = (window.SiteState && window.SiteState.lastData) || null;
-        if (cur) { renderStatus(cur.security); renderSecurityList(cur.security); }
-      });
-    }
+        if (str && node.textContent !== str) node.textContent = str;
+      } catch (_) {}
+    }, 1000);
   }
 
-  // ================================================================
-  // Copy / re-check buttons
-  // ================================================================
+  // ---- Wire actions ----------------------------------------------
   function wireActions() {
     const copy = $('#btn-copy');
     if (copy) {
@@ -454,47 +352,15 @@
     }
   }
 
-  // ================================================================
-  // Live local-time ticking (uses cached data; falls back to browser TZ)
-  // ================================================================
-  function startLocalClock() {
-    setInterval(() => {
-      const node = $('#local-time');
-      if (!node) return;
-      const cached = (window.SiteState && window.SiteState.lastData) || null;
-      try {
-        let str;
-        if (cached && cached.timezone) {
-          str = new Date().toLocaleTimeString([], { timeZone: cached.timezone, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        } else {
-          str = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        }
-        if (str && node.textContent !== str) node.textContent = str;
-      } catch (_) { /* ignore */ }
-    }, 1000);
-  }
-
-  // ================================================================
-  // Boot
-  // ================================================================
+  // ---- Boot ------------------------------------------------------
   function boot() {
-    // Footer year
-    const y = $('#footer-year'); if (y) y.textContent = new Date().getFullYear();
-
-    // State holder
     window.SiteState = { lastData: null };
-
-    // Wrap renderIP to also cache data
     const _render = renderIP;
-    // eslint-disable-next-line no-func-assign
     renderIP = function (data) {
       window.SiteState.lastData = data;
       _render(data);
     };
-
-    wireLanguage();
     wireActions();
-    renderRoute();
     runLookup();
     startLocalClock();
   }

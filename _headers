@@ -15,3 +15,7 @@
 
 /js/*.js
   Cache-Control: public, max-age=31536000, immutable
+
+# Allow Googlebot to crawl everything; hint that sitemap exists
+/sitemap.xml
+  Cache-Control: public, max-age=3600

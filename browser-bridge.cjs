@@ -182,11 +182,11 @@ async function main() {
     }
     case 'type': {
       const sel = rest[0];
-      const text = rest.slice(1).join(' ');
-      if (!sel || !text) err('type: <selector> <text...> required');
       const allPages = await browser.pages();
       const numArg = rest.find((a) => /^\d+$/.test(a));
       const tabIdx = numArg != null ? parseInt(numArg, 10) : NaN;
+      const text = rest.slice(1).filter((a, i, arr) => !(numArg != null && a === numArg)).join(' ');
+      if (!sel || !text) err('type: <selector> <text...> required');
       const page = (!isNaN(tabIdx) && allPages[tabIdx]) ? allPages[tabIdx] : (await requirePage(browser));
       await page.waitForSelector(sel, { timeout: 15000 });
       await page.type(sel, text, { delay: 12 });
@@ -195,11 +195,11 @@ async function main() {
     }
     case 'fill': {
       const sel = rest[0];
-      const text = rest.slice(1).join(' ');
-      if (!sel || !text) err('fill: <selector> <text...> required');
       const allPages = await browser.pages();
       const numArg = rest.find((a) => /^\d+$/.test(a));
       const tabIdx = numArg != null ? parseInt(numArg, 10) : NaN;
+      const text = rest.slice(1).filter((a, i, arr) => !(numArg != null && a === numArg)).join(' ');
+      if (!sel || !text) err('fill: <selector> <text...> required');
       const page = (!isNaN(tabIdx) && allPages[tabIdx]) ? allPages[tabIdx] : (await requirePage(browser));
       await page.waitForSelector(sel, { timeout: 15000 });
       const handle = await page.$(sel);

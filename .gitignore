@@ -43,3 +43,8 @@ bridge-*.png
 chrome-debug.log
 gh-*.txt
 
+
+# Local secrets
+.env.local
+.env.*.local
+
