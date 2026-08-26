@@ -315,44 +315,11 @@ body {
 }
 
 /* ================================================================
- * Affiliate / recommendation cards
+ * Affiliate cards: removed when no real affiliate tracking is in
+ * place (see the brand promise on /about/ — site criticises fake
+ * 'recommended tools' sections). Restore this CSS block when the
+ * section is reinstated with real affiliate IDs.
  * ================================================================ */
-.aff-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.1rem;
-  border-radius: 1rem;
-  border: 1px solid var(--hairline);
-  background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
-  transition: all 200ms ease;
-  color: inherit;
-  text-decoration: none;
-}
-.aff-card:hover {
-  border-color: rgba(94, 131, 255, 0.30);
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, rgba(94,131,255,0.05), rgba(255,255,255,0.005));
-}
-.aff-card__icon {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 0.55rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 800;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.3);
-}
-.aff-card__cta {
-  margin-top: auto;
-  font-size: 0.75rem;
-  color: rgb(180 199 255);
-  font-weight: 500;
-}
 
 /* ================================================================
  * Ad slots removed: AdSense auto-ads injects ads automatically now.
