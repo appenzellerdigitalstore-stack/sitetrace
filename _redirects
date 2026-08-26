@@ -7,6 +7,10 @@
 
 # Old hash-routed URLs (from the previous single-page version) — redirect
 # to the new per-tool pages for SEO. 301 = permanent.
-/#/home              /what-is-my-ip/    301
-/#/ping               /ping/             301
-/#/dns                /dns-tools/        301
+# NOTE: hash-fragment sources are technically invalid (clients never send #frag
+# to the server) and Cloudflare's _redirects parser appears to mis-match them,
+# causing the root URL to 301 to /what-is-my-ip/. Keeping these as no-op
+# comments to preserve intent documentation.
+#/#/home              /what-is-my-ip/    301
+#/#/ping              /ping/             301
+#/#/dns               /dns-tools/        301
