@@ -294,17 +294,20 @@
 
     let dotClass, label, statusText, summary = '';
     if (state.ok) {
+      const hasLiveApi = !!(svc.statuspage || svc.summaryUrl);
+    let dotClass, label, statusText, summary = '';
+    if (state.ok) {
       const ind = (state.data.status && state.data.status.indicator) || 'none';
       const m   = INDICATOR[ind] || INDICATOR.none;
       dotClass   = 'status-dot--' + m.dot;
       label      = t(m.label);
       statusText = (state.data.status && state.data.status.description) || label;
-    } else if (svc.statuspage) {
+    } else if (hasLiveApi) {
       dotClass   = 'status-dot--unknown';
       label      = t('downdetector_unknown');
       statusText = state.error === 'timeout' ? t('err_network') : (state.error || t('downdetector_unknown'));
     } else {
-      // No statuspage — show "monitored" with link to downdetector.com
+      // No statuspage — show "monitored" with link to downdetector
       dotClass   = 'status-dot--monitored';
       label      = t('downdetector_monitored');
       statusText = t('downdetector_no_live_status');
