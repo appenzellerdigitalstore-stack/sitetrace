@@ -1,10 +1,9 @@
 # Cloudflare Pages redirects
 # https://developers.cloudflare.com/pages/configuration/redirects/
 
-# Canonical: apex sitetrace.it.com is the primary domain.
-# All www.sitetrace.it.com URLs 301 to the apex, path preserved.
-# (AdSense and Google Search Console will index the apex; users typing www. get there too.)
-https://www.sitetrace.it.com/*   https://sitetrace.it.com/:splat   301
+# NOTE: host-based redirect (www -> apex) is configured as a Cloudflare Page Rule
+# on the zone, not here. The _redirects file is for path-only matches within a
+# single host. The Page Rule id is 2ec2f781693f5a0aa43a53da5ff9ebd3.
 
 # Convenience: trailing-slash normalization (Pages already does this; here for safety)
 /home                /                  301
