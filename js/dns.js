@@ -1,7 +1,8 @@
 /* ================================================================
  * SiteTrace — DNS Lookup
  * DNS-over-HTTPS via Google / Cloudflare. Returns the raw answer
- * records and which resolver answered.
+ * records and which resolver answered. Supports an "ALL" mode that
+ * queries every record type in parallel and renders a grouped view.
  * ================================================================ */
 (function () {
   'use strict';
@@ -40,6 +41,9 @@
     },
   ];
 
+  // Record types to query when the user picks "All"
+  const ALL_TYPES = ['A', 'AAAA', 'MX', 'TXT', 'NS', 'CNAME', 'SOA'];
+
   function withTimeout(promise, ms) {
     return new Promise((resolve, reject) => {
       const t = setTimeout(() => reject(new Error('timeout')), ms);
@@ -62,23 +66,30 @@
     );
   }
 
-  async function resolveAll(domain, type) {
+  async function resolveOne(domain, type) {
+    // Try providers in order, return first one that gives a usable response.
+    // NXDOMAIN (Status != 0) is treated as a final answer for the "All" view too.
     let lastErr = null;
     for (const p of PROVIDERS) {
       try {
         const data = await resolveWith(p, domain, type);
-        if (data && (data.Answer || data.Status === 0)) {
+        if (data && (data.Answer || typeof data.Status !== 'undefined')) {
           return { provider: p.name, data: data };
-        }
-        if (data && typeof data.Status !== 'undefined' && data.Status !== 0) {
-          // NXDOMAIN etc. — treat as final, no need to try the other
-          return { provider: p.name, data: data, nxdomain: true };
         }
       } catch (e) {
         lastErr = e;
       }
     }
-    throw lastErr || new Error('all providers failed');
+    return { provider: PROVIDERS[0].name, data: null, error: lastErr && lastErr.message };
+  }
+
+  async function resolveAllTypes(domain) {
+    // Fire all record types in parallel (with the same Google/Cloudflare fallback)
+    const entries = await Promise.all(ALL_TYPES.map(async (type) => {
+      const r = await resolveOne(domain, type);
+      return { type, ...r };
+    }));
+    return entries;
   }
 
   // ---- Rendering ------------------------------------------------
@@ -112,23 +123,28 @@
     node.textContent = value == null ? '—' : value;
   }
 
-  function renderResult(domain, type, provider, data) {
+  function humanType(t) {
+    // DNS numeric types to labels
+    const map = { 1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 15: 'MX', 16: 'TXT', 28: 'AAAA', 33: 'SRV', 35: 'NAPTR', 41: 'OPT', 65: 'HTTPS' };
+    return map[t] || String(t);
+  }
+
+  function renderSingleResult(domain, type, provider, data) {
     const card = $('#dns-result-card');
     showEmpty(false);
     if (!card) return;
     card.classList.remove('hidden');
 
-    setText('dns-target', domain);
+    setText('dns-target', domain + '  ·  ' + type);
     setText('dns-resolver', provider);
 
     const list = $('#dns-answers');
     if (list) list.innerHTML = '';
 
     if (!data || !data.Answer || !data.Answer.length) {
-      // No records but query ok
       const li = document.createElement('li');
       li.className = 'dns-answer';
-      li.innerHTML = '<span class="dns-answer__type">' + (type || '') + '</span><span>—</span>';
+      li.innerHTML = '<span class="dns-answer__type">' + (type || '') + '</span><span style="color:#94a3b8">' + t_('dns_no_records') + '</span>';
       list.appendChild(li);
       setText('dns-ttl', '—');
       return;
@@ -154,10 +170,66 @@
     setText('dns-ttl', minTTL == null ? '—' : (minTTL + 's'));
   }
 
-  function humanType(t) {
-    // DNS numeric types to labels
-    const map = { 1: 'A', 2: 'NS', 5: 'CNAME', 6: 'SOA', 15: 'MX', 16: 'TXT', 28: 'AAAA', 33: 'SRV', 35: 'NAPTR', 41: 'OPT', 65: 'HTTPS' };
-    return map[t] || String(t);
+  function renderAllResult(domain, entries) {
+    const card = $('#dns-result-card');
+    showEmpty(false);
+    if (!card) return;
+    card.classList.remove('hidden');
+
+    // Surface the most common provider (where the first successful answer came from)
+    const provider = (entries.find((e) => e.data && e.data.Answer && e.data.Answer.length) || {}).provider
+      || entries[0].provider
+      || 'Google';
+
+    setText('dns-target', domain + '  ·  ' + t_('dns_all_records'));
+    setText('dns-resolver', provider);
+
+    const list = $('#dns-answers');
+    if (list) list.innerHTML = '';
+
+    let totalAnswers = 0;
+    let minTTL = null;
+    const groups = entries.map((e) => {
+      const answers = (e.data && e.data.Answer) || [];
+      totalAnswers += answers.length;
+      answers.forEach((ans) => {
+        if (typeof ans.TTL === 'number' && (minTTL == null || ans.TTL < minTTL)) minTTL = ans.TTL;
+      });
+      return { type: e.type, answers };
+    });
+
+    if (totalAnswers === 0) {
+      const li = document.createElement('li');
+      li.className = 'dns-answer';
+      li.style.color = '#94a3b8';
+      li.textContent = t_('dns_no_records');
+      list.appendChild(li);
+      setText('dns-ttl', '—');
+      return;
+    }
+
+    groups.forEach((g) => {
+      if (!g.answers.length) return;
+      // Section header for the record type
+      const head = document.createElement('li');
+      head.className = 'dns-answer-group-head';
+      head.textContent = g.type + '  ·  ' + g.answers.length;
+      list.appendChild(head);
+      g.answers.forEach((ans) => {
+        const li = document.createElement('li');
+        li.className = 'dns-answer';
+        const typeSpan = document.createElement('span');
+        typeSpan.className = 'dns-answer__type';
+        typeSpan.textContent = g.type;
+        const dataSpan = document.createElement('span');
+        dataSpan.textContent = ans.data;
+        li.appendChild(typeSpan);
+        li.appendChild(dataSpan);
+        list.appendChild(li);
+      });
+    });
+
+    setText('dns-ttl', minTTL == null ? '—' : (minTTL + 's'));
   }
 
   // ---- Wire up --------------------------------------------------
@@ -182,17 +254,31 @@
         submit.disabled = true;
         const orig = submit.innerHTML;
         submit.innerHTML = '<span>' + t_('dns_querying') + '</span>';
-        // restore on next tick in case of error
         setTimeout(() => { if (submit.disabled) { submit.disabled = false; submit.innerHTML = orig; } }, 50);
-        // Save the original so we can restore after each submit
         submit.dataset.orig = submit.dataset.orig || orig;
       }
       try {
-        const { provider, data, nxdomain } = await resolveAll(domain, type);
-        if (nxdomain) {
-          renderResult(domain, type, provider, { Answer: [] });
+        if (type === 'ALL') {
+          const entries = await resolveAllTypes(domain);
+          renderAllResult(domain, entries);
         } else {
-          renderResult(domain, type, provider, data);
+          // Use the first provider that returns a meaningful response (back-compat)
+          let provider = null, data = null;
+          for (const p of PROVIDERS) {
+            try {
+              const r = await resolveWith(p, domain, type);
+              if (r && (r.Answer || typeof r.Status !== 'undefined')) {
+                provider = p.name;
+                data = r;
+                break;
+              }
+            } catch (_) { /* try next */ }
+          }
+          if (!data) {
+            showError(t_('dns_error'));
+          } else {
+            renderSingleResult(domain, type, provider, data);
+          }
         }
       } catch (err) {
         showError(err && err.message);
@@ -209,6 +295,9 @@
       window.I18N.onChange(() => {
         const empty = $('#dns-empty');
         if (empty && !empty.classList.contains('hidden')) empty.textContent = t_('dns_empty');
+        // Also re-translate the "All records" option
+        const allOpt = typeSel && typeSel.querySelector('option[value="ALL"]');
+        if (allOpt) allOpt.textContent = t_('dns_type_all');
       });
     }
   }

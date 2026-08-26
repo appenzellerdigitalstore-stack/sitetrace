@@ -9,6 +9,11 @@
 /home                /                  301
 /tools               /                  301
 
+# /downdetector/ was renamed to /is-it-down/ on 2026-08-26. Permanent 301
+# so any external links and search engine equity transfer.
+/downdetector        /is-it-down/       301
+/downdetector/       /is-it-down/       301
+
 # Old hash-routed URLs (from the previous single-page version) — redirect
 # to the new per-tool pages for SEO. 301 = permanent.
 # NOTE: hash-fragment sources are technically invalid (clients never send #frag

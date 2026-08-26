@@ -1,16 +1,14 @@
 /* ================================================================
- * SiteTrace — Downdetector-style status page
+ * SiteTrace — "Is it down for me?"
  *
- * Live status for 40+ popular services across cloud, dev, comm,
- * productivity, gaming, social, streaming, commerce, and AI.
- * 24-hour incident timeline from each service's official
- * statuspage.io endpoint (where available). Search supports any
- * service — known ones open their card, unknown ones deep-link
- * to downdetector.com for community-reported data.
+ * Combines the downdetector-style service grid (live status from
+ * statuspage.io for 50+ services) with a user-side URL check:
+ * paste any URL, we probe it from the browser and show whether
+ * it is reachable from *your* network.
  *
  * Runs entirely in the browser. No backend. Per-user "I noticed
- * an issue" reports are stored in localStorage (cleared when the
- * user clears site data, never sent anywhere).
+ * an issue" reports are stored in sessionStorage (per-tab,
+ * cleared on close — never sent anywhere).
  * ================================================================ */
 (function () {
   'use strict';
@@ -20,20 +18,8 @@
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
   // ----------------------------------------------------------------
-  // Service catalog
+  // Service catalog (kept from the previous downdetector page)
   // ----------------------------------------------------------------
-  // Each entry:
-  //   id             unique key
-  //   name           display name
-  //   category       one of: infra, dev, comm, prod, commerce, gaming, social, streaming, ai
-  //   icon           emoji
-  //   statuspage     statuspage.io subdomain, or null if not on statuspage
-  //   summaryUrl     (optional) full URL — overrides the default
-  //                  https://<statuspage>.statuspage.io/api/v2/summary.json.
-  //                  Used when the page lives on a custom CNAME domain.
-  //   incidentsUrl   (optional) full URL — same idea for the incidents endpoint
-  //   page           official status / status-equivalent URL
-  //   dd             downdetector.com slug
   const SERVICES = [
     // ---- Cloud & Infrastructure ----
     { id: 'cloudflare',   name: 'Cloudflare',        category: 'infra',     icon: '☁️',  summaryUrl: 'https://www.cloudflarestatus.com/api/v2/summary.json',  page: 'https://www.cloudflarestatus.com/',   dd: 'cloudflare' },
@@ -105,7 +91,7 @@
     { id: 'anthropic',    name: 'Anthropic',         category: 'ai',        icon: '🪞', statuspage: null,                page: 'https://www.anthropic.com',        dd: 'anthropic' },
     { id: 'midjourney',   name: 'Midjourney',        category: 'ai',        icon: '🎨',  statuspage: null,                page: 'https://docs.midjourney.com/',     dd: 'midjourney' },
     { id: 'huggingface',  name: 'Hugging Face',      category: 'ai',        icon: '🤗',  statuspage: null,                page: 'https://status.huggingface.com/',  dd: 'huggingface' },
-    { id: 'replicate',    name: 'Replicate',         category: 'ai',        icon: '🔁',  statuspage: null,                page: 'https://replicate.com',            dd: 'replicate' },
+    { id: 'replicate',    name: 'Replicate',         category: 'ai',        icon: '🔁', statuspage: null,                page: 'https://replicate.com',            dd: 'replicate' },
   ];
 
   // ----------------------------------------------------------------
@@ -122,14 +108,6 @@
   // ----------------------------------------------------------------
   // Networking helpers
   // ----------------------------------------------------------------
-  // Each service may either:
-  //   - have a `statuspage` subdomain (used to build the default
-  //     `https://<sub>.statuspage.io/api/v2/...` URL), OR
-  //   - have explicit `summaryUrl` / `incidentsUrl` (used when the
-  //     status page lives on a custom CNAME domain that doesn't
-  //     allow CORS on the default statuspage.io subdomain — e.g.
-  //     Twitch uses status.twitch.tv, Cloudflare uses
-  //     www.cloudflarestatus.com, etc.)
   const DEFAULT_BASE = (sub) => `https://${sub}.statuspage.io`;
   const defaultSummaryUrl   = (sub) => `${DEFAULT_BASE(sub)}/api/v2/summary.json`;
   const defaultIncidentsUrl = (sub) => `${DEFAULT_BASE(sub)}/api/v2/incidents.json?since=${encodeURIComponent(new Date(Date.now() - 24 * 3600 * 1000).toISOString())}`;
@@ -168,8 +146,6 @@
     }
   }
 
-  // Limited-concurrency map. Avoids hammering external status endpoints
-  // and tripping their rate-limits on the initial page load.
   async function mapWithConcurrency(items, limit, mapper) {
     const out = new Array(items.length);
     let i = 0;
@@ -185,10 +161,6 @@
     return out;
   }
 
-  // ----------------------------------------------------------------
-  // 24h timeline — returns array of 24 cells, each {hour, level}
-  // level: 0 operational, 1 minor, 2 major, 3 critical, 4 maintenance
-  // ----------------------------------------------------------------
   function buildTimeline(incidents) {
     const cells = new Array(24).fill(0);
     if (!incidents) return cells;
@@ -198,7 +170,6 @@
       const start = new Date(inc.created_at).getTime();
       const end   = inc.resolved_at ? new Date(inc.resolved_at).getTime() : now;
       if (end < from || start > now) continue;
-      // Clip to the 24h window
       const a = Math.max(start, from);
       const b = Math.min(end,   now);
       const lvl =
@@ -206,21 +177,17 @@
         inc.impact === 'major'     ? 2 :
         inc.impact === 'minor'     ? 1 :
         inc.impact === 'maintenance' ? 4 : 0;
-      // Fill every hour that overlaps with [a, b]
       for (let h = 0; h < 24; h++) {
         const cellStart = now - (24 - h) * 3600 * 1000;
         const cellEnd   = cellStart + 3600 * 1000;
         if (cellStart <= b && cellEnd >= a) {
-          if (lvl > cells[h]) cells[h] = lvl; // worst-severity wins
+          if (lvl > cells[h]) cells[h] = lvl;
         }
       }
     }
     return cells;
   }
 
-  // ----------------------------------------------------------------
-  // SVG 24h mini-graph
-  // ----------------------------------------------------------------
   function graphSVG(timeline, statusColor) {
     const cellW = 6, cellH = 18, gap = 1, totalW = 24 * (cellW + gap) - gap;
     const baseColor = statusColor || '#64748b';
@@ -229,11 +196,11 @@
       const lvl = timeline[h];
       const x = h * (cellW + gap);
       let fill;
-      if      (lvl === 0) fill = '#10b981';             // green
-      else if (lvl === 1) fill = '#f59e0b';             // amber
-      else if (lvl === 2) fill = '#f97316';             // orange
-      else if (lvl === 3) fill = '#ef4444';             // red
-      else if (lvl === 4) fill = '#8b5cf6';             // purple
+      if      (lvl === 0) fill = '#10b981';
+      else if (lvl === 1) fill = '#f59e0b';
+      else if (lvl === 2) fill = '#f97316';
+      else if (lvl === 3) fill = '#ef4444';
+      else if (lvl === 4) fill = '#8b5cf6';
       else                fill = baseColor;
       svg += '<rect x="' + x + '" y="0" width="' + cellW + '" height="' + cellH + '" rx="1" fill="' + fill + '"/>';
     }
@@ -242,15 +209,15 @@
   }
 
   // ----------------------------------------------------------------
-  // Per-user "I noticed an issue" reports (localStorage)
+  // Per-user "I noticed an issue" reports (sessionStorage — per-tab)
   // ----------------------------------------------------------------
   const REPORTS_KEY = 'sitetrace.reports.v1';
   function loadReports() {
-    try { return JSON.parse(localStorage.getItem(REPORTS_KEY) || '{}'); }
+    try { return JSON.parse(sessionStorage.getItem(REPORTS_KEY) || '{}'); }
     catch (_) { return {}; }
   }
   function saveReports(reports) {
-    try { localStorage.setItem(REPORTS_KEY, JSON.stringify(reports)); } catch (_) {}
+    try { sessionStorage.setItem(REPORTS_KEY, JSON.stringify(reports)); } catch (_) {}
   }
   function reportIssue(svcId) {
     const reports = loadReports();
@@ -266,9 +233,151 @@
   }
 
   // ----------------------------------------------------------------
-  // Rendering
+  // URL check (the new "is it down for me" feature)
   // ----------------------------------------------------------------
-  const SERVICE_STATE = new Map(); // id -> { ok, data | error, ms, timeline }
+  function cleanUrl(input) {
+    let s = String(input || '').trim();
+    if (!s) return '';
+    if (!/^https?:\/\//i.test(s)) s = 'https://' + s;
+    try { return new URL(s).toString().replace(/\/$/, ''); } catch (_) { return s; }
+  }
+  function hostFromUrl(url) {
+    try { return new URL(url).host.toLowerCase(); } catch (_) { return ''; }
+  }
+  function findTrackedService(host) {
+    if (!host) return null;
+    const h = host.replace(/^www\./, '');
+    // Try matching against each service's `page` domain or its `id` (loose)
+    for (const svc of SERVICES) {
+      try {
+        const pdom = new URL(svc.page).host.toLowerCase().replace(/^www\./, '');
+        if (pdom === h || pdom.endsWith('.' + h) || h.endsWith('.' + pdom)) return svc;
+        if (svc.id && h.includes(svc.id)) return svc;
+      } catch (_) { /* ignore */ }
+    }
+    return null;
+  }
+  async function probeUrl(url) {
+    const start = performance.now();
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 8000);
+    try {
+      const resp = await fetch(url, { method: 'GET', cache: 'no-store', mode: 'cors', credentials: 'omit', redirect: 'follow', signal: ctrl.signal });
+      clearTimeout(tid);
+      return { reachable: true, readable: true, status: resp.status, ms: Math.round(performance.now() - start) };
+    } catch (e1) {
+      try {
+        const ctrl2 = new AbortController();
+        const tid2 = setTimeout(() => ctrl2.abort(), 8000);
+        await fetch(url, { method: 'GET', cache: 'no-store', mode: 'no-cors', credentials: 'omit', redirect: 'follow', signal: ctrl2.signal });
+        clearTimeout(tid2);
+        return { reachable: true, readable: false, ms: Math.round(performance.now() - start) };
+      } catch (e2) {
+        return { reachable: false, readable: false, ms: Math.round(performance.now() - start), error: e2.message || e1.message };
+      }
+    }
+  }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+  function slugify(s) {
+    return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+  function pillClass(result) {
+    if (result.reachable) return 'check-pill check-pill--up';
+    return 'check-pill check-pill--down';
+  }
+  function pillLabel(result) {
+    if (result.reachable) return t('isitdown_pill_up');
+    return t('isitdown_pill_down');
+  }
+
+  function renderCheckResult(url, result, known) {
+    const slot = $('#check-result');
+    const tips = $('#tips');
+    if (!slot) return;
+    slot.classList.remove('hidden');
+
+    // Build the inner HTML
+    const statusOfficialLine = known && known.state
+      ? (known.state.ok
+          ? '<span class="check-pill check-pill--up"><span class="dot"></span>' + t('isitdown_pill_official_ok') + '</span>'
+          : '<span class="check-pill check-pill--unknown"><span class="dot"></span>' + t('isitdown_pill_official_issue') + '</span>')
+      : '';
+
+    const ddUrl = 'https://downdetector.com/status/' + slugify(hostFromUrl(url) || url) + '/';
+    const openNewTab = '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="btn-ghost">' + t('ping_open_in_tab') + ' ↗</a>';
+
+    const knownLine = known
+      ? '<div class="text-xs text-slate-400">' + t('isitdown_match_known') + ' → ' + escapeHtml(known.name) + '</div>'
+      : '<div class="text-xs text-slate-400">' + t('isitdown_match_unknown') + '</div>';
+
+    slot.innerHTML = ''
+      + '<div class="card p-5 border-brand-500/30">'
+      + '  <div class="flex flex-wrap items-center justify-between gap-3">'
+      + '    <div class="min-w-0">'
+      + '      <div class="text-xs text-slate-500">' + t('isitdown_your_network') + '</div>'
+      + '      <div class="font-mono text-sm sm:text-base break-all">' + escapeHtml(url) + '</div>'
+      + '    </div>'
+      + '    <div class="flex flex-wrap items-center gap-2">'
+      + '      <span class="' + pillClass(result) + '"><span class="dot"></span>' + pillLabel(result) + '</span>'
+      +      statusOfficialLine
+      + '    </div>'
+      + '  </div>'
+      + '  <div class="mt-3 flex flex-wrap items-center justify-between gap-3">'
+      + '    <div class="flex flex-col gap-1">'
+      +        knownLine
+      + '      <div class="text-xs text-slate-500">' + result.ms + ' ms · ' + (result.readable ? ('HTTP ' + (result.status || '')) : 'CORS-blocked response') + '</div>'
+      + '    </div>'
+      + '    <div class="flex flex-wrap items-center gap-2">'
+      +        openNewTab
+      + '      <a href="' + ddUrl + '" target="_blank" rel="noopener noreferrer sponsored" class="btn-ghost">' + t('downdetector_view_on_dd') + ' ↗</a>'
+      + '    </div>'
+      + '  </div>'
+      + '</div>';
+
+    // Show the troubleshooting tips only when the result is "down"
+    if (tips) tips.classList.toggle('hidden', result.reachable);
+
+    // If the URL matched a tracked service, scroll to its card and highlight it
+    if (known) {
+      const target = document.querySelector('[data-service-id="' + known.id + '"]');
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.add('ring-2', 'ring-brand-500/50');
+          setTimeout(() => target.classList.remove('ring-2', 'ring-brand-500/50'), 1800);
+        }, 250);
+      }
+    }
+  }
+
+  function bindCheck() {
+    const form  = $('#check-form');
+    const input = $('#check-input');
+    if (!form || !input) return;
+    const params = new URLSearchParams(location.search);
+    if (params.get('q')) {
+      input.value = params.get('q');
+      // Don't auto-run on load — let the user press the button. But pre-fill.
+    }
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = cleanUrl(input.value);
+      if (!url) return;
+      const result = await probeUrl(url);
+      const known = findTrackedService(hostFromUrl(url));
+      if (known) known.state = SERVICE_STATE.get(known.id);
+      renderCheckResult(url, result, known);
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // Service-card rendering (reused for the grid)
+  // ----------------------------------------------------------------
+  const SERVICE_STATE = new Map();
 
   function buildSkeleton(svc) {
     const card = document.createElement('div');
@@ -293,7 +402,7 @@
     card.dataset.category = svc.category;
 
     const hasLiveApi = !!(svc.statuspage || svc.summaryUrl);
-    let dotClass, label, statusText, summary = '';
+    let dotClass, label, statusText;
     if (state.ok) {
       const ind = (state.data.status && state.data.status.indicator) || 'none';
       const m   = INDICATOR[ind] || INDICATOR.none;
@@ -305,7 +414,6 @@
       label      = t('downdetector_unknown');
       statusText = state.error === 'timeout' ? t('err_network') : (state.error || t('downdetector_unknown'));
     } else {
-      // No statuspage — show "monitored" with link to downdetector
       dotClass   = 'status-dot--monitored';
       label      = t('downdetector_monitored');
       statusText = t('downdetector_no_live_status');
@@ -313,7 +421,7 @@
     const timeline = state.timeline || new Array(24).fill(0);
     const reports  = countRecentReports(svc.id);
 
-    const meta = []
+    const meta = ''
       + '<span class="status-dot ' + dotClass + ' shrink-0"></span>'
       + '<span class="font-semibold truncate">' + svc.name + '</span>';
 
@@ -347,101 +455,10 @@
     const btn = card.querySelector('[data-report]');
     if (btn) btn.addEventListener('click', () => {
       reportIssue(svc.id);
-      // Re-render this card
       const next = buildCard(svc, SERVICE_STATE.get(svc.id) || state);
       card.replaceWith(next);
     });
     return card;
-  }
-
-  function escapeHtml(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
-    });
-  }
-  function slugify(s) {
-    return String(s).toLowerCase().trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
-
-  // ----------------------------------------------------------------
-  // Search
-  // ----------------------------------------------------------------
-  function renderSearchResult(query) {
-    const slot = $('#search-result');
-    if (!slot) return;
-    if (!query) { slot.innerHTML = ''; slot.classList.add('hidden'); return; }
-    const q = query.toLowerCase().trim();
-    const known = SERVICES.find((s) => s.id === q || s.name.toLowerCase() === q || s.dd === q);
-    if (known) {
-      // Found in our list — show a banner pointing to its card
-      const card = document.querySelector('[data-service-id="' + known.id + '"]');
-      slot.classList.remove('hidden');
-      slot.innerHTML = ''
-        + '<div class="card flex flex-wrap items-center justify-between gap-3 p-4 border-brand-500/30">'
-        +   '<div class="flex items-center gap-3">'
-        +     '<span class="text-2xl">' + known.icon + '</span>'
-        +     '<div>'
-        +       '<div class="font-semibold">' + escapeHtml(known.name) + '</div>'
-        +       '<div class="text-xs text-slate-400">' + t('downdetector_in_our_list') + '</div>'
-        +     '</div>'
-        +   '</div>'
-        +   '<div class="flex items-center gap-2">'
-        +     '<a href="#svc-' + known.id + '" data-jump="' + known.id + '" class="btn-secondary text-sm">'
-        +       t('downdetector_jump_to_card') + ' ↓'
-        +     '</a>'
-        +   '</div>'
-        + '</div>';
-      const jump = slot.querySelector('[data-jump]');
-      if (jump) jump.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = document.querySelector('[data-service-id="' + known.id + '"]');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          target.classList.add('ring-2', 'ring-brand-500/50');
-          setTimeout(() => target.classList.remove('ring-2', 'ring-brand-500/50'), 1800);
-        }
-      });
-    } else {
-      // Not tracked — deep link to downdetector.com
-      const slug = slugify(query);
-      const ddUrl = 'https://downdetector.com/status/' + slug + '/';
-      slot.classList.remove('hidden');
-      slot.innerHTML = ''
-        + '<div class="card flex flex-wrap items-center justify-between gap-3 p-4 border-warn-500/30">'
-        +   '<div class="flex items-center gap-3">'
-        +     '<div>'
-        +       '<div class="font-semibold">' + escapeHtml(query) + '</div>'
-        +       '<div class="text-xs text-slate-400">' + t('downdetector_not_tracked') + '</div>'
-        +     '</div>'
-        +   '</div>'
-        +   '<a href="' + ddUrl + '" target="_blank" rel="noopener noreferrer sponsored" class="btn-primary text-sm">'
-        +     t('downdetector_check_on_dd') + ' ↗'
-        +   '</a>'
-        + '</div>';
-    }
-  }
-
-  function bindSearch() {
-    const form   = $('#search-form');
-    const input  = $('#search-input');
-    if (!form || !input) return;
-    // If the URL has ?q=, prefill and show the result
-    const params = new URLSearchParams(location.search);
-    if (params.get('q')) {
-      input.value = params.get('q');
-      renderSearchResult(params.get('q'));
-    }
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      renderSearchResult(input.value);
-    });
-    let t_id;
-    input.addEventListener('input', () => {
-      clearTimeout(t_id);
-      t_id = setTimeout(() => renderSearchResult(input.value), 200);
-    });
   }
 
   // ----------------------------------------------------------------
@@ -451,7 +468,7 @@
     const tabs = $$('.filter-tab');
     tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
-        tabs.forEach((t) => t.classList.remove('is-active'));
+        tabs.forEach((tt) => tt.classList.remove('is-active'));
         tab.classList.add('is-active');
         const cat = tab.dataset.cat;
         $$('.service-card').forEach((card) => {
@@ -465,13 +482,11 @@
   // Boot
   // ----------------------------------------------------------------
   async function boot() {
+    bindCheck();
     const grid = $('#status-grid');
     if (!grid) return;
-    // Skeletons first
     SERVICES.forEach((svc) => grid.appendChild(buildSkeleton(svc)));
 
-    // Fetch all — with a small concurrency limit to avoid hammering
-    // the statuspage.io network and tripping their rate limiter.
     const results = await mapWithConcurrency(SERVICES, 8, async (svc) => {
       if (!summaryUrlFor(svc)) {
         return { svc, summary: { ok: false, ms: 0, error: 'no_statuspage' }, incidents: null };
@@ -483,7 +498,6 @@
       return { svc, summary, incidents };
     });
 
-    // Replace skeletons with real cards
     grid.innerHTML = '';
     results.forEach(({ svc, summary, incidents }) => {
       const state = {
@@ -497,7 +511,6 @@
       grid.appendChild(buildCard(svc, state));
     });
     bindCategoryFilter();
-    bindSearch();
   }
 
   if (document.readyState === 'loading') {

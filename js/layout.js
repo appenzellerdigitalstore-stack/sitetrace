@@ -78,7 +78,7 @@
       +       navLink('/what-is-my-ip/', t('nav_whatismyip'), 'nav_whatismyip')
       +       navLink('/ping/', t('nav_ping'), 'nav_ping')
       +       navLink('/dns-tools/', t('nav_dns'), 'nav_dns')
-      +       navLink('/downdetector/', t('nav_status'), 'nav_status')
+      +       navLink('/is-it-down/', t('nav_status'), 'nav_status')
       + '      <div class="relative ml-1 sm:ml-2" id="lang-wrap">'
       + '        <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="' + escapeHtml(t('language')) + '">'
       + '          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>'

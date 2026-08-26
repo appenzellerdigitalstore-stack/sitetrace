@@ -390,6 +390,27 @@ body {
   flex-shrink: 0;
 }
 
+/* Section header used by the "All records" view to group answers by type */
+.dns-answer-group-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.1rem 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(148 163 184);
+  list-style: none;
+}
+.dns-answer-group-head::before {
+  content: '';
+  flex: 0 0 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: rgba(94,131,255,0.6);
+}
+
 /* ================================================================
  * Focus ring (a11y)
  * ================================================================ */

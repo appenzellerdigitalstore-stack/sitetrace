@@ -4,30 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="ping_h1">Ping test — measure network latency online free — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online ping test. Measure your connection latency to 9 major global servers in real time (Cloudflare, Google, GitHub, Amazon, Microsoft, Apple, and more). Live, lightweight, no install." />
-  <meta name="keywords" content="ping test, latency test, network speed, ping online, network latency, ms test, ping tool, latency checker, ping server, ms ping" />
+  <title data-i18n="ping_h1">Domain inspector — DNS, IP, reachability &amp; latency for any website — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online domain inspector. Type any website, get its DNS records, resolved IPs, reachability, HTTP latency, and TLS info — all from your browser, no install." />
+  <meta name="keywords" content="domain inspector, ping website, check website, dns lookup, ip lookup, http latency, reachability, check site, is site up, check domain, ping tool, ping online" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/ping/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ping test — measure network latency online — SiteTrace" />
-  <meta property="og:description" content="Measure latency to 9 global servers in real time. Free, no install." />
+  <meta property="og:title" content="Domain inspector — DNS, IP, reachability, latency — SiteTrace" />
+  <meta property="og:description" content="Type any website, get DNS, IP, reachability, and HTTP latency in one shot." />
   <meta property="og:url" content="https://sitetrace.it.com/ping/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Ping test — measure network latency online — SiteTrace" />
-  <meta name="twitter:description" content="Measure latency to Cloudflare, Google, GitHub, Amazon, Microsoft, Apple, and more." />
+  <meta name="twitter:title" content="Domain inspector — SiteTrace" />
+  <meta name="twitter:description" content="Type any website, get DNS, IP, reachability, and HTTP latency in one shot." />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {"@type":"Question","name":"What is a ping test?","acceptedAnswer":{"@type":"Answer","text":"A ping test sends a small network packet (an ICMP echo request) from your device to a target server and measures how long it takes to get a reply. The result, in milliseconds, is called latency. Lower latency means the connection feels faster, especially for real-time applications like gaming and video calls."}},
-      {"@type":"Question","name":"What is a good ping?","acceptedAnswer":{"@type":"Answer","text":"Under 20 ms is excellent (typical for local servers and fiber connections). 20-50 ms is good (typical for nearby regional servers). 50-100 ms is average and may show occasional lag. Above 100 ms will feel sluggish for real-time apps. The pings you see here are from your location to global servers, so even fast connections show higher numbers for far-away targets."}},
-      {"@type":"Question","name":"What is the difference between ping and latency?","acceptedAnswer":{"@type":"Answer","text":"They are essentially the same thing measured differently. Ping is the action of sending the test packet; latency is the result. The round-trip time (RTT) you see in a ping test is a measure of latency. \"Ping\" is also commonly used as a verb: \"ping me when you're done\"."}},
-      {"@type":"Question","name":"Why is my ping so high?","acceptedAnswer":{"@type":"Answer","text":"Common causes include physical distance to the target server, congested network paths between you and that server, a slow Wi-Fi connection, background traffic on your network (streaming, downloads, other devices), or a VPN adding extra hops. If only some servers show high ping, the issue is the path; if all of them do, the issue is your local connection."}},
-      {"@type":"Question","name":"Can I ping a website?","acceptedAnswer":{"@type":"Answer","text":"Yes, technically. Most websites respond to ICMP pings, but many do not (cloud providers like Cloudflare, AWS, and Google block pings by default to reduce noise). This tool pings the major services that do respond so you get a meaningful number. For services that block ping, the row will show \"unreachable\" — that is normal and not a sign of a problem."}}
+      {"@type":"Question","name":"What is a domain inspector?","acceptedAnswer":{"@type":"Answer","text":"A domain inspector runs several common network checks against a hostname in one shot: DNS records, resolved IP addresses, HTTP reachability, response time, and TLS / server headers (when CORS allows). It is the fastest way to answer 'what is going on with this website' without opening five different tools."}},
+      {"@type":"Question","name":"How do I ping a website?","acceptedAnswer":{"@type":"Answer","text":"Type the hostname (for example github.com) into the box above and press Enter. The inspector will resolve its DNS, list its IP addresses, and try to reach it over HTTP. The result is shown as reachable / unreachable / unknown, with the timing."}},
+      {"@type":"Question","name":"What can this tool detect that a normal ping cannot?","acceptedAnswer":{"@type":"Answer","text":"Traditional ICMP ping is blocked by most cloud providers (Cloudflare, AWS, Google), so it is rarely useful for testing real websites. This tool uses HTTP fetch timing instead, which works against virtually every site and gives you a result that is more representative of what your browser actually experiences."}},
+      {"@type":"Question","name":"Why does the reachability sometimes show 'unknown'?","acceptedAnswer":{"@type":"Answer","text":"Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows 'reachable (response not readable)'."}},
+      {"@type":"Question","name":"What is a good HTTP latency?","acceptedAnswer":{"@type":"Answer","text":"Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time."}}
     ]
   }
   </script>
@@ -70,66 +70,133 @@
         <span data-i18n="nav_ping">Ping</span>
       </nav>
       <div class="text-center max-w-2xl mx-auto space-y-3">
-        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="nav_ping">Ping</p>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ping_h1">What is a ping test?</h1>
-        <p class="text-slate-400 text-sm sm:text-base" data-i18n="ping_subtitle">Measure round-trip time to major global servers. Tap start to begin continuous probing.</p>
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="nav_ping">Domain Inspector</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ping_h1">What's going on with this website?</h1>
+        <p class="text-slate-400 text-sm sm:text-base" data-i18n="ping_subtitle">Type a website, press Enter. Get DNS records, IP, reachability and HTTP latency in one shot.</p>
       </div>
     </section>
 
-    <!-- Intro / How this works (SEO) -->
+    <!-- Intro (SEO) -->
     <section class="mt-10 max-w-3xl mx-auto">
-      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="ping_intro_h2">How this ping test works</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ping_intro_text">A ping test measures the round-trip time it takes for a small packet of data to travel from your device to a target server and back. It is the most direct way to feel your connection's latency: lower numbers mean a snappier connection for gaming, video calls, and real-time apps. This tool pings nine major global servers every few seconds so you can see how your latency varies and which region is closest to you.</p>
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="ping_intro_h2">How the domain inspector works</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ping_intro_text">Traditional ICMP ping is blocked by most cloud providers, so it rarely tells you what you want to know about a real website. This tool uses HTTP fetch timing instead — the same path your browser actually takes — and runs DNS-over-HTTPS in parallel. The result is a single, fast answer: where does this domain point, can I reach it, and how fast?</p>
     </section>
 
+    <!-- URL input form -->
     <div class="card mt-8">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <button id="ping-toggle" class="btn-primary">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            <span id="ping-toggle-label" data-i18n="ping_start">Start test</span>
-          </button>
-          <span id="ping-status-text" class="text-sm text-slate-400" data-i18n="ping_idle">Idle</span>
+      <form id="ping-form" class="grid sm:grid-cols-[1fr_auto] gap-3" autocomplete="off">
+        <label class="block">
+          <span class="sr-only" data-i18n="ping_input_label">Website</span>
+          <input id="ping-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="w-full bg-ink-700 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" data-i18n-attr="placeholder:ping_placeholder;aria-label:ping_input_label" />
+        </label>
+        <button type="submit" class="btn-primary whitespace-nowrap">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span data-i18n="ping_inspect">Inspect</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Result card (hidden until a query is run) -->
+    <div id="ping-result-card" class="card mt-5 hidden">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <div class="text-xs text-slate-500" data-i18n="ping_target_label">Target</div>
+          <div id="ping-target" class="text-lg font-mono font-semibold"></div>
         </div>
-        <div class="flex items-center gap-3 text-xs">
-          <label class="flex items-center gap-2 text-slate-400">
-            <span>Interval</span>
-            <select id="ping-interval" class="bg-ink-700 border border-white/10 rounded-md px-2 py-1 text-xs">
-              <option value="2000">2s</option>
-              <option value="3000" selected>3s</option>
-              <option value="5000">5s</option>
-              <option value="10000">10s</option>
-            </select>
-          </label>
+        <div class="text-right">
+          <div id="ping-reach-pill" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border">
+            <span class="ping-pill-dot" id="ping-pill-dot"></span>
+            <span id="ping-pill-label">—</span>
+          </div>
+          <div class="text-xs text-slate-500 mt-1"><span id="ping-ms">—</span> ms</div>
         </div>
       </div>
 
-      <div id="ping-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2" data-i18n="ping_ip_section">Resolved IPs</div>
+          <ul id="ping-ips" class="space-y-1 font-mono text-sm"></ul>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2" data-i18n="ping_http_section">Reachability</div>
+          <div class="space-y-1 text-sm">
+            <div class="flex justify-between"><span class="text-slate-500" data-i18n="ping_protocol">Protocol</span><span id="ping-proto" class="font-mono">—</span></div>
+            <div class="flex justify-between"><span class="text-slate-500" data-i18n="ping_target_label">Target</span><span id="ping-host" class="font-mono">—</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Status</span><span id="ping-status" class="font-mono">—</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2">Quick tip</div>
+          <p class="text-sm text-slate-300" data-i18n="ping_tip_text">If reachability is unclear, try opening the site in a new tab to confirm. If the site is up but slow, your path to it may be congested.</p>
+          <a id="ping-open" href="#" target="_blank" rel="noopener noreferrer" class="btn-ghost mt-3 inline-flex">
+            <span data-i18n="ping_open_in_tab">Open in new tab</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2" data-i18n="ping_dns_section">DNS records</div>
+        <ul id="ping-dns" class="space-y-1.5"></ul>
+      </div>
     </div>
+
+    <div id="ping-empty" class="card text-center text-slate-500 py-10 mt-5" data-i18n="ping_empty">Enter a website to begin.</div>
+
+    <!-- Advanced: continuous multi-server ping (replaces the old start/stop grid) -->
+    <details class="mt-8 group">
+      <summary class="cursor-pointer list-none flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-3 card">
+        <span class="text-brand-300 group-open:rotate-90 transition-transform">▸</span>
+        <span data-i18n="ping_advanced">Advanced (live multi-server ping)</span>
+      </summary>
+      <div class="card mt-3">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <button id="ping-toggle" class="btn-primary">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <span id="ping-toggle-label" data-i18n="ping_start">Start test</span>
+            </button>
+            <span id="ping-status-text" class="text-sm text-slate-400" data-i18n="ping_idle">Idle</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <label class="flex items-center gap-2 text-slate-400">
+              <span>Interval</span>
+              <select id="ping-interval" class="bg-ink-700 border border-white/10 rounded-md px-2 py-1 text-xs">
+                <option value="2000">2s</option>
+                <option value="3000" selected>3s</option>
+                <option value="5000">5s</option>
+                <option value="10000">10s</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div id="ping-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      </div>
+    </details>
 
     <!-- FAQ (SEO) -->
     <section class="mt-12 card" aria-label="Frequently asked questions">
       <h2 class="text-xl font-bold mb-4" data-i18n="ping_faq_h2">Frequently asked questions</h2>
       <div class="space-y-5">
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_1_q">What is a ping test?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_1_a">A ping test sends a small network packet (an ICMP echo request) from your device to a target server and measures how long it takes to get a reply. The result, in milliseconds, is called latency. Lower latency means the connection feels faster, especially for real-time applications like gaming and video calls.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_1_q">What is a domain inspector?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_1_a">A domain inspector runs several common network checks against a hostname in one shot: DNS records, resolved IP addresses, HTTP reachability, response time, and TLS / server headers (when CORS allows). It is the fastest way to answer "what is going on with this website" without opening five different tools.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_2_q">What is a good ping?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_2_a">Under 20 ms is excellent (typical for local servers and fiber connections). 20-50 ms is good (typical for nearby regional servers). 50-100 ms is average and may show occasional lag. Above 100 ms will feel sluggish for real-time apps. The pings you see here are from your location to global servers, so even fast connections show higher numbers for far-away targets.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_2_q">How do I ping a website?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_2_a">Type the hostname (for example github.com) into the box above and press Enter. The inspector will resolve its DNS, list its IP addresses, and try to reach it over HTTP. The result is shown as reachable / unreachable / unknown, with the timing.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_3_q">What is the difference between ping and latency?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_3_a">They are essentially the same thing measured differently. Ping is the action of sending the test packet; latency is the result. The round-trip time (RTT) you see in a ping test is a measure of latency. "Ping" is also commonly used as a verb: "ping me when you're done".</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_3_q">What can this tool detect that a normal ping cannot?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_3_a">Traditional ICMP ping is blocked by most cloud providers (Cloudflare, AWS, Google), so it is rarely useful for testing real websites. This tool uses HTTP fetch timing instead, which works against virtually every site and gives you a result that is more representative of what your browser actually experiences.</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_4_q">Why is my ping so high?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_4_a">Common causes include physical distance to the target server, congested network paths between you and that server, a slow Wi-Fi connection, background traffic on your network (streaming, downloads, other devices), or a VPN adding extra hops. If only some servers show high ping, the issue is the path; if all of them do, the issue is your local connection.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_4_q">Why does the reachability sometimes show "unknown"?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_4_a">Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows "reachable (response not readable)".</p>
         </div>
         <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_5_q">Can I ping a website?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_5_a">Yes, technically. Most websites respond to ICMP pings, but many do not (cloud providers like Cloudflare, AWS, and Google block pings by default to reduce noise). This tool pings the major services that do respond so you get a meaningful number. For services that block ping, the row will show "unreachable" — that is normal and not a sign of a problem.</p>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_5_q">What is a good HTTP latency?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_5_a">Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time.</p>
         </div>
       </div>
     </section>
@@ -139,7 +206,7 @@
       <div class="flex flex-wrap gap-3 text-sm">
         <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
         <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
-        <a href="/downdetector/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
+        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
         <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
@@ -147,9 +214,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=11"></script>
-  <script src="/js/layout.js?v=11"></script>
-  <script src="/js/ping.js?v=11"></script>
+  <script src="/js/i18n.js?v=12"></script>
+  <script src="/js/layout.js?v=12"></script>
+  <script src="/js/ping.js?v=12"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_ping' });
