@@ -157,7 +157,7 @@
       privacy_data_h2: 'What data is collected',
       privacy_data: 'When you open any tool on SiteTrace, your browser makes a request to a public IP-geo or DNS-over-HTTPS service. Those services have their own privacy policies. SiteTrace does not sit between you and them, does not log those requests, and does not store the responses. Cloudflare (our host) keeps standard HTTP request logs for security and abuse prevention, governed by the Cloudflare Privacy Policy.',
       privacy_cookies_h2: 'Cookies and storage',
-      privacy_cookies: 'SiteTrace does not use cookies. It does not use localStorage, sessionStorage, IndexedDB, or any other persistent storage. The language preference is held in memory only and resets when you close the tab.',
+      privacy_cookies: 'SiteTrace does not use cookies. The language preference is stored only in this tab\'s sessionStorage — never sent to any server, never used to track you, and cleared the moment you close the tab. While you keep the tab open, your manual language choice persists across page navigations.',
       privacy_third_h2: 'Third-party services',
       privacy_third: 'To answer your queries, your browser talks to: ipwho.is, ip-api.com, Google DNS-over-HTTPS, and Cloudflare DNS-over-HTTPS. They see your IP, but SiteTrace does not. Each has its own privacy policy.',
       privacy_contact_h2: 'Contact',
@@ -2829,8 +2829,12 @@
   // ---- Helpers ----------------------------------------------------
   function detectLanguage() {
     const supported = Object.keys(dictionaries);
+    // sessionStorage is per-tab and cleared when the tab closes — so the
+    // user's manual language choice persists for the session but does not
+    // track them across visits. localStorage would persist forever, which
+    // we explicitly don't want.
     try {
-      const saved = localStorage.getItem('sitetrace.lang');
+      const saved = sessionStorage.getItem('sitetrace.lang');
       if (saved && supported.includes(saved)) return saved;
     } catch (_) { /* storage may be blocked */ }
     const candidates = [];
