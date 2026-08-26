@@ -4,19 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="page_ip_title">What Is My IP? — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_ip_desc" content="Find your public IP address, geographic location, ISP, and connection privacy status (VPN, proxy, Tor) instantly. No login required." />
-  <meta name="keywords" content="what is my ip, my ip, ip address, public ip, my ip address, what is my ip address, ip lookup, geolocation, vpn check, is my vpn working" />
+  <title data-i18n="ip_h1">What is my IP address? Free public IP lookup — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:page_ip_desc" content="Find your public IP address, approximate location, ISP, and whether your connection is exposed, behind a VPN, or routed through a proxy or Tor. Free, no login, no tracking." />
+  <meta name="keywords" content="what is my ip, my ip, ip address, public ip, my ip address, what is my ip address, ip lookup, ip checker, geolocation, vpn check, is my vpn working, ipv4, ipv6" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/what-is-my-ip/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="What Is My IP? — SiteTrace" />
+  <meta property="og:title" content="What is my IP address? — SiteTrace" />
   <meta property="og:description" content="Find your public IP, location, ISP, and whether your connection is exposed, behind a VPN, or using a proxy. Instant, no login." />
   <meta property="og:url" content="https://sitetrace.it.com/what-is-my-ip/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="What Is My IP? — SiteTrace" />
+  <meta name="twitter:title" content="What is my IP address? — SiteTrace" />
   <meta name="twitter:description" content="Find your public IP, location, ISP, and connection privacy status. Instant, no login." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is a public IP address?","acceptedAnswer":{"@type":"Answer","text":"A public IP address is a unique number assigned to your device by your internet service provider. It is how the rest of the internet identifies you and routes traffic back to you. Every website you visit sees this address, and it is the basis for approximate geolocation, blocking, and analytics."}},
+      {"@type":"Question","name":"How does this tool detect my IP?","acceptedAnswer":{"@type":"Answer","text":"Your browser makes a request to a public IP-geolocation service when you load the page. The remote service sees your IP (because all internet requests include the source address) and returns details about where that IP is registered, who owns it, and what type of connection it appears to be."}},
+      {"@type":"Question","name":"Can someone find my exact home address from my IP?","acceptedAnswer":{"@type":"Answer","text":"No. A public IP only reveals the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order. Public services can only see the city-level location of the IP block."}},
+      {"@type":"Question","name":"Does a VPN hide my IP?","acceptedAnswer":{"@type":"Answer","text":"Yes. A VPN replaces your real IP with the IP of the VPN server, so the services you connect to see the VPN server's IP instead. This tool can usually detect that a VPN is in use even when it cannot see your real IP, because VPN server ranges are well known."}},
+      {"@type":"Question","name":"Why does my IP address change?","acceptedAnswer":{"@type":"Answer","text":"Most residential and mobile connections use a dynamic IP, which your ISP reassigns periodically (when your router reconnects, after a few days, etc.). Static IPs are usually reserved for servers, business connections, and some power users. If your IP changes constantly you are almost certainly on a mobile or shared connection."}},
+      {"@type":"Question","name":"What is the difference between IPv4 and IPv6?","acceptedAnswer":{"@type":"Answer","text":"IPv4 is the older 32-bit format (e.g. 192.168.1.1, ~4.3 billion addresses). IPv6 is the newer 128-bit format (e.g. 2001:db8::1, essentially unlimited addresses). Most networks and providers support both. This tool shows you whichever your connection uses, and many modern connections have both."}}
+    ]
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
@@ -87,9 +102,15 @@
       </nav>
       <div class="text-center max-w-3xl mx-auto space-y-3">
         <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="hero_eyebrow">Your public network profile</p>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="hero_title">What does the internet see when you connect?</h1>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ip_h1">What is my IP address?</h1>
         <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto" data-i18n="hero_subtitle">A single, instant look at your IP, geolocation, and whether your connection is exposed, protected, or routed through a VPN or proxy.</p>
       </div>
+    </section>
+
+    <!-- Intro / About this tool (SEO) -->
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="ip_intro_h2">About this IP checker</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ip_intro_text">Your public IP address is the unique number that identifies your device on the public internet. Every site you visit, every API you call, and every email you send uses it. SiteTrace shows you the same information any service can see when you connect — your IP, approximate geographic location, internet service provider, and whether your traffic is being routed through a VPN, proxy, or Tor.</p>
     </section>
 
     <!-- Top ad slot -->
@@ -212,6 +233,7 @@
       <div>
         <h2 class="text-lg sm:text-xl font-bold" data-i18n="aff_title">Take your privacy further</h2>
         <p class="text-slate-400 text-sm" data-i18n="aff_subtitle">Trusted, independently-reviewed tools our team actually uses.</p>
+        <p class="text-xs text-slate-500 italic mt-2" data-i18n="ip_affiliate_disclosure">Some links below are affiliate links. We may earn a commission at no extra cost to you.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-4">
         <a href="https://nordvpn.com" target="_blank" rel="sponsored nofollow noopener" class="aff-card">
@@ -241,13 +263,45 @@
       </div>
     </section>
 
+    <!-- FAQ (SEO) -->
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="ip_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ip_faq_1_q">What is a public IP address?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ip_faq_1_a">A public IP address is a unique number assigned to your device by your internet service provider. It is how the rest of the internet identifies you and routes traffic back to you. Every website you visit sees this address, and it is the basis for approximate geolocation, blocking, and analytics.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ip_faq_2_q">How does this tool detect my IP?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ip_faq_2_a">Your browser makes a request to a public IP-geolocation service when you load the page. The remote service sees your IP (because all internet requests include the source address) and returns details about where that IP is registered, who owns it, and what type of connection it appears to be.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ip_faq_3_q">Can someone find my exact home address from my IP?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ip_faq_3_a">No. A public IP only reveals the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order. Public services can only see the city-level location of the IP block.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ip_faq_4_q">Does a VPN hide my IP?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ip_faq_4_a">Yes. A VPN replaces your real IP with the IP of the VPN server, so the services you connect to see the VPN server's IP instead. This tool can usually detect that a VPN is in use even when it cannot see your real IP, because VPN server ranges are well known.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ip_faq_5_q">Why does my IP address change?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ip_faq_5_a">Most residential and mobile connections use a dynamic IP, which your ISP reassigns periodically (when your router reconnects, after a few days, etc.). Static IPs are usually reserved for servers, business connections, and some power users. If your IP changes constantly you are almost certainly on a mobile or shared connection.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ip_faq_6_q">What is the difference between IPv4 and IPv6?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ip_faq_6_a">IPv4 is the older 32-bit format (e.g. 192.168.1.1, ~4.3 billion addresses). IPv6 is the newer 128-bit format (e.g. 2001:db8::1, essentially unlimited addresses). Most networks and providers support both. This tool shows you whichever your connection uses, and many modern connections have both.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- Related tools -->
     <section class="mt-12 card">
       <h2 class="text-base font-bold mb-3">More tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping &amp; latency test →</a>
-        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+        <a href="/ping/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ping">Ping test →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
+        <a href="/downdetector/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
 
@@ -262,9 +316,9 @@
     </div>
   </div>
 
-  <script src="/js/i18n.js?v=6"></script>
-  <script src="/js/layout.js?v=6"></script>
-  <script src="/js/app.js?v=6"></script>
+  <script src="/js/i18n.js?v=11"></script>
+  <script src="/js/layout.js?v=11"></script>
+  <script src="/js/app.js?v=11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_whatismyip' });

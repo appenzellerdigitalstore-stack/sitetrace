@@ -4,19 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="page_status_title">Service Status — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_status_desc" content="Check if your favorite services are up or down. Real-time status from 50+ services. 24-hour incident history. Type any service to check." />
-  <meta name="keywords" content="is it down, downdetector, service status, status page, cloudflare status, github status, discord status, spotify status, openai status, steam status, playstation status, xbox status, epic games status, riot status" />
+  <title>Is it down? Service status checker for 50+ sites — SiteTrace</title>
+  <meta name="description" content="Check if your favorite services are up or down. Real-time status from 50+ services' official status pages, plus a 24-hour incident history. Type any service to check." />
+  <meta name="keywords" content="is it down, downdetector, service status, status page, cloudflare status, github status, discord status, spotify status, openai status, steam status, playstation status, xbox status, epic games status, riot status, is steam down, is github down, is discord down" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/downdetector/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Service Status — SiteTrace" />
+  <meta property="og:title" content="Is it down? Service status checker — SiteTrace</meta>
   <meta property="og:description" content="Real-time status + 24h history for 50+ services. Search any service — known ones open inline, unknown ones deep-link to Downdetector." />
   <meta property="og:url" content="https://sitetrace.it.com/downdetector/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Service Status — SiteTrace" />
+  <meta name="twitter:title" content="Is it down? Service status checker — SiteTrace" />
   <meta name="twitter:description" content="Is it down for everyone, or just you? 50+ services tracked. 24-hour incident history. Type any service." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"How do I check if a website is down?","acceptedAnswer":{"@type":"Answer","text":"Type the service name in the search bar above. If we track it, you will see its current status and any recent incidents inline. If we don't, we link you to Downdetector's community reports for that service, which is the de-facto source for \"is it just me or is everyone affected\"."}},
+      {"@type":"Question","name":"What is the difference between \"down for me\" and \"down for everyone\"?","acceptedAnswer":{"@type":"Answer","text":"\"Down for me\" means your connection cannot reach the service, but the service itself is fine for everyone else — usually a problem with your network, ISP, DNS, or VPN. \"Down for everyone\" means the service has declared an outage or degradation on its official status page, affecting all (or many) users. The two require very different responses."}},
+      {"@type":"Question","name":"Where does this data come from?","acceptedAnswer":{"@type":"Answer","text":"Status data comes from each service's official status page, mostly hosted on Atlassian Statuspage. We poll the public summary endpoint and the incident feed. 24-hour incident timelines are derived from the incident history. We do not guess or infer outages from user reports — only declared ones."}},
+      {"@type":"Question","name":"How often is the status updated?","acceptedAnswer":{"@type":"Answer","text":"When you load the page, every service is fetched in parallel (with a small concurrency cap to respect the public API). The result you see is at most a few seconds old. There is no background polling — every refresh is fresh."}},
+      {"@type":"Question","name":"What does \"monitored\" mean on a service card?","acceptedAnswer":{"@type":"Answer","text":"Some services do not publish a public status page. For those, the card shows \"monitored\" with a link to the official site. We cannot tell you in real time whether they are down, but the link lets you check directly or jump to Downdetector for community reports."}}
+    ]
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
@@ -79,6 +93,12 @@
       </div>
     </section>
 
+    <!-- Intro (SEO) -->
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="status_intro_h2">About this service status checker</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="status_intro_text">When something stops working, the first question is "is it me, or is it them?" This page answers that for 50+ popular services in real time. Data comes straight from each service's official status page (statuspage.io) so you can see if they have declared an outage, plus a 24-hour timeline of incidents. For services we don't track, the search bar deep-links to Downdetector's community reports.</p>
+    </section>
+
     <form id="search-form" class="card mt-8 flex flex-col sm:flex-row gap-2 p-2" autocomplete="off">
       <label class="flex-1 block">
         <span class="sr-only" data-i18n="downdetector_search_label">Service name or URL</span>
@@ -108,22 +128,49 @@
       <div id="status-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"></div>
     </section>
 
+    <!-- FAQ (SEO) -->
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="status_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="status_faq_1_q">How do I check if a website is down?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="status_faq_1_a">Type the service name in the search bar above. If we track it, you will see its current status and any recent incidents inline. If we don't, we link you to Downdetector's community reports for that service, which is the de-facto source for "is it just me or is everyone affected".</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="status_faq_2_q">What is the difference between "down for me" and "down for everyone"?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="status_faq_2_a">"Down for me" means your connection cannot reach the service, but the service itself is fine for everyone else — usually a problem with your network, ISP, DNS, or VPN. "Down for everyone" means the service has declared an outage or degradation on its official status page, affecting all (or many) users. The two require very different responses.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="status_faq_3_q">Where does this data come from?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="status_faq_3_a">Status data comes from each service's official status page, mostly hosted on Atlassian Statuspage. We poll the public summary endpoint and the incident feed. 24-hour incident timelines are derived from the incident history. We do not guess or infer outages from user reports — only declared ones.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="status_faq_4_q">How often is the status updated?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="status_faq_4_a">When you load the page, every service is fetched in parallel (with a small concurrency cap to respect the public API). The result you see is at most a few seconds old. There is no background polling — every refresh is fresh.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="status_faq_5_q">What does "monitored" mean on a service card?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="status_faq_5_a">Some services do not publish a public status page. For those, the card shows "monitored" with a link to the official site. We cannot tell you in real time whether they are down, but the link lets you check directly or jump to Downdetector for community reports.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="mt-12 card">
       <h2 class="text-base font-bold mb-3">More tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping test →</a>
-        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
+        <a href="/ping/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ping">Ping test →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
   </main>
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=10"></script>
-  <script src="/js/layout.js?v=10"></script>
-  <script src="/js/downdetector.js?v=10"></script>
+  <script src="/js/i18n.js?v=11"></script>
+  <script src="/js/layout.js?v=11"></script>
+  <script src="/js/downdetector.js?v=11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_status' });

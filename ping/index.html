@@ -4,19 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="page_ping_title">Ping &amp; Latency Test — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Measure your connection latency to 9 major global servers. Live, lightweight, no install." />
-  <meta name="keywords" content="ping test, latency test, network speed, ping online, network latency, ms test" />
+  <title data-i18n="ping_h1">Ping test — measure network latency online free — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online ping test. Measure your connection latency to 9 major global servers in real time (Cloudflare, Google, GitHub, Amazon, Microsoft, Apple, and more). Live, lightweight, no install." />
+  <meta name="keywords" content="ping test, latency test, network speed, ping online, network latency, ms test, ping tool, latency checker, ping server, ms ping" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/ping/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Ping &amp; Latency Test — SiteTrace" />
-  <meta property="og:description" content="Measure your connection latency to 9 major global servers. Live, lightweight, no install." />
+  <meta property="og:title" content="Ping test — measure network latency online — SiteTrace" />
+  <meta property="og:description" content="Measure latency to 9 global servers in real time. Free, no install." />
   <meta property="og:url" content="https://sitetrace.it.com/ping/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Ping &amp; Latency Test — SiteTrace" />
+  <meta name="twitter:title" content="Ping test — measure network latency online — SiteTrace" />
   <meta name="twitter:description" content="Measure latency to Cloudflare, Google, GitHub, Amazon, Microsoft, Apple, and more." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is a ping test?","acceptedAnswer":{"@type":"Answer","text":"A ping test sends a small network packet (an ICMP echo request) from your device to a target server and measures how long it takes to get a reply. The result, in milliseconds, is called latency. Lower latency means the connection feels faster, especially for real-time applications like gaming and video calls."}},
+      {"@type":"Question","name":"What is a good ping?","acceptedAnswer":{"@type":"Answer","text":"Under 20 ms is excellent (typical for local servers and fiber connections). 20-50 ms is good (typical for nearby regional servers). 50-100 ms is average and may show occasional lag. Above 100 ms will feel sluggish for real-time apps. The pings you see here are from your location to global servers, so even fast connections show higher numbers for far-away targets."}},
+      {"@type":"Question","name":"What is the difference between ping and latency?","acceptedAnswer":{"@type":"Answer","text":"They are essentially the same thing measured differently. Ping is the action of sending the test packet; latency is the result. The round-trip time (RTT) you see in a ping test is a measure of latency. \"Ping\" is also commonly used as a verb: \"ping me when you're done\"."}},
+      {"@type":"Question","name":"Why is my ping so high?","acceptedAnswer":{"@type":"Answer","text":"Common causes include physical distance to the target server, congested network paths between you and that server, a slow Wi-Fi connection, background traffic on your network (streaming, downloads, other devices), or a VPN adding extra hops. If only some servers show high ping, the issue is the path; if all of them do, the issue is your local connection."}},
+      {"@type":"Question","name":"Can I ping a website?","acceptedAnswer":{"@type":"Answer","text":"Yes, technically. Most websites respond to ICMP pings, but many do not (cloud providers like Cloudflare, AWS, and Google block pings by default to reduce noise). This tool pings the major services that do respond so you get a meaningful number. For services that block ping, the row will show \"unreachable\" — that is normal and not a sign of a problem."}}
+    ]
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
@@ -57,9 +71,15 @@
       </nav>
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="nav_ping">Ping</p>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ping_title">Real-time latency test</h1>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ping_h1">What is a ping test?</h1>
         <p class="text-slate-400 text-sm sm:text-base" data-i18n="ping_subtitle">Measure round-trip time to major global servers. Tap start to begin continuous probing.</p>
       </div>
+    </section>
+
+    <!-- Intro / How this works (SEO) -->
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="ping_intro_h2">How this ping test works</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ping_intro_text">A ping test measures the round-trip time it takes for a small packet of data to travel from your device to a target server and back. It is the most direct way to feel your connection's latency: lower numbers mean a snappier connection for gaming, video calls, and real-time apps. This tool pings nine major global servers every few seconds so you can see how your latency varies and which region is closest to you.</p>
     </section>
 
     <div class="card mt-8">
@@ -87,21 +107,49 @@
       <div id="ping-grid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
     </div>
 
+    <!-- FAQ (SEO) -->
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="ping_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_1_q">What is a ping test?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_1_a">A ping test sends a small network packet (an ICMP echo request) from your device to a target server and measures how long it takes to get a reply. The result, in milliseconds, is called latency. Lower latency means the connection feels faster, especially for real-time applications like gaming and video calls.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_2_q">What is a good ping?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_2_a">Under 20 ms is excellent (typical for local servers and fiber connections). 20-50 ms is good (typical for nearby regional servers). 50-100 ms is average and may show occasional lag. Above 100 ms will feel sluggish for real-time apps. The pings you see here are from your location to global servers, so even fast connections show higher numbers for far-away targets.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_3_q">What is the difference between ping and latency?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_3_a">They are essentially the same thing measured differently. Ping is the action of sending the test packet; latency is the result. The round-trip time (RTT) you see in a ping test is a measure of latency. "Ping" is also commonly used as a verb: "ping me when you're done".</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_4_q">Why is my ping so high?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_4_a">Common causes include physical distance to the target server, congested network paths between you and that server, a slow Wi-Fi connection, background traffic on your network (streaming, downloads, other devices), or a VPN adding extra hops. If only some servers show high ping, the issue is the path; if all of them do, the issue is your local connection.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_5_q">Can I ping a website?</h3>
+          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_5_a">Yes, technically. Most websites respond to ICMP pings, but many do not (cloud providers like Cloudflare, AWS, and Google block pings by default to reduce noise). This tool pings the major services that do respond so you get a meaningful number. For services that block ping, the row will show "unreachable" — that is normal and not a sign of a problem.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="mt-12 card">
       <h2 class="text-base font-bold mb-3">More tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
+        <a href="/downdetector/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
   </main>
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=6"></script>
-  <script src="/js/layout.js?v=6"></script>
-  <script src="/js/ping.js?v=6"></script>
+  <script src="/js/i18n.js?v=11"></script>
+  <script src="/js/layout.js?v=11"></script>
+  <script src="/js/ping.js?v=11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_ping' });

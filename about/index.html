@@ -4,15 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="page_about_title">About — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_about_desc" content="SiteTrace is a free, no-login, privacy-respecting network tool. Here's who built it and why." />
+  <title>About SiteTrace — free, private network tools, no tracking</title>
+  <meta name="description" content="About SiteTrace: a small, independent set of free network tools (IP lookup, ping, DNS, service status). No login, no tracking, no app. Here's who built it and why." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/about/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="About — SiteTrace" />
-  <meta property="og:description" content="SiteTrace is a free, no-login, privacy-respecting network tool. Here's who built it and why." />
+  <meta property="og:title" content="About SiteTrace — free, private network tools" />
+  <meta property="og:description" content="About SiteTrace: a free, no-login, privacy-respecting network tool. Here's who built it and why." />
   <meta property="og:url" content="https://sitetrace.it.com/about/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Who built SiteTrace?","acceptedAnswer":{"@type":"Answer","text":"SiteTrace is built and maintained by Appenzeller Digital Store, a small independent project. The same team that runs the sitetrace.it.com domain also maintains a small set of other free utility tools."}},
+      {"@type":"Question","name":"How is SiteTrace funded?","acceptedAnswer":{"@type":"Answer","text":"SiteTrace is funded by unobtrusive ads (Google AdSense) and a few clearly-disclosed affiliate links in the \"Take your privacy further\" section on the IP page. There is no paywall, no premium tier, and no data sale. The site would not exist if ads and affiliate links didn't cover the hosting cost."}},
+      {"@type":"Question","name":"Is SiteTrace open source?","acceptedAnswer":{"@type":"Answer","text":"The site itself is not open source, but the philosophy is: do one thing, do it well, and don't collect data you don't need. If you have a feature request, the contact email is on the privacy page."}}
+    ]
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
@@ -60,14 +72,34 @@
         <p data-i18n="about_p3">All lookups run in your browser and go to public services (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS, plus CORS-friendly endpoints for ping). We do not run a server in the middle and we do not log your requests.</p>
       </div>
 
+      <!-- FAQ (SEO) -->
+      <div class="card mt-8" aria-label="Frequently asked questions">
+        <h2 class="text-xl font-bold mb-4" data-i18n="about_faq_h2">Frequently asked questions</h2>
+        <div class="space-y-5">
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="about_faq_1_q">Who built SiteTrace?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="about_faq_1_a">SiteTrace is built and maintained by Appenzeller Digital Store, a small independent project. The same team that runs the sitetrace.it.com domain also maintains a small set of other free utility tools.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="about_faq_2_q">How is SiteTrace funded?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="about_faq_2_a">SiteTrace is funded by unobtrusive ads (Google AdSense) and a few clearly-disclosed affiliate links in the "Take your privacy further" section on the IP page. There is no paywall, no premium tier, and no data sale. The site would not exist if ads and affiliate links didn't cover the hosting cost.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="about_faq_3_q">Is SiteTrace open source?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="about_faq_3_a">The site itself is not open source, but the philosophy is: do one thing, do it well, and don't collect data you don't need. If you have a feature request, the contact email is on the privacy page.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="card mt-8">
         <h2 class="text-base font-bold mb-3">More tools</h2>
         <div class="flex flex-wrap gap-3 text-sm">
-          <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-          <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping test →</a>
-          <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+          <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
+          <a href="/ping/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ping">Ping test →</a>
+          <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
+          <a href="/downdetector/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
           <a href="/privacy/" class="text-brand-300 hover:text-brand-200">Privacy policy →</a>
-          <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+          <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
         </div>
       </div>
     </section>
@@ -75,8 +107,8 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=6"></script>
-  <script src="/js/layout.js?v=6"></script>
+  <script src="/js/i18n.js?v=11"></script>
+  <script src="/js/layout.js?v=11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_about' });

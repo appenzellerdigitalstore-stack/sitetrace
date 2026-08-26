@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
-  <title data-i18n="page_privacy_title">Privacy Policy — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_privacy_desc" content="SiteTrace's privacy policy: we don't log, we don't track, and we don't sell your data. Here are the details." />
+  <title>Privacy Policy — SiteTrace (no logs, no tracking, no data sale)</title>
+  <meta name="description" content="SiteTrace's privacy policy: we don't log your IP lookups, we don't set tracking cookies, we don't sell your data, and we don't run third-party analytics. Here are the details." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://sitetrace.it.com/privacy/" />
 
@@ -13,6 +13,19 @@
   <meta property="og:title" content="Privacy Policy — SiteTrace" />
   <meta property="og:description" content="SiteTrace's privacy policy: we don't log, we don't track, and we don't sell your data." />
   <meta property="og:url" content="https://sitetrace.it.com/privacy/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Does SiteTrace use cookies?","acceptedAnswer":{"@type":"Answer","text":"No. SiteTrace sets no cookies, no localStorage, and no tracking pixels. The only client-side storage used is sessionStorage, which holds your manual language choice for the duration of a tab and is cleared when you close it. It is never sent to any server."}},
+      {"@type":"Question","name":"Do you log my IP address?","acceptedAnswer":{"@type":"Answer","text":"SiteTrace does not. There is no server-side component in your lookups — your browser talks directly to public IP-geo and DNS-over-HTTPS services. Cloudflare (the host) keeps standard request logs for security and abuse prevention, governed by the Cloudflare Privacy Policy."}},
+      {"@type":"Question","name":"Do you share my data with third parties?","acceptedAnswer":{"@type":"Answer","text":"No. The third parties that do see your IP (ipwho.is, ip-api.com, Google DoH, Cloudflare DoH, and the statuspage.io endpoints we poll) have their own privacy policies, but SiteTrace does not forward, aggregate, or sell any of your data."}},
+      {"@type":"Question","name":"How can I contact you about privacy?","acceptedAnswer":{"@type":"Answer","text":"Email appenzeller.digitalstore@gmail.com. The address is shown above; if you have any question about what data is or is not collected, ask and you will get a direct human answer."}}
+    ]
+  }
+  </script>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
@@ -83,14 +96,38 @@
 
       <p class="text-xs text-slate-500 mt-8">Last updated: <span id="pp-updated"></span></p>
 
+      <!-- FAQ (SEO) -->
+      <div class="card mt-8" aria-label="Frequently asked questions">
+        <h2 class="text-xl font-bold mb-4" data-i18n="privacy_faq_h2">Frequently asked questions</h2>
+        <div class="space-y-5">
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="privacy_faq_1_q">Does SiteTrace use cookies?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="privacy_faq_1_a">No. SiteTrace sets no cookies, no localStorage, and no tracking pixels. The only client-side storage used is sessionStorage, which holds your manual language choice for the duration of a tab and is cleared when you close it. It is never sent to any server.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="privacy_faq_2_q">Do you log my IP address?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="privacy_faq_2_a">SiteTrace does not. There is no server-side component in your lookups — your browser talks directly to public IP-geo and DNS-over-HTTPS services. Cloudflare (the host) keeps standard request logs for security and abuse prevention, governed by the Cloudflare Privacy Policy.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="privacy_faq_3_q">Do you share my data with third parties?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="privacy_faq_3_a">No. The third parties that do see your IP (ipwho.is, ip-api.com, Google DoH, Cloudflare DoH, and the statuspage.io endpoints we poll) have their own privacy policies, but SiteTrace does not forward, aggregate, or sell any of your data.</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-white mb-1" data-i18n="privacy_faq_4_q">How can I contact you about privacy?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed" data-i18n="privacy_faq_4_a">Email appenzeller.digitalstore@gmail.com. The address is shown above; if you have any question about what data is or is not collected, ask and you will get a direct human answer.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="card mt-8">
         <h2 class="text-base font-bold mb-3">More tools</h2>
         <div class="flex flex-wrap gap-3 text-sm">
-          <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-          <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping test →</a>
-          <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+          <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ip">What is my IP →</a>
+          <a href="/ping/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_ping">Ping test →</a>
+          <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_dns">DNS lookup →</a>
+          <a href="/downdetector/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_status">Service status →</a>
           <a href="/about/" class="text-brand-300 hover:text-brand-200">About →</a>
-          <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+          <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
         </div>
       </div>
     </section>
@@ -101,8 +138,8 @@
   <script>
     document.getElementById('pp-updated').textContent = new Date().toISOString().slice(0, 10);
   </script>
-  <script src="/js/i18n.js?v=6"></script>
-  <script src="/js/layout.js?v=6"></script>
+  <script src="/js/i18n.js?v=11"></script>
+  <script src="/js/layout.js?v=11"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_privacy' });
