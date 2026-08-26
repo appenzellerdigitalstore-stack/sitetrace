@@ -9,12 +9,15 @@
   X-XSS-Protection: 0
   Cross-Origin-Opener-Policy: same-origin
 
-# Long-cache static assets
-/styles.css
-  Cache-Control: public, max-age=31536000, immutable
-
+# Short-cache JS during the early-launch phase so updates land without
+# users hitting the "immutable" year-long cache. We'll move to content-hashed
+# filenames (e.g. i18n.a1b2c3.js) once a build step is in place, then this
+# can go back to a long max-age.
+# NOTE: the previous immutable + 1-year setting for /js/*.js caused the
+# landing page to keep showing raw i18n keys after a dictionary update,
+# because the browser still served the previous /js/i18n.js from cache.
 /js/*.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=300, must-revalidate
 
 # Allow Googlebot to crawl everything; hint that sitemap exists
 /sitemap.xml
