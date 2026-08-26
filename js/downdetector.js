@@ -51,7 +51,7 @@
     { id: 'vercel',       name: 'Vercel',            category: 'dev',       icon: '▲',  summaryUrl: 'https://www.vercel-status.com/api/v2/summary.json',   page: 'https://www.vercel-status.com/',    dd: 'vercel' },
     { id: 'netlify',      name: 'Netlify',           category: 'dev',       icon: '🟢', statuspage: null,                page: 'https://www.netlifystatus.com/',    dd: 'netlify' },
     { id: 'npm',          name: 'npm',               category: 'dev',       icon: '📦', statuspage: 'npmjs',           page: 'https://status.npmjs.org/',         dd: 'npm' },
-    { id: 'cf-workers',   name: 'Cloudflare Workers',category: 'dev',       icon: '⚡',  statuspage: 'cloudflarestatus', page: 'https://www.cloudflarestatus.com/', dd: 'cloudflare-workers' },
+    { id: 'cf-workers',   name: 'Cloudflare Workers',category: 'dev',       icon: '⚡',  summaryUrl: 'https://www.cloudflarestatus.com/api/v2/summary.json', page: 'https://www.cloudflarestatus.com/', dd: 'cloudflare-workers' },
 
     // ---- Communication ----
     { id: 'discord',      name: 'Discord',           category: 'comm',      icon: '💬',  summaryUrl: 'https://discordstatus.com/api/v2/summary.json', page: 'https://discordstatus.com/',        dd: 'discord' },
@@ -70,7 +70,7 @@
     { id: 'dropbox',      name: 'Dropbox',           category: 'prod',      icon: '📦',  summaryUrl: 'https://status.dropbox.com/api/v2/summary.json',  page: 'https://status.dropbox.com/',       dd: 'dropbox' },
 
     // ---- Commerce ----
-    { id: 'shopify',      name: 'Shopify',           category: 'commerce',  icon: '🛒', statuspage: 'status.shopify',  page: 'https://status.shopify.com/',       dd: 'shopify' },
+    { id: 'shopify',      name: 'Shopify',           category: 'commerce',  icon: '🛒', summaryUrl: 'https://status.shopify.com/api/v2/summary.json',  page: 'https://status.shopify.com/',       dd: 'shopify' },
     { id: 'stripe',       name: 'Stripe',            category: 'commerce',  icon: '💳', statuspage: null,                page: 'https://status.stripe.com/',        dd: 'stripe' },
     { id: 'paypal',       name: 'PayPal',            category: 'commerce',  icon: '🅿️', statuspage: null,                page: 'https://www.paypal-status.com/',    dd: 'paypal' },
 
