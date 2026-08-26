@@ -6,6 +6,9 @@ node_modules/
 .dev.vars
 .dev.vars.*
 
+# Redundant CI workflow (Cloudflare Pages native GitHub integration handles auto-deploy)
+.github/
+
 # Environment
 .env
 .env.local
