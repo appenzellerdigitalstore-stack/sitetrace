@@ -292,9 +292,7 @@
     card.dataset.serviceId = svc.id;
     card.dataset.category = svc.category;
 
-    let dotClass, label, statusText, summary = '';
-    if (state.ok) {
-      const hasLiveApi = !!(svc.statuspage || svc.summaryUrl);
+    const hasLiveApi = !!(svc.statuspage || svc.summaryUrl);
     let dotClass, label, statusText, summary = '';
     if (state.ok) {
       const ind = (state.data.status && state.data.status.indicator) || 'none';
