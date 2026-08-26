@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
   <title data-i18n="page_status_title">Service Status — SiteTrace</title>
-  <meta name="description" data-i18n-attr="content:page_status_desc" content="Check if your favorite services are up or down. Real-time status from official status pages." />
-  <meta name="keywords" content="is it down, downdetector, service status, status page, cloudflare status, github status, discord status, spotify status, openai status, vercel status" />
+  <meta name="description" data-i18n-attr="content:page_status_desc" content="Check if your favorite services are up or down. Real-time status from 50+ services. 24-hour incident history. Type any service to check." />
+  <meta name="keywords" content="is it down, downdetector, service status, status page, cloudflare status, github status, discord status, spotify status, openai status, steam status, playstation status, xbox status, epic games status, riot status" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.sitetrace.it.com/downdetector/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Service Status — SiteTrace" />
-  <meta property="og:description" content="Check if your favorite services are up or down. Real-time status from official status pages." />
+  <meta property="og:description" content="Real-time status + 24h history for 50+ services. Search any service — known ones open inline, unknown ones deep-link to Downdetector." />
   <meta property="og:url" content="https://www.sitetrace.it.com/downdetector/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Service Status — SiteTrace" />
-  <meta name="twitter:description" content="Is it down for everyone, or just you? Live status for Cloudflare, GitHub, Discord, Spotify, OpenAI, Vercel, and 10+ more." />
+  <meta name="twitter:description" content="Is it down for everyone, or just you? 50+ services tracked. 24-hour incident history. Type any service." />
 
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
@@ -42,15 +42,19 @@
 
   <style>
     .status-dot { width: 10px; height: 10px; border-radius: 9999px; display: inline-block; box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
-    .status-dot--none     { background: #10b981; }
-    .status-dot--minor    { background: #f59e0b; }
-    .status-dot--major    { background: #f97316; }
-    .status-dot--critical { background: #ef4444; }
-    .status-dot--maintenance { background: #8b5cf6; }
-    .status-dot--unknown  { background: #64748b; }
-    .service-card { transition: transform .12s ease, border-color .12s ease; }
+    .status-dot--none         { background: #10b981; }
+    .status-dot--minor        { background: #f59e0b; }
+    .status-dot--major        { background: #f97316; }
+    .status-dot--critical     { background: #ef4444; }
+    .status-dot--maintenance  { background: #8b5cf6; }
+    .status-dot--unknown      { background: #64748b; }
+    .status-dot--monitored    { background: #475569; }
+
+    .service-card { transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease; }
     .service-card:hover { transform: translateY(-2px); border-color: rgba(94,131,255,0.35); }
-    .service-card[data-selected="true"] { border-color: rgba(94,131,255,0.5); background: rgba(94,131,255,0.06); }
+
+    .filter-tab { transition: all .12s ease; }
+    .filter-tab.is-active { background: rgba(94,131,255,0.12); color: #dbe4ff; border-color: rgba(94,131,255,0.4); }
   </style>
 </head>
 
@@ -65,50 +69,41 @@
         <span class="mx-1.5">/</span>
         <span data-i18n="nav_status">Status</span>
       </nav>
-      <div class="text-center max-w-2xl mx-auto space-y-3">
+      <div class="text-center max-w-3xl mx-auto space-y-3">
         <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="downdetector_hero_eyebrow">Real-time service status</p>
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="downdetector_hero_title">Is it down for everyone, or just you?</h1>
-        <p class="text-slate-400 text-sm sm:text-base" data-i18n="downdetector_hero_subtitle">Live operational status for 16+ popular services. Data comes straight from their official status pages.</p>
+        <p class="text-slate-400 text-sm sm:text-base" data-i18n="downdetector_hero_subtitle">Live operational status for 50+ popular services. 24-hour incident history. Search any service — known ones open inline, unknown ones deep-link to Downdetector.</p>
       </div>
     </section>
 
-    <div class="card mt-8">
-      <label class="block">
+    <form id="search-form" class="card mt-8 flex flex-col sm:flex-row gap-2 p-2" autocomplete="off">
+      <label class="flex-1 block">
         <span class="sr-only" data-i18n="downdetector_search_label">Service name or URL</span>
-        <input id="status-filter" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="w-full bg-ink-700 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" data-i18n-attr="placeholder:downdetector_search_placeholder;aria-label:downdetector_search_label" />
+        <input id="search-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="w-full bg-ink-700 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" data-i18n-attr="placeholder:downdetector_search_placeholder;aria-label:downdetector_search_label" />
       </label>
-    </div>
+      <button type="submit" class="btn-primary text-sm whitespace-nowrap">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span data-i18n="downdetector_check">Check status</span>
+      </button>
+    </form>
 
-    <section class="mt-5">
-      <p class="text-xs uppercase tracking-[0.2em] text-slate-500 font-semibold mb-3" data-i18n="downdetector_popular">Popular services</p>
-      <div id="status-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-      <p id="status-empty" class="hidden text-center text-slate-500 py-8" data-i18n="downdetector_no_results">No service matched your search.</p>
+    <div id="search-result" class="mt-3 hidden"></div>
+
+    <section class="mt-8">
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <button type="button" data-cat="all"        class="filter-tab is-active px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_all">All</button>
+        <button type="button" data-cat="infra"      class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_infra">Cloud &amp; Infra</button>
+        <button type="button" data-cat="dev"        class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_dev">Developer</button>
+        <button type="button" data-cat="comm"       class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_comm">Communication</button>
+        <button type="button" data-cat="prod"       class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_prod">Productivity</button>
+        <button type="button" data-cat="commerce"   class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_commerce">Commerce</button>
+        <button type="button" data-cat="gaming"     class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_gaming">Gaming</button>
+        <button type="button" data-cat="social"     class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_social">Social</button>
+        <button type="button" data-cat="streaming"  class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_streaming">Streaming</button>
+        <button type="button" data-cat="ai"         class="filter-tab px-3 py-1.5 text-xs font-semibold rounded-full border border-white/10 text-slate-300 hover:text-white" data-i18n="downdetector_cat_ai">AI</button>
+      </div>
+      <div id="status-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"></div>
     </section>
-
-    <div id="status-detail" class="card mt-6 hidden">
-      <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
-        <div>
-          <div class="flex items-center gap-2">
-            <span id="status-detail-dot" class="status-dot status-dot--unknown"></span>
-            <h2 id="status-detail-name" class="text-xl font-bold"></h2>
-          </div>
-          <p id="status-detail-desc" class="text-sm text-slate-400 mt-1"></p>
-        </div>
-        <div class="text-right text-xs text-slate-500 space-y-0.5">
-          <div><span data-i18n="downdetector_response_time">Response</span>: <span id="status-detail-ms" class="font-mono text-slate-300">—</span></div>
-          <div><span data-i18n="downdetector_checked_at">Checked</span>: <span id="status-detail-time" class="font-mono text-slate-300">—</span></div>
-          <a id="status-detail-link" href="#" target="_blank" rel="noopener noreferrer" class="text-brand-300 hover:text-brand-200 inline-block mt-1" data-i18n="downdetector_view_statuspage">View official status page →</a>
-        </div>
-      </div>
-      <div id="status-incidents" class="hidden mt-3 p-3 rounded-lg border border-warn-500/30 bg-warn-500/5">
-        <div class="text-xs uppercase tracking-wider text-warn-400 font-semibold mb-1" data-i18n="downdetector_incidents">Active incidents</div>
-        <ul id="status-incidents-list" class="space-y-2 text-sm"></ul>
-      </div>
-      <div id="status-components-wrap" class="mt-4">
-        <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-2" data-i18n="downdetector_components">Components</div>
-        <ul id="status-components" class="space-y-1 text-sm"></ul>
-      </div>
-    </div>
 
     <aside class="ad-slot ad-slot--leaderboard mt-10" aria-label="Advertisement">
       <span class="ad-slot__label" data-i18n="ad_label">Advertisement</span>
@@ -128,9 +123,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=4"></script>
-  <script src="/js/layout.js?v=4"></script>
-  <script src="/js/downdetector.js?v=4"></script>
+  <script src="/js/i18n.js?v=6"></script>
+  <script src="/js/layout.js?v=6"></script>
+  <script src="/js/downdetector.js?v=6"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: 'nav_status' });
