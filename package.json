@@ -1,0 +1,25 @@
+{
+  "name": "sitetrace",
+  "version": "1.0.0",
+  "description": "SiteTrace — instant IP, geolocation, and network exposure lookup. Multi-language, ultra-fast, no build step.",
+  "private": true,
+  "type": "module",
+  "homepage": "https://sitetrace.it.com",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "deploy": "wrangler pages deploy . --project-name=sitetrace --commit-dirty=true",
+    "deploy:dry": "wrangler pages deploy . --project-name=sitetrace --dry-run",
+    "logs": "wrangler pages deployment list --project-name=sitetrace",
+    "bridge": "node browser-bridge.cjs",
+    "bridge:chrome": "powershell -ExecutionPolicy Bypass -File scripts/launch-chrome-debug.ps1"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.9.0",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "wrangler": "^3.90.0"
+  }
+}
