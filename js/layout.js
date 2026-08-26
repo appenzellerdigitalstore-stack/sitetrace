@@ -18,18 +18,38 @@
     return '<a class="nav-link" href="' + href + '" data-i18n="' + key + '" data-nav-key="' + key + '">' + escapeHtml(label) + '</a>';
   }
 
+  // Native-language labels for the language switcher. Keys are ISO 639-1 codes
+  // (matching the i18n.js dictionary keys); values are the language name in
+  // its own language — that's how users most easily identify their language.
+  const LANG_LABELS = {
+    en: 'English',
+    es: 'Español',
+    pt: 'Português',
+    fr: 'Français',
+    de: 'Deutsch',
+    it: 'Italiano',
+    nl: 'Nederlands',
+    pl: 'Polski',
+    ja: '日本語',
+    ko: '한국어',
+    ru: 'Русский',
+    tr: 'Türkçe',
+    zh: '中文',
+    id: 'Bahasa Indonesia',
+    vi: 'Tiếng Việt',
+    sv: 'Svenska',
+  };
+
   function languageOptions(current) {
-    const labels = { en: 'English', es: 'Español', pt: 'Português', fr: 'Français' };
-    return Object.keys(labels).map(function (code) {
+    return Object.keys(LANG_LABELS).map(function (code) {
       const sel = code === current ? ' class="lang-option is-active"' : ' class="lang-option"';
-      return '<button' + sel + ' data-lang="' + code + '" role="option">' + labels[code] + '</button>';
+      return '<button' + sel + ' data-lang="' + code + '" role="option">' + escapeHtml(LANG_LABELS[code]) + '</button>';
     }).join('');
   }
 
   function footerLanguageOptions(current) {
-    const labels = { en: 'English', es: 'Español', pt: 'Português', fr: 'Français' };
-    return Object.keys(labels).map(function (code) {
-      return '<li><button class="lang-link hover:text-white" data-lang="' + code + '">' + labels[code] + '</button></li>';
+    return Object.keys(LANG_LABELS).map(function (code) {
+      return '<li><button class="lang-link hover:text-white" data-lang="' + code + '">' + escapeHtml(LANG_LABELS[code]) + '</button></li>';
     }).join('');
   }
 
@@ -58,6 +78,7 @@
       +       navLink('/what-is-my-ip/', t('nav_whatismyip'), 'nav_whatismyip')
       +       navLink('/ping/', t('nav_ping'), 'nav_ping')
       +       navLink('/dns-tools/', t('nav_dns'), 'nav_dns')
+      +       navLink('/downdetector/', t('nav_status'), 'nav_status')
       + '      <div class="relative ml-1 sm:ml-2" id="lang-wrap">'
       + '        <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="' + escapeHtml(t('language')) + '">'
       + '          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>'
