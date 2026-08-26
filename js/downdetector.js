@@ -36,8 +36,8 @@
   //   dd             downdetector.com slug
   const SERVICES = [
     // ---- Cloud & Infrastructure ----
-    { id: 'cloudflare',   name: 'Cloudflare',        category: 'infra',     icon: '☁️',  statuspage: 'cloudflarestatus', page: 'https://www.cloudflarestatus.com/',   dd: 'cloudflare' },
-    { id: 'aws',          name: 'Amazon AWS',        category: 'infra',     icon: '🟧', statuspage: 'amazonwebservices', page: 'https://health.aws.amazon.com/public/currentevents', dd: 'aws' },
+    { id: 'cloudflare',   name: 'Cloudflare',        category: 'infra',     icon: '☁️',  summaryUrl: 'https://www.cloudflarestatus.com/api/v2/summary.json',  page: 'https://www.cloudflarestatus.com/',   dd: 'cloudflare' },
+    { id: 'aws',          name: 'Amazon AWS',        category: 'infra',     icon: '🟧', statuspage: null,                page: 'https://health.aws.amazon.com/public/currentevents', dd: 'aws' },
     { id: 'azure',        name: 'Microsoft Azure',   category: 'infra',     icon: '🪟', statuspage: 'azurestatus',  page: 'https://azure.status.microsoft/en-us/status/',     dd: 'microsoft-azure' },
     { id: 'googlecloud',  name: 'Google Cloud',      category: 'infra',     icon: '🔵', statuspage: 'googlecloudplatform', page: 'https://status.cloud.google.com/',  dd: 'google-cloud' },
     { id: 'digitalocean', name: 'DigitalOcean',      category: 'infra',     icon: '🌊',  summaryUrl: 'https://status.digitalocean.com/api/v2/summary.json',  page: 'https://status.digitalocean.com/',   dd: 'digitalocean' },
@@ -45,10 +45,10 @@
     { id: 'fastly',       name: 'Fastly',            category: 'infra',     icon: '⚡', statuspage: null,                page: 'https://status.fastly.com/',         dd: 'fastly' },
 
     // ---- Developer tools ----
-    { id: 'github',       name: 'GitHub',            category: 'dev',       icon: '🐙', statuspage: 'githubstatus',   page: 'https://www.githubstatus.com/',     dd: 'github' },
+    { id: 'github',       name: 'GitHub',            category: 'dev',       icon: '🐙', summaryUrl: 'https://www.githubstatus.com/api/v2/summary.json',  page: 'https://www.githubstatus.com/',     dd: 'github' },
     { id: 'gitlab',       name: 'GitLab',            category: 'dev',       icon: '🦊', statuspage: null,                page: 'https://status.gitlab.com/',        dd: 'gitlab' },
-    { id: 'bitbucket',    name: 'Bitbucket',         category: 'dev',       icon: '🪣', statuspage: null,                page: 'https://bitbucket.status.atlassian.com/', dd: 'bitbucket' },
-    { id: 'vercel',       name: 'Vercel',            category: 'dev',       icon: '▲',  statuspage: 'vercel-status',  page: 'https://www.vercel-status.com/',    dd: 'vercel' },
+    { id: 'bitbucket',    name: 'Bitbucket',         category: 'dev',       icon: '🪣', summaryUrl: 'https://status.atlassian.com/api/v2/summary.json',    page: 'https://bitbucket.status.atlassian.com/', dd: 'bitbucket' },
+    { id: 'vercel',       name: 'Vercel',            category: 'dev',       icon: '▲',  summaryUrl: 'https://www.vercel-status.com/api/v2/summary.json',   page: 'https://www.vercel-status.com/',    dd: 'vercel' },
     { id: 'netlify',      name: 'Netlify',           category: 'dev',       icon: '🟢', statuspage: null,                page: 'https://www.netlifystatus.com/',    dd: 'netlify' },
     { id: 'npm',          name: 'npm',               category: 'dev',       icon: '📦', statuspage: 'npmjs',           page: 'https://status.npmjs.org/',         dd: 'npm' },
     { id: 'cf-workers',   name: 'Cloudflare Workers',category: 'dev',       icon: '⚡',  statuspage: 'cloudflarestatus', page: 'https://www.cloudflarestatus.com/', dd: 'cloudflare-workers' },
@@ -166,6 +166,23 @@
     } catch (_) {
       return null;
     }
+  }
+
+  // Limited-concurrency map. Avoids hammering external status endpoints
+  // and tripping their rate-limits on the initial page load.
+  async function mapWithConcurrency(items, limit, mapper) {
+    const out = new Array(items.length);
+    let i = 0;
+    async function worker() {
+      while (true) {
+        const idx = i++;
+        if (idx >= items.length) return;
+        out[idx] = await mapper(items[idx], idx);
+      }
+    }
+    const workers = Array.from({ length: Math.min(limit, items.length) }, worker);
+    await Promise.all(workers);
+    return out;
   }
 
   // ----------------------------------------------------------------
@@ -452,8 +469,9 @@
     // Skeletons first
     SERVICES.forEach((svc) => grid.appendChild(buildSkeleton(svc)));
 
-    // Fetch all in parallel
-    const results = await Promise.all(SERVICES.map(async (svc) => {
+    // Fetch all — with a small concurrency limit to avoid hammering
+    // the statuspage.io network and tripping their rate limiter.
+    const results = await mapWithConcurrency(SERVICES, 8, async (svc) => {
       if (!summaryUrlFor(svc)) {
         return { svc, summary: { ok: false, ms: 0, error: 'no_statuspage' }, incidents: null };
       }
@@ -462,7 +480,7 @@
         fetchIncidents24h(svc),
       ]);
       return { svc, summary, incidents };
-    }));
+    });
 
     // Replace skeletons with real cards
     grid.innerHTML = '';
