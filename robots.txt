@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.sitetrace.it.com/sitemap.xml
+Sitemap: https://sitetrace.it.com/sitemap.xml
