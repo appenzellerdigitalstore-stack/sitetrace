@@ -211,7 +211,7 @@
       // About + Privacy pages
       about_h1: 'About SiteTrace',
       about_p1: 'SiteTrace is a small set of network utility tools built for people who want fast, honest answers about how the internet sees them. There is no signup, no app to install, and no tracking tied to your identity.',
-      about_p2: 'It was built by a small team that was tired of free utility sites covered in popups, autoplay video, and intrusive ads. SiteTrace does the opposite: it loads instantly, it shows you the answer immediately, and it puts every tool on its own page so you can link to it, share it, or just bookmark the one you need.',
+      about_p2: 'We were tired of the popular free network-tool sites: too many ads, too much clutter, too many features hidden behind a signup. SiteTrace keeps it simple — every tool is one page, the answer is the first thing you see, and the page loads in under a second. Bookmark the one you need, share it, or come back whenever something on the internet feels off.',
       about_p3: 'All lookups run in your browser and go to public services (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS, plus CORS-friendly endpoints for ping). We do not run a server in the middle and we do not log your requests.',
       privacy_h1: 'Privacy Policy',
       privacy_short_h2: 'The short version',
@@ -637,7 +637,7 @@
 
       about_h1: 'Acerca de SiteTrace',
       about_p1: 'SiteTrace es un pequeño conjunto de herramientas de red, creado para personas que quieren respuestas rápidas y honestas sobre cómo las ve internet. No requiere registro, no hay app que instalar y no hay rastreo vinculado a tu identidad.',
-      about_p2: 'Fue creado por un pequeño equipo cansado de los sitios de utilidades gratuitos llenos de popups, videos con reproducción automática y anuncios intrusivos. SiteTrace hace lo contrario: carga al instante, te muestra la respuesta de inmediato y pone cada herramienta en su propia página para que puedas enlazarla, compartirla o simplemente guardar la que necesites.',
+      about_p2: 'Nos cansamos de los sitios populares de herramientas de red gratuitas: demasiados anuncios, demasiado desorden, demasiadas funciones ocultas tras un registro. SiteTrace lo mantiene simple: cada herramienta es una página, la respuesta es lo primero que ves, y la página carga en menos de un segundo. Guarda en favoritos la que necesites, compártela, o vuelve cuando algo en Internet se sienta mal.',
       about_p3: 'Todas las consultas se ejecutan en tu navegador y van a servicios públicos (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS y endpoints compatibles con CORS para ping). No tenemos un servidor en el medio y no registramos tus peticiones.',
       privacy_h1: 'Política de privacidad',
       privacy_short_h2: 'La versión corta',
@@ -1022,7 +1022,7 @@
 
       about_h1: 'Sobre o SiteTrace',
       about_p1: 'SiteTrace é um pequeno conjunto de ferramentas de rede, criado para pessoas que querem respostas rápidas e honestas sobre como a internet as vê. Não exige cadastro, não há app para instalar e não há rastreamento vinculado à sua identidade.',
-      about_p2: 'Foi criado por uma pequena equipe cansada de sites de utilitários gratuitos cheios de pop-ups, vídeos com reprodução automática e anúncios intrusivos. O SiteTrace faz o oposto: carrega instantaneamente, mostra a resposta imediatamente e coloca cada ferramenta em sua própria página para que você possa compartilhar, enviar ou apenas marcar a que precisa.',
+      about_p2: 'Cansamos dos sites populares de ferramentas de rede gratuitas: anúncios demais, poluição visual demais, funcionalidades demais escondidas atrás de um cadastro. O SiteTrace mantém a simplicidade — cada ferramenta é uma página, a resposta é a primeira coisa que você vê, e a página carrega em menos de um segundo. Salve a que precisar, compartilhe, ou volte sempre que algo na internet parecer estranho.',
       about_p3: 'Todas as consultas rodam no seu navegador e vão para serviços públicos (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS e endpoints compatíveis com CORS para ping). Não temos servidor no meio e não guardamos logs das suas requisições.',
       privacy_h1: 'Política de Privacidade',
       privacy_short_h2: 'A versão curta',
@@ -1407,7 +1407,7 @@
 
       about_h1: 'À propos de SiteTrace',
       about_p1: 'SiteTrace est un petit ensemble d’outils réseau conçu pour les personnes qui veulent des réponses rapides et honnêtes sur la façon dont Internet les voit. Pas d’inscription, pas d’application à installer, et aucun suivi lié à votre identité.',
-      about_p2: 'Il a été créé par une petite équipe lassée des sites d\'utilitaires gratuits envahis de popups, vidéos en lecture automatique et publicités intrusives. SiteTrace fait l\'inverse : il se charge instantanément, affiche la réponse immédiatement, et place chaque outil sur sa propre page pour que vous puissiez le partager, l\'envoyer ou simplement mettre en favori celui dont vous avez besoin.',
+      about_p2: 'On en avait assez des sites populaires d\'outils réseau gratuits : trop de publicités, trop de désordre, trop de fonctionnalités cachées derrière une inscription. SiteTrace reste simple — chaque outil est une page, la réponse est la première chose que vous voyez, et la page se charge en moins d\'une seconde. Mettez en favori celle dont vous avez besoin, partagez-la, ou revenez quand quelque chose sur Internet semble anormal.',
       about_p3: 'Toutes les requêtes s’exécutent dans votre navigateur et vont à des services publics (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS, plus des endpoints compatibles CORS pour le ping). Nous n’avons pas de serveur au milieu et nous n’enregistrons pas vos requêtes.',
       privacy_h1: 'Politique de confidentialité',
       privacy_short_h2: 'En bref',
@@ -1710,7 +1710,7 @@
 
       about_h1: 'Über SiteTrace',
       about_p1: 'SiteTrace ist eine kleine Sammlung von Netzwerk-Tools für Leute, die schnelle, ehrliche Antworten darauf wollen, wie das Internet sie sieht. Keine Anmeldung, keine App, kein Tracking, das mit deiner Identität verknüpft ist.',
-      about_p2: 'Es wurde von einem kleinen Team gebaut, das genug von kostenlosen Werkzeug-Seiten voller Pop-ups, Autoplay-Videos und aufdringlicher Werbung hatte. SiteTrace macht das Gegenteil: Es lädt sofort, zeigt die Antwort direkt an und legt jedes Werkzeug auf eine eigene Seite, damit du es verlinken, teilen oder einfach das benötigte als Lesezeichen speichern kannst.',
+      about_p2: 'Wir hatten genug von den üblichen kostenlosen Netzwerk-Tool-Seiten: zu viele Anzeigen, zu viel Unordnung, zu viele Funktionen hinter einer Anmeldung versteckt. SiteTrace bleibt einfach — jedes Tool ist eine Seite, die Antwort ist das Erste, was du siehst, und die Seite lädt in unter einer Sekunde. Lesezeichen für das, was du brauchst, teile es, oder komm zurück, wenn etwas im Internet seltsam wirkt.',
       about_p3: 'Alle Abfragen laufen in deinem Browser und gehen an öffentliche Dienste (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS, sowie CORS-fähige Endpoints für Ping). Wir betreiben keinen Server dazwischen und protokollieren deine Anfragen nicht.',
       privacy_h1: 'Datenschutzerklärung',
       privacy_short_h2: 'Kurzfassung',
@@ -2110,7 +2110,7 @@
 
       about_h1: 'Info su SiteTrace',
       about_p1: 'SiteTrace è una piccola collezione di strumenti di rete pensata per chi vuole risposte rapide e oneste su come internet lo vede. Nessuna registrazione, nessuna app da installare, nessun tracciamento legato alla tua identità.',
-      about_p2: 'È stato creato da un piccolo team stufo di siti di utilità gratuiti pieni di popup, video in riproduzione automatica e pubblicità invasive. SiteTrace fa l\'opposto: si carica all\'istante, mostra la risposta immediatamente e mette ogni strumento in una pagina propria, così puoi condividerlo, inviarlo o semplicemente salvare quello che ti serve.',
+      about_p2: 'Ci eravamo stancati dei soliti siti di strumenti di rete gratuiti: troppe pubblicità, troppo disordine, troppe funzioni nascoste dietro un\'iscrizione. SiteTrace resta semplice — ogni strumento è una pagina, la risposta è la prima cosa che vedi, e la pagina si carica in meno di un secondo. Salva tra i preferiti quello che ti serve, condividilo, o torna quando qualcosa su internet sembra strano.',
       about_p3: 'Tutte le ricerche girano nel tuo browser e vanno a servizi pubblici (ipwho.is, ip-api.com, Google DNS-over-HTTPS, Cloudflare DNS-over-HTTPS, oltre a endpoint CORS-friendly per il ping). Non c\'è un nostro server nel mezzo e non loggiamo le tue richieste.',
       privacy_h1: 'Informativa sulla privacy',
       privacy_short_h2: 'In breve',
@@ -2514,7 +2514,7 @@
 
       about_h1: 'SiteTraceについて',
       about_p1: 'SiteTraceは、インターネットが自分をどう見ているかについて、素早く正直な答えを求める人のための小さなネットワークツール集です。登録も不要、アプリのインストールも不要、IDに紐づいたトラッキングもありません。',
-      about_p2: 'ポップアップ、自動再生動画、煩わしい広告だらけの無料ユーティリティサイトにうんざりしていた小さなチームが構築しました。SiteTraceは逆のことをします:瞬時に読み込み、すぐに答えを表示し、各ツールを独立したページに配置して、リンクしたり共有したり、必要なものだけをブックマークできるようにしています。',
+      about_p2: '人気の無料ネットワークツールサイトにうんざりしていました: 広告が多すぎ、整理されておらず、機能の多くが登録の背後に隠されている。SiteTraceはシンプルに保ちます — 各ツールは1ページ、答えは最初に表示されるもの、ページは1秒未満で読み込みます。必要なものをブックマークし、共有し、インターネットで何かおかしいと感じたらいつでも戻ってきてください。',
       about_p3: 'すべての検索はブラウザで実行され、公開サービス（ipwho.is、ip-api.com、Google DNS-over-HTTPS、Cloudflare DNS-over-HTTPS、Ping用CORS対応エンドポイント）へ向かいます。我々は中間にサーバーを置いておらず、あなたのリクエストをログに記録することもありません。',
       privacy_h1: 'プライバシーポリシー',
       privacy_short_h2: '要約',
@@ -2920,7 +2920,7 @@
 
       about_h1: '关于 SiteTrace',
       about_p1: 'SiteTrace 是一组小巧的网络工具，为那些想要快速、诚实地了解互联网如何看待自己的人打造。无需注册，无需安装任何应用，也没有与你身份绑定的追踪。',
-      about_p2: '它由一个小团队创建,他们厌倦了充斥着弹窗、自动播放视频和侵入性广告的免费工具网站。SiteTrace 做了相反的事:即时加载,立即显示答案,并把每个工具放在自己的页面上,这样你可以链接、分享,或简单地收藏你需要的那一个。',
+      about_p2: '我们受够了那些流行的免费网络工具网站: 广告太多,内容杂乱,太多功能藏在注册墙后面。SiteTrace 保持简单 — 每个工具一个页面,答案就是你看到的第一样东西,页面加载不到一秒。收藏你需要的那个,分享它,或者在网络上感觉哪里不对劲时随时回来。',
       about_p3: '所有查询都在你的浏览器中执行，发往公共服务（ipwho.is、ip-api.com、Google DNS-over-HTTPS、Cloudflare DNS-over-HTTPS，以及支持 CORS 的 Ping 端点）。我们没有在中间放服务器，也不会记录你的请求。',
       privacy_h1: '隐私政策',
       privacy_short_h2: '简短版',
