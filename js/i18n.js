@@ -419,6 +419,9 @@
       tools_more_dns: 'DNS lookup →',
       tools_more_status: 'Is it down? →',
       tools_more_all: 'All tools',
+      support_btn: 'Support us',
+      support_header: 'Support',
+      support_tooltip: 'SiteTrace is free. We don\'t run a paywall. If you want to help cover hosting, you can donate via PayPal. No perks, no signup — just optional support.',
     },
 
     es: {
@@ -801,6 +804,9 @@
 
             err_network: 'No pudimos contactar al servicio de red. Verifica tu conexión e inténtalo de nuevo.',
       err_retry: 'Reintentar',
+      support_btn: 'Apóyanos',
+      support_header: 'Apoyar',
+      support_tooltip: 'SiteTrace es gratis. No hay muro de pago. Si quieres ayudar a cubrir el hosting, puedes donar vía PayPal. Sin beneficios, sin registro: solo apoyo opcional.',
     },
 
     pt: {
@@ -1183,6 +1189,9 @@
 
             err_network: 'Não foi possível alcançar o serviço de rede. Verifique sua conexão e tente novamente.',
       err_retry: 'Tentar novamente',
+      support_btn: 'Apoie-nos',
+      support_header: 'Apoiar',
+      support_tooltip: 'O SiteTrace é gratuito. Não temos paywall. Se quiser ajudar a cobrir a hospedagem, pode doar via PayPal. Sem vantagens, sem cadastro — apenas apoio opcional.',
     },
 
     fr: {
@@ -1565,6 +1574,9 @@
 
             err_network: 'Impossible de joindre le service réseau. Vérifiez votre connexion et réessayez.',
       err_retry: 'Réessayer',
+      support_btn: 'Soutenez-nous',
+      support_header: 'Soutenir',
+      support_tooltip: 'SiteTrace est gratuit. Il n\'y a pas de mur payant. Si vous souhaitez aider à couvrir l\'hébergement, vous pouvez faire un don via PayPal. Aucun avantage, aucune inscription — juste un soutien optionnel.',
     },
 
     // ---- German --------------------------------------------------
@@ -1962,6 +1974,9 @@
 
             err_network: 'Der Netzwerkdienst konnte nicht erreicht werden. Bitte überprüfe deine Verbindung und versuche es erneut.',
       err_retry: 'Erneut versuchen',
+      support_btn: 'Unterstützen',
+      support_header: 'Unterstützen',
+      support_tooltip: 'SiteTrace ist kostenlos. Es gibt keine Bezahlschranke. Wenn du helfen möchtest, die Hosting-Kosten zu decken, kannst du über PayPal spenden. Keine Vorteile, keine Anmeldung — nur optionale Unterstützung.',
     },
 
     // ---- Italian -------------------------------------------------
@@ -2359,6 +2374,9 @@
 
             err_network: 'Impossibile raggiungere il servizio di rete. Controlla la connessione e riprova.',
       err_retry: 'Riprova',
+      support_btn: 'Sostenici',
+      support_header: 'Sostenere',
+      support_tooltip: 'SiteTrace è gratuito. Non c\'è paywall. Se vuoi aiutare a coprire l\'hosting, puoi donare tramite PayPal. Nessun vantaggio, nessuna registrazione — solo supporto opzionale.',
     },
 
     // ---- Dutch ---------------------------------------------------
@@ -2760,6 +2778,9 @@
 
             err_network: 'ネットワークサービスに接続できませんでした。接続を確認して、もう一度お試しください。',
       err_retry: '再試行',
+      support_btn: 'ご支援',
+      support_header: 'ご支援',
+      support_tooltip: 'SiteTraceは無料です。ペイウォールはありません。ホスティング費用の支援にご興味があれば、PayPalで寄付できます。特典なし、サインアップ不要 — 任意の支援のみです。',
     },
 
     // ---- Korean --------------------------------------------------
@@ -3163,6 +3184,9 @@
 
             err_network: '无法连接到网络服务。请检查你的网络后重试。',
       err_retry: '重试',
+      support_btn: '支持我们',
+      support_header: '支持',
+      support_tooltip: 'SiteTrace 是免费的。我们没有付费墙。如果你想帮助我们覆盖托管费用,可以通过 PayPal 捐款。没有特权,无需注册 — 只是可选的支持。',
     },
 
     // ---- Indonesian ----------------------------------------------

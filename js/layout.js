@@ -71,7 +71,13 @@
       +       navLink('/ping/', t('nav_ping'), 'nav_ping')
       +       navLink('/dns-tools/', t('nav_dns'), 'nav_dns')
       +       navLink('/is-it-down/', t('nav_status'), 'nav_status')
-      + '      <div class="relative ml-1 sm:ml-2" id="lang-wrap">'
+      + '      <a href="https://paypal.me/edyappenzeller" target="_blank" rel="noopener noreferrer"'
+    + '         class="support-header-link ml-1 sm:ml-2 hidden sm:inline-flex"'
+    + '         data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">'
+    + '        <span class="support-header-link-icon" aria-hidden="true">&#9749;</span>'
+    + '        <span data-i18n="support_header">' + escapeHtml(t('support_header')) + '</span>'
+    + '      </a>'
+    + '      <div class="relative ml-1 sm:ml-2" id="lang-wrap">'
       + '        <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="' + escapeHtml(t('language')) + '">'
       + '          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>'
       + '          <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">' + lang.toUpperCase() + '</span>'
@@ -130,6 +136,24 @@
     if (footerEl) footerEl.innerHTML = footer;
     const bgEl = document.getElementById('site-bg');
     if (bgEl) bgEl.innerHTML = bg;
+
+    // Inject the floating "Support SiteTrace" donate button (always visible on every page).
+    // Idempotent: replaces any existing #support-fab.
+    const supportHtml = ''
+      + '<a href="https://paypal.me/edyappenzeller"'
+      + '   target="_blank" rel="noopener noreferrer"'
+      + '   id="support-fab"'
+      + '   class="support-fab"'
+      + '   data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">'
+      + '  <span class="support-fab-icon" aria-hidden="true">&#9749;</span>'
+      + '  <span class="support-fab-label" data-i18n="support_btn">' + escapeHtml(t('support_btn')) + '</span>'
+      + '</a>';
+    const existing = document.getElementById('support-fab');
+    if (existing) existing.remove();
+    const wrap = document.createElement('div');
+    wrap.innerHTML = supportHtml;
+    const fab = wrap.firstElementChild;
+    if (fab) document.body.appendChild(fab);
 
     // Mark active nav
     if (active) {
