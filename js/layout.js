@@ -28,16 +28,8 @@
     fr: 'Français',
     de: 'Deutsch',
     it: 'Italiano',
-    nl: 'Nederlands',
-    pl: 'Polski',
     ja: '日本語',
-    ko: '한국어',
-    ru: 'Русский',
-    tr: 'Türkçe',
     zh: '中文',
-    id: 'Bahasa Indonesia',
-    vi: 'Tiếng Việt',
-    sv: 'Svenska',
   };
 
   function languageOptions(current) {
