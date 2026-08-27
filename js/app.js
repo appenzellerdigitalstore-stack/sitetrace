@@ -363,6 +363,21 @@
     wireActions();
     runLookup();
     startLocalClock();
+
+    // Re-translate JS-rendered status pill + security list when the
+    // user switches languages via the header switcher. The static
+    // data-i18n elements are re-rendered by the i18n library, but the
+    // status badge text and the "Yes/No" pills are set once when the
+    // IP data arrives and don't update on their own.
+    if (window.I18N && typeof window.I18N.onChange === 'function') {
+      window.I18N.onChange(() => {
+        const data = window.SiteState.lastData;
+        if (data && data.security) {
+          renderStatus(data.security);
+          renderSecurityList(data.security);
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') {

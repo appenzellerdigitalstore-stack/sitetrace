@@ -458,6 +458,9 @@
       const result = await probeUrl(url);
       const known = findTrackedService(hostFromUrl(url));
       if (known) known.state = SERVICE_STATE.get(known.id);
+      LAST_CHECK.url = url;
+      LAST_CHECK.result = result;
+      LAST_CHECK.known = known;
       renderCheckResult(url, result, known);
     });
   }
@@ -466,6 +469,26 @@
   // Service-card rendering (reused for the grid)
   // ----------------------------------------------------------------
   const SERVICE_STATE = new Map();
+
+  // Cache the last URL-check inputs so we can re-render the result
+  // card when the user switches languages via the header switcher.
+  const LAST_CHECK = { url: null, result: null, known: null };
+
+  function retranslateAll() {
+    if (LAST_CHECK.url) {
+      renderCheckResult(LAST_CHECK.url, LAST_CHECK.result, LAST_CHECK.known);
+    }
+    const grid = $('#status-grid');
+    if (grid) {
+      // Re-render every service card in place so all t() values refresh
+      grid.innerHTML = '';
+      SERVICES.forEach((svc) => {
+        const state = SERVICE_STATE.get(svc.id);
+        if (state) grid.appendChild(buildCard(svc, state));
+        else grid.appendChild(buildSkeleton(svc));
+      });
+    }
+  }
 
   function buildSkeleton(svc) {
     const card = document.createElement('div');
@@ -599,6 +622,14 @@
       grid.appendChild(buildCard(svc, state));
     });
     bindCategoryFilter();
+
+    // Re-translate JS-rendered cards when the user switches languages
+    // via the header switcher. The static data-i18n elements update on
+    // their own, but these cards were built once with whatever language
+    // was active at the time.
+    if (window.I18N && typeof window.I18N.onChange === 'function') {
+      window.I18N.onChange(retranslateAll);
+    }
   }
 
   if (document.readyState === 'loading') {
