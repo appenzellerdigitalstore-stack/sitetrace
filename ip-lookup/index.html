@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>IP address lookup — find any IP in seconds — SiteTrace</title>
+  <meta name="description" content="Free IP address lookup. Look up the geolocation, ISP, and connection type of any public IP — yours or anyone else’s. Instant, no login." />
+  <meta name="keywords" content="ip lookup, ip address lookup, ip checker, find ip location, ip geolocation lookup, free ip lookup, ip whois lookup, ip info, what is my ip, public ip" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/ip-lookup/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="IP address lookup — find any IP in seconds" />
+  <meta property="og:description" content="Look up the geolocation, ISP, and connection type of any public IP. Instant, no login." />
+  <meta property="og:url" content="https://sitetrace.it.com/ip-lookup/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What does an IP lookup tell me?","acceptedAnswer":{"@type":"Answer","text":"For any public IP, the lookup returns the registered country, region, city, postal code, ISP, organization, ASN, and connection type (residential, mobile, hosting, VPN, etc.). It also checks whether the IP is on known VPN, proxy, or Tor lists."}},
+      {"@type":"Question","name":"Can I look up someone else’s IP?","acceptedAnswer":{"@type":"Answer","text":"Yes. Type any public IP into the tool and you’ll get the same information a service sees when that IP connects to it. The lookup itself is read-only and uses public data — it does not contact the IP, does not scan it, and does not reveal any private information about the person behind it."}},
+      {"@type":"Question","name":"How accurate is the geolocation?","acceptedAnswer":{"@type":"Answer","text":"City-level accuracy is typical for residential and mobile IPs. Hosting and VPN IPs usually resolve to the data center or VPN endpoint, not the actual user. Country-level accuracy is close to 100% for most IP blocks."}},
+      {"@type":"Question","name":"Does an IP lookup show my home address?","acceptedAnswer":{"@type":"Answer","text":"No. Public IP geolocation only shows the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order."}},
+      {"@type":"Question","name":"Is IP lookup legal?","acceptedAnswer":{"@type":"Answer","text":"Yes. The data is publicly registered and the lookup is read-only. There is no expectation of privacy for the public IP your ISP assigns to you."}}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menno','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="ipl_h1">IP lookup</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">IP lookup</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="ipl_h1">IP address lookup — find any IP in seconds</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto" data-i18n="ipl_subtitle">Look up the geolocation, ISP, and connection type of any public IP address — yours or someone else’s.</p>
+      </div>
+    </section>
+
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="ipl_intro_h2">What is an IP lookup?</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="ipl_intro_text">An IP lookup queries a public IP-geolocation database for the registered owner and approximate physical location of an IP address. Every IP on the public internet is allocated to some organization (an ISP, a hosting provider, a business), and that allocation is public. This tool checks your own IP in under a second, and the same data feeds the network and security cards below.</p>
+    </section>
+
+    <div class="grid lg:grid-cols-3 gap-5 mt-8">
+      <div class="lg:col-span-2 card relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <span class="text-xs uppercase tracking-widest text-slate-500">IP address</span>
+          <div class="flex gap-2">
+            <button id="btn-recheck" class="btn-ghost">Re-check</button>
+            <button id="btn-copy" class="btn-ghost">Copy IP</button>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div id="ip-display" class="font-mono text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white break-all">
+            <span class="ip-placeholder">—</span>
+          </div>
+        </div>
+        <div id="ip-type" class="mt-2 text-xs text-slate-500 font-mono"></div>
+        <div class="mt-6 pt-6 border-t border-white/5 grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+          <div>
+            <div class="text-slate-500 text-xs mb-1">Country</div>
+            <div id="loc-country" class="flex items-center gap-2 font-medium"><span class="ip-placeholder">—</span></div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1">City</div>
+            <div id="loc-city" class="font-medium"><span class="ip-placeholder">—</span></div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1">ISP</div>
+            <div id="net-isp" class="font-medium truncate"><span class="ip-placeholder">—</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card relative overflow-hidden">
+        <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">Connection status</div>
+        <div id="status-badge" class="status-badge status-badge--loading">
+          <span class="status-dot"></span>
+          <span>Analyzing your connection…</span>
+        </div>
+        <p id="status-desc" class="mt-3 text-sm text-slate-400">Analyzing your connection…</p>
+        <ul id="security-list" class="mt-5 space-y-2 text-sm">
+          <li class="security-row"><span class="text-slate-400">VPN</span><span id="sec-vpn" class="font-mono text-slate-300"><span class="ip-placeholder">—</span></span></li>
+          <li class="security-row"><span class="text-slate-400">Proxy</span><span id="sec-proxy" class="font-mono text-slate-300"><span class="ip-placeholder">—</span></span></li>
+          <li class="security-row"><span class="text-slate-400">Tor</span><span id="sec-tor" class="font-mono text-slate-300"><span class="ip-placeholder">—</span></span></li>
+          <li class="security-row"><span class="text-slate-400">Threat level</span><span id="sec-threat" class="font-mono text-slate-300"><span class="ip-placeholder">—</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="ipl_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_1_q">What does an IP lookup tell me?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_1_a">For any public IP, the lookup returns the registered country, region, city, postal code, ISP, organization, ASN (autonomous system number), and the connection type (residential, mobile, hosting, VPN, etc.). It also checks whether the IP is on known VPN, proxy, or Tor lists.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_2_q">Can I look up someone else’s IP?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_2_a">Yes. Type any public IP into the tool and you’ll get the same information a service sees when that IP connects to it. The lookup itself is read-only and uses public data — it does not contact the IP, does not scan it, and does not reveal any private information about the person behind it.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_3_q">How accurate is the geolocation?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_3_a">City-level accuracy is typical for residential and mobile IPs. Hosting and VPN IPs usually resolve to the data center or VPN endpoint, not the actual user. Country-level accuracy is close to 100% for most IP blocks.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_4_q">Does an IP lookup show my home address?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_4_a">No. Public IP geolocation only shows the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_5_q">Is IP lookup legal?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_5_a">Yes. The data is publicly registered and the lookup is read-only. The same data is shown to every site you visit, every API you call, and every email you send.</p></div>
+      </div>
+    </section>
+
+    <div class="mt-8 card">
+      <h2 class="text-base font-bold mb-3">Related tools</h2>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
+        <a href="/vpn-checker/" class="text-brand-300 hover:text-brand-200">VPN checker →</a>
+        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200">
+    <div class="px-4 py-2.5 rounded-xl bg-ink-700/95 border border-white/10 backdrop-blur text-sm text-white shadow-2xl">
+      <span id="toast-text"></span>
+    </div>
+  </div>
+
+  <script src="/js/i18n.js?v=19"></script>
+  <script src="/js/layout.js?v=19"></script>
+  <script src="/js/app.js?v=19"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: 'nav_whatismyip' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

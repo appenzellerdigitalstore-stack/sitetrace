@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>How to read a ping test: latency numbers explained — SiteTrace</title>
+  <meta name="description" content="What the millisecond numbers in a ping test mean, what counts as a good ping, and why your latency to Tokyo differs from your latency to Berlin." />
+  <meta name="keywords" content="ping test, ping results, latency explained, what is a good ping, ms latency, jitter, network latency, how to read ping, sitetrace" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/blog/how-to-read-ping-results/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="How to read a ping test: latency numbers explained" />
+  <meta property="og:description" content="What the millisecond numbers in a ping test mean, what counts as a good ping, and why your latency to Tokyo differs from your latency to Berlin." />
+  <meta property="og:url" content="https://sitetrace.it.com/blog/how-to-read-ping-results/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to read a ping test: latency numbers explained",
+    "url": "https://sitetrace.it.com/blog/how-to-read-ping-results/",
+    "datePublished": "2026-08-27",
+    "dateModified": "2026-08-27",
+    "author": { "@type": "Organization", "name": "SiteTrace" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace" }
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menno','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <article class="pt-8 sm:pt-12 space-y-5">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <a href="/blog/" class="hover:text-slate-300">Blog</a>
+        <span class="mx-1.5">/</span>
+        <span>How to read ping results</span>
+      </nav>
+
+      <header>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight" data-i18n="blog_ping_h1">How to read a ping test: latency numbers explained</h1>
+        <div class="mt-2 text-xs text-slate-500 font-mono">Published 2026-08-27</div>
+        <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed" data-i18n="blog_ping_intro">You ran a ping test and got back a list of numbers in milliseconds. What do they mean, what counts as good, and why is Tokyo 200 ms but Berlin only 90 ms? This post walks through what the numbers actually tell you about your connection.</p>
+      </header>
+
+      <section class="prose-content space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <h2>What latency actually measures</h2>
+        <p>Latency is the round-trip time (RTT) for a small packet to travel from your device to a target server and back. The unit is milliseconds. Lower is better.</p>
+        <p>The packet is tiny — usually 64 bytes — so the result tells you how <em>quickly</em> data can move between you and the server, not how <em>much</em> data can move. Bandwidth (measured in Mbps) and latency (measured in ms) are independent properties. You can have a high-bandwidth connection with high latency, or a low-bandwidth connection with very low latency. Real-time apps like video calls and online games care about latency. Big file downloads care about bandwidth.</p>
+
+        <h2>Why geography sets the floor</h2>
+        <p>Signals in fiber-optic cable travel at roughly two-thirds the speed of light in a vacuum. For a packet to travel 10,000 km (say, Honduras to Tokyo) and back, that’s 20,000 km in the cable. At 200,000 km/s, that’s a physical floor of 100 ms — and the real number is always higher because of routing inefficiencies, additional hops, and queuing delays in network equipment along the way.</p>
+        <p>This is why your ping to Berlin is 90 ms and your ping to Tokyo is 200 ms: the signal has to physically travel further. No amount of optimization can get your Tokyo ping below that physical floor.</p>
+        <p>Submarine cables help, but they only close the gap by a small amount. The speed of light is the hard limit.</p>
+
+        <h2>What counts as a good ping</h2>
+        <p>Here are the rough bands most people use, with the use cases they enable:</p>
+        <ul class="list-disc list-inside space-y-1 pl-2">
+          <li><strong>Under 20 ms</strong> — excellent. Typical for local servers and fiber connections. Great for competitive gaming, real-time audio, and any latency-sensitive work.</li>
+          <li><strong>20–50 ms</strong> — good. Typical for nearby regional servers. Fine for most gaming, video calls, and remote desktop work.</li>
+          <li><strong>50–100 ms</strong> — average. You may notice occasional lag in fast-paced games. Video calls are usually still smooth.</li>
+          <li><strong>100–200 ms</strong> — sluggish for real-time apps. Fine for downloads, web browsing, and email. Noticeable lag in video calls.</li>
+          <li><strong>200+ ms</strong> — the connection is far from the target or has a serious congestion problem. Real-time apps will struggle.</li>
+        </ul>
+        <p>These are bands, not hard rules. A 75 ms ping in a turn-based game is fine. A 75 ms ping in a first-person shooter will feel off.</p>
+
+        <h2>Jitter: the other latency number to watch</h2>
+        <p>Jitter is the variation in latency between successive pings. If your first five pings to a server were 50, 52, 49, 51, 50 ms, your latency is steady and jitter is low (~1 ms). If they were 30, 80, 25, 110, 45, your latency is bouncing around and jitter is high.</p>
+        <p>High jitter makes video and audio choppy even when average latency is fine, because packets arrive at uneven intervals. Real-time apps buffer a few packets to smooth out jitter, but if the variation is too large the buffer either runs out (causing glitches) or has to grow large (adding latency).</p>
+        <p>Jitter usually points to one of two causes: congestion at a hop along the path, or a flaky Wi-Fi or powerline connection on your end. A wired connection almost always has lower jitter than the equivalent Wi-Fi connection.</p>
+
+        <h2>How to read a ping test result</h2>
+        <p>SiteTrace’s <a href="/ping/" class="text-brand-300 hover:text-brand-200">ping tool</a> shows you a row per target. For each row, you see:</p>
+        <ul class="list-disc list-inside space-y-1 pl-2">
+          <li><strong>Latency (ms)</strong> — the most recent round-trip time, plus a min/max/avg over the run.</li>
+          <li><strong>Status</strong> — reachable, unreachable, or unresponsive. Some servers deliberately block ping probes, so “unreachable” can mean “server is up but ignoring pings.”</li>
+          <li><strong>Jitter</strong> — the standard deviation or interquartile range of recent samples, when the test has been running long enough to compute it.</li>
+        </ul>
+        <p>Look at the average, the jitter, and whether any individual pings timed out. A target with a 60 ms average and 2 ms jitter is a healthier connection than a target with a 60 ms average and 30 ms jitter, even though the averages are identical.</p>
+
+        <h2>What if some targets are high and others are low?</h2>
+        <p>If your ping to Google is 30 ms and your ping to some other host is 300 ms, the bottleneck is the path between your ISP and that other host — not your connection. Some hosts sit on congested networks, behind slow uplinks, or in regions with poor global transit.</p>
+        <p>If your ping to <em>every</em> target is high, the bottleneck is your local connection: a slow Wi-Fi signal, a congested local network, a VPN adding latency, or an ISP routing problem.</p>
+        <p>Run the test wired (ethernet) instead of on Wi-Fi to rule out the local Wi-Fi. If wired and Wi-Fi are both slow, the issue is upstream of your router.</p>
+
+        <h2>How a VPN affects ping</h2>
+        <p>A VPN adds latency because your traffic now has to travel to the VPN server, then out to the destination, then back. The added latency is roughly the ping from you to the VPN server, in milliseconds. A nearby VPN server might add 5–10 ms. A distant one might add 50 ms or more.</p>
+        <p>This is why competitive gamers avoid VPNs: any extra latency matters at the millisecond level. For most other use cases, a good VPN adds so little latency that you can’t tell.</p>
+        <p>You can use <a href="/vpn-checker/" class="text-brand-300 hover:text-brand-200">SiteTrace’s VPN checker</a> to confirm that your VPN is actually working, and <a href="/ping/" class="text-brand-300 hover:text-brand-200">the ping tool</a> to see how much latency the VPN is adding.</p>
+      </section>
+
+      <div class="mt-8 card">
+        <h2 class="text-base font-bold mb-3">Related tools</h2>
+        <div class="flex flex-wrap gap-3 text-sm">
+          <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping test →</a>
+          <a href="/vpn-checker/" class="text-brand-300 hover:text-brand-200">VPN checker →</a>
+          <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+        </div>
+      </div>
+
+      <div class="mt-8 text-sm text-slate-500">
+        <a href="/blog/" class="hover:text-brand-300" data-i18n="blog_back_to_blog">← Back to all articles</a>
+      </div>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/js/i18n.js?v=19"></script>
+  <script src="/js/layout.js?v=19"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: '' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

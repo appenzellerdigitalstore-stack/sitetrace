@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>What is DNS propagation and how long does it really take? — SiteTrace</title>
+  <meta name="description" content="A plain-English explanation of why DNS changes don’t appear everywhere at once, and how to check whether yours have propagated yet." />
+  <meta name="keywords" content="dns propagation, dns propagation checker, dns propagation time, how long dns propagation takes, dns ttl, dns cache, what is dns propagation, sitetrace" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/blog/dns-propagation/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="What is DNS propagation and how long does it really take?" />
+  <meta property="og:description" content="Why DNS changes don’t appear everywhere at once, and how to check whether yours have propagated." />
+  <meta property="og:url" content="https://sitetrace.it.com/blog/dns-propagation/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "BlogPosting",
+    "headline": "What is DNS propagation and how long does it really take?",
+    "url": "https://sitetrace.it.com/blog/dns-propagation/",
+    "datePublished": "2026-08-27",
+    "dateModified": "2026-08-27",
+    "author": { "@type": "Organization", "name": "SiteTrace" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace" }
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <article class="pt-8 sm:pt-12 space-y-5">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <a href="/blog/" class="hover:text-slate-300">Blog</a>
+        <span class="mx-1.5">/</span>
+        <span>DNS propagation</span>
+      </nav>
+
+      <header>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight" data-i18n="blog_dnsprop_h1">What is DNS propagation and how long does it really take?</h1>
+        <div class="mt-2 text-xs text-slate-500 font-mono">Published 2026-08-27</div>
+        <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed" data-i18n="blog_dnsprop_intro">You changed a DNS record, saved it, and now you’re staring at the dashboard wondering why some people see the new IP and others see the old one. This article explains what is actually happening in the global DNS resolver fleet, why the wait exists, and how to check whether the change has reached you yet.</p>
+      </header>
+
+      <section class="card">
+        <h2 class="text-lg font-bold mb-2" data-i18n="blog_dnsprop_tldr_h2">TL;DR</h2>
+        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="blog_dnsprop_tldr_text">DNS propagation is the gradual, worldwide refresh of cached DNS answers after you change a record. With a short TTL (5–60 min), most resolvers see the change within an hour. With a long TTL (12–48 h), it can take up to 48 hours. You can speed it up by lowering the TTL 24–48 hours before the change.</p>
+      </section>
+
+      <section class="prose-content space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <h2>What DNS actually does</h2>
+        <p>DNS (Domain Name System) is the internet’s address book. When you type <code class="font-mono text-brand-300">example.com</code> into a browser, your computer asks a DNS resolver for the IP address behind that name. The resolver returns an answer, your browser connects to the IP, and the page loads. The whole thing takes milliseconds.</p>
+        <p>The catch is that DNS resolvers don’t ask the authoritative server every time. They <em>cache</em> the answer they got last time, and they keep using that cached answer until the record’s TTL (time to live) expires. Only then do they go back to the authoritative server for a fresh answer.</p>
+
+        <h2>What changes when you edit a DNS record</h2>
+        <p>You log in to your DNS provider, change the A record for <code class="font-mono text-brand-300">example.com</code> from <code class="font-mono text-brand-300">203.0.113.10</code> to <code class="font-mono text-brand-300">203.0.113.42</code>, and save. The authoritative server immediately starts returning the new IP. But every resolver around the world has a cached copy of the old answer, and they won’t ask again until their cached copy expires.</p>
+        <p>So your local resolver, sitting in the corner of your office or run by your ISP, will keep handing out the old IP for up to TTL seconds. Other resolvers around the world will keep doing the same thing. As each resolver’s cache expires and they re-query, they pick up the new answer.</p>
+
+        <h2>How long this actually takes</h2>
+        <p>It depends entirely on the TTL of the record you just changed:</p>
+        <ul class="list-disc list-inside space-y-1 pl-2">
+          <li><strong>TTL 300 s (5 min)</strong> — most resolvers refresh within an hour, propagation usually complete.</li>
+          <li><strong>TTL 3600 s (1 h)</strong> — most resolvers refresh within a few hours.</li>
+          <li><strong>TTL 86400 s (24 h)</strong> — full propagation can take up to 24 hours.</li>
+          <li><strong>TTL 172800 s (48 h)</strong> — the worst case, often seen on older or stable records.</li>
+        </ul>
+        <p>These are worst-case numbers based on the TTL. In practice, most resolvers refresh earlier because they round down to common intervals, or because they hit a global cache like Google Public DNS or Cloudflare 1.1.1.1 that pulls from a smaller set of upstream sources.</p>
+
+        <h2>How to check whether your change has propagated</h2>
+        <p>The fastest way is to query the same record from two independent DNS-over-HTTPS resolvers and compare their answers. If both return the new IP, propagation is complete. If one returns the old IP, the other’s cache is more up to date — propagation is in progress. <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">SiteTrace’s DNS tool</a> does exactly this against Google DoH and Cloudflare DoH, so you can see both answers in one shot.</p>
+        <p>You can also do it manually with <code class="font-mono text-brand-300">dig +short example.com @1.1.1.1</code> and <code class="font-mono text-brand-300">dig +short example.com @8.8.8.8</code> if you have shell access.</p>
+
+        <h2>How to speed it up next time</h2>
+        <p>Lower the TTL 24–48 hours before your next change. If you know you’ll be moving <code class="font-mono text-brand-300">example.com</code> to a new server on Friday, set the TTL to 300 on Wednesday. By Friday, every resolver’s cached copy of the old TTL has expired, and they’re all asking the authoritative server directly. Make the change. The new IP becomes visible globally within an hour. Then raise the TTL back to a longer value (3600 or 86400) to reduce resolver load for everyone.</p>
+        <p>You can’t actually <em>force</em> propagation to happen faster than the TTL allows — that would defeat the caching system. The best you can do is plan ahead with a low TTL.</p>
+
+        <h2>Why different DNS tools sometimes disagree</h2>
+        <p>Each DNS lookup tool uses one or more upstream resolvers. If a tool uses Cloudflare, you see what Cloudflare’s cache returns. If it uses Google, you see what Google’s cache returns. If you’re running on your home network, your computer is also using your ISP’s resolver, which has its own cache. The fact that they disagree is direct evidence that propagation is still in progress: some caches have refreshed, others haven’t.</p>
+
+        <h2>Edge cases worth knowing</h2>
+        <p>Some large ISPs and corporate networks deliberately ignore the TTL and use their own longer cache lifetime. This is rare but it does happen, and it can extend propagation beyond what the TTL would suggest. The opposite also happens: some resolvers refresh before the TTL expires, so propagation can sometimes complete faster than the record’s TTL implies.</p>
+        <p>DNSSEC-signed zones have stricter caching rules, but the propagation mechanics are the same. NS record changes (moving the whole zone to a new set of authoritative servers) are usually the slowest because they often come with a long NS TTL set by the parent zone.</p>
+      </section>
+
+      <div class="mt-8 card">
+        <h2 class="text-base font-bold mb-3">Related tools</h2>
+        <div class="flex flex-wrap gap-3 text-sm">
+          <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+          <a href="/dns-propagation-checker/" class="text-brand-300 hover:text-brand-200">DNS propagation checker →</a>
+          <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+        </div>
+      </div>
+
+      <div class="mt-8 text-sm text-slate-500">
+        <a href="/blog/" class="hover:text-brand-300" data-i18n="blog_back_to_blog">← Back to all articles</a>
+      </div>
+    </article>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/js/i18n.js?v=19"></script>
+  <script src="/js/layout.js?v=19"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: '' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

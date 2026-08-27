@@ -104,6 +104,7 @@
       + '      <div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="footer_about">' + escapeHtml(t('footer_about')) + '</div>'
       + '      <ul class="space-y-1 text-slate-300">'
       + '        <li><a href="/about/" class="hover:text-white" data-i18n="footer_about">' + escapeHtml(t('footer_about')) + '</a></li>'
+      + '        <li><a href="/blog/" class="hover:text-white" data-i18n="footer_blog">Blog</a></li>'
       + '        <li><a href="/privacy/" class="hover:text-white" data-i18n="footer_privacy">' + escapeHtml(t('footer_privacy')) + '</a></li>'
       + '      </ul>'
       + '    </div>'

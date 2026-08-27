@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>DNS propagation checker — see when your DNS changes go live — SiteTrace</title>
+  <meta name="description" content="Free DNS propagation checker. Resolve any domain to its current A, AAAA, MX, TXT, NS, CNAME, and SOA records. Compare answers from Google and Cloudflare DNS-over-HTTPS to see if propagation is complete." />
+  <meta name="keywords" content="dns propagation checker, dns propagation, dns check, dns lookup, dns records, dns ttl, dns cache, check dns propagation, sitetrace" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/dns-propagation-checker/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="DNS propagation checker — see when your DNS changes go live" />
+  <meta property="og:description" content="Resolve any domain to its current DNS records across Google and Cloudflare DNS-over-HTTPS. See if propagation is complete." />
+  <meta property="og:url" content="https://sitetrace.it.com/dns-propagation-checker/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"How long does DNS propagation really take?","acceptedAnswer":{"@type":"Answer","text":"For most records with a short TTL (5–60 minutes), propagation is fast — most resolvers refresh within an hour. For records with a long TTL (12–48 hours) or for large TTL changes, propagation can take up to 48 hours to fully complete across the global resolver fleet."}},
+      {"@type":"Question","name":"Why do different DNS lookup tools show different answers?","acceptedAnswer":{"@type":"Answer","text":"Each tool uses different upstream resolvers (Google, Cloudflare, OpenDNS, ISP resolvers, etc.) and each resolver caches answers independently. Until the TTL expires on a given resolver, it returns the cached answer."}},
+      {"@type":"Question","name":"Can I speed up DNS propagation?","acceptedAnswer":{"@type":"Answer","text":"Not directly — propagation is governed by the TTLs already in the wild. But you can lower the TTL on a record 24–48 hours before the change so that the next refresh happens quickly."}},
+      {"@type":"Question","name":"What is DNS-over-HTTPS?","acceptedAnswer":{"@type":"Answer","text":"DNS-over-HTTPS (DoH) encrypts DNS queries so that no one on the path between you and the resolver can see what domains you are looking up."}}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menno','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="dpc_h1">DNS propagation checker</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">DNS propagation</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="dpc_h1">DNS propagation checker — see when your DNS changes go live</h1>
+        <p class="text-slate-400 text-sm sm:text-base" data-i18n="dpc_subtitle">Resolve any domain to its current A, AAAA, MX, TXT, NS, CNAME, and SOA records.</p>
+      </div>
+    </section>
+
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="dpc_intro_h2">What is DNS propagation?</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="dpc_intro_text">DNS (Domain Name System) is the internet's address book — it translates human-readable names like example.com into IP addresses. When you change a DNS record, the change does not appear everywhere at once. Each DNS resolver caches the previous answer until the record's TTL (time to live) expires, then it asks the authoritative server again. This staggered refresh is what people call "DNS propagation".</p>
+    </section>
+
+    <div class="card mt-8">
+      <form id="dns-form" class="grid sm:grid-cols-[1fr_auto] gap-3">
+        <label class="block">
+          <span class="sr-only" data-i18n="dns_input_label">Domain or hostname</span>
+          <input id="dns-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="w-full bg-ink-700 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" data-i18n-attr="placeholder:dns_input_placeholder;aria-label:dns_input_label" />
+        </label>
+        <button type="submit" class="btn-primary">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span data-i18n="dns_lookup">Lookup</span>
+        </button>
+      </form>
+      <p class="text-[11px] text-slate-500 mt-2" data-i18n="dns_all_records">Returns every record type (A, AAAA, MX, TXT, NS, CNAME, SOA).</p>
+    </div>
+
+    <div id="dns-result-card" class="card mt-5 hidden">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <div class="text-xs text-slate-500" data-i18n="dns_result">Result</div>
+          <div id="dns-target" class="text-lg font-mono font-semibold"></div>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-slate-500" data-i18n="dns_resolver">Answered by</div>
+          <div id="dns-resolver" class="text-sm font-medium text-brand-300"></div>
+          <div class="text-xs text-slate-500 mt-1"><span data-i18n="dns_ttl">TTL</span>: <span id="dns-ttl" class="font-mono">—</span></div>
+        </div>
+      </div>
+      <ul id="dns-answers" class="space-y-2"></ul>
+    </div>
+
+    <div id="dns-empty" class="card text-center text-slate-500 py-10 mt-5" data-i18n="dns_empty">Enter a domain to begin.</div>
+
+    <section class="mt-12 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="dpc_what_h2">Why DNS changes take time to propagate</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_what_text">Resolvers around the world cache DNS answers to reduce load on the authoritative servers. Each cached answer comes with a TTL set by the authoritative server. While the TTL is valid, the resolver returns the cached answer without re-querying. Once it expires, the resolver asks again and gets the new record.</p>
+    </section>
+
+    <section class="mt-5 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="dpc_how_h2">How this tool helps you check propagation</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_how_text">This tool queries Google DNS-over-HTTPS and Cloudflare DNS-over-HTTPS in parallel for every common record type and shows you the answer from each resolver. If the two resolvers agree, you have a consistent view. If they disagree, the older one is still serving a cached answer — propagation is in progress.</p>
+    </section>
+
+    <section class="mt-5 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="dpc_ttl_h2">Typical propagation time</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_ttl_text">Most changes propagate within minutes to a few hours. Common authoritative TTLs are 300 seconds (5 min) to 3600 seconds (1 hour). Larger TTLs (12h, 24h, 48h) used to be common for stability and can prolong propagation.</p>
+    </section>
+
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="dpc_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="dpc_faq_1_q">How long does DNS propagation really take?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_faq_1_a">For most records with a short TTL (5–60 minutes), propagation is fast — most resolvers refresh within an hour. For records with a long TTL (12–48 hours) or for large TTL changes, propagation can take up to 48 hours to fully complete across the global resolver fleet.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="dpc_faq_2_q">Why do different DNS lookup tools show different answers?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_faq_2_a">Each tool uses different upstream resolvers (Google, Cloudflare, OpenDNS, ISP resolvers, etc.) and each resolver caches answers independently. Until the TTL expires on a given resolver, it returns the cached answer.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="dpc_faq_3_q">Can I speed up DNS propagation?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_faq_3_a">Not directly — propagation is governed by the TTLs already in the wild. But you can lower the TTL on a record 24–48 hours before the change so that the next refresh happens quickly.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="dpc_faq_4_q">What is DNS-over-HTTPS?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_faq_4_a">DNS-over-HTTPS (DoH) encrypts DNS queries so that no one on the path between you and the resolver can see what domains you are looking up.</p></div>
+      </div>
+    </section>
+
+    <div class="mt-8 card">
+      <h2 class="text-base font-bold mb-3">Related tools</h2>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+        <a href="/blog/dns-propagation/" class="text-brand-300 hover:text-brand-200">DNS propagation explained →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/js/i18n.js?v=19"></script>
+  <script src="/js/layout.js?v=19"></script>
+  <script src="/js/dns.js?v=19"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: 'nav_dns' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>
