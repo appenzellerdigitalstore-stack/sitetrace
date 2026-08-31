@@ -136,7 +136,7 @@ const CHECKS = [
   },
   {
     id: 'viewport',
-    weight: 4,
+    weight: 5,
     run: ({ viewport }) => {
       if (!viewport) return { pass: false, value: null, message: 'No viewport meta tag — page is not mobile-friendly.' };
       return { pass: true, value: viewport, message: 'Viewport meta present.' };
@@ -144,7 +144,7 @@ const CHECKS = [
   },
   {
     id: 'og',
-    weight: 8,
+    weight: 10,
     run: ({ og }) => {
       const missing = [];
       if (!og.title) missing.push('og:title');
@@ -157,7 +157,7 @@ const CHECKS = [
   },
   {
     id: 'twitter',
-    weight: 5,
+    weight: 6,
     run: ({ twitter }) => {
       const missing = [];
       if (!twitter.card) missing.push('twitter:card');
@@ -168,7 +168,7 @@ const CHECKS = [
   },
   {
     id: 'alt_text',
-    weight: 8,
+    weight: 10,
     run: ({ images }) => {
       if (images.length === 0) return { pass: true, value: { total: 0, withAlt: 0 }, message: 'No <img> tags on the page.' };
       const withAlt = images.filter(i => i.alt !== null).length;
@@ -180,7 +180,7 @@ const CHECKS = [
   },
   {
     id: 'https',
-    weight: 8,
+    weight: 10,
     run: ({ requestedUrl }) => {
       try {
         const u = new URL(requestedUrl);
@@ -193,7 +193,7 @@ const CHECKS = [
   },
   {
     id: 'word_count',
-    weight: 10,
+    weight: 12,
     run: ({ textContent }) => {
       const words = (textContent.match(/\S+/g) || []).length;
       if (words < 100) return { pass: false, value: words, message: `Only ${words} words on the page — thin content.` };
