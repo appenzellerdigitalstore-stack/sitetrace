@@ -102,7 +102,7 @@
     <section class="mt-12 card" aria-label="Frequently asked questions">
       <h2 class="text-xl font-bold mb-4" data-i18n="seo_faq_h2">Frequently asked questions</h2>
       <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_1_q">How does this SEO checker work?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_1_a">It fetches the URL you give it (server-side, so CORS does not get in the way), parses the HTML, and runs 12 SEO checks. Each check has a weight; the total is your score out of 100.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_1_q">How does this SEO checker work?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_1_a">Each check is a small function in functions/api/seo-check.js — the CHECKS array has 12 objects, each with three fields: an id, a weight (out of 100), and a run function that returns { pass, value, message }. Read the file to see exactly what each check looks for, what makes it pass or fail, and how its score is weighted. The comment block at the top of the file documents how to add a new check (append an object, choose a weight, describe the rule). The function takes care of HTML parsing, scoring, and rendering — you just describe the check.</p></div>
         <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_2_q">Do you send the URL to anyone else?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_2_a">No. The URL is fetched from Cloudflare’s edge to the target site, and the result is returned to your browser. SiteTrace does not log URLs, does not share them with any third party, and does not store them.</p></div>
         <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_3_q">What SEO checks are included?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_3_a">Title tag, meta description, H1 (presence and count), H2, canonical URL, meta robots (not accidentally noindex), viewport meta, Open Graph tags (og:title, og:description, og:image), Twitter Card tags, image alt text coverage, HTTPS, and word count.</p></div>
         <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_4_q">Can I check any URL?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_4_a">Any public http:// or https:// page. Private IPs, localhost, and other internal addresses are blocked for security. The target site must respond to a normal HTTP GET and return HTML.</p></div>
@@ -123,9 +123,9 @@
 
   <div id="site-footer"></div>
 
-  <script src="/js/i18n.js?v=20"></script>
-  <script src="/js/layout.js?v=20"></script>
-  <script src="/js/seo-checker.js?v=20"></script>
+  <script src="/js/i18n.js?v=21"></script>
+  <script src="/js/layout.js?v=21"></script>
+  <script src="/js/seo-checker.js?v=21"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       window.SiteTrace.layout.mount({ active: '' });
