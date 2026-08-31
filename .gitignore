@@ -43,6 +43,7 @@ bridge-*.png
 
 # Test screenshots / debug logs
 *.png
+!/og/*.png
 chrome-debug.log
 gh-*.txt
 

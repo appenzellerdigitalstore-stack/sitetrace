@@ -28,9 +28,9 @@ function extractMeta(html, requestedUrl) {
   return {
     requestedUrl,
     title: get(/<title[^>]*>([\s\S]*?)<\/title>/i),
-    description: get(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i)
-                 || get(/<meta\s+content=["']([^"']*)["']\s+name=["']description["']/i)
-                 || get(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']\s*\/?>/i),
+    description: get(/<meta\s[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i)
+                 || get(/<meta\s[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i)
+                 || get(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i),
     robots: get(/<meta\s+name=["']robots["']\s+content=["']([^"']*)["']/i)
             || get(/<meta\s+content=["']([^"']*)["']\s+name=["']robots["']/i),
     viewport: get(/<meta\s+name=["']viewport["']\s+content=["']([^"']*)["']/i)
