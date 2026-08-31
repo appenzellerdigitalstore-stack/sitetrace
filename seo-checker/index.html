@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title data-i18n="seo_h1">Free SEO checker — analyze any page in seconds — SiteTrace</title>
+  <meta name="description" data-i18n-attr="content:seo_subtitle" content="Paste a URL, get a full SEO audit. Title, meta description, headings, Open Graph, image alt text, and more. No login, no tracking." />
+  <meta name="keywords" content="seo checker, free seo checker, seo audit, on-page seo, meta tags checker, title checker, meta description checker, h1 checker, sitemap checker, site trace seo, sitetrace" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/seo-checker/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Free SEO checker — analyze any page in seconds" />
+  <meta property="og:description" content="Paste a URL, get a full SEO audit. Title, meta description, headings, Open Graph, image alt text, and more. No login, no tracking." />
+  <meta property="og:url" content="https://sitetrace.it.com/seo-checker/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "WebApplication",
+    "name": "SiteTrace SEO Checker",
+    "url": "https://sitetrace.it.com/seo-checker/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Free SEO checker. Paste any URL to get a 12-point SEO audit covering title, meta description, H1, canonical, Open Graph, image alt text, and more."
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menno','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="seo_h1">SEO checker</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">SEO checker</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="seo_h1">Free SEO checker — analyze any page in seconds</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto" data-i18n="seo_subtitle">Paste a URL, get a full SEO audit. Title, meta description, headings, Open Graph, image alt text, and more. No login, no tracking.</p>
+      </div>
+    </section>
+
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="seo_intro_h2">What this SEO checker does</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="seo_intro_text">This tool fetches the URL you give it and runs 12 standard SEO checks: title, meta description, H1, H2, canonical, meta robots, viewport, Open Graph, Twitter Card, image alt text, HTTPS, and word count. Each check has a weight; the total is your score out of 100.</p>
+    </section>
+
+    <div id="seo-form-card" class="card mt-8">
+      <form id="seo-form" class="grid sm:grid-cols-[1fr_auto] gap-3" autocomplete="off">
+        <label class="block">
+          <span class="sr-only" data-i18n="seo_input_label">URL to check</span>
+          <input id="seo-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="w-full bg-ink-700 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50" data-i18n-attr="placeholder:seo_input_placeholder;aria-label:seo_input_label" />
+        </label>
+        <button type="submit" class="btn-primary">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span data-i18n="seo_check">Check now</span>
+        </button>
+      </form>
+      <p class="text-[11px] text-slate-500 mt-2" data-i18n="seo_loading">Fetching the page and running checks…</p>
+      <div id="seo-status" class="text-xs text-center mt-2"></div>
+    </div>
+
+    <div id="seo-loading" class="card text-center text-slate-400 py-10 mt-5 hidden">
+      <div class="inline-block w-5 h-5 border-2 border-slate-600 border-t-brand-400 rounded-full animate-spin mb-2"></div>
+      <div data-i18n="seo_checking">Checking…</div>
+    </div>
+
+    <div id="seo-result" class="mt-5"></div>
+
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="seo_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_1_q">How does this SEO checker work?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_1_a">It fetches the URL you give it (server-side, so CORS does not get in the way), parses the HTML, and runs 12 SEO checks. Each check has a weight; the total is your score out of 100.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_2_q">Do you send the URL to anyone else?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_2_a">No. The URL is fetched from Cloudflare’s edge to the target site, and the result is returned to your browser. SiteTrace does not log URLs, does not share them with any third party, and does not store them.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_3_q">What SEO checks are included?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_3_a">Title tag, meta description, H1 (presence and count), H2, canonical URL, meta robots (not accidentally noindex), viewport meta, Open Graph tags (og:title, og:description, og:image), Twitter Card tags, image alt text coverage, HTTPS, and word count.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_4_q">Can I check any URL?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_4_a">Any public http:// or https:// page. Private IPs, localhost, and other internal addresses are blocked for security. The target site must respond to a normal HTTP GET and return HTML.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_5_q">How do I add my own SEO check?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_5_a">Open functions/api/seo-check.js. Add an object to the CHECKS array with an id, a weight, and a run function that returns { pass, value, message }. The function takes care of HTML parsing, scoring, and rendering — you just describe the check. Deploy and the new check appears on the page automatically.</p></div>
+      </div>
+    </section>
+
+    <div class="mt-8 card">
+      <h2 class="text-base font-bold mb-3">Related tools</h2>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
+        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="/js/i18n.js?v=19"></script>
+  <script src="/js/layout.js?v=19"></script>
+  <script src="/js/seo-checker.js?v=19"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: '' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>
