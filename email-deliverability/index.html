@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>Email deliverability check — SPF, DKIM, DMARC, MX, BIMI — SiteTrace</title>
+  <meta name="description" content="Free email deliverability check. See if a domain is configured to reach the inbox: SPF, DKIM (on common selectors), DMARC, MX, and BIMI. Plus a 0–100 score and a per-record breakdown. Instant, no login." />
+  <meta name="keywords" content="email deliverability, spf check, dkim check, dmarc check, mx lookup, bimi check, spf record, dkim selector, dmarc policy, email authentication, sitetrace" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/email-deliverability/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Email deliverability check — SPF, DKIM, DMARC, MX, BIMI" />
+  <meta property="og:description" content="See if a domain is configured to reach the inbox. SPF, DKIM, DMARC, MX, BIMI — all checked at once, with a 0–100 score." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/email-deliverability.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Email deliverability check — SiteTrace" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Email deliverability check — SPF, DKIM, DMARC, MX, BIMI" />
+  <meta name="twitter:description" content="See if a domain is configured to reach the inbox. SPF, DKIM, DMARC, MX, BIMI — all checked at once, with a 0–100 score." />
+  <meta name="twitter:image" content="https://sitetrace.it.com/og/email-deliverability.png" />
+  <meta name="twitter:image:alt" content="Email deliverability check — SiteTrace" />
+  <meta property="og:url" content="https://sitetrace.it.com/email-deliverability/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is email deliverability?","acceptedAnswer":{"@type":"Answer","text":"Email deliverability is whether your messages reach the inbox — not the spam folder, not a bounce, not a silent drop. It depends on a chain of DNS records (SPF, DKIM, DMARC) and the reputation of the IP addresses you send from. Receivers like Gmail, Outlook, and Yahoo check these records on every message and use them to decide whether to accept, flag, or reject the mail. A misconfigured domain can deliver 100% of mail to spam even with a clean IP and a good list."}},
+      {"@type":"Question","name":"What does SPF do?","acceptedAnswer":{"@type":"Answer","text":"SPF (Sender Policy Framework) is a DNS TXT record that lists the IP addresses and servers allowed to send mail for your domain. When a receiver gets a message claiming to be from you, it checks your SPF record. If the sending server is not on the list, the message is treated as forged. The record looks like v=spf1 ip4:192.0.2.0/24 include:_spf.google.com -all. The -all at the end means “only these sources are allowed, reject everything else” — that is the strict setting."}},
+      {"@type":"Question","name":"What does DKIM do?","acceptedAnswer":{"@type":"Answer","text":"DKIM (DomainKeys Identified Mail) is a cryptographic signature that proves the message was not altered in transit and was sent by a server holding the private key. The matching public key is published as a DNS TXT record at <selector>._domainkey.yourdomain.com. Common selectors include default, google, k1, s1, s2, mailgun, and sendgrid. Receivers verify the signature against the published key."}},
+      {"@type":"Question","name":"What does DMARC do?","acceptedAnswer":{"@type":"Answer","text":"DMARC (Domain-based Message Authentication, Reporting, and Conformance) ties SPF and DKIM together and tells receivers what to do when a message fails. A DMARC record at _dmarc.yourdomain.com can be set to p=none (monitor only), p=quarantine (send failing mail to spam), or p=reject (refuse failing mail outright). The rua tag specifies where to send aggregate reports of failing mail. Without DMARC, receivers have no instruction — they may accept, flag, or reject forged mail however they like."}},
+      {"@type":"Question","name":"Why does my DKIM record not show up?","acceptedAnswer":{"@type":"Answer","text":"This tool probes the most common DKIM selectors (default, google, k1, s1, s2, mailgun, sendgrid, and a few others). If your mail server uses a custom selector, it will not be found. To find your actual selector, log into your mail server or ESP and look at the DKIM configuration, or send yourself a real email and inspect the DKIM-Signature header — the part before .dkim in the d= tag is your selector."}},
+      {"@type":"Question","name":"Will this tool send a real test email?","acceptedAnswer":{"@type":"Answer","text":"No. It only reads public DNS records (TXT and MX) for the domain you enter. It does not send mail, does not contact the mail server, and does not require any credentials. The result is the same view any receiving mail server gets when it looks up your domain's authentication records."}}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="emd_h1">Email deliverability check</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Email deliverability</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="emd_h1">Email deliverability check — SPF, DKIM, DMARC, MX, BIMI</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto" data-i18n="emd_subtitle">See if a domain is configured to reach the inbox. We query SPF, DKIM (on common selectors), DMARC, MX, and BIMI in parallel and give you a 0–100 score plus a per-record breakdown. Free, instant, no login.</p>
+      </div>
+    </section>
+
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="emd_intro_h2">What this email deliverability check does</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="emd_intro_text">Email deliverability is whether your messages reach the inbox — not the spam folder, not a bounce, not a silent drop. Receivers like Gmail, Outlook, and Yahoo check a chain of DNS records on every incoming message: SPF says which servers are allowed to send for you, DKIM proves the message wasn't tampered with, and DMARC tells the receiver what to do when something fails. This tool queries all five of those public records plus MX (where your incoming mail goes) in one shot and gives you a single score and a per-record diagnosis. No email is sent, no credentials are needed, and nothing leaves your browser except the domain you typed.</p>
+    </section>
+
+    <div id="emd-form-card" class="mt-8 max-w-3xl mx-auto card relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+      <form id="emd-form" class="space-y-4" autocomplete="off" novalidate>
+        <div>
+          <label for="emd-input" class="block text-xs uppercase tracking-widest text-slate-500 mb-2" data-i18n="emd_form_label">Domain to check</label>
+          <input id="emd-input" name="domain" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="example.com" class="w-full font-mono text-base sm:text-lg bg-ink-900/60 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50" />
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="submit" class="btn-primary flex-1 sm:flex-none" data-i18n="emd_form_button">Check deliverability</button>
+          <span class="text-xs text-slate-500" data-i18n="emd_form_hint">Or try:</span>
+          <button type="button" class="emd-preset btn-ghost" data-domain="google.com">google.com</button>
+          <button type="button" class="emd-preset btn-ghost" data-domain="github.com">github.com</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="emd-loading" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="inline-block w-6 h-6 border-2 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
+      <p class="mt-3 text-sm text-slate-400" data-i18n="emd_loading">Querying DNS records…</p>
+    </div>
+
+    <div id="emd-error" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="text-amber-300 text-sm mb-2" id="emd-error-msg" data-i18n="emd_error">Could not check that domain.</div>
+      <p class="text-xs text-slate-500" data-i18n="emd_error_hint">Use a bare domain like <span class="font-mono">example.com</span> — no protocol, no path.</p>
+    </div>
+
+    <div id="emd-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
+
+    <section class="mt-12 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="emd_how_h2">How email deliverability checking works</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_how_text">When a receiving mail server gets a message claiming to be from your domain, it looks up four public DNS records in parallel: SPF (TXT at the apex), DKIM (TXT at a selector under _domainkey), DMARC (TXT at _dmarc), and MX (where to deliver mail to you). This tool runs the same lookups your recipients run, and scores the configuration from 0 to 100 based on what's present and whether each record is configured for strict enforcement. A score of 80+ means your domain is properly authenticated; below that, the issues list tells you exactly what to add or change.</p>
+    </section>
+
+    <section class="mt-5 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="emd_records_h2">SPF, DKIM, DMARC, MX, BIMI — what each one does</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_records_text">SPF (Sender Policy Framework) is a TXT record at the apex that lists the IP addresses and servers allowed to send mail for your domain. Receivers reject mail that arrives from a server not on the list. DKIM (DomainKeys Identified Mail) is a cryptographic signature added to outgoing messages; the matching public key is published as a TXT record at &lt;selector&gt;._domainkey.yourdomain.com. DMARC (Domain-based Message Authentication, Reporting, and Conformance) ties SPF and DKIM together with a policy of none, quarantine, or reject. MX records tell other servers where to deliver mail sent to your domain. BIMI (Brand Indicators for Message Identification) is an emerging standard that lets you attach your brand logo to authenticated messages.</p>
+    </section>
+
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="emd_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="emd_faq_1_q">What is email deliverability?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_faq_1_a">Email deliverability is whether your messages reach the inbox — not the spam folder, not a bounce, not a silent drop. It depends on a chain of DNS records (SPF, DKIM, DMARC) and the reputation of the IP addresses you send from. Receivers like Gmail, Outlook, and Yahoo check these records on every message and use them to decide whether to accept, flag, or reject the mail.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="emd_faq_2_q">What does SPF do?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_faq_2_a">SPF (Sender Policy Framework) is a DNS TXT record that lists the IP addresses and servers allowed to send mail for your domain. When a receiver gets a message claiming to be from you, it checks your SPF record. If the sending server is not on the list, the message is treated as forged. The record looks like v=spf1 ip4:192.0.2.0/24 include:_spf.google.com -all. The -all at the end means "only these sources are allowed, reject everything else" — that is the strict setting.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="emd_faq_3_q">What does DKIM do?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_faq_3_a">DKIM (DomainKeys Identified Mail) is a cryptographic signature that proves the message was not altered in transit and was sent by a server holding the private key. The matching public key is published as a DNS TXT record at &lt;selector&gt;._domainkey.yourdomain.com. Common selectors include default, google, k1, s1, s2, mailgun, and sendgrid.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="emd_faq_4_q">What does DMARC do?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_faq_4_a">DMARC ties SPF and DKIM together and tells receivers what to do when a message fails. A DMARC record at _dmarc.yourdomain.com can be set to p=none (monitor only), p=quarantine (send failing mail to spam), or p=reject (refuse failing mail outright). Without DMARC, receivers have no instruction — they may accept, flag, or reject forged mail however they like.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="emd_faq_5_q">Why does my DKIM record not show up?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_faq_5_a">This tool probes the most common DKIM selectors (default, google, k1, s1, s2, mailgun, sendgrid, and a few others). If your mail server uses a custom selector, it will not be found. To find your actual selector, log into your mail server or ESP and look at the DKIM configuration, or send yourself a real email and inspect the DKIM-Signature header — the part before .dkim in the d= tag is your selector.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="emd_faq_6_q">Will this tool send a real test email?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_faq_6_a">No. It only reads public DNS records (TXT and MX) for the domain you enter. It does not send mail, does not contact the mail server, and does not require any credentials.</p></div>
+      </div>
+    </section>
+
+    <div class="mt-8 card">
+      <h2 class="text-base font-bold mb-3" data-i18n="emd_related">Related tools</h2>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
+        <a href="/ip-reputation/" class="text-brand-300 hover:text-brand-200">IP reputation →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS tools →</a>
+        <a href="/subnet-calculator/" class="text-brand-300 hover:text-brand-200">Subnet calculator →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200">
+    <div class="px-4 py-2.5 rounded-xl bg-ink-700/95 border border-white/10 backdrop-blur text-sm text-white shadow-2xl">
+      <span id="toast-text"></span>
+    </div>
+  </div>
+
+  <script src="/js/i18n.js?v=24"></script>
+  <script src="/js/layout.js?v=24"></script>
+  <script src="/js/app.js?v=24"></script>
+  <script src="/js/email-deliverability.js?v=24"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: 'nav_whatismyip' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>
