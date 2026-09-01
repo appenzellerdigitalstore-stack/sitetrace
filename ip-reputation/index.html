@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>IP reputation check — is this IP blacklisted? — SiteTrace</title>
+  <meta name="description" content="Free IP reputation check. See if an IPv4 address is listed on Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, or PSBL. Plus geolocation, ISP, and proxy/hosting detection. Instant, no login." />
+  <meta name="keywords" content="ip reputation check, ip blacklist check, is this ip blacklisted, spamhaus check, dnsbl check, ip reputation lookup, spamhaus zen, spamcop, barracuda, cbl, sorbs, uceprotect, psbl, ip reputation score, sitetrace" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/ip-reputation/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="IP reputation check — is this IP blacklisted?" />
+  <meta property="og:description" content="See if an IP is on Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, or PSBL. Plus geolocation, ISP, and proxy/hosting detection." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/ip-reputation.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="IP reputation check — SiteTrace" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="IP reputation check — is this IP blacklisted?" />
+  <meta name="twitter:description" content="See if an IP is on Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, or PSBL." />
+  <meta name="twitter:image" content="https://sitetrace.it.com/og/ip-reputation.png" />
+  <meta name="twitter:image:alt" content="IP reputation check — SiteTrace" />
+  <meta property="og:url" content="https://sitetrace.it.com/ip-reputation/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is IP reputation?","acceptedAnswer":{"@type":"Answer","text":"An IP address builds a reputation based on what traffic has come from it: email sent, websites hosted, abuse reports filed. Mail servers and security systems use that reputation (combined with public blocklists) to decide whether to accept, flag, or reject traffic from the IP. A clean reputation means your email goes to inboxes and your services aren't pre-blocked. A bad reputation means your mail lands in spam, your signups get flagged, and your support inbox fills up with 'I can't reach your site'."}},
+      {"@type":"Question","name":"How do I get delisted from a blacklist?","acceptedAnswer":{"@type":"Answer","text":"Each list runs itself. First, find the listing reason (almost every list has a lookup page that explains why they listed the IP). Fix the underlying problem — a compromised script sending spam, an open mail relay, an old contact form being abused — then follow the list's delisting procedure. Most lists have a removal request form on their site. Some are automatic once the listing criteria no longer apply; others require manual review. Allow up to 24 hours after the request is processed for the change to propagate."}},
+      {"@type":"Question","name":"Is my IP address being shared with anyone?","acceptedAnswer":{"@type":"Answer","text":"Only if you paste it into the form yourself. The 'check my own IP' button sends a request to SiteTrace's edge, which queries the public blocklists and a public geolocation database. The result comes back to your browser. SiteTrace does not log which IPs are checked, does not store the results, and does not share them with any third party."}},
+      {"@type":"Question","name":"Why does my IP show as a proxy or hosting network?","acceptedAnswer":{"@type":"Answer","text":"If you see 'proxy' or 'hosting', your IP belongs to a data-center or VPN provider, not a residential ISP. This is normal if you are on a VPN, on a corporate network, or hosting a server. Mail servers and security systems treat these IPs with extra suspicion because they are commonly abused — but a clean hosting IP with no DNSBL hits is usually fine for legitimate traffic."}},
+      {"@type":"Question","name":"How accurate is this check?","acceptedAnswer":{"@type":"Answer","text":"The DNSBL queries go to the same public lists the rest of the internet uses, so 'listed' results are exactly what a receiving mail server would see. The geolocation data comes from ip-api.com, which is accurate to the city/region level for most countries. The composite score is a rough guide, not a guarantee: a single DNSBL hit does not mean your IP is unusable, and a clean score does not mean every other blocklist on the internet also agrees."}}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div id="site-bg"></div>
+  <div id="site-header"></div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span data-i18n="iprep_h1">IP reputation check</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">IP reputation</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="iprep_h1">IP reputation check — is this IP blacklisted?</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto" data-i18n="iprep_subtitle">See if an IP is on Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, or PSBL. Plus geolocation, ISP, and proxy/hosting detection. Free, instant, no login.</p>
+      </div>
+    </section>
+
+    <section class="mt-10 max-w-3xl mx-auto">
+      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="iprep_intro_h2">What this IP reputation check does</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="iprep_intro_text">Every public IP carries a reputation. The reputation is shaped by what kind of traffic has come from that IP before — bulk email, abuse reports, hosting scans, botnet activity. Mail servers, signup forms, and security systems check public blocklists before accepting traffic from an IP, and a single listing on the wrong list can mean your mail lands in spam or your legitimate traffic gets blocked. This tool queries seven of the most-used public blocklists in parallel, then combines the result with public geolocation and connection-type data to give you a single reputation score and a per-list breakdown.</p>
+    </section>
+
+    <div id="iprep-form-card" class="mt-8 max-w-3xl mx-auto card relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+      <form id="iprep-form" class="space-y-4" autocomplete="off" novalidate>
+        <div>
+          <label for="iprep-input" class="block text-xs uppercase tracking-widest text-slate-500 mb-2" data-i18n="iprep_form_label">IPv4 address to check</label>
+          <input id="iprep-input" name="ip" type="text" inputmode="decimal" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="1.2.3.4" class="w-full font-mono text-base sm:text-lg bg-ink-900/60 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50" />
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="submit" class="btn-primary flex-1 sm:flex-none" data-i18n="iprep_form_button">Check reputation</button>
+          <button type="button" id="iprep-myip" class="btn-ghost flex-1 sm:flex-none" data-i18n="iprep_my_ip">Use my IP</button>
+        </div>
+        <p class="text-xs text-slate-500" data-i18n="iprep_form_hint">Leave blank and click "Use my IP" to check the IP your connection is coming from right now.</p>
+      </form>
+    </div>
+
+    <div id="iprep-loading" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="inline-block w-6 h-6 border-2 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
+      <p class="mt-3 text-sm text-slate-400" data-i18n="iprep_loading">Querying blacklists and geolocation…</p>
+    </div>
+
+    <div id="iprep-error" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="text-amber-300 text-sm mb-3" id="iprep-error-msg" data-i18n="iprep_error">Could not check that IP.</div>
+      <button id="iprep-error-retry" type="button" class="btn-ghost" data-i18n="iprep_recheck">Check another IP</button>
+    </div>
+
+    <div id="iprep-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
+
+    <section class="mt-12 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="iprep_how_h2">How IP reputation checking works</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_how_text">This tool runs three checks in parallel: it queries seven of the most widely used public blocklists (DNSBLs) for the IP, it asks a public geolocation database where the IP is registered and what kind of network it belongs to, and it combines those signals into a single 0–100 reputation score. The score starts at 100, drops 10 points for every DNSBL that lists the IP, drops another 15 if the IP is flagged as a proxy, and adjusts slightly based on the network type. A score of 80+ is low risk, 50–79 is medium, and under 50 is high. The blocklist data comes straight from the lists' DNS zones, so a "listed" result here is exactly what a receiving mail server would see.</p>
+    </section>
+
+    <section class="mt-5 card">
+      <h2 class="text-xl font-bold mb-2" data-i18n="iprep_dnsbl_h2">What are DNSBLs?</h2>
+      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_dnsbl_text">A DNSBL (DNS-based blockhole list) is a public database of IP addresses that have been observed sending spam, hosting malware, or being used for other abusive activity. Other servers can ask the list "is this IP on you?" by reversing the IP and looking it up in the list's DNS zone. If the list has the IP, the lookup returns a 127.0.0.x address where the last octet tells you why. If not, the lookup returns nothing. The major DNSBLs (Spamhaus, Spamcop, Barracuda, CBL, SORBS) are used by receiving mail servers all over the internet, so a single listing on one of them can affect whether your email reaches the inbox or the spam folder.</p>
+    </section>
+
+    <section class="mt-12 card" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-4" data-i18n="iprep_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5">
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="iprep_faq_1_q">What is IP reputation?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_faq_1_a">An IP address builds a reputation based on what traffic has come from it: email sent, websites hosted, abuse reports filed. Mail servers and security systems use that reputation (combined with public blocklists) to decide whether to accept, flag, or reject traffic from the IP. A clean reputation means your email goes to inboxes and your services aren't pre-blocked. A bad reputation means your mail lands in spam, your signups get flagged, and your support inbox fills up with "I can't reach your site".</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="iprep_faq_2_q">How do I get delisted from a blacklist?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_faq_2_a">Each list runs itself. First, find the listing reason (almost every list has a lookup page that explains why they listed the IP). Fix the underlying problem — a compromised script sending spam, an open mail relay, an old contact form being abused — then follow the list's delisting procedure. Most lists have a removal request form on their site. Some are automatic once the listing criteria no longer apply; others require manual review. Allow up to 24 hours after the request is processed for the change to propagate.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="iprep_faq_3_q">Is my IP address being shared with anyone?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_faq_3_a">Only if you paste it into the form yourself. The "check my own IP" button sends a request to SiteTrace's edge, which queries the public blocklists and a public geolocation database. The result comes back to your browser. SiteTrace does not log which IPs are checked, does not store the results, and does not share them with any third party.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="iprep_faq_4_q">Why does my IP show as a proxy or hosting network?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_faq_4_a">If you see "proxy" or "hosting", your IP belongs to a data-center or VPN provider, not a residential ISP. This is normal if you are on a VPN, on a corporate network, or hosting a server. Mail servers and security systems treat these IPs with extra suspicion because they are commonly abused — but a clean hosting IP with no DNSBL hits is usually fine for legitimate traffic.</p></div>
+        <div><h3 class="font-semibold text-white mb-1" data-i18n="iprep_faq_5_q">How accurate is this check?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="iprep_faq_5_a">The DNSBL queries go to the same public lists the rest of the internet uses, so "listed" results are exactly what a receiving mail server would see. The geolocation data comes from ip-api.com, which is accurate to the city/region level for most countries. The composite score is a rough guide, not a guarantee: a single DNSBL hit does not mean your IP is unusable, and a clean score does not mean every other blocklist on the internet also agrees.</p></div>
+      </div>
+    </section>
+
+    <div class="mt-8 card">
+      <h2 class="text-base font-bold mb-3" data-i18n="iprep_related">Related tools</h2>
+      <div class="flex flex-wrap gap-3 text-sm">
+        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
+        <a href="/ip-lookup/" class="text-brand-300 hover:text-brand-200">IP lookup →</a>
+        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
+        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS tools →</a>
+        <a href="/vpn-checker/" class="text-brand-300 hover:text-brand-200">VPN checker →</a>
+        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200">
+    <div class="px-4 py-2.5 rounded-xl bg-ink-700/95 border border-white/10 backdrop-blur text-sm text-white shadow-2xl">
+      <span id="toast-text"></span>
+    </div>
+  </div>
+
+  <script src="/js/i18n.js?v=23"></script>
+  <script src="/js/layout.js?v=23"></script>
+  <script src="/js/app.js?v=23"></script>
+  <script src="/js/ip-reputation.js?v=23"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      window.SiteTrace.layout.mount({ active: 'nav_whatismyip' });
+    });
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"ae79b81024344f7f99ce20c0a38a7fcb","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

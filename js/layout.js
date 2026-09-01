@@ -28,8 +28,6 @@
     fr: 'Français',
     de: 'Deutsch',
     it: 'Italiano',
-    ja: '日本語',
-    zh: '中文',
   };
 
   function languageOptions(current) {
