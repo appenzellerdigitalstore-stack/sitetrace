@@ -807,6 +807,16 @@
       hhd_faq_4_a: 'Most production sites miss one or more of the high-weight security headers. The score is a rough guide — a site with no CSP is genuinely at higher risk for XSS, but a site with a strong CSP that breaks half the page is also not safe.',
       hhd_faq_5_q: 'Is this tool safe to use on any URL?',
       hhd_faq_5_a: 'You can use it on any public http:// or https:// URL. Private IPs, localhost, and .local / .internal hostnames are blocked to prevent the tool from being used to scan internal infrastructure.',
+      front_more_eyebrow: 'More tools',
+      front_feature_new: 'New',
+      front_feature_iprep_title: 'IP reputation check',
+      front_feature_iprep_desc: 'Check any IPv4 against 7 major DNS blacklists (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) plus geolocation, ISP, ASN, and whether the connection looks like a proxy or data center.',
+      front_feature_snc_title: 'Subnet calculator',
+      front_feature_snc_desc: 'Paste any IPv4 CIDR (e.g. 192.168.1.0/24) and get the network address, broadcast, first/last usable host, subnet and wildcard masks, total address count, IP class, and full binary breakdown. Pure client-side math.',
+      front_feature_emd_title: 'Email deliverability check',
+      front_feature_emd_desc: 'See if a domain is configured to reach the inbox. We query SPF, DKIM (on 20 common selectors), DMARC, MX, and BIMI in parallel and give you a 0-100 score with a list of what to fix.',
+      front_feature_hhd_title: 'HTTP headers viewer',
+      front_feature_hhd_desc: 'Paste any URL and get the full set of response headers plus a 0-100 security grade for the six headers that matter (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).',
     },
 
     es: {
@@ -1535,6 +1545,16 @@
       emd_faq_6_q: '¿Esta herramienta envía un email de prueba real?',
       emd_faq_6_a: 'No. Solo lee registros DNS públicos (TXT y MX) del dominio que introduces. No envía correo, no contacta al servidor de correo y no necesita credenciales.',
 
+      front_more_eyebrow: 'Más herramientas',
+      front_feature_new: 'Nuevo',
+      front_feature_iprep_title: 'Verificación de reputación IP',
+      front_feature_iprep_desc: 'Comprueba cualquier IPv4 contra 7 listas negras DNS principales (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) más geolocalización, ISP, ASN, y si la conexión parece un proxy o centro de datos.',
+      front_feature_snc_title: 'Calculadora de subredes',
+      front_feature_snc_desc: 'Pega cualquier CIDR IPv4 (p. ej. 192.168.1.0/24) y obtén la dirección de red, broadcast, primer/último host usable, máscaras de subred y wildcard, conteo total de direcciones, clase IP y desglose binario. Cálculo puro del lado del cliente.',
+      front_feature_emd_title: 'Verificación de entregabilidad de email',
+      front_feature_emd_desc: 'Mira si un dominio está configurado para llegar a la bandeja de entrada. Consultamos SPF, DKIM (en 20 selectores comunes), DMARC, MX y BIMI en paralelo y te damos una puntuación de 0-100 con una lista de qué corregir.',
+      front_feature_hhd_title: 'Visor de cabeceras HTTP',
+      front_feature_hhd_desc: 'Pega cualquier URL y obtén el conjunto completo de cabeceras de respuesta más una nota de seguridad de 0-100 para las seis cabeceras que importan (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).',
     },
 
     pt: {
@@ -2263,6 +2283,16 @@
       emd_faq_6_q: 'Esta ferramenta envia um email de teste real?',
       emd_faq_6_a: 'Não. Ela só lê registros DNS públicos (TXT e MX) do domínio que você informa. Não envia email, não contata o servidor de email e não precisa de credenciais.',
 
+      front_more_eyebrow: 'Mais ferramentas',
+      front_feature_new: 'Novo',
+      front_feature_iprep_title: 'Verificação de reputação de IP',
+      front_feature_iprep_desc: 'Verifique qualquer IPv4 contra 7 listas negras DNS principais (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) mais geolocalização, ISP, ASN, e se a conexão parece um proxy ou data center.',
+      front_feature_snc_title: 'Calculadora de sub-redes',
+      front_feature_snc_desc: 'Cole qualquer CIDR IPv4 (ex.: 192.168.1.0/24) e obtenha o endereço de rede, broadcast, primeiro/último host utilizável, máscaras de sub-rede e wildcard, contagem total de endereços, classe IP e detalhamento binário. Cálculo puro do lado do cliente.',
+      front_feature_emd_title: 'Verificação de entregabilidade de email',
+      front_feature_emd_desc: 'Veja se um domínio está configurado para chegar à caixa de entrada. Consultamos SPF, DKIM (em 20 seletores comuns), DMARC, MX e BIMI em paralelo e damos uma pontuação de 0-100 com uma lista do que corrigir.',
+      front_feature_hhd_title: 'Visualizador de cabeçalhos HTTP',
+      front_feature_hhd_desc: 'Cole qualquer URL e obtenha o conjunto completo de cabeçalhos de resposta mais uma nota de segurança de 0-100 para os seis cabeçalhos que importam (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).',
     },
 
     fr: {
@@ -2990,6 +3020,16 @@
       emd_faq_5_a: 'Cet outil teste les sélecteurs DKIM les plus courants (default, google, k1, s1, s2, mailgun, sendgrid et quelques autres). Si votre serveur de courrier utilise un sélecteur personnalisé, il ne sera pas trouvé. Pour trouver votre sélecteur réel, connectez-vous à votre serveur de courrier ou à votre ESP et regardez la configuration DKIM, ou envoyez-vous un email et inspectez l’en-tête DKIM-Signature — la partie avant .dkim dans le champ d= est votre sélecteur.',
       emd_faq_6_q: 'Cet outil envoie-t-il un email de test réel ?',
       emd_faq_6_a: 'Non. Il lit uniquement les enregistrements DNS publics (TXT et MX) du domaine que vous saisissez. Il n’envoie pas d’email, ne contacte pas le serveur de courrier et n’exige aucune identification.',
+      front_more_eyebrow: 'Plus d\'outils',
+      front_feature_new: 'Nouveau',
+      front_feature_iprep_title: 'Vérification de réputation IP',
+      front_feature_iprep_desc: 'Vérifiez n\'importe quel IPv4 contre 7 principales listes noires DNS (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) plus la géolocalisation, l\'ISP, l\'ASN, et si la connexion ressemble à un proxy ou un centre de données.',
+      front_feature_snc_title: 'Calculatrice de sous-réseaux',
+      front_feature_snc_desc: 'Collez n\'importe quel CIDR IPv4 (ex. 192.168.1.0/24) et obtenez l\'adresse réseau, broadcast, premier/dernier hôte utilisable, masques de sous-réseau et wildcard, nombre total d\'adresses, classe IP, et décomposition binaire complète. Calcul pur côté client.',
+      front_feature_emd_title: 'Vérification de délivrabilité des emails',
+      front_feature_emd_desc: 'Voyez si un domaine est configuré pour atteindre la boîte de réception. Nous interrogeons SPF, DKIM (sur 20 sélecteurs courants), DMARC, MX et BIMI en parallèle et vous donnons un score de 0-100 avec une liste de ce qu\'il faut corriger.',
+      front_feature_hhd_title: 'Afficheur d\'en-têtes HTTP',
+      front_feature_hhd_desc: 'Collez n\'importe quelle URL et obtenez l\'ensemble complet des en-têtes de réponse plus une note de sécurité de 0-100 pour les six en-têtes qui comptent (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).',
     },
 
     // ---- German --------------------------------------------------
@@ -3732,6 +3772,16 @@
       emd_faq_5_a: 'Dieses Tool prüft die gängigsten DKIM-Selektoren (default, google, k1, s1, s2, mailgun, sendgrid und einige weitere). Wenn dein Mailserver einen benutzerdefinierten Selektor verwendet, wird er nicht gefunden. Um deinen tatsächlichen Selektor herauszufinden, logge dich in deinen Mailserver oder ESP ein und schau in die DKIM-Konfiguration, oder schicke dir selbst eine echte E-Mail und prüfe die DKIM-Signature-Kopfzeile — der Teil vor .dkim im d=-Feld ist dein Selektor.',
       emd_faq_6_q: 'Versendet dieses Tool eine echte Test-E-Mail?',
       emd_faq_6_a: 'Nein. Es liest nur öffentliche DNS-Einträge (TXT und MX) der eingegebenen Domain. Es versendet keine E-Mail, kontaktiert keinen Mailserver und benötigt keine Zugangsdaten.',
+      front_more_eyebrow: 'Weitere Tools',
+      front_feature_new: 'Neu',
+      front_feature_iprep_title: 'IP-Reputationsprüfung',
+      front_feature_iprep_desc: 'Prüfe jede IPv4 gegen 7 große DNS-Blacklists (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) plus Geolokalisierung, ISP, ASN und ob die Verbindung wie ein Proxy oder Rechenzentrum aussieht.',
+      front_feature_snc_title: 'Subnetz-Rechner',
+      front_feature_snc_desc: 'Füge eine beliebige IPv4-CIDR ein (z. B. 192.168.1.0/24) und erhalte Netzwerkadresse, Broadcast, erste/letzte nutzbare Host-Adresse, Subnetz- und Wildcard-Masken, Gesamtanzahl der Adressen, IP-Klasse und vollständige Binäraufschlüsselung. Reine clientseitige Berechnung.',
+      front_feature_emd_title: 'E-Mail-Zustellbarkeitsprüfung',
+      front_feature_emd_desc: 'Sieh, ob eine Domain für den Posteingang konfiguriert ist. Wir fragen SPF, DKIM (bei 20 gängigen Selektoren), DMARC, MX und BIMI parallel ab und geben dir eine 0-100-Punktzahl mit einer Liste, was zu reparieren ist.',
+      front_feature_hhd_title: 'HTTP-Header-Viewer',
+      front_feature_hhd_desc: 'Füge eine beliebige URL ein und erhalte den vollständigen Satz von Antwort-Headern plus eine 0-100-Sicherheitsbewertung für die sechs Header, die zählen (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).',
     },
 
     // ---- Italian -------------------------------------------------
@@ -4474,6 +4524,16 @@
       emd_faq_5_a: 'Questo strumento testa i selettori DKIM più comuni (default, google, k1, s1, s2, mailgun, sendgrid e altri). Se il tuo server di posta usa un selettore personalizzato, non verrà trovato. Per trovare il tuo selettore reale, accedi al tuo server di posta o al tuo ESP e guarda la configurazione DKIM, oppure invia un’email reale a te stesso e controlla l’intestazione DKIM-Signature — la parte prima di .dkim nel campo d= è il tuo selettore.',
       emd_faq_6_q: 'Questo strumento invia una vera email di test?',
       emd_faq_6_a: 'No. Legge solo i record DNS pubblici (TXT e MX) del dominio che inserisci. Non invia email, non contatta il server di posta e non richiede credenziali.',
+      front_more_eyebrow: 'Altri strumenti',
+      front_feature_new: 'Nuovo',
+      front_feature_iprep_title: 'Verifica reputazione IP',
+      front_feature_iprep_desc: 'Controlla qualsiasi IPv4 contro 7 principali blacklist DNS (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) più geolocalizzazione, ISP, ASN, e se la connessione sembra un proxy o un data center.',
+      front_feature_snc_title: 'Calcolatore di sottoreti',
+      front_feature_snc_desc: 'Incolla qualsiasi CIDR IPv4 (es. 192.168.1.0/24) e ottieni indirizzo di rete, broadcast, primo/ultimo host utilizzabile, maschere di sottorete e wildcard, conteggio totale degli indirizzi, classe IP e scomposizione binaria completa. Calcolo puro lato client.',
+      front_feature_emd_title: 'Verifica recapito email',
+      front_feature_emd_desc: 'Vedi se un dominio è configurato per raggiungere la posta in arrivo. Interroghiamo SPF, DKIM (su 20 selettori comuni), DMARC, MX e BIMI in parallelo e ti diamo un punteggio 0-100 con un elenco di cosa correggere.',
+      front_feature_hhd_title: 'Visualizzatore di header HTTP',
+      front_feature_hhd_desc: 'Incolla qualsiasi URL e ottieni l\'insieme completo di header di risposta più un voto di sicurezza 0-100 per i sei header che contano (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).',
     },
 
     // ---- Dutch ---------------------------------------------------
@@ -4584,3 +4644,4 @@
     init();
   }
 })(window);
+
