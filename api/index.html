@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title data-i18n="api_h1">SiteTrace API — Free site audit APIs for developers</title>
+  <meta name="description" data-i18n-attr="content:api_subtitle" content="The same data behind SiteTrace's free tools, exposed as REST + JSON. SEO audit, AI content detection, email validation, schema detector, HTTP headers, and more. 100 free calls/day, no signup." />
+  <meta name="keywords" content="site audit api, seo api, ai content detection api, email validation api, schema markup api, http headers api, sitetrace api, free seo api, ahrefs alternative, semrush alternative" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://sitetrace.it.com/api/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SiteTrace API — Free site audit APIs for developers" />
+  <meta property="og:description" content="REST + JSON for SEO audit, AI content detection, email validation, schema detection, HTTP headers. 100 free calls/day, no signup." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/api.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="SiteTrace API — Free site audit APIs" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:url" content="https://sitetrace.it.com/api/" />
+  <meta property="og:site_name" content="SiteTrace" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SiteTrace API — Free site audit APIs for developers" />
+  <meta name="twitter:description" content="REST + JSON for SEO audit, AI content detection, email validation, schema detection, HTTP headers. 100 free calls/day." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "WebAPI",
+    "name": "SiteTrace API",
+    "url": "https://api.sitetrace.it.com",
+    "description": "REST + JSON API for SEO audit, AI content detection, email validation, schema detection, HTTP headers. 100 free calls/day with no signup required.",
+    "documentation": "https://sitetrace.it.com/api/",
+    "provider": {
+      "@type": "Organization",
+      "name": "SiteTrace",
+      "url": "https://sitetrace.it.com/"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "0",
+      "highPrice": "79.99",
+      "priceCurrency": "USD",
+      "offerCount": "5"
+    },
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://www.schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is SiteTrace API?","acceptedAnswer":{"@type":"Answer","text":"SiteTrace API is the data behind SiteTrace's free browser tools, exposed as a REST + JSON API. It includes 10 endpoints for site auditing (SEO, AI content detection, email validation, schema detection, HTTP headers) and domain recon (RDAP WHOIS, redirect tracing, bulk status checks, subdomain enumeration, Wayback Machine snapshots)."}},
+      {"@type":"Question","name":"Is there a free tier?","acceptedAnswer":{"@type":"Answer","text":"Yes. The free tier gives you 100 calls per day per IP address with no signup. All endpoints are included. No credit card required."}},
+      {"@type":"Question","name":"How is this different from Ahrefs or SEMrush?","acceptedAnswer":{"@type":"Answer","text":"Ahrefs and SEMrush cost $99-1499/month for the same kind of data. SiteTrace API focuses on the site audit use case (the part most agencies actually use), and bundles endpoints into a single REST call. We don't have link databases (Ahrefs wins there) or rank trackers (SEMrush wins there), but for on-page audits + content + email — we beat them on price and we have a free tier."}},
+      {"@type":"Question","name":"What's the infrastructure?","acceptedAnswer":{"@type":"Answer","text":"The API runs entirely on Cloudflare Workers free tier + free public datasets (crt.sh for certificate transparency, rdap.org for WHOIS, Cloudflare DoH for DNS, HaveIBeenPwned's k-anonymity API for breach data, Internet Archive for Wayback snapshots). No external paid services."}},
+      {"@type":"Question","name":"Can I self-host?","acceptedAnswer":{"@type":"Answer","text":"Yes. The whole stack is open source at github.com/appenzellerdigitalstore-stack/sitetrace-cloud. Clone it, deploy to your own Cloudflare account, and run your own API."}}
+    ]
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' }, safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' }, warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }, danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)', 'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense auto-ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+<div class="fixed inset-0 -z-10 pointer-events-none">
+  <div class="absolute inset-0 bg-hero-glow"></div>
+  <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
+</div>
+<header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+  <a href="/" data-route="home" class="flex items-center gap-2.5 group">
+    <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+      <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+        <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </span>
+    <span class="text-base sm:text-lg font-bold tracking-tight">SiteTrace</span>
+  </a>
+  <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
+    <a href="/" class="hover:text-white transition">Home</a>
+    <a href="/seo-checker/" class="hover:text-white transition">SEO</a>
+    <a href="/ip-reputation/" class="hover:text-white transition">IP</a>
+    <a href="/http-headers/" class="hover:text-white transition">Headers</a>
+    <a href="/email-deliverability/" class="hover:text-white transition">Email</a>
+    <a href="/api/" class="text-white font-semibold">API</a>
+    <a href="/about/" class="hover:text-white transition">About</a>
+  </nav>
+  <a href="https://api.sitetrace.it.com/signup" class="text-xs sm:text-sm font-semibold bg-brand-gradient hover:opacity-90 transition px-4 py-2 rounded-lg shadow-glow-brand">Get API key</a>
+</div>
+</header>
+
+<main>
+<!-- Hero -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-12 text-center">
+  <span class="inline-block text-xs font-semibold uppercase tracking-wider bg-brand-500/10 text-brand-300 px-3 py-1 rounded-full mb-6 border border-brand-400/30">For developers</span>
+  <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-br from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+    Site audit APIs.<br/>
+    <span class="text-brand-300">100 free calls/day, no signup.</span>
+  </h1>
+  <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
+    The same data behind SiteTrace's free browser tools, exposed as REST + JSON. SEO audit, AI content detection, email validation, schema detection, HTTP headers, and more — at a fraction of what Ahrefs / SEMrush / Hunter charge.
+  </p>
+  <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+    <a href="https://api.sitetrace.it.com/signup" class="font-semibold bg-brand-gradient hover:opacity-90 transition px-7 py-3 rounded-lg shadow-glow-brand">Start free →</a>
+    <a href="#docs" class="font-medium text-slate-300 hover:text-white transition px-7 py-3">Read the docs</a>
+  </div>
+  <p class="text-sm text-slate-500">No credit card. No tracking. Edge-cached. Same data, no markup.</p>
+</section>
+
+<!-- Pricing comparison -->
+<section class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+  <div class="rounded-2xl border border-white/5 bg-ink-800/40 p-6 sm:p-10">
+    <div class="grid sm:grid-cols-4 gap-4 text-center">
+      <div>
+        <div class="text-3xl sm:text-4xl font-extrabold text-safe-400">$0</div>
+        <div class="text-sm text-slate-400 mt-1">SiteTrace free tier</div>
+        <div class="text-xs text-slate-500 mt-0.5">100 calls/day · no signup</div>
+      </div>
+      <div>
+        <div class="text-3xl sm:text-4xl font-extrabold text-slate-400">$9.99</div>
+        <div class="text-sm text-slate-400 mt-1">SiteTrace Hobby</div>
+        <div class="text-xs text-slate-500 mt-0.5">1,000 calls/day</div>
+      </div>
+      <div>
+        <div class="text-3xl sm:text-4xl font-extrabold text-slate-400">$30-90</div>
+        <div class="text-sm text-slate-400 mt-1">Hunter.io</div>
+        <div class="text-xs text-slate-500 mt-0.5">per month, single endpoint</div>
+      </div>
+      <div>
+        <div class="text-3xl sm:text-4xl font-extrabold text-warn-400">$499+</div>
+        <div class="text-sm text-slate-400 mt-1">Ahrefs / SEMrush</div>
+        <div class="text-xs text-slate-500 mt-0.5">per month, enterprise</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 Core APIs (Phase 1) -->
+<section id="docs" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+  <h2 class="text-3xl font-bold tracking-tight mb-3 text-center">5 core site audit APIs</h2>
+  <p class="text-center text-slate-400 mb-10">Live now at <a href="https://api.sitetrace.it.com" class="text-brand-300 hover:underline">api.sitetrace.it.com</a></p>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- SEO Audit -->
+    <a href="https://api.sitetrace.it.com/api/seo-audit" class="feature-card block rounded-xl border border-white/10 bg-ink-800/60 p-6 hover:border-brand-400/50">
+      <div class="text-2xl mb-3">📊</div>
+      <h3 class="font-bold text-lg mb-1">SEO Audit</h3>
+      <p class="text-sm text-slate-400 mb-3">Title, meta, headings, images, links, schema, OG, score (0-100).</p>
+      <code class="text-xs text-brand-300 bg-ink-900 px-2 py-1 rounded">GET /api/seo-audit?url=...</code>
+    </a>
+
+    <!-- AI Content Detector -->
+    <a href="https://api.sitetrace.it.com/api/ai-content-detector" class="feature-card block rounded-xl border border-white/10 bg-ink-800/60 p-6 hover:border-brand-400/50">
+      <div class="text-2xl mb-3">🤖</div>
+      <h3 class="font-bold text-lg mb-1">AI Content Detector</h3>
+      <p class="text-sm text-slate-400 mb-3">5 statistical heuristics. Pure JS, no LLM cost. Burstiness + TTR + AI-phrases.</p>
+      <code class="text-xs text-brand-300 bg-ink-900 px-2 py-1 rounded">POST /api/ai-content-detector</code>
+    </a>
+
+    <!-- Email Health -->
+    <a href="https://api.sitetrace.it.com/api/email-health" class="feature-card block rounded-xl border border-white/10 bg-ink-800/60 p-6 hover:border-brand-400/50">
+      <div class="text-2xl mb-3">📧</div>
+      <h3 class="font-bold text-lg mb-1">Email Health</h3>
+      <p class="text-sm text-slate-400 mb-3">Syntax + MX (DoH) + disposable + role + deliverability score. 1 or batch.</p>
+      <code class="text-xs text-brand-300 bg-ink-900 px-2 py-1 rounded">POST /api/email-health</code>
+    </a>
+
+    <!-- Schema Detector -->
+    <a href="https://api.sitetrace.it.com/api/schema-detector" class="feature-card block rounded-xl border border-white/10 bg-ink-800/60 p-6 hover:border-brand-400/50">
+      <div class="text-2xl mb-3">🧬</div>
+      <h3 class="font-bold text-lg mb-1">Schema Detector</h3>
+      <p class="text-sm text-slate-400 mb-3">JSON-LD + Microdata parser. Rich-result eligibility scoring.</p>
+      <code class="text-xs text-brand-300 bg-ink-900 px-2 py-1 rounded">GET /api/schema-detector?url=...</code>
+    </a>
+
+    <!-- HTTP Headers -->
+    <a href="https://api.sitetrace.it.com/api/headers" class="feature-card block rounded-xl border border-white/10 bg-ink-800/60 p-6 hover:border-brand-400/50">
+      <div class="text-2xl mb-3">🛡️</div>
+      <h3 class="font-bold text-lg mb-1">HTTP Headers Audit</h3>
+      <p class="text-sm text-slate-400 mb-3">8 security headers scored A-F. CSP, HSTS, X-Frame-Options analysis.</p>
+      <code class="text-xs text-brand-300 bg-ink-900 px-2 py-1 rounded">GET /api/headers?url=...</code>
+    </a>
+  </div>
+</section>
+
+<!-- 5 Bonus APIs (Phase 2) — teaser -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+  <h2 class="text-3xl font-bold tracking-tight mb-3 text-center">5 bonus recon APIs</h2>
+  <p class="text-center text-slate-400 mb-10">Shipping over the next 2 weeks — free forever, all $0 infrastructure.</p>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-80">
+    <div class="rounded-xl border border-white/10 bg-ink-800/40 p-6">
+      <div class="text-2xl mb-3">🔍</div>
+      <h3 class="font-bold text-lg mb-1">RDAP / WHOIS Lookup</h3>
+      <p class="text-sm text-slate-400 mb-3">Domain registration, dates, nameservers. Free via rdap.org.</p>
+      <code class="text-xs text-slate-500 bg-ink-900 px-2 py-1 rounded">GET /api/rdap?domain=...</code>
+    </div>
+    <div class="rounded-xl border border-white/10 bg-ink-800/40 p-6">
+      <div class="text-2xl mb-3">🔀</div>
+      <h3 class="font-bold text-lg mb-1">Redirect Chain Tracer</h3>
+      <p class="text-sm text-slate-400 mb-3">Follow all redirects, detect broken chains, mixed http/https.</p>
+      <code class="text-xs text-slate-500 bg-ink-900 px-2 py-1 rounded">GET /api/redirect-trace?url=...</code>
+    </div>
+    <div class="rounded-xl border border-white/10 bg-ink-800/40 p-6">
+      <div class="text-2xl mb-3">📋</div>
+      <h3 class="font-bold text-lg mb-1">Bulk HTTP Status Checker</h3>
+      <p class="text-sm text-slate-400 mb-3">Up to 100 URLs per call. Broken link monitoring at scale.</p>
+      <code class="text-xs text-slate-500 bg-ink-900 px-2 py-1 rounded">POST /api/status-check</code>
+    </div>
+    <div class="rounded-xl border border-white/10 bg-ink-800/40 p-6">
+      <div class="text-2xl mb-3">🌐</div>
+      <h3 class="font-bold text-lg mb-1">Subdomain Enumerator</h3>
+      <p class="text-sm text-slate-400 mb-3">All known subdomains via crt.sh certificate transparency logs.</p>
+      <code class="text-xs text-slate-500 bg-ink-900 px-2 py-1 rounded">GET /api/subdomains?domain=...</code>
+    </div>
+    <div class="rounded-xl border border-white/10 bg-ink-800/40 p-6">
+      <div class="text-2xl mb-3">🕰️</div>
+      <h3 class="font-bold text-lg mb-1">Wayback Machine Snapshot</h3>
+      <p class="text-sm text-slate-400 mb-3">Historical versions of any URL via Internet Archive CDX API.</p>
+      <code class="text-xs text-slate-500 bg-ink-900 px-2 py-1 rounded">GET /api/wayback?url=...</code>
+    </div>
+    <div class="rounded-xl border border-dashed border-white/5 bg-ink-900/40 p-6 flex items-center justify-center text-slate-500 text-sm">
+      More coming — Q4 2026
+    </div>
+  </div>
+</section>
+
+<!-- Why it's free -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+  <div class="rounded-2xl border border-white/5 bg-ink-800/40 p-6 sm:p-10 text-center">
+    <h2 class="text-3xl font-bold tracking-tight mb-4">Why is the infrastructure so cheap?</h2>
+    <p class="text-slate-300 mb-6">
+      Everything runs on the Cloudflare Workers free tier + free public datasets. We don't pay for Ahrefs backlink data, paid SMTP relay, or premium DNSBLs. Edge caching means repeat URLs return in &lt;50ms with no upstream call.
+    </p>
+    <div class="grid sm:grid-cols-4 gap-4 text-sm">
+      <div class="rounded-lg bg-ink-900 p-4">
+        <div class="font-semibold text-brand-300 mb-1">Cloudflare Workers</div>
+        <div class="text-slate-400 text-xs">Free tier 100k req/day</div>
+      </div>
+      <div class="rounded-lg bg-ink-900 p-4">
+        <div class="font-semibold text-brand-300 mb-1">crt.sh</div>
+        <div class="text-slate-400 text-xs">Free CT log lookup</div>
+      </div>
+      <div class="rounded-lg bg-ink-900 p-4">
+        <div class="font-semibold text-brand-300 mb-1">rdap.org</div>
+        <div class="text-slate-400 text-xs">Free WHOIS replacement</div>
+      </div>
+      <div class="rounded-lg bg-ink-900 p-4">
+        <div class="font-semibold text-brand-300 mb-1">HIBP k-anon</div>
+        <div class="text-slate-400 text-xs">Free breach API</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quickstart -->
+<section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+  <h2 class="text-3xl font-bold tracking-tight mb-6 text-center">Quickstart</h2>
+  <div class="rounded-xl border border-white/10 bg-ink-900 p-6 font-mono text-sm overflow-x-auto">
+<pre class="text-slate-300"><span class="text-slate-500"># Free tier — no signup, IP rate-limited</span>
+<span class="text-safe-400">curl</span> <span class="text-brand-300">'https://api.sitetrace.it.com/api/seo-audit?url=https://example.com'</span>
+
+<span class="text-slate-500"># Paid tier — get your API key at api.sitetrace.it.com/signup</span>
+<span class="text-safe-400">curl</span> -X POST <span class="text-brand-300">'https://api.sitetrace.it.com/api/ai-content-detector'</span> \
+  -H <span class="text-brand-300">'Authorization: Bearer YOUR_KEY'</span> \
+  -H <span class="text-brand-300">'Content-Type: application/json'</span> \
+  -d <span class="text-warn-400">'{"text":"your text here"}'</span>
+
+<span class="text-slate-500"># No signup for free tier. Sample 100 calls/day per IP.</span></pre>
+  </div>
+</section>
+
+<!-- CTA bottom -->
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-16 text-center">
+  <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Ship in 5 minutes</h2>
+  <p class="text-slate-300 mb-8 max-w-2xl mx-auto">Free tier is enough to evaluate. Hobby at $9.99/mo unlocks 1,000 calls/day and removes the rate limit. No annual contracts, no minimums.</p>
+  <a href="https://api.sitetrace.it.com/signup" class="inline-block font-semibold bg-brand-gradient hover:opacity-90 transition px-8 py-3 rounded-lg shadow-glow-brand">Get started free →</a>
+</section>
+</main>
+
+<!-- Footer same as sitetrace -->
+<footer class="border-t border-white/5 mt-12 py-10 text-sm text-slate-500">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 grid sm:grid-cols-3 gap-8">
+    <div>
+      <div class="font-semibold text-slate-300 mb-2">SiteTrace</div>
+      <p class="text-xs">Free, no-login tools and APIs for site auditing and content analysis. Self-funded, no tracking, no data sales.</p>
+    </div>
+    <div>
+      <div class="font-semibold text-slate-300 mb-2">Tools</div>
+      <ul class="space-y-1">
+        <li><a href="/seo-checker/" class="hover:text-white">SEO checker</a></li>
+        <li><a href="/ip-reputation/" class="hover:text-white">IP reputation</a></li>
+        <li><a href="/http-headers/" class="hover:text-white">HTTP headers</a></li>
+        <li><a href="/email-deliverability/" class="hover:text-white">Email deliverability</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-semibold text-slate-300 mb-2">API</div>
+      <ul class="space-y-1">
+        <li><a href="/api/" class="hover:text-white">Overview</a></li>
+        <li><a href="https://api.sitetrace.it.com/signup" class="hover:text-white">Sign up</a></li>
+        <li><a href="https://api.sitetrace.it.com/pricing" class="hover:text-white">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-white">About</a></li>
+        <li><a href="/privacy/" class="hover:text-white">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-8 text-xs text-slate-600">© 2026 Appenzeller Digital Store. Made with ❤️ in Honduras.</div>
+</footer>
+</body>
+</html>
