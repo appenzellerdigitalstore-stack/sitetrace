@@ -133,6 +133,7 @@
       <a class="nav-link" href="/ping/" data-i18n="nav_ping" data-nav-key="ping">Domain inspector</a>
       <a class="nav-link" href="/dns-tools/" data-i18n="nav_dns" data-nav-key="dns">DNS lookup</a>
       <a class="nav-link" href="/is-it-down/" data-i18n="nav_status" data-nav-key="status">Is it down</a>
+      <a class="nav-link nav-link-api" href="/api/" data-i18n="nav_api" data-nav-key="api"><span class="nav-link-new">API</span></a>
       <a href="https://paypal.me/edyappenzeller" target="_blank" rel="noopener noreferrer"
          class="support-header-link ml-1 sm:ml-2 hidden sm:inline-flex"
          data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">
@@ -353,6 +354,33 @@
       <a href="/privacy/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">Privacy Policy →</a>
       <a href="/is-it-down/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">Is it down? — check any site →</a>
     </section>
+
+    <!-- For Developers: API CTA banner -->
+    <section class="mt-10 card p-6 sm:p-8 border-brand-400/30 bg-gradient-to-br from-brand-500/5 via-ink-800/40 to-ink-800/40">
+      <div class="flex flex-col sm:flex-row items-start gap-5">
+        <div class="w-12 h-12 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand flex-shrink-0">
+          <svg viewBox="0 0 100 100" class="w-6 h-6" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2 flex-wrap">
+            <span class="text-xs font-semibold uppercase tracking-wider bg-brand-500/15 text-brand-300 px-2 py-1 rounded-full border border-brand-400/30">For developers</span>
+            <span class="text-xs text-safe-400 font-semibold">100 free calls/day, no signup</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold mb-2">SiteTrace API — the same data, programmable</h2>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">10 endpoints for SEO audits, AI content detection, email validation, schema detection, RDAP/WHOIS, redirect tracing, bulk HTTP status, subdomain enumeration, and Wayback snapshots. REST + JSON. Free tier is enough for evaluation; paid plans start at $9.99/mo.</p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="/api/" class="inline-flex items-center justify-center font-semibold bg-brand-gradient hover:opacity-90 transition px-5 py-2.5 rounded-lg shadow-glow-brand text-sm">
+              Explore the API →
+            </a>
+            <a href="https://api.sitetrace.it.com/signup" class="inline-flex items-center justify-center font-medium text-slate-300 hover:text-white border border-white/15 hover:border-white/30 px-5 py-2.5 rounded-lg text-sm">
+              Get API key
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -368,6 +396,7 @@
       <div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="footer_about">About</div>
       <ul class="space-y-1 text-slate-300">
         <li><a href="/about/" class="hover:text-white">About</a></li>
+        <li><a href="/api/" class="hover:text-white text-brand-300 font-semibold">⚡ API for developers</a></li>
         <li><a href="/blog/" class="hover:text-white" data-i18n="footer_blog">Blog</a></li>
         <li><a href="/privacy/" class="hover:text-white" data-i18n="footer_privacy">Privacy</a></li>
       </ul>
