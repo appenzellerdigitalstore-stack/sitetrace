@@ -8,6 +8,7 @@
   <meta name="description" content="Free email deliverability check. See if a domain is configured to reach the inbox: SPF, DKIM (on common selectors), DMARC, MX, and BIMI. Plus a 0–100 score and a per-record breakdown. Instant, no login." />
   <meta name="keywords" content="email deliverability, spf check, dkim check, dmarc check, mx lookup, bimi check, spf record, dkim selector, dmarc policy, email authentication, sitetrace" />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="Edy Appenzeller" />
   <link rel="canonical" href="https://sitetrace.it.com/email-deliverability/" />
 
   <meta property="og:type" content="website" />
@@ -35,7 +36,65 @@
       {"@type":"Question","name":"What does DKIM do?","acceptedAnswer":{"@type":"Answer","text":"DKIM (DomainKeys Identified Mail) is a cryptographic signature that proves the message was not altered in transit and was sent by a server holding the private key. The matching public key is published as a DNS TXT record at <selector>._domainkey.yourdomain.com. Common selectors include default, google, k1, s1, s2, mailgun, and sendgrid. Receivers verify the signature against the published key."}},
       {"@type":"Question","name":"What does DMARC do?","acceptedAnswer":{"@type":"Answer","text":"DMARC (Domain-based Message Authentication, Reporting, and Conformance) ties SPF and DKIM together and tells receivers what to do when a message fails. A DMARC record at _dmarc.yourdomain.com can be set to p=none (monitor only), p=quarantine (send failing mail to spam), or p=reject (refuse failing mail outright). The rua tag specifies where to send aggregate reports of failing mail. Without DMARC, receivers have no instruction — they may accept, flag, or reject forged mail however they like."}},
       {"@type":"Question","name":"Why does my DKIM record not show up?","acceptedAnswer":{"@type":"Answer","text":"This tool probes the most common DKIM selectors (default, google, k1, s1, s2, mailgun, sendgrid, and a few others). If your mail server uses a custom selector, it will not be found. To find your actual selector, log into your mail server or ESP and look at the DKIM configuration, or send yourself a real email and inspect the DKIM-Signature header — the part before .dkim in the d= tag is your selector."}},
-      {"@type":"Question","name":"Will this tool send a real test email?","acceptedAnswer":{"@type":"Answer","text":"No. It only reads public DNS records (TXT and MX) for the domain you enter. It does not send mail, does not contact the mail server, and does not require any credentials. The result is the same view any receiving mail server gets when it looks up your domain's authentication records."}}
+      {"@type":"Question","name":"Will this tool send a real test email?","acceptedAnswer":{"@type":"Answer","text":"No. It only reads public DNS records (TXT and MX) for the domain you enter. It does not send mail, does not contact the mail server, and does not require any credentials. The result is the same view any receiving mail server gets when it looks up your domain's authentication records."}},
+      {"@type":"Question","name":"What's BIMI and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"BIMI (Brand Indicators for Message Identification) is a DNS TXT record that points to a verified logo that mail clients (Gmail, Apple Mail, Yahoo) display next to your messages in the inbox. To use it, you need (a) DMARC set to p=quarantine or p=reject, (b) a Verified Mark Certificate (VMC) from a CA like DigiCert or Entrust, and (c) the BIMI TXT record at default._bimi.yourdomain.com pointing to the SVG logo. BIMI doesn't directly affect deliverability — it's a brand recognition signal — but receiving mail servers use it as another authentication check, and missing it doesn't hurt, having it helps a tiny bit."}},
+      {"@type":"Question","name":"Why is my DMARC record at p=none?","acceptedAnswer":{"@type":"Answer","text":"p=none means "monitor only" — receivers will still check SPF and DKIM and send you aggregate reports of failed messages, but they won't take any action on the failures. It's the right starting point while you're checking the reports to confirm your legitimate mail all passes. Once you're confident, move to p=quarantine (sends failures to spam) and eventually p=reject (refuses failures). Most receivers prefer p=reject or p=quarantine; p=none gives no instruction, and many receivers will treat it as a soft signal that the domain is not actively managed."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How email deliverability works: SPF, DKIM, DMARC, and what receivers actually check",
+    "description": "A practical walkthrough of the DNS records that drive inbox placement — SPF, DKIM, DMARC, MX, BIMI — and what to do when something fails.",
+    "author": {
+      "@type": "Person",
+      "name": "Edy Appenzeller",
+      "url": "https://sitetrace.it.com/about/",
+      "sameAs": ["https://github.com/appenzellerdigitalstore-stack"]
+    },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-08-01",
+    "dateModified": "2026-10-02",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/email-deliverability/",
+    "about": [
+      {"@type": "Thing", "name": "Email deliverability"},
+      {"@type": "Thing", "name": "SPF"},
+      {"@type": "Thing", "name": "DKIM"},
+      {"@type": "Thing", "name": "DMARC"}
+    ],
+    "mentions": [
+      {"@type": "Thing", "name": "RFC 7208 (SPF)"},
+      {"@type": "Thing", "name": "RFC 6376 (DKIM)"},
+      {"@type": "Thing", "name": "RFC 7489 (DMARC)"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Email Deliverability Check — SiteTrace",
+    "url": "https://sitetrace.it.com/email-deliverability/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller" },
+    "description": "Free email deliverability audit. Parses SPF, DKIM (20 selectors), DMARC, MX, and BIMI records for any domain. No mail sent, no credentials required."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"Email deliverability","item":"https://sitetrace.it.com/email-deliverability/"}
     ]
   }
   </script>
@@ -230,14 +289,36 @@
 
     <div id="emd-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
 
-    <section class="mt-12 card">
+    <section class="mt-12 card p-6 sm:p-8 essay">
       <h2 class="text-xl font-bold mb-2" data-i18n="emd_how_h2">How email deliverability checking works</h2>
-      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_how_text">When a receiving mail server gets a message claiming to be from your domain, it looks up four public DNS records in parallel: SPF (TXT at the apex), DKIM (TXT at a selector under _domainkey), DMARC (TXT at _dmarc), and MX (where to deliver mail to you). This tool runs the same lookups your recipients run, and scores the configuration from 0 to 100 based on what's present and whether each record is configured for strict enforcement. A score of 80+ means your domain is properly authenticated; below that, the issues list tells you exactly what to add or change.</p>
-    </section>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3" data-i18n="emd_how_text">When a receiving mail server gets a message claiming to be from your domain, it looks up four public DNS records in parallel: SPF (TXT at the apex), DKIM (TXT at a selector under _domainkey), DMARC (TXT at _dmarc), and MX (where to deliver mail to you). This tool runs the same lookups your recipients run, and scores the configuration from 0 to 100 based on what's present and whether each record is configured for strict enforcement. A score of 80+ means your domain is properly authenticated; below that, the issues list tells you exactly what to add or change.</p>
 
-    <section class="mt-5 card">
-      <h2 class="text-xl font-bold mb-2" data-i18n="emd_records_h2">SPF, DKIM, DMARC, MX, BIMI — what each one does</h2>
-      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="emd_records_text">SPF (Sender Policy Framework) is a TXT record at the apex that lists the IP addresses and servers allowed to send mail for your domain. Receivers reject mail that arrives from a server not on the list. DKIM (DomainKeys Identified Mail) is a cryptographic signature added to outgoing messages; the matching public key is published as a TXT record at &lt;selector&gt;._domainkey.yourdomain.com. DMARC (Domain-based Message Authentication, Reporting, and Conformance) ties SPF and DKIM together with a policy of none, quarantine, or reject. MX records tell other servers where to deliver mail sent to your domain. BIMI (Brand Indicators for Message Identification) is an emerging standard that lets you attach your brand logo to authenticated messages.</p>
+      <p>Email deliverability is whether your messages reach the inbox — not the spam folder, not bounced, not quarantined silently. Gmail, Outlook, Yahoo, and the major corporate mail servers (Mimecast, Proofpoint, Barracuda) all make this decision based on a chain of DNS records plus the IP reputation of the sending server. A misconfigured domain can deliver 100% of mail to spam even with a clean IP and a great list. Conversely, a domain with strict SPF, DKIM, and DMARC at p=reject will deliver reliably even from a new IP — receivers trust the authentication over the reputation.</p>
+
+      <p><strong>SPF (Sender Policy Framework) — RFC 7208.</strong> A TXT record at the apex of your domain that lists the IP addresses and servers allowed to send mail for you. When a message arrives claiming to be from you, the receiver looks up your SPF record, walks the chain (the SPF mechanism <code>include</code> follows the SPF record of another domain, like Google's <code>_spf.google.com</code>), and checks whether the sending server's IP matches. If it doesn't, the message fails SPF. Common patterns: <code>v=spf1 ip4:192.0.2.0/24 include:_spf.google.com -all</code>. The <code>-all</code> at the end is strict — fail everything else. <code>~all</code> is softfail (treat as suspect). <code>+all</code> allows anyone (useless, never use it).</p>
+
+      <p>SPF has a sharp limit: the record has to fit in a single 512-byte DNS UDP response, and each <code>include</code> lookup has to resolve and count toward a 10-lookup maximum. Exceed 10 lookups and your record is invalid — receivers treat the whole thing as <code>SPA: none</code>. The fix is to flatten the record (manually list all the IPs from your includes) or use a service like <code>spf.wiki</code> that auto-flattens.</p>
+
+      <p><strong>DKIM (DomainKeys Identified Mail) — RFC 6376.</strong> A cryptographic signature added to every outgoing message by your mail server. The signature is over the message content + headers + a few other fields — so it both authenticates the sender (the signature can only be generated by the holder of the private key) and proves the message wasn't altered in transit. The public key is at <code>&lt;selector&gt;._domainkey.yourdomain.com</code> as a TXT record. The selector is a label your mail server chooses — common ones are <code>default</code>, <code>google</code>, <code>k1</code>, <code>s1</code>, <code>s2</code>, <code>mailgun</code>, <code>sendgrid</code>. Receivers look up the selector in the message's DKIM-Signature header, fetch the public key, and verify the signature.</p>
+
+      <p><strong>DMARC (Domain-based Message Authentication, Reporting, and Conformance) — RFC 7489.</strong> Ties SPF and DKIM together with a policy. The receiver checks both SPF and DKIM. If either passes AND the identifier (Return-Path for SPF, d= for DKIM) aligns with the From: domain, the message passes DMARC. If both fail, the policy at <code>_dmarc.yourdomain.com</code> tells it what to do: <code>p=none</code> (monitor, do nothing), <code>p=quarantine</code> (suspicious, send to spam), <code>p=reject</code> (refuse to deliver). DMARC also has a <code>rua</code> tag that specifies an email address to receive aggregate reports — usually a mailbox you set up specifically for reports and parse with a tool like Postmark's DMARC digester.</p>
+
+      <p>The right way to roll out DMARC: start at <code>p=none</code> with <code>rua</code> reports, watch the reports for 2-4 weeks to confirm all your legitimate mail passes, then move to <code>p=quarantine</code> and watch for false positives, then <code>p=reject</code>. Skipping straight to <code>p=reject</code> is the most common mistake — you might find that your newsletter ESP, your transactional mail provider, your customer support tool, and your corporate mail all use different DKIM selectors, and you'll break half your outgoing mail.</p>
+
+      <p><strong>MX (Mail Exchange) records.</strong> Tell other servers where to deliver mail sent to your domain. <code>example.com. 3600 IN MX 10 mail.example.com.</code> — the 10 is the priority (lower is preferred), mail.example.com is the receiving server. For most setups you have one or two MX records pointing at your mail provider. If MX is missing or broken, mail bounces with "no mail host" — receivers can't deliver. This tool checks that MX is present and the servers respond.</p>
+
+      <p><strong>BIMI (Brand Indicators for Message Identification).</strong> A newer standard. A TXT record at <code>default._bimi.yourdomain.com</code> pointing to your brand logo (SVG) and optionally a Verified Mark Certificate (VMC) from DigiCert or Entrust. Gmail, Yahoo, and Apple Mail render the logo next to your messages in the inbox. To use BIMI you need DMARC at <code>p=quarantine</code> or <code>p=reject</code> first. BIMI doesn't directly affect deliverability — it's a brand recognition signal — but receivers use it as another authentication check, and missing it doesn't hurt.</p>
+
+      <p><strong>What receivers actually do with these.</strong> Gmail, Outlook, and Yahoo run the full chain on every message. They check SPF first (cheapest), then DKIM (one DNS lookup + one crypto verify), then DMARC (pass condition is SPF+DKIM aligned with From:). If any pass, the message is delivered to inbox subject to spam scoring. If both fail and DMARC is at p=reject, the message is refused. Then there's the spam scoring — content, IP reputation, sender history, recipient engagement. Authentication doesn't bypass it, but it's a strong positive signal.</p>
+
+      <p>The lookups behind this page happen in your browser via DNS-over-HTTPS. We query the apex for SPF, _dmarc for DMARC, the MX records, default._bimi for BIMI, and 20 common selectors for DKIM (default, google, k1, s1, s2, mailgun, sendgrid, postmark, mailjet, sparkpost, ses, cm, m1, m2, mx, etc.). The score is 25 each for SPF, DKIM, DMARC, MX present and 5 for BIMI if present (since BIMI is optional). If you want to do it from CI:</p>
+
+      <div class="curl-block mt-3">
+        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/email-deliverability</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"domain":"example.com"}'</span>
+        <br/><span class="comment"># → {score, spf, dkim: {selector: {pass, value}}, dmarc, mx: [...], bimi}</span>
+      </div>
+
+      <p>Or via dig: <code>dig +short TXT example.com</code> (SPF), <code>dig +short TXT _dmarc.example.com</code> (DMARC), <code>dig +short MX example.com</code> (MX), <code>dig +short TXT google._domainkey.example.com</code> (DKIM at the google selector). Same plan, same answers, your choice of interface.</p>
     </section>
 
     <section class="mt-12 card" aria-label="Frequently asked questions">
