@@ -21,6 +21,18 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Byline — small monospaced author/last-updated marker, cyan accent.
+   Used after hero/intro on every page. */
+.byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  color: rgb(100, 116, 139);
+}
+.byline::before { content: '//'; color: var(--trace-cyan-deep, #0891b2); }
+
 /* Smooth view transitions */
 [data-view] {
   animation: viewIn 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
