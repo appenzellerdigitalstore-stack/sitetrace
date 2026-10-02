@@ -12,8 +12,8 @@ import { join, resolve } from 'node:path';
 import { globSync } from 'node:fs';
 
 const ROOT = 'F:\\.Projects\\sitetrace';
-const NEW_I18N_VERSION = 29;
-const NEW_LAYOUT_VERSION = 30;
+const NEW_I18N_VERSION = 30;
+const NEW_LAYOUT_VERSION = 31;
 
 const files = globSync('**/index.html', { cwd: ROOT })
   .map(f => resolve(ROOT, f))

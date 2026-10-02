@@ -8,6 +8,7 @@
   <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online domain inspector. Type any website, get its resolved IPs, HTTP reachability, and round-trip latency — all from your browser, no install." />
   <meta name="keywords" content="ping test, ping online, ping a website, ping a server, ping an ip, network latency, latency test, ms test, server response time, domain inspector, is site up, is my website up, is this site down, check site status, check website, reachability, http latency, website response time, check domain" />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="Edy Appenzeller" />
   <link rel="canonical" href="https://sitetrace.it.com/ping/" />
 
   <meta property="og:type" content="website" />
@@ -32,7 +33,59 @@
       {"@type":"Question","name":"Why does the reachability sometimes show 'unknown'?","acceptedAnswer":{"@type":"Answer","text":"Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows 'reachable (response not readable)'."}},
       {"@type":"Question","name":"What is a good HTTP latency?","acceptedAnswer":{"@type":"Answer","text":"Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time."}},
       {"@type":"Question","name":"Why is DNS not shown on this page?","acceptedAnswer":{"@type":"Answer","text":"The /dns-tools/ page is dedicated to that — it queries every record type (A, AAAA, MX, TXT, NS, CNAME, SOA) at once and renders a grouped view. The domain inspector here only needs the resolved IPs to do the HTTP check, so the rest stays out of the way."}},
-      {"@type":"Question","name":"What is the live multi-server ping below?","acceptedAnswer":{"@type":"Answer","text":"A power-user feature: add any URL you want to monitor, set a polling interval, and the tool will keep pinging each one from your browser. Polling only happens when you press Start, and only targets you — no central server, no third-party pings. The 9 popular services shown by default are just examples; you can remove them and add your own."}}
+      {"@type":"Question","name":"What is the live multi-server ping below?","acceptedAnswer":{"@type":"Answer","text":"A power-user feature: add any URL you want to monitor, set a polling interval, and the tool will keep pinging each one from your browser. Polling only happens when you press Start, and only targets you — no central server, no third-party pings. The 9 popular services shown by default are just examples; you can remove them and add your own."}},
+      {"@type":"Question","name":"Why can't I use the actual ICMP ping?","acceptedAnswer":{"@type":"Answer","text":"Web browsers can't send raw ICMP packets — that's the protocol the ICMP ping utility uses. Browser sandboxes only allow HTTP/HTTPS, WebSocket, and a few other protocols. ICMP is too privileged — it would let a webpage silently map your network. So the closest browser equivalent is an HTTPS request, which adds DNS + TCP + TLS overhead on top of the round-trip. For true ICMP, install the ping command line tool (Linux/macOS have it; Windows has it built in). For the web equivalent, use this tool — the latency is reported with the protocol used so you can interpret it."}},
+      {"@type":"Question","name":"Can I monitor a server that's behind a firewall?","acceptedAnswer":{"@type":"Answer","text":"Only if the server accepts HTTPS connections on a public IP, not on a private one. From the browser, you can hit the public IP/hostname on its public port (usually 443). Internal IPs (10.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12) are blocked for security reasons — every browser-based network tool blocks them. If your server is in a private VPC, this tool can't reach it. You need to be on the same network (or use a VPN) and run the tool from within."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to measure latency from a web browser (and why it's not the same as ICMP ping)",
+    "description": "A practical walkthrough of how latency is measured from a browser, what each component of the round-trip time represents, and how to interpret the result.",
+    "author": {
+      "@type": "Person",
+      "name": "Edy Appenzeller",
+      "url": "https://sitetrace.it.com/about/",
+      "sameAs": ["https://github.com/appenzellerdigitalstore-stack"]
+    },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-08-01",
+    "dateModified": "2026-10-02",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/ping/",
+    "about": [
+      {"@type": "Thing", "name": "Network latency"},
+      {"@type": "Thing", "name": "ICMP"},
+      {"@type": "Thing", "name": "HTTP reachability"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Domain Inspector + Live Ping — SiteTrace",
+    "url": "https://sitetrace.it.com/ping/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller" },
+    "description": "Free domain inspector and multi-server monitor. Inspect any URL for DNS resolution, reachability, and latency; or set up continuous polling from your browser across any number of URLs."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"Domain inspector","item":"https://sitetrace.it.com/ping/"}
     ]
   }
   </script>
@@ -327,6 +380,41 @@
       </div>
     </details>
 
+    <section class="mt-12 card p-6 sm:p-8 essay">
+      <h2 class="text-xl font-bold mb-2">How to measure latency from a web browser — and why it's not the same as ICMP ping</h2>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The classic <code>ping</code> command sends a single ICMP packet and measures the round-trip time — that's the gold standard for measuring the network path between you and a server. A web browser can't do that. Browser sandboxes don't expose raw socket APIs because that would let any webpage silently map the user's network. So the closest browser equivalent is an HTTPS request to the target, and the round-trip time on that includes DNS resolution, TCP handshake, TLS handshake, the server's response, and the page load.</p>
+
+      <p><strong>What the latency on this page actually measures.</strong> When you paste a URL and hit Inspect, the browser resolves the hostname via DNS-over-HTTPS (typically Cloudflare or Google — both fast), opens a TCP connection to the resolved IP on port 443, performs a TLS handshake (1-2 round-trips for TLS 1.3), sends the HTTP request, waits for the response headers, and reports the total time from <code>fetch()</code> call to <code>response.headers</code> received. That's what's shown as "ms" on the page. For most sites, DNS is ~30ms, TCP+TLS is ~50-150ms, and the server response is ~50-200ms — call it 200-400ms typical, with regional spikes from CDN edge assignment.</p>
+
+      <p><strong>ICMP vs HTTPS latency — what's different.</strong> ICMP ping measures just the round-trip time of a single network packet — usually under 50ms between major cities. HTTPS latency adds protocol overhead on top: DNS lookup (cached at the resolver usually, but still 1 round-trip on cache miss), TLS handshake (1 round-trip on TLS 1.3), plus the server has to do work and respond. The total is typically 2-5x higher than ICMP for the same path. Don't be alarmed if your HTTPS round-trip is 800ms to a server that <code>ping</code> shows as 80ms — it's normal.</p>
+
+      <p><strong>Why the latency varies so much.</strong> The network path is the same in theory (TCP and ICMP both travel over IP), but real-world latency varies for many reasons. (1) Routing asymmetry — your outbound route might be different from the inbound route, adding to total round-trip. (2) Congestion — peak hours on transcontinental routes add 50-200ms. (3) CDN edge assignment — your DNS might be picking a CDN edge far from you because the closest edge is overloaded. (4) TLS handshake size — a TLS handshake with a long certificate chain takes longer to verify. (5) HTTP/2 vs HTTP/3 — HTTP/3 (over QUIC, over UDP) has 0-RTT handshakes and significantly lower latency to first byte, but not all servers support it.</p>
+
+      <p><strong>What "good" latency is.</strong> Depends on what you're doing. For a static page load: under 100ms is excellent (single data center, CDN edge assigned to your city), 100-300ms is normal cross-continental, 300-500ms is sluggish but workable, 500ms+ feels broken. For interactive apps (games, video calls, remote desktops): under 30ms is the only thing that doesn't feel laggy. For backend microservices: under 10ms is the target, 10-50ms is OK for non-critical paths, anything above 50ms means something's wrong. The numbers here are full HTTPS round-trip — for true server-side latency you need distributed monitoring from multiple geographic regions.</p>
+
+      <p><strong>Why the multi-server ping below is useful.</strong> Pinging the same service from 9 global regions over time tells you about CDN edge assignment, regional outages, and routing shifts. If US-East is 80ms and US-West is 240ms, your traffic is going to a US-East CDN edge — which is fine if you're on the East Coast but bad if you're in California. If US-East pings and EU-Frankfurt doesn't, there's a routing problem between Cloudflare and your ISP in Europe. The pattern over time is more useful than any single ping. Press Start to begin polling; the results accumulate and you can spot trends.</p>
+
+      <p><strong>What CORS error means.</strong> If the response shows "reachable (response not readable)" or status shows "unknown", the request went out but the browser can't read the response. Why? CORS — Cross-Origin Resource Sharing. The browser asks the server "can I read your response from this domain?" via the <code>Access-Control-Allow-Origin</code> header. If the server doesn't respond with a permissive header (or doesn't respond at all because it crashed), the browser refuses to expose the response body. We can still tell you the request reached the server — that's why reachability is true but status is unknown. The actual response is at the server, just locked away from your browser.</p>
+
+      <p><strong>Why this isn't a real ping.</strong> ICMP ping uses the ICMP protocol (IP protocol number 1) which is a separate protocol from TCP and UDP. The browser sends TCP packets (IP protocol 6) over the same underlying network, but the path can vary (different routing rules), the server's response is different, and the timing includes all of TCP's overhead. For a true ICMP test, run <code>ping example.com</code> from your terminal — you'll see numbers typically 2-5x lower than what this browser tool shows. Use ICMP for "is the path healthy?" and HTTPS for "is the site actually serving content?"</p>
+
+      <p>The checks behind this page happen entirely in your browser. The DNS resolution uses the public DoH endpoints (Google or Cloudflare), the HTTP fetch is a regular browser fetch with the timing captured at the response headers event. No data leaves your machine. If you want this from a script or CI:</p>
+
+      <div class="curl-block mt-3">
+        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-w</span> <span class="str">'%{time_starttransfer}s\n'</span> <span class="arg">-o</span> /dev/null <span class="arg">-s</span> <span class="str">https://example.com</span>
+        <br/><span class="comment"># → 0.234s</span>
+      </div>
+
+      <p>For batch probing of many URLs, the API at <code>api.sitetrace.it.com</code> has <code>POST /api/status-check</code>:</p>
+
+      <div class="curl-block mt-3">
+        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/status-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"urls":["https://github.com","https://discord.com"]}'</span>
+        <br/><span class="comment"># → [{url, status, latency_ms, content_type, redirect_url?}, ...]</span>
+      </div>
+
+      <p>The free tier allows 100 calls per day with no signup. For continuous monitoring (poll a list of services every 30 seconds), use this page in your browser or wire up your own cron job against the API. The numbers in this browser are the same numbers the API returns, computed the same way.</p>
+    </section>
+
     <!-- FAQ (SEO) -->
     <section class="mt-12 card" aria-label="Frequently asked questions">
       <h2 class="text-xl font-bold mb-4" data-i18n="ping_faq_h2">Frequently asked questions</h2>
@@ -402,7 +490,7 @@
   </div>
 </footer>
 
-  <script src="/js/i18n.js?v=29"></script>
+  <script src="/js/i18n.js?v=30"></script>
   <a href="https://paypal.me/edyappenzeller" target="_blank" rel="noopener noreferrer"
    id="support-fab" class="support-fab"
    data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">
@@ -415,6 +503,6 @@
       window.SiteTrace.layout.mount({ active: 'nav_ping' });
     });
   </script>
-<script src="/js/layout.js?v=30"></script>
+<script src="/js/layout.js?v=31"></script>
 </body>
 </html>
