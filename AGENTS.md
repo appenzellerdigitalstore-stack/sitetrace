@@ -50,7 +50,8 @@ auto-bumps every HTML file in the repo).
 | Mono font    | JetBrains Mono (technical accents, code blocks, bylines)   |
 | Background   | `#070a12` (ink-900)                                        |
 | Card border  | `rgba(34, 211, 238, 0.08)` cyan hairline                  |
-| Forbidden    | Inter (rendering font), `from-purple-500 to-pink-500`, brand-blue gradients (`#3b62f4`, `#5e83ff`) |
+| Forbidden    | Inter (rendering font), brand-blue gradients (`#3b62f4`, `#5e83ff`) on the **brand** layer (logo, hero, banner) |
+| Allowed (small accents) | Tailwind built-in `from-purple-500 to-pink-500` and similar multi-color gradients on per-button CTAs on individual tool pages — Ed has confirmed these read as tasteful accents, not as "AI brand" identity. Keep the brand layer strictly cyan. |
 | Allowed category palette | cyan (Network+SEO), amber (#fbbf24, DNS), green (#34d399, Web status), slate (#94a3b8, Email) |
 
 Engineers recognize it from the JetBrains Mono byline `// last updated YYYY-MM-DD · built by edy appenzeller · open source` and the cyan grid background. Both are non-negotiable.
