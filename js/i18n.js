@@ -4636,6 +4636,18 @@
   function init() {
     const lang = detectLanguage();
     setLanguage(lang, { skipPersist: true });
+    // Defensive: update the header lang indicator and the active option
+    // pill directly. layout.js's wireLanguage() does this too, but only when
+    // its DOMContentLoaded handler fires AND its script loads in the right
+    // order. Doing it here means the indicator is correct on every page even
+    // if layout.js's wireLanguage() returns early or doesn't run.
+    try {
+      const cur = document.getElementById('lang-current');
+      if (cur) cur.textContent = currentLang.toUpperCase();
+      document.querySelectorAll('.lang-option').forEach(function (o) {
+        o.classList.toggle('is-active', o.getAttribute('data-lang') === currentLang);
+      });
+    } catch (_) { /* ignore — page just won't show the indicator update */ }
   }
 
   if (document.readyState === 'loading') {
