@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0e1a" />
-  <title>SiteTrace — Free network tools &amp; service status</title>
-  <meta name="description" content="Free, no-login network tools: check your public IP, measure latency, resolve DNS, see if a service is up, or audit any page's SEO. Five tools in your browser." />
-  <meta name="keywords" content="what is my ip, my ip address, ip lookup, public ip, ip geolocation, ip address lookup, ping test, ping online, latency test, domain inspector, dns lookup, dns record lookup, mx record, txt record, is it down, is it down for me, is it down right now, service status, downdetector, status checker, sitetrace, free network tools, network utilities, no signup tools" />
+  <meta name="theme-color" content="#070a12" />
+  <title>SiteTrace — Free network tools &amp; live service status, no login</title>
+  <meta name="description" content="Thirteen free browser-based network tools: IP lookup with VPN/proxy/Tor detection, DNS-over-HTTPS, ping, HTTP reachability, live service status for 50+ services, email deliverability audits, and SEO checks. No login, no tracking, no install. Open source on GitHub." />
+  <meta name="keywords" content="what is my ip, my ip address, ip lookup, public ip, ip geolocation, ip address lookup, ping test, ping online, latency test, domain inspector, dns lookup, dns record lookup, mx record, txt record, is it down, is it down for me, is it down right now, service status, downdetector, status checker, email deliverability, spf, dkim, dmarc, http headers, seo checker, seo audit, ip reputation, subnet calculator, vpn check, dns propagation, free network tools, network utilities, no signup tools, sitetrace" />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="Edy Appenzeller" />
   <link rel="canonical" href="https://sitetrace.it.com/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="SiteTrace — Network tools &amp; service status" />
-  <meta property="og:description" content="Free network tools: IP lookup, ping, DNS, and live status for 50+ services. No login, no tracking." />
+  <meta property="og:description" content="Thirteen free browser-based network tools: IP, DNS, ping, live service status, email deliverability, SEO audits. No login, no tracking, open source." />
   <meta property="og:image" content="https://sitetrace.it.com/og/home.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="SiteTrace — five free network tools — SiteTrace" />
+  <meta property="og:image:alt" content="SiteTrace — thirteen free network tools — SiteTrace" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:url" content="https://sitetrace.it.com/" />
   <meta property="og:site_name" content="SiteTrace" />
@@ -25,7 +26,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="SiteTrace — Network tools &amp; service status" />
-  <meta name="twitter:description" content="Free network tools: IP lookup, ping, DNS, and live status for 50+ services." />
+  <meta name="twitter:description" content="Thirteen free browser-based network tools. No login, no install, no tracking. Open source." />
 
   <script type="application/ld+json">
   {
@@ -41,44 +42,6 @@
   }
   </script>
 
-  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','sans-serif'],
-            mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'],
-          },
-          colors: {
-            ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' },
-            brand: { 50:'#eef3ff', 100:'#dbe4ff', 200:'#b6c8ff', 300:'#8aa6ff', 400:'#5e83ff', 500:'#3b62f4', 600:'#2a48d6', 700:'#1f37a8', 800:'#1a2c80', 900:'#16235f' },
-            safe:    { 400:'#34d399', 500:'#10b981', 600:'#059669' },
-            warn:    { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' },
-            danger:  { 400:'#f87171', 500:'#ef4444', 600:'#dc2626' },
-          },
-          backgroundImage: {
-            'brand-gradient': 'linear-gradient(135deg,#5e83ff 0%,#8b5cf6 50%,#c084fc 100%)',
-            'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(94,131,255,0.18), transparent 70%)',
-          },
-          boxShadow: {
-            'glow-brand': '0 0 0 1px rgba(94,131,255,0.18), 0 12px 40px -12px rgba(94,131,255,0.35)',
-            'glow-soft':  '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)',
-          },
-        },
-      },
-    };
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%235e83ff'/%3E%3Cstop offset='100%25' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-
-  <!-- Structured data: WebApplication + SearchAction -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -88,290 +51,612 @@
     "applicationCategory": "UtilityApplication",
     "operatingSystem": "Any (web browser)",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Free, no-login network tools: public IP and connection privacy check, latency test, DNS lookup, and live service status for 50+ popular services."
+    "creator": { "@type": "Person", "name": "Edy Appenzeller" },
+    "description": "Free, no-login network tools: public IP with VPN/proxy/Tor detection, DNS-over-HTTPS, ping, HTTP reachability, live service status for 50+ popular services, email deliverability, and SEO audits."
   }
   </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "SiteTrace: thirteen free, no-tracking network tools for IP, DNS, web, email, and SEO",
+    "description": "SiteTrace is a small set of free browser-based network utilities. Every tool runs in your browser, talks directly to public services, and stores nothing on a server we control. Open source on GitHub.",
+    "author": {
+      "@type": "Person",
+      "name": "Edy Appenzeller",
+      "url": "https://sitetrace.it.com/about/",
+      "sameAs": ["https://github.com/appenzellerdigitalstore-stack"]
+    },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-08-01",
+    "dateModified": "2026-10-02",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/",
+    "about": [
+      {"@type": "Thing", "name": "Network tools"},
+      {"@type": "Thing", "name": "DNS"},
+      {"@type": "Thing", "name": "IP address"},
+      {"@type": "Thing", "name": "Service status"}
+    ],
+    "mentions": [
+      {"@type": "SoftwareApplication", "name": "Cloudflare Workers", "applicationCategory": "WebApplication"},
+      {"@type": "Service", "name": "Atlassian Statuspage", "provider": {"@type": "Organization", "name": "Atlassian"}},
+      {"@type": "Service", "name": "DNS-over-HTTPS", "provider": {"@type": "Organization", "name": "Google + Cloudflare"}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"}
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: { sans: ['IBM Plex Sans','system-ui','sans-serif'], mono: ['JetBrains Mono','ui-monospace','monospace'] },
+        colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
+      } }
+    };
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='%23070a12' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
   <style>
-    .feature-card { position: relative; overflow: hidden; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
-    .feature-card:hover { transform: translateY(-3px); border-color: rgba(94,131,255,0.45); box-shadow: 0 12px 40px -12px rgba(94,131,255,0.35); }
-    .feature-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(94,131,255,0.08), transparent 60%); pointer-events: none; }
-    .feature-card__arrow { transition: transform .15s ease; }
-    .feature-card:hover .feature-card__arrow { transform: translateX(4px); }
+    /* ===== SiteTrace — premium cyan overrides (no Inter, no AI purple) =====
+       IBM Plex Sans for prose. JetBrains Mono for technical content.
+       Cyan accent (#22d3ee). Engineer-explaining-engineer tone.
+       ============================================================ */
+
+    :root {
+      --trace-bg: #070a12;
+      --trace-cyan: #22d3ee;
+      --trace-cyan-deep: #0891b2;
+      --trace-cyan-soft: #67e8f9;
+      --trace-amber: #fbbf24;
+      --trace-amber-soft: #fcd34d;
+      --trace-green: #34d399;
+      --trace-green-soft: #6ee7b7;
+      --trace-slate: #94a3b8;
+      --trace-safe: #34d399;
+      --trace-warn: #fb923c;
+      --trace-bad: #f87171;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+    }
+
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--trace-bg);
+      color: #e2e8f0;
+    }
+
+    .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
+    .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+
+    .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
+    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
+    .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
+
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    .text-brand-500 { color: #06b6d4 !important; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
+      border: 1px solid var(--trace-border) !important;
+      transition: border-color 200ms ease, transform 200ms ease;
+    }
+    .card:hover { border-color: var(--trace-border-strong); }
+
+    .byline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: rgb(100, 116, 139);
+    }
+    .byline::before { content: '//'; color: var(--trace-cyan-deep); }
+
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.55rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--trace-cyan);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      text-decoration: none; transition: all 150ms ease;
+    }
+    .source-link:hover { color: var(--trace-cyan-soft); background: rgba(34, 211, 238, 0.14); border-color: var(--trace-border-strong); }
+
+    .trust-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.1rem;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: rgb(148, 163, 184);
+      letter-spacing: 0.02em;
+    }
+    .trust-strip > span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .trust-strip .ok { color: var(--trace-green); }
+
+    /* ===== Hub-style tool grid (cyan/amber/green/slate palette) ===== */
+    .cat-header {
+      display: flex; align-items: baseline; gap: 0.75rem;
+      margin: 2.25rem 0 0.85rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+    .cat-header h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .cat-header .cat-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      color: rgb(100, 116, 139);
+    }
+    .cat-cyan h2 { color: var(--trace-cyan); }
+    .cat-amber h2 { color: var(--trace-amber); }
+    .cat-green h2 { color: var(--trace-green); }
+    .cat-slate h2 { color: var(--trace-slate); }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 0.7rem;
+    }
+    .tool-card {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.85rem 0.95rem;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.30));
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      border-radius: 0.65rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+    .tool-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(34, 211, 238, 0.45);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(15, 23, 42, 0.50));
+    }
+    .tool-card .icon {
+      flex: 0 0 auto;
+      width: 38px; height: 38px;
+      border-radius: 0.5rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid currentColor;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .tool-card .icon svg { width: 20px; height: 20px; stroke-width: 1.7; fill: none; stroke: currentColor; }
+    .tool-card .body { flex: 1 1 auto; min-width: 0; }
+    .tool-card h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin: 0 0 0.18rem;
+    }
+    .tool-card p {
+      font-size: 0.74rem;
+      color: rgb(148, 163, 184);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .tool-card .arrow {
+      flex: 0 0 auto;
+      color: rgba(148, 163, 184, 0.5);
+      font-size: 1rem;
+      margin-left: auto;
+      transition: color 140ms ease, transform 140ms ease;
+    }
+    .tool-card:hover .arrow { color: var(--trace-cyan); transform: translateX(2px); }
+    .tool-card.cat-cyan .icon  { color: var(--trace-cyan);  background: rgba(34, 211, 238, 0.10); }
+    .tool-card.cat-amber .icon { color: var(--trace-amber); background: rgba(251, 191, 36, 0.10); }
+    .tool-card.cat-green .icon { color: var(--trace-green); background: rgba(52, 211, 153, 0.10); }
+    .tool-card.cat-slate .icon { color: var(--trace-slate); background: rgba(148, 163, 184, 0.10); }
+
+    /* Featured big-three cards */
+    .big-card {
+      display: block;
+      padding: 1.25rem 1.3rem;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4));
+      border: 1px solid var(--trace-border);
+      border-radius: 0.8rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 160ms ease, border-color 160ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .big-card:hover { transform: translateY(-3px); border-color: var(--trace-border-strong); }
+    .big-card .big-icon {
+      width: 44px; height: 44px;
+      border-radius: 0.6rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid currentColor;
+      background: rgba(255,255,255,0.02);
+      margin-bottom: 0.85rem;
+    }
+    .big-card .big-icon svg { width: 22px; height: 22px; stroke-width: 1.7; fill: none; stroke: currentColor; }
+    .big-card h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin: 0 0 0.4rem;
+    }
+    .big-card p {
+      font-size: 0.84rem;
+      color: rgb(148, 163, 184);
+      line-height: 1.55;
+      margin: 0 0 0.8rem;
+    }
+    .big-card .cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+    }
+    .big-card.cat-cyan { color: var(--trace-cyan); border-color: rgba(34, 211, 238, 0.18); }
+    .big-card.cat-cyan .big-icon { color: var(--trace-cyan); background: rgba(34, 211, 238, 0.10); }
+    .big-card.cat-cyan .cta { color: var(--trace-cyan); }
+    .big-card.cat-amber { color: var(--trace-amber); border-color: rgba(251, 191, 36, 0.18); }
+    .big-card.cat-amber .big-icon { color: var(--trace-amber); background: rgba(251, 191, 36, 0.10); }
+    .big-card.cat-amber .cta { color: var(--trace-amber); }
+    .big-card.cat-green { color: var(--trace-green); border-color: rgba(52, 211, 153, 0.18); }
+    .big-card.cat-green .big-icon { color: var(--trace-green); background: rgba(52, 211, 153, 0.10); }
+    .big-card.cat-green .cta { color: var(--trace-green); }
+
+    /* Essay prose */
+    .essay p { margin: 0 0 1rem; line-height: 1.7; }
+    .essay p:last-child { margin-bottom: 0; }
+    .essay code {
+      font-size: 0.78em;
+      padding: 0.05em 0.35em;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      border-radius: 0.25rem;
+      color: var(--trace-cyan-soft);
+    }
+
+    /* Curl block */
+    .curl-block {
+      position: relative;
+      background: #050810;
+      border: 1px solid var(--trace-border);
+      border-radius: 0.6rem;
+      padding: 1.1rem 1.15rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+    .curl-block::before {
+      content: 'GET · api.sitetrace.it.com';
+      position: absolute;
+      top: 0.55rem;
+      right: 0.9rem;
+      font-size: 0.62rem;
+      color: var(--trace-cyan-deep);
+      letter-spacing: 0.08em;
+    }
+    .curl-block .prompt { color: var(--trace-cyan); user-select: none; }
+    .curl-block .flag { color: var(--trace-amber); }
+    .curl-block .arg { color: #93c5fd; }
+    .curl-block .str { color: #86efac; }
+    .curl-block .comment { color: #64748b; font-style: italic; }
+
+    /* Mini status widget (matches is-it-down) */
     .mini-status { display: grid; grid-template-columns: 1fr auto auto; gap: 0.5rem 0.75rem; align-items: center; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.04); border-radius: 0.5rem; font-size: 11px; }
     .mini-status .dot { width: 8px; height: 8px; border-radius: 9999px; }
     .dot--ok { background: #10b981; }
     .dot--warn { background: #f59e0b; }
     .dot--err { background: #ef4444; }
     .dot--unk { background: #64748b; }
-  </style>
 
-  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+    /* API CTA banner */
+    .api-banner {
+      border: 1px solid var(--trace-border-strong);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.6), rgba(7, 10, 18, 0.7));
+      border-radius: 0.9rem;
+      padding: 1.75rem;
+    }
+
+    :focus-visible { outline-color: rgba(34, 211, 238, 0.7) !important; }
+
+    @media (max-width: 640px) {
+      .curl-block::before { display: none; }
+    }
+  </style>
 </head>
 
 <body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
   <div class="fixed inset-0 -z-10 pointer-events-none">
-  <div class="absolute inset-0 bg-hero-glow"></div>
-  <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
-</div>
-  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-    <a href="/" data-route="home" class="flex items-center gap-2.5 group">
-      <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
-        <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
-          <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </span>
-      <span class="text-base sm:text-lg font-bold tracking-tight">
-        <span data-i18n="brand">SiteTrace</span>
-        <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2" data-i18n="tagline">Free network tools</span>
-      </span>
-    </a>
-    <nav class="flex items-center gap-1 sm:gap-2" aria-label="Main">
-      <a class="nav-link" href="/what-is-my-ip/" data-i18n="nav_whatismyip" data-nav-key="whatismyip">What is my IP</a>
-      <a class="nav-link" href="/ping/" data-i18n="nav_ping" data-nav-key="ping">Domain inspector</a>
-      <a class="nav-link" href="/dns-tools/" data-i18n="nav_dns" data-nav-key="dns">DNS lookup</a>
-      <a class="nav-link" href="/is-it-down/" data-i18n="nav_status" data-nav-key="status">Is it down</a>
-      <a class="nav-link nav-link-api" href="/api/" data-i18n="nav_api" data-nav-key="api"><span class="nav-link-new">API</span></a>
-      <a href="https://paypal.me/edyappenzeller" target="_blank" rel="noopener noreferrer"
-         class="support-header-link ml-1 sm:ml-2 hidden sm:inline-flex"
-         data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">
-        <span class="support-header-link-icon" aria-hidden="true">&#9749;</span>
-        <span data-i18n="support_header">Support</span>
-      </a>
-      <div class="relative ml-1 sm:ml-2" id="lang-wrap">
-        <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-          <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
-        </button>
-        <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
-          <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
-          <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
-          <li><button class="lang-option" data-lang="pt" role="option">Portugu&ecirc;s</button></li>
-          <li><button class="lang-option" data-lang="fr" role="option">Fran&ccedil;ais</button></li>
-          <li><button class="lang-option" data-lang="de" role="option">Deutsch</button></li>
-          <li><button class="lang-option" data-lang="it" role="option">Italiano</button></li>
-        </ul>
-      </div>
-    </nav>
+    <div class="absolute inset-0 bg-hero-glow"></div>
+    <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
   </div>
-</header>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" data-route="home" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="#070a12" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">
+          <span data-i18n="brand">SiteTrace</span>
+          <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2" data-i18n="tagline">Free network tools</span>
+        </span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2" aria-label="Main">
+        <a class="nav-link" href="/network-tools/" data-i18n="nav_network" data-nav-key="network">Network tools</a>
+        <a class="nav-link nav-link-api" href="/api/" data-i18n="nav_api" data-nav-key="api"><span class="nav-link-new">API</span></a>
+        <a href="https://paypal.me/edyappenzeller" target="_blank" rel="noopener noreferrer"
+           class="support-header-link ml-1 sm:ml-2 hidden sm:inline-flex"
+           data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">
+          <span class="support-header-link-icon" aria-hidden="true">&#9749;</span>
+          <span data-i18n="support_header">Support</span>
+        </a>
+        <div class="relative ml-1 sm:ml-2" id="lang-wrap">
+          <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
+          </button>
+          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
+            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
+            <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
+            <li><button class="lang-option" data-lang="pt" role="option">Portugu&ecirc;s</button></li>
+            <li><button class="lang-option" data-lang="fr" role="option">Fran&ccedil;ais</button></li>
+            <li><button class="lang-option" data-lang="de" role="option">Deutsch</button></li>
+            <li><button class="lang-option" data-lang="it" role="option">Italiano</button></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
 
     <!-- =================== HERO =================== -->
-    <section class="pt-10 sm:pt-16 pb-10 text-center max-w-3xl mx-auto">
-      <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300" data-i18n="front_hero_eyebrow">Fast. Private. Free.</p>
-      <h1 class="mt-3 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="front_hero_title">Network tools &amp; service status</h1>
+    <section class="pt-10 sm:pt-16 pb-8 text-center max-w-3xl mx-auto">
+      <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-400" data-i18n="front_hero_eyebrow">Fast. Private. Free.</p>
+      <h1 class="mt-3 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400" data-i18n="front_hero_title_v2">Network tools without giving up your data</h1>
       <p class="mt-5 text-slate-400 text-base sm:text-lg max-w-2xl mx-auto" data-i18n="front_hero_subtitle">Check your IP, measure latency, resolve DNS, see if a service is up, or audit any page's SEO. Five free tools, in your browser, no account needed.</p>
+      <p class="byline justify-center mt-4">last updated 2026-10-02 · built by edy appenzeller · open source</p>
+      <div class="trust-strip mt-5" data-i18n="front_trust_strip">
+        <span><span class="ok">✓</span> no account</span>
+        <span><span class="ok">✓</span> no cookies</span>
+        <span><span class="ok">✓</span> no tracking</span>
+        <span><span class="ok">✓</span> open source</span>
+      </div>
     </section>
 
-    <!-- =================== FEATURE CARDS =================== -->
-    <section class="pt-2">
-      <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-slate-500 text-center mb-5" data-i18n="front_feature_eyebrow">Pick a tool</p>
-      <div class="grid md:grid-cols-2 gap-4">
+    <!-- =================== BIG THREE (featured tools) =================== -->
+    <section>
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500 text-center mb-5" data-i18n="front_feature_eyebrow">Pick a tool</p>
+      <div class="grid md:grid-cols-3 gap-4">
 
-        <a href="/what-is-my-ip/" class="feature-card card p-5 group block">
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-brand-gradient">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
+        <a href="/what-is-my-ip/" class="big-card cat-cyan group">
+          <div class="big-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
           </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_ip_title">What is my IP?</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_ip_desc">Your public IP, approximate location, ISP, and whether your connection is exposed, behind a VPN, or using a proxy. Loaded in under a second.</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
+          <h2 data-i18n="front_feature_ip_title">What is my IP?</h2>
+          <p data-i18n="front_feature_ip_desc">Your public IP, approximate location, ISP, and whether your connection is exposed, behind a VPN, or using a proxy. Loaded in under a second.</p>
+          <span class="cta" data-i18n="front_cta">Open →</span>
         </a>
 
-        <a href="/ping/" class="feature-card card p-5 group block">
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-emerald-500 to-teal-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h4l3-9 4 18 3-9h6"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
+        <a href="/ping/" class="big-card cat-amber group">
+          <div class="big-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 12h4l3-9 4 18 3-9h6"/></svg>
           </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_ping_title">Domain inspector</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_ping_desc">Type any website, get its DNS records, resolved IPs, HTTP reachability, and round-trip latency in one shot. Or keep pinging 9 global servers for live latency.</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
+          <h2 data-i18n="front_feature_ping_title">Domain inspector</h2>
+          <p data-i18n="front_feature_ping_desc">Type any website, get its DNS records, resolved IPs, HTTP reachability, and round-trip latency in one shot. Or keep pinging 9 global servers for live latency.</p>
+          <span class="cta" data-i18n="front_cta">Open →</span>
         </a>
 
-        <a href="/dns-tools/" class="feature-card card p-5 group block">
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-purple-500 to-pink-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
-          </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_dns_title">DNS lookup</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_dns_desc">Resolve any domain to its A, AAAA, MX, TXT, NS, CNAME, or SOA records via DNS-over-HTTPS. See which resolver answered.</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
-        </a>
-
-        <a href="/is-it-down/" class="feature-card card p-5 group block relative">
+        <a href="/is-it-down/" class="big-card cat-green group relative">
           <div class="absolute top-3 right-3 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/20">Live</div>
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-amber-500 to-orange-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
+          <div class="big-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
           </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_status_title">Is it down for me?</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_status_desc">Paste any URL to see if it is up for you, or browse live status of 50+ popular services (Cloudflare, GitHub, Discord, OpenAI, Steam, PlayStation, etc.) with 24-hour incident history.</p>
-
-          <div id="mini-status" class="mt-4 mini-status">
+          <h2 data-i18n="front_feature_status_title">Is it down for me?</h2>
+          <p data-i18n="front_feature_status_desc">Paste any URL to see if it is up for you, or browse live status of 50+ popular services with 24-hour incident history.</p>
+          <div id="mini-status" class="mini-status mt-3">
             <span class="text-slate-500 font-mono">Cloudflare</span><span class="dot dot--unk"></span><span class="text-slate-500 font-mono text-right" data-skel>…</span>
             <span class="text-slate-500 font-mono">GitHub</span><span class="dot dot--unk"></span><span class="text-slate-500 font-mono text-right" data-skel>…</span>
             <span class="text-slate-500 font-mono">Discord</span><span class="dot dot--unk"></span><span class="text-slate-500 font-mono text-right" data-skel>…</span>
             <span class="text-slate-500 font-mono">OpenAI</span><span class="dot dot--unk"></span><span class="text-slate-500 font-mono text-right" data-skel>…</span>
           </div>
-
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
+          <span class="cta block mt-2" data-i18n="front_cta">Open →</span>
         </a>
-      </div>
-
-      <a href="/seo-checker/" class="feature-card card p-5 group block mt-4 relative">
-        <div class="absolute top-3 right-3 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-brand-500/15 text-brand-300 border border-brand-500/20" data-i18n="front_feature_seo_eyebrow">New</div>
-        <div class="flex items-start justify-between gap-3 mb-3">
-          <div class="tool-card__icon bg-gradient-to-br from-rose-500 to-pink-500">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 3a8 8 0 1 0 5.3 14L21 21"/><path d="m21 21-4.3-4.3"/><path d="M11 7v4l3 2"/></svg>
-          </div>
-          <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
-        </div>
-        <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_seo_title">Free SEO checker</h2>
-        <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_seo_desc">Paste any URL and get a 12-point SEO audit in seconds: title, meta description, H1, canonical, Open Graph, image alt text, and more. No signup.</p>
-        <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_feature_seo_cta">Check any URL →</div>
-      </a>
-    </section>
-
-    <!-- =================== MORE TOOLS =================== -->
-    <section class="pt-8">
-      <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-slate-500 text-center mb-5" data-i18n="front_more_eyebrow">More tools</p>
-      <div class="grid md:grid-cols-2 gap-4">
-
-        <a href="/ip-reputation/" class="feature-card card p-5 group block relative">
-          <div class="absolute top-3 right-3 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/20" data-i18n="front_feature_new">New</div>
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-rose-500 to-orange-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
-          </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_iprep_title">IP reputation check</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_iprep_desc">Check any IPv4 against 7 major DNS blacklists (Spamhaus, Spamcop, Barracuda, CBL, SORBS, UCEPROTECT, PSBL) plus geolocation, ISP, ASN, and whether the connection looks like a proxy or data center.</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
-        </a>
-
-        <a href="/subnet-calculator/" class="feature-card card p-5 group block relative">
-          <div class="absolute top-3 right-3 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/20" data-i18n="front_feature_new">New</div>
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-cyan-500 to-blue-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
-          </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_snc_title">Subnet calculator</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_snc_desc">Paste any IPv4 CIDR (e.g. 192.168.1.0/24) and get the network address, broadcast, first/last usable host, subnet and wildcard masks, total address count, IP class, and full binary breakdown. Pure client-side math.</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
-        </a>
-
-        <a href="/email-deliverability/" class="feature-card card p-5 group block relative">
-          <div class="absolute top-3 right-3 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/20" data-i18n="front_feature_new">New</div>
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-indigo-500 to-violet-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
-          </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_emd_title">Email deliverability check</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_emd_desc">See if a domain is configured to reach the inbox. We query SPF, DKIM (on 20 common selectors), DMARC, MX, and BIMI in parallel and give you a 0-100 score with a list of what to fix.</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
-        </a>
-
-        <a href="/http-headers/" class="feature-card card p-5 group block relative">
-          <div class="absolute top-3 right-3 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/20" data-i18n="front_feature_new">New</div>
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div class="tool-card__icon bg-gradient-to-br from-teal-500 to-emerald-500">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-            </div>
-            <span class="feature-card__arrow text-slate-500 group-hover:text-brand-300 text-xl">→</span>
-          </div>
-          <h2 class="text-xl font-bold mb-1.5" data-i18n="front_feature_hhd_title">HTTP headers viewer</h2>
-          <p class="text-slate-400 text-sm leading-relaxed" data-i18n="front_feature_hhd_desc">Paste any URL and get the full set of response headers plus a 0-100 security grade for the six headers that matter (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).</p>
-          <div class="mt-3 inline-flex items-center gap-1.5 text-xs text-brand-300 font-semibold" data-i18n="front_cta">Open →</div>
-        </a>
-
       </div>
     </section>
 
-    <!-- =================== HOW IT WORKS / TRUST =================== -->
-    <section class="grid md:grid-cols-2 gap-5 mt-10">
-      <div class="card">
-        <h2 class="card-header">
-          <svg class="w-4 h-4 text-brand-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
-          <span data-i18n="front_how_title">How it works</span>
-        </h2>
-        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="front_how_text">Every check runs directly from your browser — we don't keep logs, we don't run analytics on your data, and your IP lookups aren't tied to a session. Each request is made by your browser to public DNS, IP-geo, and service status endpoints, and the response is rendered locally.</p>
+    <!-- =================== ALL 13 TOOLS — categorized grid =================== -->
+    <section>
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500 text-center mb-1 mt-12" data-i18n="front_browse_eyebrow">Browse all tools</p>
+      <p class="text-center text-slate-500 text-sm mb-6" data-i18n="front_browse_subtitle">Thirteen free utilities, grouped by what they do.</p>
+
+      <!-- Network & IP -->
+      <div class="cat-header cat-cyan">
+        <h2>Network &amp; IP</h2>
+        <span class="cat-count">5 tools</span>
       </div>
-      <div class="card">
-        <h2 class="card-header">
-          <svg class="w-4 h-4 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
-          <span data-i18n="front_trust_title">No accounts. No tracking. No nonsense.</span>
-        </h2>
-        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="front_trust_text">SiteTrace is a small, independent tool built for people who want quick answers without giving up their data. There is nothing to install, nothing to sign up for, and nothing sold to advertisers about you specifically.</p>
+      <div class="tool-grid">
+        <a href="/what-is-my-ip/" class="tool-card cat-cyan">
+          <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+          <span class="body"><h3>What is my IP</h3><p>Public IP, location, ISP, VPN/proxy/Tor detection.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/ip-lookup/" class="tool-card cat-cyan">
+          <span class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <span class="body"><h3>IP lookup</h3><p>Look up any IPv4 or IPv6 — geolocation, ASN, owner.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/ip-reputation/" class="tool-card cat-cyan">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+          <span class="body"><h3>IP reputation</h3><p>Check any IPv4 against 7 DNS blacklists (Spamhaus, Spamcop, ...).</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/vpn-checker/" class="tool-card cat-cyan">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.5 9 9 11 5.5-2 9-6 9-11V6l-9-4z"/></svg></span>
+          <span class="body"><h3>VPN detector</h3><p>See if an IP is a known VPN, proxy, or Tor exit.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/subnet-calculator/" class="tool-card cat-cyan">
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></span>
+          <span class="body"><h3>Subnet calculator</h3><p>Paste a CIDR, get network, broadcast, host range.</p></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <!-- DNS & connectivity -->
+      <div class="cat-header cat-amber">
+        <h2>DNS &amp; connectivity</h2>
+        <span class="cat-count">3 tools</span>
+      </div>
+      <div class="tool-grid">
+        <a href="/ping/" class="tool-card cat-amber">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M2 12h4l3-9 4 18 3-9h6"/></svg></span>
+          <span class="body"><h3>Domain inspector</h3><p>DNS + HTTP + 9-server latency in one shot.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/dns-tools/" class="tool-card cat-amber">
+          <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <span class="body"><h3>DNS lookup</h3><p>A, AAAA, MX, TXT, NS, CNAME, SOA via DNS-over-HTTPS.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/dns-propagation-checker/" class="tool-card cat-amber">
+          <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg></span>
+          <span class="body"><h3>DNS propagation</h3><p>Check a record across 8 global resolvers.</p></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <!-- Web status & headers -->
+      <div class="cat-header cat-green">
+        <h2>Web status &amp; headers</h2>
+        <span class="cat-count">3 tools</span>
+      </div>
+      <div class="tool-grid">
+        <a href="/is-it-down/" class="tool-card cat-green">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+          <span class="body"><h3>Is it down</h3><p>URL reachability + 50+ service status feeds.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/website-down-checker/" class="tool-card cat-green">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 9 4-18 3 9h4"/></svg></span>
+          <span class="body"><h3>Bulk URL status</h3><p>Check up to 20 URLs in one pass — status + latency.</p></span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="/http-headers/" class="tool-card cat-green">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+          <span class="body"><h3>HTTP headers</h3><p>Full response headers + 0-100 security grade.</p></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <!-- Email -->
+      <div class="cat-header cat-slate">
+        <h2>Email</h2>
+        <span class="cat-count">1 tool</span>
+      </div>
+      <div class="tool-grid">
+        <a href="/email-deliverability/" class="tool-card cat-slate">
+          <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <span class="body"><h3>Email deliverability</h3><p>SPF + DKIM (20 selectors) + DMARC + MX + BIMI score.</p></span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <!-- SEO -->
+      <div class="cat-header cat-cyan">
+        <h2>SEO</h2>
+        <span class="cat-count">1 tool</span>
+      </div>
+      <div class="tool-grid">
+        <a href="/seo-checker/" class="tool-card cat-cyan">
+          <span class="icon"><svg viewBox="0 0 24 24"><path d="M11 3a8 8 0 1 0 5.3 14L21 21"/><path d="M11 7v4l3 2"/></svg></span>
+          <span class="body"><h3>SEO checker</h3><p>12-point audit: title, meta, H1, canonical, OG, alt.</p></span>
+          <span class="arrow">→</span>
+        </a>
       </div>
     </section>
 
-    <!-- FAQ (SEO) -->
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="home_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_1_q">What is SiteTrace?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="home_faq_1_a">SiteTrace is a small set of free, browser-based network utility tools: a public IP address checker, a ping and latency tester, a DNS record lookup, and a service status checker for 50+ popular sites. No account, no app to install, no data stored on our servers.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_2_q">Is SiteTrace free?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="home_faq_2_a">Yes. All four tools are free to use, with no rate limits, no signup, and no paywall. The site is funded by unobtrusive ads and optional donations via PayPal.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_3_q">Do I need to install anything?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="home_faq_3_a">No. Everything runs in your browser. Open the page, get your answer, close the tab. There is no app, no extension, no plugin, and no download.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_4_q">Does SiteTrace see what I look up?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="home_faq_4_a">No. Your IP lookup, ping test, DNS lookup, and status checks all happen between your browser and the relevant public service. SiteTrace does not sit in the middle, does not log your requests, and does not store the responses.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_5_q">Can I use SiteTrace from my phone?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="home_faq_5_a">Yes. The site is responsive and works on any modern browser. The IP checker works the same on mobile as on desktop, though the ping and DNS tools work best on a stable Wi-Fi or wired connection for accurate results.</p>
-        </div>
-      </div>
+    <!-- =================== HOW IT WORKS (essay) =================== -->
+    <section class="mt-14 card p-6 sm:p-8 essay">
+      <p class="text-xs font-semibold tracking-[0.2em] uppercase text-brand-400 mb-3" data-i18n="front_how_title">How it works</p>
+      <p>I started this because every other IP / DNS / "is it down" site I tried wanted me to fill out a captcha, watch a video, or sit through a popup asking for my phone number. I wanted something I could open in a new tab, get my answer, and close — without a tracking pixel, without an analytics dashboard, without a subscription banner. So I built it.</p>
+      <p>The trick is that every check runs in your browser. When you click <code>What is my IP?</code>, your browser makes a <code>fetch()</code> to a Cloudflare Worker, which forwards to <code>ip-api.com</code> for geolocation enrichment and returns the parsed JSON. The Worker is stateless — it doesn't write to any database, doesn't read its own logs, doesn't have a session store to look up. The whole request is under 200 lines of TypeScript, all of it open source on GitHub.</p>
+      <p>This matters more than it sounds. Most "what is my IP" sites route your request through their servers so they can log it. They sell the request log to ad networks or use it to fingerprint your browser. We don't have a database to sell because there isn't one. The Worker code is on <a href="https://github.com/appenzellerdigitalstore-stack/sitetrace" class="source-link" target="_blank" rel="noopener noreferrer">github.com/appenzellerdigitalstore-stack/sitetrace</a> — you can <code>grep</code> it for <code>INSERT</code> or <code>fetch(...</code> and decide for yourself.</p>
+      <p>For DNS lookups, we use DNS-over-HTTPS — your browser encrypts the DNS question to Cloudflare or Google, gets the answer, and renders it. We never see the domain name. For service status, we query each provider's official status page directly from your browser (most of them use Atlassian Statuspage, which exposes a JSON endpoint at <code>/api/v2/summary.json</code>), then render the result locally. The status check tells you what the service itself says, not what some random monitoring provider thinks.</p>
+      <p>For email deliverability, we send the domain to our Worker which queries SPF, DKIM (on 20 common selectors), DMARC, MX, and BIMI in parallel and gives you a 0-100 score plus a list of what to fix. The Worker is stateless — same model. For SEO, same thing: the Worker fetches the HTML, extracts the title, meta description, H1, canonical, Open Graph, image alts, and renders a 0-100 score.</p>
+      <p>For RDAP/WHOIS, we query the public RDAP endpoint for the TLD (e.g. <code>rdap.org</code> for <code>.com</code>, <code>.net</code>, etc.). For Wayback snapshots, we query the Wayback Machine's CDX API. For AI content detection, we send the URL to the sitetrace-api Worker which returns a 0-100 percentage. Nothing on our side stores or indexes your input.</p>
+      <p>Everything else is curl-able JSON. If you want the same checks from a script, from CI, or from a server, the data is the same data — exposed as REST + JSON at <code>api.sitetrace.it.com</code>. The free tier gives you 100 calls per day with no signup, just an IP-based rate limit. The Hobby tier at $9.99/month gives you 5,000 calls per day with an API key. The Pro tier at $30/month gives you 30,000. That's the whole pitch.</p>
     </section>
 
-    <section class="mt-12 grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-      <a href="/about/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">About SiteTrace →</a>
-      <a href="/privacy/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">Privacy Policy →</a>
-      <a href="/is-it-down/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">Is it down? — check any site →</a>
-    </section>
-
-    <!-- For Developers: API CTA banner -->
-    <section class="mt-10 card p-6 sm:p-8 border-brand-400/30 bg-gradient-to-br from-brand-500/5 via-ink-800/40 to-ink-800/40">
+    <!-- =================== API CTA BANNER =================== -->
+    <section class="mt-10 api-banner">
       <div class="flex flex-col sm:flex-row items-start gap-5">
         <div class="w-12 h-12 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand flex-shrink-0">
           <svg viewBox="0 0 100 100" class="w-6 h-6" aria-hidden="true">
-            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="#070a12" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
         <div class="flex-1">
           <div class="flex items-center gap-2 mb-2 flex-wrap">
-            <span class="text-xs font-semibold uppercase tracking-wider bg-brand-500/15 text-brand-300 px-2 py-1 rounded-full border border-brand-400/30">For developers</span>
+            <span class="text-xs font-semibold uppercase tracking-wider bg-cyan-500/15 text-cyan-300 px-2 py-1 rounded-full border border-cyan-400/30">For developers</span>
             <span class="text-xs text-safe-400 font-semibold">100 free calls/day, no signup</span>
           </div>
-          <h2 class="text-xl sm:text-2xl font-bold mb-2">SiteTrace API — the same data, programmable</h2>
+          <h2 class="text-xl sm:text-2xl font-bold mb-2 text-white">SiteTrace API — the same data, programmable</h2>
           <p class="text-slate-300 text-sm leading-relaxed mb-4">10 endpoints for SEO audits, AI content detection, email validation, schema detection, RDAP/WHOIS, redirect tracing, bulk HTTP status, subdomain enumeration, and Wayback snapshots. REST + JSON. Free tier is enough for evaluation; paid plans start at $9.99/mo.</p>
+          <div class="curl-block mb-4">
+            <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/status-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"urls":["https://github.com","https://discord.com"]}'</span>
+            <br/><span class="comment"># → [{url, status, latency_ms, content_type}, ...]</span>
+          </div>
           <div class="flex flex-col sm:flex-row gap-3">
-            <a href="/api/" class="inline-flex items-center justify-center font-semibold bg-brand-gradient hover:opacity-90 transition px-5 py-2.5 rounded-lg shadow-glow-brand text-sm">
+            <a href="/api/" class="inline-flex items-center justify-center font-semibold bg-brand-gradient hover:opacity-90 transition px-5 py-2.5 rounded-lg shadow-glow-brand text-sm text-ink-900">
               Explore the API →
             </a>
             <a href="https://api.sitetrace.it.com/signup" class="inline-flex items-center justify-center font-medium text-slate-300 hover:text-white border border-white/15 hover:border-white/30 px-5 py-2.5 rounded-lg text-sm">
@@ -381,47 +666,81 @@
         </div>
       </div>
     </section>
+
+    <!-- =================== FAQ =================== -->
+    <section class="mt-12 card p-6 sm:p-8" aria-label="Frequently asked questions">
+      <h2 class="text-xl font-bold mb-5" data-i18n="home_faq_h2">Frequently asked questions</h2>
+      <div class="space-y-5 essay">
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_1_q">What is SiteTrace?</h3>
+          <p data-i18n="home_faq_1_a">SiteTrace is a small set of free, browser-based network utility tools: thirteen of them, covering IP lookup, ping, DNS, HTTP status, live service status, email deliverability, and SEO audits. No account, no app to install, no data stored on our servers.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_2_q">Is SiteTrace free?</h3>
+          <p data-i18n="home_faq_2_a">Yes. All thirteen web tools are free to use, with no rate limits, no signup, and no paywall. The site is funded by unobtrusive display ads and optional donations via PayPal.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_3_q">Do I need to install anything?</h3>
+          <p data-i18n="home_faq_3_a">No. Everything runs in your browser. Open the page, get your answer, close the tab. There is no app, no extension, no plugin, and no download.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_4_q">Does SiteTrace see what I look up?</h3>
+          <p data-i18n="home_faq_4_a">No. Your IP lookup, ping test, DNS lookup, and status checks all happen between your browser and the relevant public service. SiteTrace does not sit in the middle, does not log your requests, and does not store the responses.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-white mb-1" data-i18n="home_faq_5_q">Can I use SiteTrace from my phone?</h3>
+          <p data-i18n="home_faq_5_a">Yes. The site is responsive and works on any modern browser. The IP checker works the same on mobile as on desktop, though the ping and DNS tools work best on a stable Wi-Fi or wired connection for accurate results.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10 grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+      <a href="/about/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">About SiteTrace →</a>
+      <a href="/privacy/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">Privacy Policy →</a>
+      <a href="/is-it-down/" class="text-center text-sm text-slate-400 hover:text-brand-300 py-2">Is it down? — check any site →</a>
+    </section>
+
   </main>
 
   <footer class="border-t border-white/5 mt-12">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">
-    <div>
-      <div class="flex items-center gap-2 mb-3">
-        <span class="w-7 h-7 rounded-lg bg-brand-gradient"></span>
-        <span class="font-bold" data-i18n="brand">SiteTrace</span>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-brand-gradient"></span>
+          <span class="font-bold" data-i18n="brand">SiteTrace</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed max-w-md" data-i18n="footer_disclaimer">Free, no-login network tools. No accounts, no tracking, no nonsense.</p>
       </div>
-      <p class="text-slate-400 text-xs leading-relaxed max-w-md" data-i18n="footer_disclaimer">Free, no-login network tools. No accounts, no tracking, no nonsense.</p>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="footer_about">About</div>
+        <ul class="space-y-1 text-slate-300">
+          <li><a href="/about/" class="hover:text-white">About</a></li>
+          <li><a href="/api/" class="hover:text-white text-brand-300 font-semibold">⚡ API for developers</a></li>
+          <li><a href="/blog/" class="hover:text-white" data-i18n="footer_blog">Blog</a></li>
+          <li><a href="/privacy/" class="hover:text-white" data-i18n="footer_privacy">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="language">Language</div>
+        <ul class="space-y-1 text-slate-300 text-sm">
+          <li><button class="lang-link hover:text-white" data-lang="en">English</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="es">Espa&ntilde;ol</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="pt">Portugu&ecirc;s</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="fr">Fran&ccedil;ais</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="de">Deutsch</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="it">Italiano</button></li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="footer_about">About</div>
-      <ul class="space-y-1 text-slate-300">
-        <li><a href="/about/" class="hover:text-white">About</a></li>
-        <li><a href="/api/" class="hover:text-white text-brand-300 font-semibold">⚡ API for developers</a></li>
-        <li><a href="/blog/" class="hover:text-white" data-i18n="footer_blog">Blog</a></li>
-        <li><a href="/privacy/" class="hover:text-white" data-i18n="footer_privacy">Privacy</a></li>
-      </ul>
+    <div class="border-t border-white/5">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>&copy; 2026 SiteTrace. <span data-i18n="footer_rights">All rights reserved.</span></span>
+        <span class="font-mono">v1.0.0</span>
+      </div>
     </div>
-    <div>
-      <div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="language">Language</div>
-      <ul class="space-y-1 text-slate-300 text-sm">
-        <li><button class="lang-link hover:text-white" data-lang="en">English</button></li>
-        <li><button class="lang-link hover:text-white" data-lang="es">Espa&ntilde;ol</button></li>
-        <li><button class="lang-link hover:text-white" data-lang="pt">Portugu&ecirc;s</button></li>
-        <li><button class="lang-link hover:text-white" data-lang="fr">Fran&ccedil;ais</button></li>
-        <li><button class="lang-link hover:text-white" data-lang="de">Deutsch</button></li>
-        <li><button class="lang-link hover:text-white" data-lang="it">Italiano</button></li>
-      </ul>
-    </div>
-  </div>
-  <div class="border-t border-white/5">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <span>&copy; 2026 SiteTrace. <span data-i18n="footer_rights">All rights reserved.</span></span>
-      <span class="font-mono">v1.0.0</span>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-  <script src="/js/i18n.js?v=28"></script>
+  <script src="/js/i18n.js?v=29"></script>
   <a href="https://paypal.me/edyappenzeller" target="_blank" rel="noopener noreferrer"
    id="support-fab" class="support-fab"
    data-i18n-attr="title:support_tooltip;aria-label:support_tooltip">
@@ -434,6 +753,6 @@
       window.SiteTrace.layout.mount({ active: 'nav_home' });
     });
   </script>
-<script src="/js/layout.js?v=29"></script>
+<script src="/js/layout.js?v=30"></script>
 </body>
 </html>

@@ -8,14 +8,15 @@
 //   /js/layout.js?v=26    →   /js/layout.js?v=29
 
 import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { globSync } from 'node:fs';
 
 const ROOT = 'F:\\.Projects\\sitetrace';
-const NEW_I18N_VERSION = 28;
-const NEW_LAYOUT_VERSION = 29;
+const NEW_I18N_VERSION = 29;
+const NEW_LAYOUT_VERSION = 30;
 
-const files = globSync('**/index.html', { cwd: ROOT, absolute: true })
+const files = globSync('**/index.html', { cwd: ROOT })
+  .map(f => resolve(ROOT, f))
   .filter(f => !f.includes('\\.tmp\\') && !f.includes('\\node_modules\\'));
 
 let totalReplacements = 0;
