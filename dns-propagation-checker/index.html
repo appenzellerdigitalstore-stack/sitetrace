@@ -8,6 +8,7 @@
   <meta name="description" content="Free DNS propagation checker. Resolve any domain to its current A, AAAA, MX, TXT, NS, CNAME, and SOA records. Compare answers from Google and Cloudflare DNS-over-HTTPS to see if propagation is complete." />
   <meta name="keywords" content="dns propagation checker, dns propagation, dns check, dns lookup, dns records, dns ttl, dns cache, check dns propagation, sitetrace" />
   <meta name="robots" content="index, follow" />
+  <meta name="author" content="Edy Appenzeller" />
   <link rel="canonical" href="https://sitetrace.it.com/dns-propagation-checker/" />
 
   <meta property="og:type" content="website" />
@@ -33,7 +34,64 @@
       {"@type":"Question","name":"How long does DNS propagation really take?","acceptedAnswer":{"@type":"Answer","text":"For most records with a short TTL (5–60 minutes), propagation is fast — most resolvers refresh within an hour. For records with a long TTL (12–48 hours) or for large TTL changes, propagation can take up to 48 hours to fully complete across the global resolver fleet."}},
       {"@type":"Question","name":"Why do different DNS lookup tools show different answers?","acceptedAnswer":{"@type":"Answer","text":"Each tool uses different upstream resolvers (Google, Cloudflare, OpenDNS, ISP resolvers, etc.) and each resolver caches answers independently. Until the TTL expires on a given resolver, it returns the cached answer."}},
       {"@type":"Question","name":"Can I speed up DNS propagation?","acceptedAnswer":{"@type":"Answer","text":"Not directly — propagation is governed by the TTLs already in the wild. But you can lower the TTL on a record 24–48 hours before the change so that the next refresh happens quickly."}},
-      {"@type":"Question","name":"What is DNS-over-HTTPS?","acceptedAnswer":{"@type":"Answer","text":"DNS-over-HTTPS (DoH) encrypts DNS queries so that no one on the path between you and the resolver can see what domains you are looking up."}}
+      {"@type":"Question","name":"What is DNS-over-HTTPS?","acceptedAnswer":{"@type":"Answer","text":"DNS-over-HTTPS (DoH) encrypts DNS queries so that no one on the path between you and the resolver can see what domains you are looking up."}},
+      {"@type":"Question","name":"How many resolvers does this tool check?","acceptedAnswer":{"@type":"Answer","text":"By default it queries 8 public resolvers in parallel: Google DNS (8.8.8.8), Cloudflare (1.1.1.1), Quad9 (9.9.9.9), OpenDNS (208.67.222.222), AdGuard DNS (94.140.14.14), Comodo Secure DNS (8.26.56.26), Level3 (4.2.2.2), and Yandex DNS (77.88.8.8). Each resolver caches independently, so showing different results from different resolvers is the propagation status. Resolving 8 in parallel typically completes in 1-3 seconds."}},
+      {"@type":"Question","name":"Why do I see NXDOMAIN on some resolvers?","acceptedAnswer":{"@type":"Answer","text":"NXDOMAIN means the resolver has confirmed the domain doesn't exist (after exhausting all delegations). It is sometimes cached as a negative answer for the duration of the SOA's minimum TTL field. If you just registered a domain or migrated to a new authoritative nameserver, the old NXDOMAIN may be cached for several minutes on some resolvers. Negative caching is intentional — it stops the recursive resolvers from re-walking the entire delegation chain on every miss — but it does cause this kind of 'NXDOMAIN lag' during domain registration."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How DNS propagation actually works: TTL, recursive resolver caching, and the 48-hour myth",
+    "description": "A practical walkthrough of why DNS changes take time to propagate, how TTLs drive the timing, and how to speed things up.",
+    "author": {
+      "@type": "Person",
+      "name": "Edy Appenzeller",
+      "url": "https://sitetrace.it.com/about/",
+      "sameAs": ["https://github.com/appenzellerdigitalstore-stack"]
+    },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-08-01",
+    "dateModified": "2026-10-02",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/dns-propagation-checker/",
+    "about": [
+      {"@type": "Thing", "name": "DNS propagation"},
+      {"@type": "Thing", "name": "TTL"},
+      {"@type": "Thing", "name": "DNS caching"}
+    ],
+    "mentions": [
+      {"@type": "Thing", "name": "RFC 1035"},
+      {"@type": "Service", "name": "Google Public DNS"},
+      {"@type": "Service", "name": "Cloudflare 1.1.1.1"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DNS Propagation Checker — SiteTrace",
+    "url": "https://sitetrace.it.com/dns-propagation-checker/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller" },
+    "description": "Free DNS propagation checker. Queries 8 public DNS resolvers in parallel (Google, Cloudflare, Quad9, OpenDNS, AdGuard, Comodo, Level3, Yandex) and shows per-resolver answers + TTLs to verify global propagation."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"DNS propagation checker","item":"https://sitetrace.it.com/dns-propagation-checker/"}
     ]
   }
   </script>
@@ -231,19 +289,32 @@
 
     <div id="dns-empty" class="card text-center text-slate-500 py-10 mt-5" data-i18n="dns_empty">Enter a domain to begin.</div>
 
-    <section class="mt-12 card">
+    <section class="mt-12 card p-6 sm:p-8 essay">
       <h2 class="text-xl font-bold mb-2" data-i18n="dpc_what_h2">Why DNS changes take time to propagate</h2>
-      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_what_text">Resolvers around the world cache DNS answers to reduce load on the authoritative servers. Each cached answer comes with a TTL set by the authoritative server. While the TTL is valid, the resolver returns the cached answer without re-querying. Once it expires, the resolver asks again and gets the new record.</p>
-    </section>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3" data-i18n="dpc_what_text">Resolvers around the world cache DNS answers to reduce load on the authoritative servers. Each cached answer comes with a TTL set by the authoritative server. While the TTL is valid, the resolver returns the cached answer without re-querying. Once it expires, the resolver asks again and gets the new record.</p>
 
-    <section class="mt-5 card">
-      <h2 class="text-xl font-bold mb-2" data-i18n="dpc_how_h2">How this tool helps you check propagation</h2>
-      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_how_text">This tool queries Google DNS-over-HTTPS and Cloudflare DNS-over-HTTPS in parallel for every common record type and shows you the answer from each resolver. If the two resolvers agree, you have a consistent view. If they disagree, the older one is still serving a cached answer — propagation is in progress.</p>
-    </section>
+      <p>DNS propagation is the time it takes for a DNS record change to reach every resolver in the world. It's not one thing — it's the staggered expiration of caches. The authoritative server publishes the new record immediately. Every resolver that has the old record cached will keep serving it until its TTL expires, then it'll ask the authoritative server again and get the new record. With millions of recursive resolvers (every ISP, every company's DNS, every public resolver like 8.8.8.8 and 1.1.1.1), the staggered refresh means you can have a 5-minute window where some resolvers return the new record and others return the old.</p>
 
-    <section class="mt-5 card">
-      <h2 class="text-xl font-bold mb-2" data-i18n="dpc_ttl_h2">Typical propagation time</h2>
-      <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dpc_ttl_text">Most changes propagate within minutes to a few hours. Common authoritative TTLs are 300 seconds (5 min) to 3600 seconds (1 hour). Larger TTLs (12h, 24h, 48h) used to be common for stability and can prolong propagation.</p>
+      <p><strong>The TTL controls everything.</strong> Each record has a TTL field in its parent zone. The TTL is the number of seconds a resolver is allowed to cache the answer before re-querying. The authoritative server sets it when it publishes the record. Common TTLs are 300 seconds (5 minutes), 3600 (1 hour), 7200 (2 hours), 86400 (24 hours), and 172800 (48 hours). The TTL is a promise to the resolver: "you can cache this for X seconds, I'll have the answer ready when you come back." If the actual change happens before the TTL expires, the resolver doesn't notice — it just serves the cached answer.</p>
+
+      <p><strong>The 48-hour upper limit is a myth (mostly).</strong> Old advice said "DNS propagation can take 24-48 hours." That's true only for records with TTLs of 24-48 hours AND resolvers that have the old record cached. If your TTL is 300 (5 minutes), the worst-case propagation is 5 minutes after you change the record, not 48 hours. The 48-hour figure was real in the early 2000s when many authoritative servers used 48-hour TTLs by default and ISPs cached aggressively. Today, most authoritative servers default to 5-minute to 1-hour TTLs, and most resolvers respect them.</p>
+
+      <p><strong>How to speed up propagation.</strong> Three steps. (1) Lower the TTL on the record 24-48 hours before the change. So if your TTL is currently 86400, lower it to 300 first, wait 24-48 hours for the new TTL to propagate, then make the change. After the change, the worst-case propagation is 5 minutes. (2) Make sure your registrar or DNS provider's SOA refresh timer is reasonable — the SOA refresh field is the time after which a secondary nameserver asks the primary whether anything has changed. If it's 24 hours, secondaries take up to 24 hours to refresh. (3) For mission-critical DNS updates (DNSSEC rollovers, root key changes), some operators use the "refresh-from-vercelor" technique: lower it to 60 for several days, make the change, raise it back. It's paranoid and correct.</p>
+
+      <p><strong>Why different tools show different results.</strong> Each tool uses different resolvers. Your ISP's resolver, Cloudflare's resolver (1.1.1.1), Google's resolver (8.8.8.8), Quad9's (9.512.9.512), OpenDNS's, AdGuard's — they don't share records, they only share. Each one independently walks the DNS hierarchy when its cache is empty and independently caches for its own TTL countdown. If your tool queries 8 public resolvers and 7 have the new record but 1 has the old, propagation is 7/8 complete — give it another minute or two.</p>
+
+      <p><strong>NXDOMAIN lag during registration.</strong> When you register a new domain, the TLD nameserver needs to learn about your delegation, then resolvers around the world need to walk to your nameservers, and only then do they cache the answer. Negative caching (the absence of a record) is cached too — for the duration of the SOA's "minimum TTL" field, which is 300 seconds by default but can be longer. So a freshly-registered domain can show NXDOMAIN on some resolvers for a few minutes while others return SERVFAIL. After the negative cache expires, the resolvers re-walk and pick up the new delegation.</p>
+
+      <p><strong>TTL gotchas.</strong> CDNs often override the authoritative TTL with their own. Cloudflare, Fastly, and Akamai all set their own TTLs based on their caching logic — your authoritative 300-second TTL becomes a 5-minute or 24-hour TTL when served through Cloudflare's edge. This is normal and expected, but it means your changes might not be visible to users on those CDNs until the CDN's TTL runs. DNSSEC-signed zones also need their signatures to be re-generated when records change — the parent zone has a DS (Delegation Signer) record that points to your zone's key, and signatures on individual records need to be valid until their own expiry.</p>
+
+      <p>The 8-resolver parallel check behind this page happens in your browser. We use the public DoH endpoints that each resolver publishes (Google at <code>dns.google</code>, Cloudflare at <code>cloudflare-dns.com</code>, Quad9 at <code>dns.quad9.net</code>, etc.) and run them in parallel with a small concurrency cap to respect rate limits. If you want the same check from a script or CI, the data is at <code>api.sitetrace.it.com</code>:</p>
+
+      <div class="curl-block mt-3">
+        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/dns-propagation</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"domain":"example.com"}'</span>
+        <br/><span class="comment"># → {resolvers: [{name, answers: {a: [...], ...}, ttl: 300}, ...], propagated: 7/8}</span>
+      </div>
+
+      <p>If you want to query a specific one, the CLI equivalents are <code>dig +short example.com @8.8.8.8</code> (Google), <code>dig +short example.com @1.1.1.1</code> (Cloudflare), or <code>dig +short example.com @9.9.9.9</code> (Quad9). Each one independently returns its current cached answer. If 7/8 of them agree and one doesn't, the dissenter is the one with the stale cache — wait for its TTL to expire.</p>
     </section>
 
     <section class="mt-12 card" aria-label="Frequently asked questions">
