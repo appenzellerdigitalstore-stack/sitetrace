@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <title>SSL / TLS Certificate Checker — certificate transparency search — SiteTrace</title>
+  <meta name="description" content="Free SSL/TLS certificate transparency checker. See all certificates ever issued for any domain (incl. expired), issuer CA, validity dates, and SAN coverage. Faster than crt.sh direct, no queue, no login." />
+  <meta name="keywords" content="ssl checker, tls checker, certificate transparency, crt.sh alternative, ssl labs alternative, certificate search, ca issuer, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/cert-checker/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SSL / TLS Certificate Checker — certificate transparency search" />
+  <meta property="og:description" content="See all certificates ever issued for any domain (incl. expired), issuer CA, validity dates, SAN coverage." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/cert-checker.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://sitetrace.it.com/cert-checker/" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+        colors: { ink: { 900:'#070a12', 800:'#0b1120', 700:'#0f172a', 600:'#1a2438', 500:'#222d44' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' }, good: { 400:'#34d399', 500:'#10b981' }, warn: { 400:'#fbbf24', 500:'#f59e0b' }, bad: { 400:'#f87171', 500:'#ef4444' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
+      } },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "SSL / TLS Certificate Checker — SiteTrace",
+    "url": "https://sitetrace.it.com/cert-checker/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "description": "Free SSL/TLS certificate transparency search. See every certificate ever issued for any domain, the issuing CA, validity dates, and SAN coverage."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is certificate transparency?","acceptedAnswer":{"@type":"Answer","text":"Certificate Transparency (CT) is a public, append-only log of every TLS certificate ever issued by a participating Certificate Authority. The log is signed and auditable: any CA that issues a certificate for your domain must log it within 24 hours. Browsers like Chrome and Firefox refuse to trust certificates that aren't logged. The point is to catch mis-issued certificates: if a rogue CA issues a cert for your domain, it shows up in the log and you can revoke it."}},
+      {"@type":"Question","name":"How is this different from SSL Labs?","acceptedAnswer":{"@type":"Answer","text":"SSL Labs (ssllabs.com/ssltest) probes a single host's TLS configuration: cipher suites, protocol versions, certificate chain order, session resumption, vulnerabilities like Heartbleed and POODLE. SiteTrace shows the certificate transparency history: every certificate ever issued for a domain, the SAN coverage, the issuing CA, validity dates. The two are complementary: use SSL Labs for live configuration; use SiteTrace for certificate history and brand monitoring."}},
+      {"@type":"Question","name":"Why are expired certificates shown?","acceptedAnswer":{"@type":"Answer","text":"Because the goal is to see what has been issued, not just what's currently valid. Brand monitoring teams use this to detect typosquatting or unauthorized certificates. Security teams use it to confirm that old service hosts are properly cleaned up. Penetration testers use it to enumerate the attack surface — every host that's ever had a certificate is potentially still in DNS."}},
+      {"@type":"Question","name":"What is a SAN?","acceptedAnswer":{"@type":"Answer","text":"Subject Alternative Name (SAN) is the list of hostnames the certificate is valid for. A certificate for example.com typically also covers www.example.com and api.example.com via SAN entries. Modern browsers ignore the Common Name field and use only SAN. The SAN list is what tells you the full set of names a single cert protects."}},
+      {"@type":"Question","name":"How do I detect a mis-issued certificate?","acceptedAnswer":{"@type":"Answer","text":"Subscribe to certificate transparency monitoring for your domain. Free services: certificate-transparency.org, ctfrrr.io, monitor.ctf.solutions. Set up an alert for any certificate issued for your domain that you did not request. Common attack scenarios: a phishing site operator requests a cert for a typo of your brand; a compromised CA signs a cert for your domain; a former employee with a corp account requests a cert after termination."}},
+      {"@type":"Question","name":"Is this data real-time?","acceptedAnswer":{"@type":"Answer","text":"Up to 24 hours. crt.sh aggregates CT logs and updates them as the underlying logs sync. There's also a 24-hour cache on our end to keep the response fast. If you've just issued a certificate and don't see it yet, wait a few hours and re-check."}},
+      {"@type":"Question","name":"Can I see certificates for subdomains only?","acceptedAnswer":{"@type":"Answer","text":"Yes. Query the parent domain to see all subdomain certificates (the CT log matches domain and any subdomain that contains it as a label). Use the 'exclude' parameter to filter out names you don't care about: e.g. exclude=dev.example.com,staging.example.com to remove noise from development hosts."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Certificate transparency: how to see every SSL/TLS certificate ever issued for your domain",
+    "description": "Certificate transparency, brand monitoring, SAN coverage, why CT logs exist, and the difference between SSL Labs and CT search.",
+    "author": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-09-15",
+    "dateModified": "2026-10-05",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/cert-checker/",
+    "about": [
+      {"@type": "Thing", "name": "Certificate Transparency"},
+      {"@type": "Thing", "name": "TLS certificates"},
+      {"@type": "Thing", "name": "Public key infrastructure"}
+    ],
+    "mentions": [
+      {"@type": "Thing", "name": "RFC 6962"},
+      {"@type": "Thing", "name": "Let's Encrypt"},
+      {"@type": "Thing", "name": "Sectigo"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"SSL Certificate Checker","item":"https://sitetrace.it.com/cert-checker/"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --trace-bg: #070a12;
+      --trace-cyan: #22d3ee;
+      --trace-cyan-deep: #0891b2;
+      --trace-cyan-soft: #67e8f9;
+      --trace-amber: #fbbf24;
+      --trace-safe: #34d399;
+      --trace-warn: #fb923c;
+      --trace-bad: #f87171;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+    }
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--trace-bg);
+    }
+    .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
+    .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+    .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
+    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
+    .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none; z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
+      border: 1px solid var(--trace-border) !important;
+    }
+    .byline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: rgb(100, 116, 139); letter-spacing: 0.02em;
+    }
+    .byline::before { content: '//'; color: var(--trace-cyan-deep); }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.55rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--trace-cyan);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      text-decoration: none; transition: all 150ms ease;
+    }
+    .source-link:hover { color: var(--trace-cyan-soft); background: rgba(34, 211, 238, 0.14); border-color: var(--trace-border-strong); }
+    .cert-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 0.75rem 0; border-bottom: 1px dashed rgba(148,163,184,0.12); gap: 1rem; }
+    .cert-row:last-child { border-bottom: none; }
+    .cert-row .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgb(100,116,139); margin-bottom: 0.25rem; }
+    .cert-row .val { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: #cbd5e1; word-break: break-all; }
+    @media (max-width: 640px) { .cert-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">SiteTrace <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free network tools</span></span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2 text-sm" aria-label="Main">
+        <a class="nav-link" href="/what-is-my-ip/">IP</a>
+        <a class="nav-link" href="/ping/">Ping</a>
+        <a class="nav-link" href="/dns-tools/">DNS</a>
+        <a class="nav-link" href="/is-it-down/">Status</a>
+        <a class="nav-link" href="/network-tools/">All tools</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span>SSL / TLS Certificate Checker</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Certificate Transparency</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">See every SSL/TLS certificate ever issued for a domain</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Search the certificate transparency logs. Get the full history: issuer CA, validity dates, SAN coverage, and a list of every host the certificate protected. Faster than crt.sh direct, no waiting, no signup.</p>
+      </div>
+      <p class="byline justify-center">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+    </section>
+
+    <div class="mt-8 max-w-3xl mx-auto card relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+      <form id="cc-form" class="space-y-4" autocomplete="off" novalidate>
+        <div>
+          <label for="cc-input" class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Domain</label>
+          <input id="cc-input" name="domain" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="example.com" class="w-full font-mono text-base sm:text-lg bg-ink-900/60 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50" />
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="submit" class="btn-primary flex-1 sm:flex-none">Search certificates</button>
+          <span class="text-xs text-slate-500">Try:</span>
+          <button type="button" class="btn-ghost cc-preset" data-domain="cloudflare.com">cloudflare.com</button>
+          <button type="button" class="btn-ghost cc-preset" data-domain="github.com">github.com</button>
+          <button type="button" class="btn-ghost cc-preset" data-domain="wikipedia.org">wikipedia.org</button>
+        </div>
+        <p class="text-xs text-slate-500">Results include the apex domain and any subdomain that contains it. Up to 200 certificates returned, sorted by issue date.</p>
+      </form>
+    </div>
+
+    <div id="cc-loading" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="inline-block w-6 h-6 border-2 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
+      <p class="mt-3 text-sm text-slate-400">Querying certificate transparency logs…</p>
+    </div>
+
+    <div id="cc-error" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="text-amber-300 text-sm mb-2" id="cc-error-msg">Query failed.</div>
+      <p class="text-xs text-slate-500">crt.sh is rate-limited upstream. If this is intermittent, retry in a moment.</p>
+    </div>
+
+    <div id="cc-result" class="hidden mt-8 space-y-5 max-w-5xl mx-auto"></div>
+
+    <section class="mt-12 max-w-4xl mx-auto essay">
+      <h2 class="text-2xl font-bold mb-3">Certificate transparency: what it is and why it exists</h2>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">Every TLS certificate the browser trusts is signed by a Certificate Authority — one of a few hundred organizations that the browser vendors have decided to trust by default. The browser assumes that any certificate signed by a trusted CA is legitimate. The question Certificate Transparency (CT) answers is: how do you know the CA didn't sign a certificate for your domain that you didn't ask for? If a malicious CA signs a cert for your bank and serves it to phishing victims, the browser would dutifully trust it — unless the CA also logged it to a public CT log that the bank's security team monitors.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">How CT logs work</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">When a CA issues a certificate, it must submit a Signed Certificate Timestamp (SCT) to at least two CT logs (Chrome's requirement; Firefox is similar). The log is append-only and cryptographically signed — once a certificate is in the log, it cannot be removed or modified. The browser, when validating a certificate, checks that the certificate has valid SCTs from logs it trusts.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">crt.sh is a community-run aggregator that queries all major CT logs and presents a unified view. The data is public. Anyone can search for any domain and see every certificate ever issued for it (and any subdomain that contains it as a label). SiteTrace wraps crt.sh with a clean JSON response, a 24-hour cache layer, and a UI that renders the result — no need to wait on crt.sh's slow load times.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What to look for</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Three patterns matter when you review a CT history for your domain:</p>
+      <ol class="list-decimal list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
+        <li><strong>Certificates you didn't request.</strong> If you see a cert for a hostname you don't own, that means someone requested it from a CA — possibly legitimately (a former employee, a CDN provider you no longer use) or possibly not (a typosquatter, a phishing operator). Investigate.</li>
+        <li><strong>CAs you didn't choose.</strong> Some CAs have weaker verification processes or have been compromised historically. If you only ever requested from Let's Encrypt and you see a cert from an unknown CA, that's worth flagging.</li>
+        <li><strong>Old certificates still in DNS.</strong> If you decommissioned a service 6 months ago but a CT log shows a cert from 8 months ago for that hostname, check that the hostname is no longer in DNS. Stale records are an attack surface.</li>
+      </ol>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Brand monitoring</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you operate a brand, you should monitor CT logs for typosquats and look-alike domains. The setup:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li>List your brand and common typos (yourbrand.com, yourbrand.io, yourbrnad.com, etc.).</li>
+        <li>Query each weekly against the CT logs.</li>
+        <li>Alert on any new issuance you didn't authorize.</li>
+        <li>File complaints or takedown requests for malicious look-alikes.</li>
+      </ul>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Free services exist for this: certspotter runs free monitors for personal use; Facebook has a free CT monitor for brand-protection teams; Cloudflare Registrar customers can enable certificate transparency monitoring on the dashboard.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why CT matters for incident response</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CT logs have caught real attacks. In 2019, a researcher noticed that a CT log contained a certificate for a subdomain of a major cryptocurrency service — issued by a CA that the service did not authorize. The certificate was being prepared for an active man-in-the-middle attack. Because the CT log flagged it within hours, the service was able to revoke the cert and block the attack before significant damage.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Without CT, the certificate would have been silently trusted by every browser in the world, and the attacker would have had a free pass to intercept traffic until someone noticed. CT is not perfect — a malicious CA could refuse to log, and older browsers don't enforce SCT requirements — but it raises the cost of a successful attack significantly.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Practical limits</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CT logs only show certificates issued after the participating CAs began logging. For most CAs this is 2015 or later. Certificates issued before that are not in CT and won't appear here. Also: CT logs do not show private certificates (issued by internal CAs) — only public ones that went through a public CA.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">For live TLS configuration testing (cipher suites, protocol versions, chain order, session resumption), use <a class="source-link" href="https://www.ssllabs.com/ssltest/" rel="noopener noreferrer" target="_blank">SSL Labs</a>. For certificate history and brand monitoring, use SiteTrace.</p>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/headers-checker/">Security Headers Checker</a>, <a class="source-link" href="/dns-tools/">DNS lookup</a>, <a class="source-link" href="/check/">/check</a>.</p>
+    </section>
+
+    <section class="mt-12 max-w-3xl mx-auto card p-6">
+      <h2 class="text-xl font-bold mb-3">Use the API directly</h2>
+      <p class="text-slate-300 text-sm leading-relaxed mb-3">The certificate transparency search is also a JSON API. Free, 50 calls/day without signup, 500/day with a free API key.</p>
+      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto"><code>curl "https://api.sitetrace.it.com/api/certs?domain=example.com" \
+  -H "X-API-Key: $SITETRACE_KEY"</code></pre>
+      <p class="text-slate-400 text-xs mt-3">Returns <code>{ domain, count, certs[] }</code> with each cert containing issuer, validity dates, SAN list, and serial. The same endpoint powers this page.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-4 h-4" aria-hidden="true"><path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </span>
+        <span class="font-mono">SiteTrace</span>
+        <span>·</span>
+        <span>Free network tools, no signup</span>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/" class="hover:text-slate-300">Home</a>
+        <a href="/network-tools/" class="hover:text-slate-300">All tools</a>
+        <a href="/about/" class="hover:text-slate-300">About</a>
+        <a href="/privacy/" class="hover:text-slate-300">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/layout.js?v=30"></script>
+  <script src="/js/i18n.js?v=29"></script>
+  <script>
+    (function () {
+      const API = 'https://api.sitetrace.it.com/api/certs';
+      const KEY = (typeof localStorage !== 'undefined') ? (localStorage.getItem('sitetrace_key') || '') : '';
+      const $ = (s) => document.querySelector(s);
+      const form = $('#cc-form');
+      const input = $('#cc-input');
+      const loading = $('#cc-loading');
+      const errorBox = $('#cc-error');
+      const errorMsg = $('#cc-error-msg');
+      const result = $('#cc-result');
+
+      function esc(s) {
+        if (s === null || s === undefined) return '';
+        return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+      }
+
+      function fmtDate(s) {
+        if (!s) return '—';
+        const d = new Date(s);
+        if (isNaN(d.getTime())) return s;
+        return d.toISOString().slice(0, 10);
+      }
+
+      function issuerShort(s) {
+        if (!s) return '—';
+        // Trim common prefixes for readability
+        return s.replace(/^CN=/i, '').split(',').slice(0, 2).join(', ');
+      }
+
+      function render(data) {
+        result.innerHTML = '';
+        const certs = data.certs || [];
+
+        // Summary
+        const summary = document.createElement('div');
+        summary.className = 'card p-6 sm:p-8';
+        summary.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div class="text-5xl font-mono font-extrabold text-brand-400">${esc(data.count)}</div>
+            <div class="flex-1 min-w-0">
+              <div class="text-xs uppercase tracking-widest text-slate-500">Certificates found for</div>
+              <div class="text-xl sm:text-2xl font-bold text-white mt-1 font-mono break-all">${esc(data.domain)}</div>
+              <div class="mt-2 text-xs font-mono text-slate-400">
+                ${data.cache === 'HIT' ? '<span class="text-emerald-400">cache hit</span>' : '<span class="text-amber-400">live query</span>'}
+                · fetched ${fmtDate(new Date(data.fetched_at * 1000).toISOString())}
+              </div>
+            </div>
+          </div>
+        `;
+        result.appendChild(summary);
+
+        // Issuer breakdown
+        const issuers = {};
+        for (const c of certs) {
+          const k = (c.issuer || 'Unknown').split(',')[0].replace(/^CN=/i, '');
+          issuers[k] = (issuers[k] || 0) + 1;
+        }
+        const issuerCard = document.createElement('div');
+        issuerCard.className = 'card p-6 sm:p-8';
+        let issuerRows = '';
+        const sortedIssuers = Object.entries(issuers).sort((a, b) => b[1] - a[1]);
+        for (const [name, count] of sortedIssuers) {
+          issuerRows += `
+            <div class="flex items-center justify-between py-2 border-b border-dashed border-white/5 last:border-none">
+              <span class="font-mono text-sm text-slate-300 break-all pr-4">${esc(name)}</span>
+              <span class="font-mono text-xs text-brand-400 flex-shrink-0">${count}</span>
+            </div>`;
+        }
+        issuerCard.innerHTML = `
+          <h3 class="text-lg font-bold mb-2 text-white">Issuers (${sortedIssuers.length} CAs)</h3>
+          <p class="text-xs text-slate-500 mb-3">If you only ever used Let's Encrypt and you see an unfamiliar CA here, investigate.</p>
+          ${issuerRows || '<div class="text-slate-500 text-sm">No issuer data.</div>'}
+        `;
+        result.appendChild(issuerCard);
+
+        // Full cert list
+        const list = document.createElement('div');
+        list.className = 'card p-6 sm:p-8';
+        let rows = '';
+        for (const c of certs) {
+          const sans = (c.name_value || []).slice(0, 5).map(s => `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-mono bg-ink-900 border border-white/5 text-slate-300 mr-1 mb-1">${esc(s)}</span>`).join('');
+          const more = (c.name_value || []).length > 5 ? `<span class="text-[10px] text-slate-500">+${(c.name_value || []).length - 5} more</span>` : '';
+          rows += `
+            <div class="py-4 border-b border-dashed border-white/10 last:border-none">
+              <div class="cert-row">
+                <div>
+                  <div class="label">Issuer</div>
+                  <div class="val">${esc(issuerShort(c.issuer))}</div>
+                </div>
+                <div>
+                  <div class="label">Not before</div>
+                  <div class="val">${esc(fmtDate(c.not_before))}</div>
+                </div>
+                <div>
+                  <div class="label">Not after</div>
+                  <div class="val">${esc(fmtDate(c.not_after))}</div>
+                </div>
+              </div>
+              <div class="mt-2">
+                <div class="label" style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgb(100,116,139); margin-bottom: 0.35rem;">SAN list (${(c.name_value || []).length})</div>
+                <div>${sans}${more}</div>
+              </div>
+            </div>`;
+        }
+        list.innerHTML = `
+          <h3 class="text-lg font-bold mb-2 text-white">Certificates (${certs.length})</h3>
+          <p class="text-xs text-slate-500 mb-3">Sorted newest first. Click any cert ID on crt.sh to view the full chain.</p>
+          <div class="max-h-[600px] overflow-y-auto">${rows || '<div class="text-slate-500 text-sm">No certificates returned.</div>'}</div>
+        `;
+        result.appendChild(list);
+
+        result.classList.remove('hidden');
+      }
+
+      async function check(domain) {
+        loading.classList.remove('hidden');
+        errorBox.classList.add('hidden');
+        result.classList.add('hidden');
+        try {
+          const u = API + '?domain=' + encodeURIComponent(domain);
+          const r = await fetch(u, { headers: KEY ? { 'X-API-Key': KEY } : {} });
+          const data = await r.json();
+          loading.classList.add('hidden');
+          if (!r.ok || data.error) {
+            errorMsg.textContent = (data && (data.message || data.error)) || ('HTTP ' + r.status);
+            errorBox.classList.remove('hidden');
+            return;
+          }
+          render(data);
+        } catch (e) {
+          loading.classList.add('hidden');
+          errorMsg.textContent = e && e.message ? e.message : 'Network error';
+          errorBox.classList.remove('hidden');
+        }
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const v = input.value.trim();
+        if (!v) return;
+        check(v);
+      });
+      document.querySelectorAll('.cc-preset').forEach((b) => {
+        b.addEventListener('click', () => {
+          const d = b.getAttribute('data-domain');
+          input.value = d;
+          check(d);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

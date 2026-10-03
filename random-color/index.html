@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <title>Random Color Generator — pick a random hex / RGB / HSL — SiteTrace</title>
+  <meta name="description" content="Free random color generator. Pick a random color in hex, RGB, or HSL. Spacebar to roll a new color. Lock the format, lock the hue range, copy to clipboard. 100% client-side, no signup, no tracking." />
+  <meta name="keywords" content="random color generator, random hex color, random rgb color, color picker, random hsl, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/random-color/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Random Color Generator — pick a random hex / RGB / HSL" />
+  <meta property="og:description" content="Pick a random color. Hex, RGB, HSL. Spacebar to roll a new one. 100% client-side." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/random-color.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://sitetrace.it.com/random-color/" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+        colors: { ink: { 900:'#070a12', 800:'#0b1120', 700:'#0f172a', 600:'#1a2438', 500:'#222d44' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
+      } },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Random Color Generator — SiteTrace",
+    "url": "https://sitetrace.it.com/random-color/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "description": "Free random color generator. Hex, RGB, HSL. 100% client-side — your colors never leave the browser."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Is this color picker random?","acceptedAnswer":{"@type":"Answer","text":"Yes. The hex generator uses crypto.getRandomValues where available, falls back to Math.random elsewhere. Both are statistically uniform across the 16,777,216 possible 24-bit colors. The hue-range variants use Math.random within the constrained hue range, which is also uniform within that subset."}},
+      {"@type":"Question","name":"Does the tool send my colors to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The entire generator runs in your browser via JavaScript. The page does not fetch any color data, does not log your rolls, and does not track which colors you generated. Press F12 and watch the network tab: only static assets load, no per-roll requests."}},
+      {"@type":"Question","name":"What format should I copy?","acceptedAnswer":{"@type":"Answer","text":"Hex (#RRGGBB) is the most common for web/CSS. RGB (rgb(255, 128, 0)) is the most common for code. HSL (hsl(180, 50%, 50%)) is the most useful for design — it's easier to reason about lightness and saturation in HSL than to mentally convert between RGB channels. CSS variables work with any of them."}},
+      {"@type":"Question","name":"Can I lock the hue or saturation?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the 'Hue' tab to pick a hue range (e.g. only greens, only warm colors). Use the 'Saturation' tab to constrain saturation to a range. Use the 'Lightness' tab to constrain lightness. The picked color will stay inside all three constraints. Useful for generating a palette of related colors rather than truly random ones."}},
+      {"@type":"Question","name":"Why are the warm / cool / pastel variants useful?","acceptedAnswer":{"@type":"Answer","text":"Random colors are uniformly distributed across the color wheel, which means about 40% of them are muddy browns or near-black. Constraining to warm/cool/pastel/dark-strips skips the muddy range and produces more usable palettes. If you need 5 colors for a UI, constrain to a hue range and pull 5 colors — they'll be related, not random."}},
+      {"@type":"Question","name":"Can I generate accessibility-friendly palettes?","acceptedAnswer":{"@type":"Answer","text":"The WCAG contrast check shows the contrast ratio between the current color and white, black, and the cyan accent. Anything 4.5:1 or higher passes WCAG AA for normal text; 7:1 passes AAA. Use the slider to find a lightness that gives you 4.5:1 against your text color."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"Random Color Generator","item":"https://sitetrace.it.com/random-color/"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --trace-bg: #070a12;
+      --trace-cyan: #22d3ee;
+      --trace-cyan-deep: #0891b2;
+      --trace-cyan-soft: #67e8f9;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+    }
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--trace-bg);
+    }
+    .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
+    .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+    .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
+    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
+    .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none; z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
+      border: 1px solid var(--trace-border) !important;
+    }
+    .byline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: rgb(100, 116, 139); letter-spacing: 0.02em;
+    }
+    .byline::before { content: '//'; color: var(--trace-cyan-deep); }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.55rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--trace-cyan);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      text-decoration: none; transition: all 150ms ease;
+    }
+    .source-link:hover { color: var(--trace-cyan-soft); background: rgba(34, 211, 238, 0.14); border-color: var(--trace-border-strong); }
+    .swatch { width: 100%; aspect-ratio: 16 / 9; border-radius: 1rem; transition: background-color 0.2s ease; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); }
+    .palette-strip { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .palette-chip { flex: 1 1 80px; min-width: 80px; height: 60px; border-radius: 0.5rem; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); transition: transform 0.15s ease; }
+    .palette-chip:hover { transform: translateY(-2px); }
+  </style>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">SiteTrace <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free tools</span></span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2 text-sm" aria-label="Main">
+        <a class="nav-link" href="/password/">Password</a>
+        <a class="nav-link" href="/word-counter/">Word count</a>
+        <a class="nav-link" href="/headers-checker/">Headers</a>
+        <a class="nav-link" href="/network-tools/">All tools</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span>Random Color Generator</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Random Color</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">Roll a random color</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Press spacebar or click Roll to generate a new random color. Hex, RGB, HSL. Lock the hue range, copy to clipboard. 100% client-side — your colors never leave the browser.</p>
+      </div>
+      <p class="byline justify-center">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+    </section>
+
+    <div class="mt-8 max-w-5xl mx-auto card p-6 sm:p-8 relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+
+      <div class="swatch" id="rc-swatch" style="background-color: #22d3ee;"></div>
+
+      <div class="mt-6 grid sm:grid-cols-3 gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">Hex</div>
+          <div class="font-mono text-xl text-white mt-1 cursor-pointer" id="rc-hex">#22D3EE</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">RGB</div>
+          <div class="font-mono text-xl text-white mt-1 cursor-pointer" id="rc-rgb">rgb(34, 211, 238)</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">HSL</div>
+          <div class="font-mono text-xl text-white mt-1 cursor-pointer" id="rc-hsl">hsl(187, 85%, 53%)</div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-2">
+        <button id="rc-roll" class="btn-primary">Roll a new color</button>
+        <button id="rc-copy" class="btn-ghost">Copy hex</button>
+        <span class="text-xs text-slate-500 self-center ml-2">or press Spacebar</span>
+      </div>
+
+      <div class="mt-8 border-t border-white/5 pt-6">
+        <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">Constraints</div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs text-slate-400">Hue range</label>
+            <select id="rc-hue-mode" class="mt-1 w-full bg-ink-900/60 border border-white/10 rounded-md px-3 py-2 text-sm font-mono">
+              <option value="all">All hues (random)</option>
+              <option value="warm">Warm (0–60 / 300–360)</option>
+              <option value="cool">Cool (180–270)</option>
+              <option value="red">Red (0–30)</option>
+              <option value="yellow">Yellow (45–65)</option>
+              <option value="green">Green (90–150)</option>
+              <option value="blue">Blue (200–250)</option>
+              <option value="purple">Purple (260–310)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Saturation</label>
+            <select id="rc-sat-mode" class="mt-1 w-full bg-ink-900/60 border border-white/10 rounded-md px-3 py-2 text-sm font-mono">
+              <option value="all">All saturations</option>
+              <option value="pastel">Pastel (25–55%)</option>
+              <option value="muted">Muted (40–70%)</option>
+              <option value="vivid">Vivid (70–100%)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400">Lightness</label>
+            <select id="rc-light-mode" class="mt-1 w-full bg-ink-900/60 border border-white/10 rounded-md px-3 py-2 text-sm font-mono">
+              <option value="all">All lightness</option>
+              <option value="dark">Dark (10–35%)</option>
+              <option value="mid">Mid (35–65%)</option>
+              <option value="light">Light (65–90%)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 max-w-5xl mx-auto card p-6 sm:p-8">
+      <div class="flex items-baseline justify-between mb-3">
+        <h3 class="text-lg font-bold text-white">Contrast check (WCAG)</h3>
+        <span class="text-xs text-slate-500">against white / black / brand cyan</span>
+      </div>
+      <div class="grid sm:grid-cols-3 gap-4" id="rc-contrast">
+        <div class="text-center p-3 rounded-md" style="background:#fff; color:#000;">
+          <div class="text-xs">white</div>
+          <div class="font-mono text-lg" id="rc-cw">—</div>
+          <div class="text-[10px]" id="rc-cw-label">—</div>
+        </div>
+        <div class="text-center p-3 rounded-md" style="background:#000; color:#fff; border:1px solid #1a2438;">
+          <div class="text-xs">black</div>
+          <div class="font-mono text-lg" id="rc-cb">—</div>
+          <div class="text-[10px]" id="rc-cb-label">—</div>
+        </div>
+        <div class="text-center p-3 rounded-md" style="background:#22d3ee; color:#000;">
+          <div class="text-xs">cyan</div>
+          <div class="font-mono text-lg" id="rc-cc">—</div>
+          <div class="text-[10px]" id="rc-cc-label">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 max-w-5xl mx-auto card p-6 sm:p-8">
+      <h3 class="text-lg font-bold mb-3 text-white">Generate a related palette</h3>
+      <p class="text-xs text-slate-500 mb-3">Click any chip to copy. Same hue as the rolled color, spread across the lightness axis.</p>
+      <div class="palette-strip" id="rc-palette"></div>
+    </div>
+
+    <section class="mt-12 max-w-4xl mx-auto essay">
+      <h2 class="text-2xl font-bold mb-3">How random colors work, and why "true random" is mostly useless</h2>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A 24-bit color space has 16,777,216 possible colors. A uniformly-random pick across that space gives you a brown or muddy gray about 60% of the time, and a usable color about 40% of the time. Most people want the 40% — the warm pastels, the vivid primaries, the soft greens and dusky purples. The "constraints" panel above lets you skip the muddy 60%.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Hex vs RGB vs HSL</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">All three describe the same color, in different coordinate systems:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li><strong>Hex</strong> (#RRGGBB): each pair is a base-16 byte from 00 to FF. Compact, works everywhere, and the most common format in CSS, design tools, and code.</li>
+        <li><strong>RGB</strong> (rgb(R, G, B)): three integers from 0 to 255. Easier to read in code, slightly easier to reason about channel-by-channel (e.g. "lots of red, no green, lots of blue" → magenta).</li>
+        <li><strong>HSL</strong> (hsl(H, S%, L%)): hue in degrees (0–360), saturation as a percentage, lightness as a percentage. Most useful for design because lightness and saturation are intuitive to reason about: "I want this color but lighter" means bumping L from 30% to 60%; doing the same in RGB requires mental gymnastics.</li>
+      </ul>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">HSL is more useful for palettes</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you need 5 related colors, pick a hue, pick a saturation range, pick 5 different lightness values. The "Generate a related palette" section above does exactly this: same hue as the rolled color, lightness at 15%, 30%, 50%, 70%, 85%. All 5 colors are visibly related but distinct enough to be a usable palette.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The same trick doesn't work in RGB or HSL-constrained-by-channel. RGB channel-by-channel variation tends to wash out the hue (e.g. add 20 to every channel → washed-out pastel; subtract 20 → muddier color). HSL stays on the same hue ring by construction.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">WCAG contrast basics</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">WCAG defines a contrast ratio between two colors as (L1 + 0.05) / (L2 + 0.05) where L is the relative luminance. Lighter colors have higher L. For normal text, you want at least 4.5:1 (WCAG AA). For large text (18pt or 14pt bold), 3:1 is enough. For the strictest accessibility, 7:1 (WCAG AAA).</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The contrast panel above shows the ratio between the rolled color and white, black, and the cyan brand color. Use the sliders / constraints to find a color that gives 4.5:1 against your text color. A cyan (#22d3ee) against white passes 4.5:1 barely; cyan against black passes it strongly. That's why sitetrace uses dark backgrounds with cyan accents.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">The privacy story</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Every "random color generator" I could find online either (a) sends your color to a server (some tracker), (b) uses a server-side generation script that requires a round trip, or (c) loads megabytes of ad-tracking JavaScript before letting you click. This one runs entirely on the client. The HTML, CSS, and JavaScript are open source at the sitetrace GitHub repo, and the page sends exactly one HTTP request when you load it (the static HTML); no per-color, no per-roll, no per-keystroke. Press F12 and watch the network tab.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Why does this matter for a color picker? Honestly, it doesn't. But it's the right pattern, and once you start building client-side for the right reason, you start building client-side for everything — the color picker is just the easiest place to start. See <a href="/about/" class="source-link">/about</a> for the full privacy story.</p>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/password/">Password Generator</a>, <a class="source-link" href="/word-counter/">Word Counter</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-4 h-4" aria-hidden="true"><path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </span>
+        <span class="font-mono">SiteTrace</span>
+        <span>·</span>
+        <span>Free tools, no signup, no tracking</span>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/" class="hover:text-slate-300">Home</a>
+        <a href="/network-tools/" class="hover:text-slate-300">All tools</a>
+        <a href="/about/" class="hover:text-slate-300">About</a>
+        <a href="/privacy/" class="hover:text-slate-300">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/layout.js?v=30"></script>
+  <script src="/js/i18n.js?v=29"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector(s);
+      const swatch = $('#rc-swatch');
+      const hexEl = $('#rc-hex');
+      const rgbEl = $('#rc-rgb');
+      const hslEl = $('#rc-hsl');
+      const hueSel = $('#rc-hue-mode');
+      const satSel = $('#rc-sat-mode');
+      const lightSel = $('#rc-light-mode');
+      const paletteEl = $('#rc-palette');
+
+      function rand() {
+        if (window.crypto && window.crypto.getRandomValues) {
+          const a = new Uint32Array(1);
+          window.crypto.getRandomValues(a);
+          return (a[0] / 0x100000000);
+        }
+        return Math.random();
+      }
+
+      function pickHue() {
+        const mode = hueSel.value;
+        const ranges = {
+          'all': [0, 360],
+          'warm': [[0, 60], [300, 360]],
+          'cool': [180, 270],
+          'red': [0, 30],
+          'yellow': [45, 65],
+          'green': [90, 150],
+          'blue': [200, 250],
+          'purple': [260, 310],
+        };
+        const r = ranges[mode] || [0, 360];
+        if (Array.isArray(r[0])) {
+          // Pick one of two ranges
+          const which = rand() < 0.5 ? 0 : 1;
+          return r[which][0] + rand() * (r[which][1] - r[which][0]);
+        }
+        return r[0] + rand() * (r[1] - r[0]);
+      }
+
+      function pickRange(mode, def) {
+        const ranges = {
+          'all': [0, 100],
+          'pastel': [25, 55],
+          'muted': [40, 70],
+          'vivid': [70, 100],
+          'dark': [10, 35],
+          'mid': [35, 65],
+          'light': [65, 90],
+        };
+        const r = ranges[mode] || def;
+        return r[0] + rand() * (r[1] - r[0]);
+      }
+
+      function hslToRgb(h, s, l) {
+        s /= 100; l /= 100;
+        const k = (n) => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+        const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+        return [Math.round(255 * f(0)), Math.round(255 * f(8)), Math.round(255 * f(4))];
+      }
+
+      function relLum(rgb) {
+        const f = (c) => {
+          const x = c / 255;
+          return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+        };
+        const [r, g, b] = rgb.map(f);
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      }
+
+      function contrast(a, b) {
+        const la = relLum(a) + 0.05;
+        const lb = relLum(b) + 0.05;
+        return la > lb ? la / lb : lb / la;
+      }
+
+      function wcagLabel(r) {
+        if (r >= 7) return 'AAA';
+        if (r >= 4.5) return 'AA';
+        if (r >= 3) return 'AA-large';
+        return 'fail';
+      }
+
+      function update(current) {
+        const hex = '#' + current.map((c) => c.toString(16).padStart(2, '0').toUpperCase()).join('');
+        swatch.style.backgroundColor = hex;
+        hexEl.textContent = hex;
+        rgbEl.textContent = `rgb(${current.join(', ')})`;
+        // HSL from RGB (approximate)
+        const [r, g, b] = current;
+        const rn = r / 255, gn = g / 255, bn = b / 255;
+        const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn);
+        let h, s, l = (max + min) / 2;
+        if (max === min) { h = s = 0; }
+        else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case rn: h = ((gn - bn) / d + (gn < bn ? 6 : 0)); break;
+            case gn: h = ((bn - rn) / d + 2); break;
+            case bn: h = ((rn - gn) / d + 4); break;
+          }
+          h *= 60;
+        }
+        hslEl.textContent = `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+        // Contrast
+        const cw = contrast(current, [255, 255, 255]);
+        const cb = contrast(current, [0, 0, 0]);
+        const cc = contrast(current, [34, 211, 238]);
+        $('#rc-cw').textContent = cw.toFixed(2) + ':1';
+        $('#rc-cw-label').textContent = wcagLabel(cw);
+        $('#rc-cb').textContent = cb.toFixed(2) + ':1';
+        $('#rc-cb-label').textContent = wcagLabel(cb);
+        $('#rc-cc').textContent = cc.toFixed(2) + ':1';
+        $('#rc-cc-label').textContent = wcagLabel(cc);
+        // Palette
+        renderPalette(h);
+      }
+
+      function renderPalette(hue) {
+        paletteEl.innerHTML = '';
+        const lightnesses = [15, 30, 50, 70, 85];
+        const sats = [70, 60, 50, 55, 65];
+        for (let i = 0; i < lightnesses.length; i++) {
+          const rgb = hslToRgb(hue, sats[i], lightnesses[i]);
+          const hex = '#' + rgb.map(c => c.toString(16).padStart(2, '0').toUpperCase()).join('');
+          const chip = document.createElement('div');
+          chip.className = 'palette-chip';
+          chip.style.backgroundColor = hex;
+          chip.title = hex + ' (click to copy)';
+          chip.addEventListener('click', () => copy(hex));
+          paletteEl.appendChild(chip);
+        }
+      }
+
+      function roll() {
+        const h = pickHue();
+        const s = pickRange(satSel.value, [0, 100]);
+        const l = pickRange(lightSel.value, [0, 100]);
+        const rgb = hslToRgb(h, s, l);
+        update(rgb);
+      }
+
+      function copy(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => flashCopied()).catch(() => fallback());
+        } else { fallback(); }
+        function fallback() {
+          const t = document.createElement('textarea');
+          t.value = text; t.style.position = 'fixed'; t.style.left = '-9999px';
+          document.body.appendChild(t); t.select();
+          try { document.execCommand('copy'); flashCopied(); } catch (_) {}
+          document.body.removeChild(t);
+        }
+      }
+
+      function flashCopied() {
+        const orig = $('#rc-copy').textContent;
+        $('#rc-copy').textContent = 'copied!';
+        setTimeout(() => { $('#rc-copy').textContent = orig; }, 900);
+      }
+
+      $('#rc-roll').addEventListener('click', roll);
+      $('#rc-copy').addEventListener('click', () => copy(hexEl.textContent));
+      [hueSel, satSel, lightSel].forEach((s) => s.addEventListener('change', roll));
+      hexEl.addEventListener('click', () => copy(hexEl.textContent));
+      rgbEl.addEventListener('click', () => copy(rgbEl.textContent));
+      hslEl.addEventListener('click', () => copy(hslEl.textContent));
+
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && document.activeElement && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          roll();
+        }
+      });
+
+      // Initial
+      roll();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <title>Security Headers Checker — grade A-F, free, no signup — SiteTrace</title>
+  <meta name="description" content="Free HTTP security headers checker. Grade your site A-F across CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. Faster than securityheaders.com, no queue, no login." />
+  <meta name="keywords" content="security headers checker, http security headers, securityheaders.com alternative, csp checker, hsts checker, content security policy, x-frame-options, x-content-type-options, referrer-policy, permissions-policy, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/headers-checker/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Security Headers Checker — grade A-F, free, no signup" />
+  <meta property="og:description" content="Grade your site A-F across CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. Faster than securityheaders.com, no queue." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/headers-checker.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Security Headers Checker — SiteTrace" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Security Headers Checker — grade A-F, free, no signup" />
+  <meta name="twitter:description" content="Grade your site A-F across CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy." />
+  <meta property="og:url" content="https://sitetrace.it.com/headers-checker/" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','BlinkMacSegoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+        colors: { ink: { 900:'#070a12', 800:'#0b1120', 700:'#0f172a', 600:'#1a2438', 500:'#222d44' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' }, good: { 400:'#34d399', 500:'#10b981' }, warn: { 400:'#fbbf24', 500:'#f59e0b' }, bad: { 400:'#f87171', 500:'#ef4444' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)', 'glow-soft': '0 0 0 1px rgba(255,255,255,0.06), 0 8px 30px -10px rgba(0,0,0,0.5)' }
+      } },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Security Headers Checker — SiteTrace",
+    "url": "https://sitetrace.it.com/headers-checker/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "description": "Free HTTP security headers checker. Grade A-F across CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. No login, no queue."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is a security header?","acceptedAnswer":{"@type":"Answer","text":"A security header is an HTTP response header that tells the browser to enforce a security policy on the response: refuse to load scripts from unapproved origins, force HTTPS, block framing, disable MIME sniffing, or restrict powerful APIs (camera, microphone, geolocation). The most important ones are Content-Security-Policy, Strict-Transport-Security, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy."}},
+      {"@type":"Question","name":"How is the grade calculated?","acceptedAnswer":{"@type":"Answer","text":"Each header carries a weight: CSP 20, HSTS 15, X-Frame-Options 10, X-Content-Type-Options 10, Referrer-Policy 5, Permissions-Policy 5. The total adds up to 65 points maximum across the six critical headers, but the score is scaled so 100 is achievable. A is 90+, B is 80+, C is 60+, F is below 40. A missing CSP is -20, a missing HSTS is -15, etc."}},
+      {"@type":"Question","name":"Why is CSP the heaviest weighted header?","acceptedAnswer":{"@type":"Answer","text":"Content-Security-Policy is the single most effective defense against cross-site scripting (XSS). Even when an attacker manages to inject a <script> tag, a well-configured CSP makes the browser refuse to load the script source. HSTS protects against downgrade attacks, but downgrade attacks require an active network attacker; XSS happens on every page load via form input, query string, third-party scripts, and stored content. CSP is weighted highest because it prevents the most common attack class."}},
+      {"@type":"Question","name":"Is this tool different from securityheaders.com?","acceptedAnswer":{"@type":"Answer","text":"securityheaders.com by Tim Sneath's is the historical reference for header scanning and remains accurate. SiteTrace is faster (no queue, no rate-limit on the free tier), provides the same six-header grade, and additionally returns the full response header set so you can see every header — not just the security ones — including Server, X-Powered-By, Cache-Control, and Content-Type. Sitetrace also surfaces leak headers (Server / X-Powered-By) which should be removed for production sites."}},
+      {"@type":"Question","name":"What headers should I remove?","acceptedAnswer":{"@type":"Answer","text":"Remove Server (or set it to a generic value like 'webserver' instead of 'Apache/2.4.52') and X-Powered-By (or just delete it). These leak software version info that helps them target the right exploit. The other 'leaky' header to remove is any custom header that says what framework you use (X-Generator: WordPress 6.2). Modern exploits are automated; attackers scan for known-version sites and attack them in bulk."}},
+      {"@type":"Question","name":"What is the difference between Referrer-Policy values?","acceptedAnswer":{"@type":"Answer","text":"Referrer-Policy controls how much of the URL is sent in the Referer header on outgoing requests. no-referrer sends nothing. same-origin sends the full URL only on same-origin requests. strict-origin sends only the origin (no path). orange-full-back is the default in older browsers and leaks the full URL across sites. Use sitetrast-origin-when-cross-origin for most sites: full URL on same-origin, only origin on cross-origin requests."}},
+      {"@type":"Question","name":"Why does my header scan work but my site still feels insecure?","acceptedAnswer":{"@type":"Answer","text":"Because security headers are necessary but not sufficient. A header scan checks your transport and browser-enforcement policy. It does not check your application code for SQL injection, your authentication for session fixation, your dependencies for known CVEs, or your server config for directory traversal. Run a header scan regularly (weekly is fine), but pair it with: dependency scanning (npm audit / pip-audit / snyk), server-side log monitoring, and a periodic manual penetration test by a qualified auditor."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The six HTTP security headers every site should set in 2026",
+    "description": "A practitioner's walkthrough of CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy — what each header does, what a passing value looks like, and the common mistakes.",
+    "author": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-09-15",
+    "dateModified": "2026-10-05",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/headers-checker/",
+    "about": [
+      {"@type": "Thing", "name": "Content-Security-Policy"},
+      {"@type": "Thing", "name": "Strict-Transport-Security"},
+      {"@type": "Thing", "name": "X-Frame-Options"}
+    ],
+    "mentions": [
+      {"@type": "Thing", "name": "OWASP Secure Headers Project"},
+      {"@type": "Thing", "name": "Mozilla Observatory"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"Security Headers Checker","item":"https://sitetrace.it.com/headers-checker/"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --trace-bg: #070a12;
+      --trace-cyan: #22d3ee;
+      --trace-cyan-deep: #0891b2;
+      --trace-cyan-soft: #67e8f9;
+      --trace-amber: #fbbf24;
+      --trace-safe: #34d399;
+      --trace-warn: #fb923c;
+      --trace-bad: #f87171;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+    }
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--trace-bg);
+    }
+    .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
+    .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+    .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
+    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
+    .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    .text-brand-500 { color: #06b6d4 !important; }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
+      border: 1px solid var(--trace-border) !important;
+      transition: border-color 200ms ease;
+    }
+    .card:hover { border-color: var(--trace-border-strong) !important; }
+    .byline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: rgb(100, 116, 139); letter-spacing: 0.02em;
+    }
+    .byline::before { content: '//'; color: var(--trace-cyan-deep); }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.55rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--trace-cyan);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      text-decoration: none; transition: all 150ms ease;
+    }
+    .source-link:hover { color: var(--trace-cyan-soft); background: rgba(34, 211, 238, 0.14); border-color: var(--trace-border-strong); }
+    :focus-visible { outline-color: rgba(34, 211, 238, 0.7) !important; }
+    .grade-circle { width: 84px; height: 84px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 2.25rem; font-family: 'JetBrains Mono', monospace; }
+    .check-row { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px dashed rgba(148,163,184,0.12); }
+    .check-row:last-child { border-bottom: none; }
+    .check-mark { width: 22px; height: 22px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .header-row { display: flex; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px dashed rgba(148,163,184,0.10); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+    .header-row .k { color: var(--trace-cyan-soft); min-width: 220px; flex-shrink: 0; }
+    .header-row .v { color: #cbd5e1; word-break: break-all; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+    <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">SiteTrace <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free network tools</span></span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2 text-sm" aria-label="Main">
+        <a class="nav-link" href="/what-is-my-ip/">IP</a>
+        <a class="nav-link" href="/ping/">Ping</a>
+        <a class="nav-link" href="/dns-tools/">DNS</a>
+        <a class="nav-link" href="/is-it-down/">Status</a>
+        <a class="nav-link" href="/network-tools/">All tools</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span>Security Headers Checker</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Security Headers</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">Grade your site's HTTP security headers — A to F</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Paste any URL. Get an A-F grade across the six security headers that matter (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) plus the full response header set. Faster than securityheaders.com, no queue, no signup.</p>
+      </div>
+      <p class="byline justify-center">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+    </section>
+
+    <div class="mt-8 max-w-3xl mx-auto card relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+      <form id="sh-form" class="space-y-4" autocomplete="off" novalidate>
+        <div>
+          <label for="sh-input" class="block text-xs uppercase tracking-widest text-slate-500 mb-2">URL to grade</label>
+          <input id="sh-input" name="url" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://example.com" class="w-full font-mono text-base sm:text-lg bg-ink-900/60 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50" />
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="submit" class="btn-primary flex-1 sm:flex-none">Check headers</button>
+          <span class="text-xs text-slate-500">Try:</span>
+          <button type="button" class="btn-ghost sh-preset" data-url="https://github.com">github.com</button>
+          <button type="button" class="btn-ghost sh-preset" data-url="https://www.google.com">google.com</button>
+          <button type="button" class="btn-ghost sh-preset" data-url="https://news.ycombinator.com">news.ycombinator.com</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="sh-loading" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="inline-block w-6 h-6 border-2 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
+      <p class="mt-3 text-sm text-slate-400">Fetching headers…</p>
+    </div>
+
+    <div id="sh-error" class="hidden mt-8 max-w-3xl mx-auto card text-center">
+      <div class="text-amber-300 text-sm mb-2" id="sh-error-msg">Could not fetch that URL.</div>
+      <p class="text-xs text-slate-500">Use a full URL starting with http:// or https://. Private IPs and localhost are blocked.</p>
+    </div>
+
+    <div id="sh-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
+
+    <section class="mt-12 max-w-4xl mx-auto essay">
+      <h2 class="text-2xl font-bold mb-3">The six HTTP security headers every site should set in 2026</h2>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">Every HTTP response carries a set of headers — small key-value pairs the server sends before the page body. Most of them are routine: <code>Content-Type</code> tells the browser what's coming, <code>Cache-Control</code> says how long to keep it, <code>Set-Cookie</code> tracks the session. But a handful of headers are security-critical: they tell the browser to enforce a policy on the response itself. Skip them, and a perfectly-coded site becomes clickjackable, downgradeable, or vulnerable to cross-site scripting because the browser wasn't told to refuse.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">1. Content-Security-Policy (the heavyweight)</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CSP is a single header that says: "Browser, here is a whitelist of where scripts, styles, images, fonts, and connections are allowed to come from. Refuse anything else, even if the page tries to load it." A well-configured CSP stops most cross-site scripting because the attacker's injected <code>tag</code> simply won't load.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Example: <code>Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'</code>. That policy says: load scripts only from your own origin plus jsdelivr; load styles from your own origin plus inline (needed for most frameworks); block all plugins; lock down the <code>base</code> tag so an attacker can't redirect relative URLs.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CSP is the heaviest weight (20 points) in the grader because it covers the most common attack class. Sites that have no CSP and a single XSS bug lose customer data. Sites that have a strong CSP and a single XSS bug stay safe.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">2. Strict-Transport-Security (HSTS)</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">HSTS tells the browser: "For this domain, always use HTTPS — even if the user types <code>http://</code> or follows an HTTP link." Without HSTS, the first request to your site over plain HTTP can be intercepted by an active network attacker and rewritten to an HTTPS URL of their choosing (sslstrip). With HSTS, the browser refuses to make the plain-HTTP request at all.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Example: <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. One year, all subdomains, eligible for browser preload list. The preload flag means you've submitted to the Chrome HSTS preload list — the browser ships knowing never to make an HTTP request to your domain, before even checking headers.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">3. X-Frame-Options (anti-clickjacking)</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">X-Frame-Options: <code>DENY</code> or <code>SAMEORIGIN</code> prevents your site from being framed by another site. Without it, an attacker can put your login page inside their malicious page, overlay it with a transparent "Click here to win" button, and capture your users' passwords when they try to log into what looks like your site.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Modern alternative: <code>Content-Security-Policy: frame-ancestors 'none'</code> or <code>frame-ancestors 'self'</code>. CSP frame-ancestors supersedes X-Frame-Options, but X-Frame-Options is still useful for older browsers. Set both.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">4. X-Content-Type-Options: nosniff</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">One-line header, large impact. <code>X-Content-Type-Options: nosniff</code> tells the browser: "Trust the Content-Type I sent. Don't try to sniff the body to figure out if a .jpg is actually JavaScript." Without it, an attacker who can upload a file with a misleading extension can sometimes get it executed as the wrong MIME type. With nosniff, the browser refuses.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">5. Referrer-Policy</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">When a user clicks a link from your page to another site, the browser sends the <code>Referer</code> header with the URL they came from. By default that includes the full path, which can leak sensitive information (private admin URLs, session tokens in URLs, internal search terms). <code>Referrer-Policy: strict-origin-when-cross-origin</code> sends the full URL on same-origin requests and only the origin (no path) on cross-origin requests. The right balance for most sites.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">6. Permissions-Policy</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Permissions-Policy (replacing the older Feature-Policy header) controls which powerful browser features your page can use: camera, microphone, geolocation, payment, USB, accelerometer, gyroscope, magnetometer. Example: <code>Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=()</code>. The <code>()</code> means "no origin can use this"; <code>(self)</code> means "only this origin can use this". If you don't use any of these features on a particular page, disable them entirely.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What to remove (the leak headers)</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Just as important as adding the right headers is removing the leaky ones:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li><code>Server: Apache/2.4.52 (Ubuntu)</code> — tells attackers your exact software version. Replace with <code>Server: WebServer</code> or remove entirely.</li>
+        <li><code>X-Powered-By: PHP/8.1.0</code> — same problem, worse. Most frameworks let you disable it.</li>
+        <li><code>X-Generator: WordPress 6.2</code> — WordPress-specific leak, tells attackers which plugin CVEs to look for.</li>
+      </ul>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Modern attackers scan the internet with tools like Shodan and Censys looking for known-version sites. The more you leak, the faster they find you. A scan that shows nothing is harder to attack than a scan that shows everything.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Common mistakes when configuring CSP</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CSP is the hardest of the six to configure correctly. Three patterns I see most often:</p>
+      <ol class="list-decimal list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
+        <li><strong>Unsafe-inline in script-src.</strong> Allowing inline scripts defeats most of the XSS protection because every XSS payload is by definition an inline script. Use nonces or hashes instead.</li>
+        <li><strong>Wildcard source for scripts.</strong> <code>script-src *</code> allows scripts from any origin, including attacker-controlled ones. Use a narrow whitelist.</li>
+        <li><strong>CSP that allows eval().</strong> <code>script-src 'unsafe-eval'</code> permits <code>eval()</code>, which is how most obfuscated XSS payloads execute. Avoid it unless you have a hard dependency (some template engines need it).</li>
+      </ol>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you can't get a strict CSP working immediately, use CSP in report-only mode first: <code>Content-Security-Policy-Report-Only</code>. The browser logs violations to your report-uri but doesn't enforce. Fix the violations, then switch to enforcing mode.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why a header scan is necessary but not sufficient</h3>
+      <p class="text-slate-300 text-sm sm-base leading-relaxed mb-3">A header scan tells you your browser-enforcement policy. It does not check your application code for SQL injection, your authentication for session fixation, your dependencies for known CVEs, or your server config for directory traversal. Run a header scan weekly (set a reminder), but pair it with:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li>Dependency scanning: <code>npm audit</code>, <code>pip-audit</code>, <code>snyk test</code>, or GitHub's built-in Dependabot.</li>
+        <li>Server-side log monitoring: tail auth logs for failed logins, 4xx spikes, unfamiliar user agents.</li>
+        <li>Periodic manual code review by someone other than the original author.</li>
+        <li>Annual penetration test by a qualified external auditor.</li>
+      </ul>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">The header scan is your first line of defense — the cheap, fast, automated check that catches the most common misconfigurations. Everything else builds on top.</p>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/check/">/check</a>, <a class="source-link" href="/dns-tools/">DNS lookup</a>, <a class="source-link" href="/seo-checker/">SEO checker</a>, <a class="source-link" href="/http-headers/">HTTP headers viewer</a> (for sites that pass the security check and want to see the rest).</p>
+    </section>
+
+    <section class="mt-12 max-w-3xl mx-auto card p-6">
+      <h2 class="text-xl font-bold mb-3">Use the API directly</h2>
+      <p class="text-slate-300 text-sm leading-relaxed mb-3">The grader is also a JSON API. Free, no signup for the first 100 calls per day, 1,000 with a free API key.</p>
+      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto"><code>curl "https://api.sitetrace.it.com/api/headers?url=https://example.com" \
+  -H "X-API-Key: $SITETRACE_KEY"</code></pre>
+      <p class="text-slate-400 text-xs mt-3">Returns <code>{ score, grade, checks[], all_headers }</code>. The same endpoint powers this page — the form just renders the result.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-4 h-4" aria-hidden="true"><path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </span>
+        <span class="font-mono">SiteTrace</span>
+        <span>·</span>
+        <span>Free network tools, no signup</span>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/" class="hover:text-slate-300">Home</a>
+        <a href="/network-tools/" class="hover:text-slate-300">All tools</a>
+        <a href="/about/" class="hover:text-slate-300">About</a>
+        <a href="/privacy/" class="hover:text-slate-300">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/layout.js?v=30"></script>
+  <script src="/js/i18n.js?v=29"></script>
+  <script>
+    (function () {
+      const API = 'https://api.sitetrace.it.com/api/headers';
+      const KEY = (typeof localStorage !== 'undefined') ? (localStorage.getItem('sitetrace_key') || '') : '';
+      const $ = (sel) => document.querySelector(sel);
+      const form = $('#sh-form');
+      const input = $('#sh-input');
+      const loading = $('#sh-loading');
+      const errorBox = $('#sh-error');
+      const errorMsg = $('#sh-error-msg');
+      const result = $('#sh-result');
+
+      function gradeColor(grade) {
+        return ({
+          'A': { bg: 'rgba(52, 211, 153, 0.18)', fg: '#34d399', ring: 'rgba(52, 211, 153, 0.5)' },
+          'B': { bg: 'rgba(34, 211, 238, 0.18)', fg: '#22d3ee', ring: 'rgba(34, 211, 238, 0.5)' },
+          'C': { bg: 'rgba(251, 191, 36, 0.18)', fg: '#fbbf24', ring: 'rgba(251, 191, 36, 0.5)' },
+          'D': { bg: 'rgba(251, 146, 60, 0.18)', fg: '#fb923c', ring: 'rgba(251, 146, 60, 0.5)' },
+          'F': { bg: 'rgba(248, 113, 113, 0.18)', fg: '#f87171', ring: 'rgba(248, 113, 113, 0.5)' },
+        })[grade] || { bg: 'rgba(148, 163, 184, 0.18)', fg: '#94a3b8', ring: 'rgba(148, 163, 184, 0.5)' };
+      }
+
+      function esc(s) {
+        if (s === null || s === undefined) return '';
+        return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+      }
+
+      function render(data) {
+        result.innerHTML = '';
+        const g = data.grade;
+        const s = data.score;
+        const color = gradeColor(g);
+
+        const summary = document.createElement('div');
+        summary.className = 'card p-6 sm:p-8';
+        summary.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div class="grade-circle" style="background:${color.bg}; color:${color.fg}; box-shadow: 0 0 0 4px ${color.ring};">${esc(g)}</div>
+            <div class="flex-1 min-w-0">
+              <div class="text-xs uppercase tracking-widest text-slate-500">Overall grade</div>
+              <div class="text-2xl sm:text-3xl font-bold text-white mt-1">${s} / 100</div>
+              <div class="mt-2 text-xs font-mono text-slate-400 break-all">
+                <a href="${esc(data.final_url || data.url)}" target="_blank" rel="noopener noreferrer" class="text-brand-300 hover:text-brand-400">${esc(data.final_url || data.url)}</a>
+                <span class="ml-2 text-slate-500">${data.status} · ${data.fetched_ms}ms</span>
+              </div>
+            </div>
+          </div>
+        `;
+        result.appendChild(summary);
+
+        const checksCard = document.createElement('div');
+        checksCard.className = 'card p-6 sm:p-8';
+        let rows = '';
+        for (const c of data.checks) {
+          if (c.weight === 0) continue;
+          const mark = c.pass
+            ? '<span class="check-mark" style="background:rgba(52,211,153,0.15); color:#34d399;">✓</span>'
+            : '<span class="check-mark" style="background:rgba(248,113,113,0.15); color:#f87171;">✗</span>';
+          const val = c.present
+            ? `<span class="block mt-1 text-xs font-mono text-slate-400 break-all">${esc(c.value)}</span>`
+            : '<span class="block mt-1 text-xs text-slate-500 italic">header not set</span>';
+          rows += `
+            <div class="check-row">
+              ${mark}
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-baseline gap-2">
+                  <span class="font-mono text-sm text-white">${esc(c.header)}</span>
+                  <span class="text-[10px] uppercase tracking-widest text-slate-500">weight ${c.weight}</span>
+                </div>
+                ${val}
+              </div>
+            </div>`;
+        }
+        checksCard.innerHTML = `
+          <h3 class="text-lg font-bold mb-2 text-white">Security header checks</h3>
+          <p class="text-xs text-slate-500 mb-2">Six critical headers, weighted by attack frequency.</p>
+          ${rows}
+        `;
+        result.appendChild(checksCard);
+
+        const allCard = document.createElement('div');
+        allCard.className = 'card p-6 sm:p-8';
+        let headerRows = '';
+        const keys = Object.keys(data.all_headers || {}).sort();
+        for (const k of keys) {
+          headerRows += `
+            <div class="header-row">
+              <span class="k">${esc(k)}</span>
+              <span class="v">${esc(data.all_headers[k])}</span>
+            </div>`;
+        }
+        allCard.innerHTML = `
+          <h3 class="text-lg font-bold mb-2 text-white">All response headers (${keys.length})</h3>
+          <p class="text-xs text-slate-500 mb-3">Every header the server sent. Look for <span class="font-mono text-amber-300">Server</span>, <span class="font-mono text-amber-300">X-Powered-By</span>, <span class="font-mono text-amber-300">X-AspNet-Version</span> — these leak software versions.</p>
+          <div class="max-h-96 overflow-y-auto">${headerRows || '<div class="text-slate-500 text-sm">No headers returned.</div>'}</div>
+        `;
+        result.appendChild(allCard);
+
+        result.classList.remove('hidden');
+      }
+
+      async function check(url) {
+        loading.classList.remove('hidden');
+        errorBox.classList.add('hidden');
+        result.classList.add('hidden');
+        try {
+          const u = API + '?url=' + encodeURIComponent(url);
+          const r = await fetch(u, { headers: KEY ? { 'X-API-Key': KEY } : {} });
+          const data = await r.json();
+          loading.classList.add('hidden');
+          if (!r.ok || data.error) {
+            errorMsg.textContent = (data && (data.message || data.error)) || ('HTTP ' + r.status);
+            errorBox.classList.remove('hidden');
+            return;
+          }
+          render(data);
+        } catch (e) {
+          loading.classList.add('hidden');
+          errorMsg.textContent = e && e.message ? e.message : 'Network error';
+          errorBox.classList.remove('hidden');
+        }
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const v = input.value.trim();
+        if (!v) return;
+        check(v);
+      });
+      document.querySelectorAll('.sh-preset').forEach((b) => {
+        b.addEventListener('click', () => {
+          const u = b.getAttribute('data-url');
+          input.value = u;
+          check(u);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

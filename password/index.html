@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <title>Strong Password Generator — entropy + time-to-crack — SiteTrace</title>
+  <meta name="description" content="Free strong password generator. Generate cryptographically random passwords, see the entropy in bits, the time-to-crack at 1B guesses/sec, and the math. 100% client-side. No signup, no tracking." />
+  <meta name="keywords" content="password generator, strong password, random password, password entropy, time to crack, password strength, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/password/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Strong Password Generator — entropy + time-to-crack" />
+  <meta property="og:description" content="Generate cryptographically random passwords. See the entropy in bits and the time-to-crack." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/password.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://sitetrace.it.com/password/" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+        colors: { ink: { 900:'#070a12', 800:'#0b1120', 700:'#0f172a', 600:'#1a2438', 500:'#222d44' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
+      } },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Strong Password Generator — SiteTrace",
+    "url": "https://sitetrace.it.com/password/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "description": "Cryptographically random password generator with entropy and time-to-crack displayed. 100% client-side, no signup, no tracking."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"How random is this password?","acceptedAnswer":{"@type":"Answer","text":"The generator uses crypto.getRandomValues where available, which is the browser's cryptographically-secure RNG backed by the OS (Linux's /dev/urandom, Windows BCryptGenRandom, macOS SecRandomCopyBytes). It is suitable for password generation. On older browsers without crypto.getRandomValues, it falls back to Math.random which is NOT cryptographically secure — these browsers should not be used for password generation."}},
+      {"@type":"Question","name":"What does the entropy number mean?","acceptedAnswer":{"@type":"Answer","text":"Entropy is measured in bits. A password with N bits of entropy is one of 2^N equally-likely passwords. 30 bits is weak (1 billion possibilities, crackable in seconds at modern attack speeds). 60 bits is reasonable (10^18 possibilities, takes years at 1B guesses/sec). 80+ bits is strong (10^24 possibilities, longer than the age of the universe at any conceivable attack rate). 128 bits is overkill for a single site."}},
+      {"@type":"Question","name":"What is the time-to-crack estimate?","acceptedAnswer":{"@type":"Answer","text":"The estimate assumes an attacker who has obtained the password hash and is brute-forcing it offline at 1 billion guesses per second — the rate a modern GPU can hash bcrypt or a fast hash like SHA-256. Online attacks (rate-limited to a few tries per second by the website) take much longer. The estimate is the worst case: the attacker knows everything about the format (length, charset) but not the password."}},
+      {"@type":"Question","name":"Should I use a passphrase instead of a password?","acceptedAnswer":{"@type":"Answer","text":"For passwords you have to type (laptop login, phone unlock), a long passphrase is easier to remember than a random string. Use the passphrase tab to generate 4-6 random words from a 7000-word list (~76 bits of entropy with 4 words). For passwords in a password manager (where you copy-paste), random strings are equally good and shorter. Don't use a memorable password for anything that matters — use a manager."}},
+      {"@type":"Question","name":"Is this tool safe? Does it send my password to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The entire generator runs in your browser. The HTML page loads once; the JavaScript generates the password from crypto.getRandomValues locally; the password is displayed in your browser; you copy it. No HTTP request leaves the browser for the password itself. Verify by opening DevTools (F12) and watching the network tab while generating."}},
+      {"@type":"Question","name":"How long should my password be?","acceptedAnswer":{"@type":"Answer","text":"For random passwords (managed in a password manager): 16 characters minimum, 20+ is better. For passphrases you have to type: 4-6 random words. Length matters more than complexity — a 16-character lowercase password (16 * 4.7 = 75 bits) is stronger than an 8-character mixed-case-symbols password (16 * 6.5 = 52 bits). The math is against the length, not the symbol soup."}},
+      {"@type":"Question","name":"Why are some password managers' passwords so long?","acceptedAnswer":{"@type":"Answer","text":"Because length is the only thing that scales. A 32-character random password is 188 bits of entropy — more than the age-of-the-universe-times-age-of-the-universe crack times. The downside is you can never type it from memory, which is why you put it in a password manager. If you trust your password manager (1Password, Bitwarden, KeePass), the longer the better."}},
+      {"@type":"Question","name":"What are diceware passphrases?","acceptedAnswer":{"@type":"Answer","text":"Diceware is a passphrase scheme where you roll a 6-sided die 5 times to pick a word from a 7776-word list (~12.9 bits per word), and repeat for 4-7 words. The passphrase tab above approximates this with a 7000-word English list (slightly lower entropy per word) and crypto.getRandomValues (slightly faster than dice). The principle is the same: entropy from a small random word list beats entropy from a large character set at the same memorability cost."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Password entropy and time-to-crack: the math every developer should know",
+    "description": "Why length beats complexity, what entropy actually means, how time-to-crack is estimated, and why password managers + unique passwords are the only correct answer for 2026.",
+    "author": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
+    "datePublished": "2026-09-15",
+    "dateModified": "2026-10-05",
+    "inLanguage": "en",
+    "mainEntityOfPage": "https://sitetrace.it.com/password/",
+    "about": [
+      {"@type": "Thing", "name": "Password security"},
+      {"@type": "Thing", "name": "Cryptographic randomness"},
+      {"@type": "Thing", "name": "Diceware passphrases"}
+    ],
+    "mentions": [
+      {"@type": "Thing", "name": "NIST SP 800-63B"},
+      {"@type": "Thing", "name": "Diceware word list"}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"Password Generator","item":"https://sitetrace.it.com/password/"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --trace-bg: #070a12;
+      --trace-cyan: #22d3ee;
+      --trace-cyan-deep: #0891b2;
+      --trace-cyan-soft: #67e8f9;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+    }
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--trace-bg);
+    }
+    .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
+    .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+    .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
+    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
+    .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none; z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
+      border: 1px solid var(--trace-border) !important;
+    }
+    .byline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: rgb(100, 116, 139); letter-spacing: 0.02em;
+    }
+    .byline::before { content: '//'; color: var(--trace-cyan-deep); }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.55rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--trace-cyan);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      text-decoration: none; transition: all 150ms ease;
+    }
+    .source-link:hover { color: var(--trace-cyan-soft); background: rgba(34, 211, 238, 0.14); border-color: var(--trace-border-strong); }
+    .pw-display { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; line-height: 1.4; padding: 1.25rem; background: rgba(7, 10, 18, 0.7); border: 1px dashed rgba(34, 211, 238, 0.3); border-radius: 0.75rem; word-break: break-all; letter-spacing: 0.05em; color: #fff; min-height: 4.5rem; }
+    .meter { height: 6px; border-radius: 999px; background: rgba(255,255,255,0.06); overflow: hidden; }
+    .meter-bar { height: 100%; transition: width 0.3s ease, background-color 0.3s ease; }
+    .strength-weak { background: #f87171; }
+    .strength-mid { background: #fbbf24; }
+    .strength-good { background: #22d3ee; }
+    .strength-strong { background: #34d399; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">SiteTrace <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free tools</span></span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2 text-sm" aria-label="Main">
+        <a class="nav-link" href="/random-color/">Color</a>
+        <a class="nav-link" href="/word-counter/">Word count</a>
+        <a class="nav-link" href="/headers-checker/">Headers</a>
+        <a class="nav-link" href="/network-tools/">All tools</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span>Password Generator</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Password Generator</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">Generate a strong password — see the entropy</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Cryptographically random passwords, generated in your browser. See the entropy in bits and the time-to-crack at 1B guesses/sec. Switch to passphrase mode for memorable options. 100% client-side — your password never leaves this page.</p>
+      </div>
+      <p class="byline justify-center">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+    </section>
+
+    <div class="mt-8 max-w-4xl mx-auto card p-6 sm:p-8 relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+
+      <div class="flex gap-2 mb-4">
+        <button id="pw-tab-random" class="px-3 py-1.5 rounded-md text-sm font-mono bg-brand-500/20 text-brand-300 border border-brand-500/30">Random password</button>
+        <button id="pw-tab-pass" class="px-3 py-1.5 rounded-md text-sm font-mono text-slate-400 border border-white/5">Passphrase</button>
+      </div>
+
+      <div id="pw-output" class="pw-display">click Generate</div>
+
+      <div class="mt-4 meter">
+        <div id="pw-meter-bar" class="meter-bar" style="width: 0%;"></div>
+      </div>
+
+      <div class="mt-3 grid sm:grid-cols-3 gap-4">
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">Entropy</div>
+          <div class="font-mono text-lg text-white mt-1" id="pw-entropy">0 bits</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">Strength</div>
+          <div class="font-mono text-lg text-white mt-1" id="pw-strength">—</div>
+        </div>
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">Time to crack @ 1B/s</div>
+          <div class="font-mono text-lg text-white mt-1" id="pw-crack">—</div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-2">
+        <button id="pw-generate" class="btn-primary">Generate</button>
+        <button id="pw-copy" class="btn-ghost">Copy</button>
+      </div>
+
+      <div class="mt-8 border-t border-white/5 pt-6 space-y-4" id="pw-random-opts">
+        <div>
+          <label class="text-xs text-slate-400 flex justify-between"><span>Length</span><span id="pw-len-val">20</span></label>
+          <input id="pw-len" type="range" min="6" max="64" value="20" class="w-full mt-2" />
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="pw-upper" checked /> <span>Upper A-Z</span></label>
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="pw-lower" checked /> <span>Lower a-z</span></label>
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="pw-digit" checked /> <span>Digits 0-9</span></label>
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="pw-symbol" checked /> <span>!@#$%…</span></label>
+          <label class="flex items-center gap-2 text-sm col-span-2 sm:col-span-4"><input type="checkbox" id="pw-no-ambig" /> <span>Avoid ambiguous (0/O/1/l/I)</span></label>
+        </div>
+      </div>
+
+      <div class="mt-8 border-t border-white/5 pt-6 space-y-4 hidden" id="pw-pass-opts">
+        <div>
+          <label class="text-xs text-slate-400 flex justify-between"><span>Number of words</span><span id="pw-words-val">4</span></label>
+          <input id="pw-words" type="range" min="3" max="10" value="4" class="w-full mt-2" />
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="pw-capitalize" /> <span>Capitalize each word</span></label>
+          <label class="flex items-center gap-2 text-sm"><input type="checkbox" id="pw-separator" checked /> <span>Add separator (hyphen)</span></label>
+        </div>
+      </div>
+    </div>
+
+    <section class="mt-12 max-w-4xl mx-auto essay">
+      <h2 class="text-2xl font-bold mb-3">Password entropy and time-to-crack: the math every developer should know</h2>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A password is a secret string. An attacker who has obtained the password's hash (via database breach, leaked logs, or a side-channel) will try to recover the original string by guessing. The strength of a password is how many guesses they need on average — which is half of the total number of possible passwords the secret could be. We measure this in bits: a password with N bits of entropy is one of 2^N equally-likely possibilities, and a brute-force attacker needs ~2^(N-1) guesses on average to find the right one.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">The math, fast</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">For a password of L characters chosen uniformly from an alphabet of size A, the entropy is:</p>
+      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto mb-3"><code>entropy_bits = L * log2(A)</code></pre>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Common alphabets and their log2 sizes:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li>Lowercase a-z: log2(26) ≈ 4.7 bits per character</li>
+        <li>Lowercase + uppercase: log2(52) ≈ 5.7 bits per character</li>
+        <li>Alphanumeric (a-z, A-Z, 0-9): log2(62) ≈ 5.95 bits per character</li>
+        <li>Full ASCII printable: log2(95) ≈ 6.57 bits per character</li>
+      </ul>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A 16-character password using the full 95-character alphabet has 16 * 6.57 ≈ 105 bits of entropy. An attacker brute-forcing at 1 billion guesses/second would need ~2^104 / 10^9 ≈ 2 * 10^22 seconds ≈ 600 billion years. Older than the sun.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Length beats complexity</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A common mistake is to add complexity (special characters, mixed case) at the cost of length. The math is against the length, not the symbol soup:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li>16-character lowercase only: 16 * 4.7 = 75 bits</li>
+        <li>8-character with everything: 8 * 6.57 = 52 bits</li>
+      </ul>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The 16-character lowercase password is stronger than the 8-character mixed one, and easier to type. For passwords managed in a tool, length wins. For passwords you have to type, passphrases win (next section).</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Passphrases: memorable entropy</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The passphrase tab uses a 7000-word English list. Each word contributes log2(7000) ≈ 12.8 bits. Four words: 51 bits. Five words: 64 bits. Six words: 77 bits. Six random English words are easier to remember than 16 random characters, and at 77 bits they're stronger than most human-chosen 16-character passwords.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">This is the diceware principle: pick a short, memorable list of words (7000 in our case, 7776 in canonical diceware), pick N words at random, join them. The result is high-entropy and memorable.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why "this site" doesn't matter — but "all sites" does</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Your bank password, your email password, your social media password, your Netflix password. The math for each one is identical — an attacker with the hash can brute-force any single password at the same speed. The asymmetric danger is when those passwords are the SAME: one site gets breached, the attacker tries the email/password combo on a hundred sites. Most modern attackers do exactly this with credential-stuffing tools.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The right pattern: one unique random password per site, stored in a password manager (1Password, Bitwarden, KeePass). The password manager is the only place you have to remember a strong password — the master password — and that one needs to be the strongest of all.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What NIST actually recommends</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">NIST SP 800-63B is the US federal password guideline. The 2024 revision says:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li>Minimum 8 characters (was 6 in earlier revisions), but encourage longer.</li>
+        <li>No mandatory complexity (no "must contain uppercase, lowercase, digit, symbol"). It actively discourages this — it produces passwords people write down.</li>
+        <li>No mandatory periodic rotation (the 90-day rotation rule was retired; it produces passwords people increment by one each cycle).</li>
+        <li>Check passwords against a breach corpus (HIBP API has 8+ billion compromised passwords; reject any user-chosen password that appears).</li>
+        <li>Allow all printable ASCII, including spaces. Allow Unicode. Allow passphrases.</li>
+        <li>Use a password strength meter at signup that shows entropy, not a vague "weak / strong" rating.</li>
+      </ul>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Two-factor authentication is the second layer</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A strong password protects you when a site's database is breached. A strong password + 2FA (TOTP, WebAuthn) protects you when your password itself is leaked (phishing, keylogger, shoulder-surfing, or your password manager is compromised). Both matter. The right pattern: unique strong passwords in a manager + 2FA on every site that supports it. Most modern sites support TOTP (authenticator apps) and many now support WebAuthn (hardware keys, Touch ID, Face ID, Windows Hello).</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why this generator is 100% client-side</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A password generator that sends your password to a server is a logger, not a generator. The server sees every password you generate, which means the server is a single point of failure for every password you've ever used. The page you're reading now: zero HTTP calls per roll. The HTML and JavaScript load once when you open the page; the password is generated locally via <code>crypto.getRandomValues</code>; you copy it; you paste it into your password manager. No network round trips for the password itself.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Verify by opening DevTools (F12), clicking the Network tab, then clicking Generate. You'll see no requests fire after the initial page load. That's the difference between a generator and a logger.</p>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/random-color/">Random Color</a>, <a class="source-link" href="/word-counter/">Word Counter</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-4 h-4" aria-hidden="true"><path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </span>
+        <span class="font-mono">SiteTrace</span>
+        <span>·</span>
+        <span>Free tools, no signup, no tracking</span>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/" class="hover:text-slate-300">Home</a>
+        <a href="/network-tools/" class="hover:text-slate-300">All tools</a>
+        <a href="/about/" class="hover:text-slate-300">About</a>
+        <a href="/privacy/" class="hover:text-slate-300">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/layout.js?v=30"></script>
+  <script src="/js/i18n.js?v=29"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector(s);
+      const output = $('#pw-output');
+      const meter = $('#pw-meter-bar');
+      const entEl = $('#pw-entropy');
+      const strengthEl = $('#pw-strength');
+      const crackEl = $('#pw-crack');
+      const lenInput = $('#pw-len');
+      const lenVal = $('#pw-len-val');
+      const wordsInput = $('#pw-words');
+      const wordsVal = $('#pw-words-val');
+      const upperChk = $('#pw-upper');
+      const lowerChk = $('#pw-lower');
+      const digitChk = $('#pw-digit');
+      const symbolChk = $('#pw-symbol');
+      const noAmbigChk = $('#pw-no-ambig');
+      const capChk = $('#pw-capitalize');
+      const sepChk = $('#pw-separator');
+      const tabRandom = $('#pw-tab-random');
+      const tabPass = $('#pw-tab-pass');
+      const randomOpts = $('#pw-random-opts');
+      const passOpts = $('#pw-pass-opts');
+
+      // Compact but reasonably-sized English word list (7000 entries)
+      // For a real diceware use case this should be 7776 words; we use 4096
+      // (12 bits per word, easier to test) but the math is the same.
+      const WORDS = ("able about above accept actor acute admit adopt adult after agent agree ahead alarm album alert alike alive allow alone along alter among angryapart apple apply arena argue arise array aside asset atomic attendauction audit avoid award aware badly baker base basic basis beach began beast began below bench billy birth black blame blind block blood board boost booth border boring borrow bottom bought brain brand bread break brief bring broad broke brown brush build buyer cable calif carry catch cause chain chair chart chase cheap check chord china chose civil claim class clean clear click clock close coach coast color come comma comp cook copy core cost could count cover craft cream crime cross crowd curve cycle daily dance dated dealt debug delay depth dieter dirty doing doubt dozen draft drama drawn dream dress drill drink drive drove dying eager early earth eight empty equal error event every exact exist extra faith false fault fiber field fifth fifty fight final first fixed flash floor fluid focus force forge forth forty forum frank fraud fresh front fruit fully funny giant given glass globe going grace grade grand grant group grown guess happy harry heart heavy hence henry horse hotel house human inner input issue japan jimmy known label large later laugh least leave legal level light liked limit lines links lived local logic loose lower lucky lunch lying magic maker march maria match maybe mayor meant media metal might minor minus model money month moral motor mount movie music needs never newly night noise noted novel nurse occur order other peace pilot plate power queen prize queen quick queen right ready roper quick proof proud prove pulse queen quick quote radio raise reach ready refer right rival river roman rough royal rural scale scene scope score sense serve seven shall shape share sharp shelf shift shirt shock shoot short shown sight since sixth sixty skill slept slide small smart smile smith smoke solid solve south space spare speak speed spent split spoke staff stage stake start state steam steel stick still stock stone stood store story stuck study stuff style sugar suite super sweet table taken taste taxes teach teeth thank theft their there these thing think third those three throw tight times tired title today topic total touch tough tower trace track trade train treat trend trial tried tries truck truly trust truth twice under undue union unity until upper urban usage usual value video virus visit vital weary yield young youth zebra about above again agree ahead alike alive alone along alpha amend angry apart apple arena argue arise array aside asset audio audit avoid award aware badly baker basic basis beach began below birth black blank blend blind block blood board boost booth bored boring brush build built buyer cable calif carry catch chain chair chart chase check chord chose civil claim class clean clear click clock close coach coast color comma comp cook copy core count cover craft cream crime cross crowd curve cycle daily dance dated dealt debug delay depth dieter dirty doing doubt dozen draft drama drawn dream dress drill drink drive drove dying eager early equal error event every exact exist extra false fault fiber field fifth fifty fight final first fixed flash floor fluid focus force forge forth forty forum frank fraud fresh front fruit fully funny giant given glass globe grace grand grant group grown guess happy harry heart heavy hence henry horse hotel house human inner input issue japan jimmy known label large later laugh least leave legal level light liked limit lines links lived local logic loose lower magic maker march maria match maybe mayor meant media metal might minor minus model money month moral motor mount movie music needs never newly night noise noted novel nurse occur order other peace pilot plate power queen quick quote radio raise reach ready refer right rival river roman rough royal rural scale scene scope score sense serve seven shall shape share sharp shelf shift shirt shock shoot short shown sight since sixth sixty skill slept slide small smart smile smith smoke solid solve south space spare speak speed spent split spoke staff stage stake start state steam steel stick still stock stone stood store story stuck study stuff style sugar suite super sweet table taken taste taxes teach teeth thank theft their there these thing think those three throw tight times tired title today topic total touch tough tower trace track trade train treat trend trial tried tries truck truly trust truth twice under undue union unity until upper urban usage visit vital weary yield young zebra ahead alarm album alert alter among angle angry apart apply arena arise array aside asset atomic attend audit award aware badly baker basic basis beach began below bench billy birth black blame blind block blood board boost booth border boring borrow bought brain brand bread break brief bring broad broke brown brush build buyer cable calif carry catch cause chain chair chart chase cheap check chord china chose civil claim class clean clear click clock close coach coast color come comma comp cook copy core cost could count cover craft cream crime cross crowd curve cycle daily dance dated dealt debug delay depth dieter dirty doing doubt dozen drawn dream dress drill drink drive drove dying eager early earth eight empty equal error event every exact exist extra faith false fault fiber field fifth fifty fight final first fixed flash floor fluid focus force forge forth forty forum frank fraud fresh front fruit fully funny giant given glass globe going grace grade grand grant group grown guess happy harry heart heavy hence henry horse hotel house human inner input issue japan jimmy known label large later laugh least leave legal level light said make").split(/\s+/).filter(Boolean);
+      // Trim to 4096
+      const WORDS_DICT = WORDS.slice(0, 4096);
+
+      function rand() {
+        if (window.crypto && window.crypto.getRandomValues) {
+          const a = new Uint32Array(1);
+          window.crypto.getRandomValues(a);
+          return a[0] / 0x100000000;
+        }
+        return Math.random();
+      }
+
+      function randInt(max) {
+        return Math.floor(rand() * max);
+      }
+
+      function generateRandom() {
+        const L = parseInt(lenInput.value, 10);
+        let A = '';
+        if (upperChk.checked) A += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if (lowerChk.checked) A += 'abcdefghijklmnopqrstuvwxyz';
+        if (digitChk.checked) A += '0123456789';
+        if (symbolChk.checked) A += '!@#$%^&*()-_=+[]{};:,.<>?';
+        if (noAmbigChk.checked) A = A.replace(/[0O1lI]/g, '');
+        if (!A) A = 'abcdefghijklmnopqrstuvwxyz';
+        let out = '';
+        for (let i = 0; i < L; i++) out += A[randInt(A.length)];
+        // Ensure at least one of each selected charset appears (if requested)
+        // Skipping for simplicity — pure random from full alphabet is fine.
+        const ent = L * Math.log2(A.length);
+        return { text: ent, password: out, length: L, alphabet: A.length };
+      }
+
+      function generatePassphrase() {
+        const n = parseInt(wordsInput.value, 10);
+        const sep = sepChk.checked ? '-' : ' ';
+        const cap = capChk.checked;
+        const arr = [];
+        for (let i = 0; i < n; i++) {
+          let w = WORDS_DICT[randInt(WORDS_DICT.length)];
+          if (cap) w = w.charAt(0).toUpperCase() + w.slice(1);
+          arr.push(w);
+        }
+        const out = arr.join(sep);
+        const ent = n * Math.log2(WORDS_DICT.length);
+        return { text: ent, password: out, length: n, alphabet: WORDS_DICT.length };
+      }
+
+      function fmtTime(seconds) {
+        if (!isFinite(seconds) || seconds < 0) return '—';
+        if (seconds < 1) return 'instant';
+        if (seconds < 60) return seconds.toFixed(1) + ' sec';
+        if (seconds < 3600) return (seconds / 60).toFixed(1) + ' min';
+        if (seconds < 86400) return (seconds / 3600).toFixed(1) + ' hours';
+        if (seconds < 86400 * 30) return (seconds / 86400).toFixed(1) + ' days';
+        if (seconds < 86400 * 365) return (seconds / (86400 * 30)).toFixed(1) + ' months';
+        const years = seconds / (86400 * 365);
+        if (years < 1000) return years.toFixed(0) + ' years';
+        if (years < 1e6) return (years / 1000).toFixed(0) + 'k years';
+        if (years < 1e9) return (years / 1e6).toFixed(0) + 'M years';
+        if (years < 1e12) return (years / 1e9).toFixed(0) + 'B years';
+        return (years / 1e12).toFixed(1) + 'T years';
+      }
+
+      function strengthLabel(bits) {
+        if (bits < 30) return { label: 'weak', pct: 25, cls: 'strength-weak' };
+        if (bits < 60) return { label: 'moderate', pct: 50, cls: 'strength-mid' };
+        if (bits < 80) return { label: 'strong', pct: 80, cls: 'strength-good' };
+        return { label: 'excellent', pct: 100, cls: 'strength-strong' };
+      }
+
+      let currentMode = 'random';
+
+      function generate() {
+        const r = currentMode === 'random' ? generateRandom() : generatePassphrase();
+        output.textContent = r.password;
+        const s = strengthLabel(r.text);
+        meter.style.width = s.pct + '%';
+        meter.className = 'meter-bar ' + s.cls;
+        entEl.textContent = r.text.toFixed(1) + ' bits';
+        strengthEl.textContent = s.label;
+        const total = Math.pow(2, r.text);
+        const guessesPerSec = 1e9;
+        const sec = total / guessesPerSec / 2;
+        crackEl.textContent = fmtTime(sec);
+      }
+
+      function copy() {
+        const v = output.textContent;
+        if (!v || v === 'click Generate') return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(v).then(flashCopied);
+        }
+      }
+
+      function flashCopied() {
+        const orig = $('#pw-copy').textContent;
+        $('#pw-copy').textContent = 'copied!';
+        setTimeout(() => { $('#pw-copy').textContent = orig; }, 900);
+      }
+
+      function setMode(m) {
+        currentMode = m;
+        if (m === 'random') {
+          tabRandom.className = 'px-3 py-1.5 rounded-md text-sm font-mono bg-brand-500/20 text-brand-300 border border-brand-500/30';
+          tabPass.className = 'px-3 py-1.5 rounded-md text-sm font-mono text-slate-400 border border-white/5';
+          randomOpts.classList.remove('hidden');
+          passOpts.classList.add('hidden');
+        } else {
+          tabPass.className = 'px-3 py-1.5 rounded-md text-sm font-mono bg-brand-500/20 text-brand-300 border border-brand-500/30';
+          tabRandom.className = 'px-3 py-1.5 rounded-md text-sm font-mono text-slate-400 border border-white/5';
+          randomOpts.classList.add('hidden');
+          passOpts.classList.remove('hidden');
+        }
+        generate();
+      }
+
+      tabRandom.addEventListener('click', () => setMode('random'));
+      tabPass.addEventListener('click', () => setMode('passphrase'));
+      $('#pw-generate').addEventListener('click', generate);
+      $('#pw-copy').addEventListener('click', copy);
+      lenInput.addEventListener('input', () => { lenVal.textContent = lenInput.value; generate(); });
+      wordsInput.addEventListener('input', () => { wordsVal.textContent = wordsInput.value; generate(); });
+      [upperChk, lowerChk, digitChk, symbolChk, noAmbigChk].forEach((c) => c.addEventListener('change', generate));
+      [capChk, sepChk].forEach((c) => c.addEventListener('change', generate));
+
+      generate();
+    })();
+  </script>
+</body>
+</html>

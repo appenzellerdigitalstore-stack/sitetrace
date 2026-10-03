@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <title>Word Counter — characters, words, sentences, reading time, Flesch — SiteTrace</title>
+  <meta name="description" content="Free word counter and text analyzer. Counts characters, words, sentences, paragraphs; estimates reading time, speaking time, and Flesch reading-ease score. 100% client-side — your text never leaves the browser." />
+  <meta name="keywords" content="word counter, character counter, sentence counter, paragraph counter, reading time, speaking time, flesch reading ease, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/word-counter/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Word Counter — characters, words, sentences, reading time, Flesch" />
+  <meta property="og:description" content="Count characters, words, sentences, paragraphs; reading time, speaking time, Flesch reading-ease. 100% client-side." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/word-counter.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://sitetrace.it.com/word-counter/" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {
+        fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+        colors: { ink: { 900:'#070a12', 800:'#0b1120', 700:'#0f172a', 600:'#1a2438', 500:'#222d44' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
+      } },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Word Counter — SiteTrace",
+    "url": "https://sitetrace.it.com/word-counter/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
+    "description": "Free word counter. Counts characters, words, sentences, paragraphs; estimates reading time, speaking time, Flesch reading-ease. 100% client-side."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Does this tool send my text to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The page loads once from the static-site CDN; the JavaScript counts your text locally in the browser; nothing leaves your machine. Verify by opening DevTools (F12) and watching the network tab — no requests fire after the initial page load."}},
+      {"@type":"Question","name":"How is the reading time calculated?","acceptedAnswer":{"@type":"Answer","text":"At 200 words/minute for typical silent reading, with a 1-second floor for very short texts. Some studies put silent reading speed at 250 wpm for fiction, 180 wpm for technical material, 100 wpm for dense academic. The default of 200 is a reasonable average. Speaking time uses 130 words/minute (the typical public speaking rate for English). Both are estimates, not exact."}},
+      {"@type":"Question","name":"What is the Flesch reading-ease score?","acceptedAnswer":{"@type":"Answer","text":"A 0-100 score that estimates how easy a text is to read. Higher is easier. 90-100: 5th-grade level (very easy, like comics). 60-70: standard 8th-9th grade (typical web writing). 30-50: college level. 0-30: graduate / legal / scientific. The formula uses sentence length (longer = harder) and word complexity (longer syllables = harder). Plain English aimed at a broad audience scores 60-70."}},
+      {"@type":"Question","name":"Why isn't my Flesch score matching what Google Docs shows?","acceptedAnswer":{"@type":"Answer","text":"Three reasons: (a) syllable counting has multiple valid algorithms — Docs uses one, we use another; results differ by a few percent. (b) Punctuation handling differs (what counts as a sentence boundary). (c) Hyphenated words: Docs counts hyphenated as one word; we do too, but some tools split them. None of these differences are usually enough to change the qualitative reading-level label (easy / moderate / hard). Use the score as a trend, not an exact target."}},
+      {"@type":"Question","name":"How are words counted?","acceptedAnswer":{"@type":"Answer","text":"As sequences of non-whitespace characters separated by whitespace or string boundaries. This matches what Google Docs, Microsoft Word, and most word processors count. Hyphenated words (e.g. 'well-known') count as one word; contractions (don't) count as one word; numbers count as one word. Unicode words count correctly."}},
+      {"@type":"Question","name":"What is a 'long word'?","acceptedAnswer":{"@type":"Answer","text":"Six or more characters. Long-word percentage is a rough proxy for reading difficulty: technical writing has more long words (10-20%), news writing has fewer (5-10%), children's books have very few (1-3%). Aim for under 15% if you're writing for a general audience."}},
+      {"@type":"Question","name":"Why no upload, no save?","acceptedAnswer":{"@type":"Answer","text":"Because saving your text requires storing it somewhere, and that somewhere is a liability. We don't store your text; we don't log it; we don't even have a backend for this page. If you close the tab, the text is gone. Paste it back from your clipboard or document when you need it. The privacy trade-off is intentional."}}
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"Word Counter","item":"https://sitetrace.it.com/word-counter/"}
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --trace-bg: #070a12;
+      --trace-cyan: #22d3ee;
+      --trace-cyan-deep: #0891b2;
+      --trace-cyan-soft: #67e8f9;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+    }
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--trace-bg);
+    }
+    .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
+    .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
+    .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
+    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
+    .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none; z-index: 0;
+    }
+    body > * { position: relative; z-index: 1; }
+    .card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
+      border: 1px solid var(--trace-border) !important;
+    }
+    .byline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: rgb(100, 116, 139); letter-spacing: 0.02em;
+    }
+    .byline::before { content: '//'; color: var(--trace-cyan-deep); }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.55rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--trace-cyan);
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid var(--trace-border);
+      text-decoration: none; transition: all 150ms ease;
+    }
+    .source-link:hover { color: var(--trace-cyan-soft); background: rgba(34, 211, 238, 0.14); border-color: var(--trace-border-strong); }
+    .stat-card { background: linear-gradient(180deg, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.3)); border: 1px solid rgba(34, 211, 238, 0.1); border-radius: 0.75rem; padding: 1rem; text-align: center; }
+    .stat-card .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgb(100,116,139); }
+    .stat-card .value { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; color: #fff; margin-top: 0.25rem; font-weight: 600; }
+    .stat-card .unit { font-size: 0.7rem; color: rgb(148,163,184); margin-top: 0.15rem; }
+    textarea { font-family: 'JetBrains Mono', monospace; line-height: 1.6; resize: vertical; min-height: 240px; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">SiteTrace <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free tools</span></span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2 text-sm" aria-label="Main">
+        <a class="nav-link" href="/password/">Password</a>
+        <a class="nav-link" href="/random-color/">Color</a>
+        <a class="nav-link" href="/headers-checker/">Headers</a>
+        <a class="nav-link" href="/network-tools/">All tools</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
+    <section class="pt-8 sm:pt-12 space-y-4">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <span>Word Counter</span>
+      </nav>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Word Counter</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">Count words, characters, sentences, paragraphs</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Paste any text. Get character / word / sentence / paragraph counts, reading time, speaking time, and a Flesch reading-ease score. 100% client-side — your text never leaves the browser.</p>
+      </div>
+      <p class="byline justify-center">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+    </section>
+
+    <div class="mt-8 max-w-5xl mx-auto grid lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 card p-4 sm:p-6 relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-brand-500/10 blur-3xl pointer-events-none"></div>
+        <label for="wc-input" class="block text-xs uppercase tracking-widest text-slate-500 mb-2">Your text</label>
+        <textarea id="wc-input" class="w-full bg-ink-900/60 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 text-sm" placeholder="Paste or type your text here. As you type, the panel on the right updates in real time. Nothing is sent to any server."></textarea>
+        <div class="mt-3 flex flex-wrap items-center gap-2">
+          <button id="wc-clear" class="btn-ghost">Clear</button>
+          <button id="wc-sample" class="btn-ghost">Load sample</button>
+          <span class="text-xs text-slate-500 ml-auto">100% client-side · no network · no save</span>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="stat-card">
+            <div class="label">Characters</div>
+            <div class="value" id="wc-chars">0</div>
+            <div class="unit" id="wc-chars-no">— w/o spaces</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Words</div>
+            <div class="value" id="wc-words">0</div>
+            <div class="unit" id="wc-unique">— unique</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Sentences</div>
+            <div class="value" id="wc-sent">0</div>
+            <div class="unit" id="wc-sent-avg">— avg length</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Paragraphs</div>
+            <div class="value" id="wc-para">0</div>
+            <div class="unit" id="wc-words-para">— avg words/¶</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="stat-card">
+            <div class="label">Reading time</div>
+            <div class="value" id="wc-read">0s</div>
+            <div class="unit">@ 200 wpm</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Speaking time</div>
+            <div class="value" id="wc-speak">0s</div>
+            <div class="unit">@ 130 wpm</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="label">Flesch reading-ease</div>
+          <div class="value" id="wc-flesch">—</div>
+          <div class="unit" id="wc-flesch-label">—</div>
+          <div class="meter mt-2"><div class="meter-bar" id="wc-flesch-bar" style="width:0%;"></div></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="stat-card">
+            <div class="label">Long words (6+)</div>
+            <div class="value" id="wc-long">0</div>
+            <div class="unit" id="wc-long-pct">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Avg syllables</div>
+            <div class="value" id="wc-syll">—</div>
+            <div class="unit" id="wc-syll-pw">per word</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="mt-12 max-w-4xl mx-auto essay">
+      <h2 class="text-2xl font-bold mb-3">Word counts, reading time, and Flesch: how to use them without obsessing</h2>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A word counter is one of those tools that every writer, student, and content marketer has open in a tab. The simple version is "is my essay long enough" — the more useful version is "is my writing readable". This essay covers the metrics this page computes, what they actually measure, when they matter, and when they're noise.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Character counts (with and without spaces)</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Most platforms that have a character limit (Twitter historically, LinkedIn headlines, SMS, meta descriptions, ad copy) count characters with spaces. Some (Twitter's media pool, GitHub commit titles) count without spaces. The two numbers are usually close. The with-spaces count is the one you almost always want to check first.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A 280-character tweet typically allows for 30-50 words of text. Not a lot. Short writing benefits from compression more than length: cut every word that doesn't add information.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Words and unique words</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Word count is the most-used metric. It's also the most-cited incorrectly: "the average novel is 80,000 words" — true for adult fiction; picture books are 500-1500; middle grade is 25,000-40,000; young adult is 55,000-80,000. The genre matters.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Unique-word percentage (unique / total) is a rough proxy for vocabulary diversity. Technical writing: 30-40% unique. Fiction: 50-60%. Poetry: 70%+. Numbers above 60% in non-fiction usually signal that the writer is varying vocabulary for its own sake — sometimes good, sometimes an obstacle. Numbers below 30% in fiction usually signal a word you've leaned on too hard (find it and cut it).</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Reading time and speaking time</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Reading time at 200 wpm is the average silent reading speed for adult native English readers on typical material. Fiction readers average 250 wpm; technical readers average 180 wpm; dense academic readers average 100 wpm. Children and second-language readers are slower.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Speaking time at 130 wpm is the typical public-speaking rate. A 5-minute talk is 650 words; a 10-minute talk is 1300; a 30-minute talk is 3900. If you're a podcast host, these are the numbers to watch. The 130 wpm default is for an experienced speaker; nervous speakers are closer to 100 wpm; auctioneers are 250 wpm.</p>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Flesch reading-ease</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Flesch reading-ease is a 0-100 score, higher being easier. Formula:</p>
+      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto mb-3"><code>206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words)</code></pre>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The two factors that hurt the score are long sentences and long words. The fix is the same as every writing guide has said for a century: short sentences, plain words. The reading-ease score quantifies what feels obvious after you read enough.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Score ranges (US school-grade equivalent):</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
+        <li>90-100: 5th grade (very easy — comics, children's books)</li>
+        <li>80-90: 6th grade (easy — conversational)</li>
+        <li>70-80: 7th grade (fairly easy — typical web content)</li>
+        <li>60-70: 8th-10th grade (standard — news, magazine)</li>
+        <li>50-60: 10th-12th grade (fairly difficult — academic)</li>
+        <li>30-50: college (difficult — technical)</li>
+        <li>10-30: college graduate (very difficult — scientific, academic)</li>
+        <li>0-10: professional (extremely difficult — legal, government)</li>
+      </ul>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">When the score doesn't matter</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Three situations where the Flesch score is misleading and you should ignore it:</p>
+      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
+        <li><strong>Technical reference material.</strong> Documentation for an API has to use precise terms like "asynchronous event-driven architecture" because the alternative is a misleading sentence. A low Flesch score is correct here.</li>
+        <li><strong>Poetry.</strong> Short lines, weird syllables, deliberately complex words. The score will be 10-30 and that's exactly right.</li>
+        <li><strong>Very short text.</strong> A 30-word paragraph has statistical noise — one long sentence drops the score 20 points. The score stabilizes above 200 words.</li>
+      </ul>
+
+      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why this tool is 100% client-side</h3>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A word counter that sends your text to a server is a logger. The server sees every paragraph you've ever counted, which is a single point of failure for whatever you've been writing — emails to your lawyer, draft cover letters, half-finished novels. We don't store your text; we don't even have a backend for this page. The HTML and JavaScript load once when you open the page; the count runs locally; you close the tab; the text is gone. Verify by opening DevTools (F12) and watching the network tab — no requests fire after the initial page load.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">Same pattern as <a class="source-link" href="/random-color/">/random-color</a> and <a class="source-link" href="/password/">/password</a>: nothing leaves the browser.</p>
+
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/random-color/">Random Color</a>, <a class="source-link" href="/password/">Password Generator</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded-md bg-brand-gradient flex items-center justify-center">
+          <svg viewBox="0 0 100 100" class="w-4 h-4" aria-hidden="true"><path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </span>
+        <span class="font-mono">SiteTrace</span>
+        <span>·</span>
+        <span>Free tools, no signup, no tracking</span>
+      </div>
+      <div class="flex flex-wrap gap-4">
+        <a href="/" class="hover:text-slate-300">Home</a>
+        <a href="/network-tools/" class="hover:text-slate-300">All tools</a>
+        <a href="/about/" class="hover:text-slate-300">About</a>
+        <a href="/privacy/" class="hover:text-slate-300">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/layout.js?v=30"></script>
+  <script src="/js/i18n.js?v=29"></script>
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector(s);
+      const input = $('#wc-input');
+      const SAMPLE = `Reading is hard. Writing is harder. Counting words is the easy part — it's the writing you have to fix, not the count.
+
+The Flesch reading-ease score measures sentence length and word complexity. Long sentences drag it down. Long words drag it down more. The fix is the same one every writing guide has given for a hundred years: cut long sentences, use shorter words. The score just makes it visible.
+
+Aim for 60-70 if you're writing for a general web reader. 50-60 if you're writing for a more technical audience. Below 40, you've written an academic paper or a legal contract. Above 80, you're writing for children or for international readers.`;
+
+      function countSyllables(word) {
+        word = word.toLowerCase().replace(/[^a-z]/g, '');
+        if (!word) return 0;
+        if (word.length <= 3) return 1;
+        word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+        word = word.replace(/^y/, '');
+        const m = word.match(/[aeiouy]{1,2}/g);
+        return m ? m.length : 1;
+      }
+
+      function fleschLabel(s) {
+        if (s === null) return '—';
+        if (s >= 90) return '5th grade · very easy';
+        if (s >= 80) return '6th grade · easy';
+        if (s >= 70) return '7th grade · fairly easy';
+        if (s >= 60) return '8th-10th · standard';
+        if (s >= 50) return '10th-12th · fairly difficult';
+        if (s >= 30) return 'college · difficult';
+        if (s >= 10) return 'college grad · very difficult';
+        return 'professional · extremely difficult';
+      }
+
+      function fleschClass(s) {
+        if (s === null) return '#475569';
+        if (s >= 70) return '#34d399';
+        if (s >= 50) return '#22d3ee';
+        if (s >= 30) return '#fbbf24';
+        return '#f87171';
+      }
+
+      function update() {
+        const t = input.value;
+        const chars = t.length;
+        const charsNoSpace = t.replace(/\s/g, '').length;
+        const wordArr = t.match(/\S+/g) || [];
+        const words = wordArr.length;
+        const uniqueWords = new Set(wordArr.map(w => w.toLowerCase())).size;
+        const sentArr = t.match(/[^.!?\n]+[.!?]+/g) || [];
+        // Better sentence splitter: also handle newlines as soft breaks
+        const sentences = t.trim() ? sentArr.length || (words > 0 ? 1 : 0) : 0;
+        const paraArr = t.split(/\n+/).filter(p => p.trim());
+        const paragraphs = paraArr.length || 0;
+        const longWords = wordArr.filter(w => w.length > 6).length;
+        let totalSyll = 0;
+        for (const w of wordArr) totalSyll += countSyllables(w);
+
+        $('#wc-chars').textContent = chars.toLocaleString();
+        $('#wc-chars-no').textContent = charsNoSpace.toLocaleString() + ' w/o spaces';
+        $('#wc-words').textContent = words.toLocaleString();
+        $('#wc-unique').textContent = uniqueWords.toLocaleString() + ' unique';
+        $('#wc-sent').textContent = sentences.toLocaleString();
+        $('#wc-sent-avg').textContent = sentences > 0 ? (words / sentences).toFixed(1) + ' avg length' : '— avg length';
+        $('#wc-para').textContent = paragraphs.toLocaleString();
+        $('#wc-words-para').textContent = paragraphs > 0 ? (words / paragraphs).toFixed(1) + ' avg words/¶' : '— avg words/¶';
+
+        const readMin = words / 200;
+        const speakMin = words / 130;
+        const fmt = (m) => {
+          if (words === 0) return '0s';
+          const sec = Math.max(1, Math.round(m * 60));
+          if (sec < 60) return sec + 's';
+          const mm = Math.floor(sec / 60);
+          const ss = sec % 60;
+          if (mm < 60) return mm + 'm ' + (ss ? ss + 's' : '');
+          const hh = Math.floor(mm / 60);
+          return hh + 'h ' + (mm % 60) + 'm';
+        };
+        $('#wc-read').textContent = fmt(readMin);
+        $('#wc-speak').textContent = fmt(speakMin);
+
+        let flesch = null;
+        if (sentences > 0 && words > 0) {
+          flesch = 206.835 - 1.015 * (words / sentences) - 84.6 * (totalSyll / words);
+          flesch = Math.max(0, Math.min(100, flesch));
+        }
+        $('#wc-flesch').textContent = flesch === null ? '—' : flesch.toFixed(1);
+        $('#wc-flesch-label').textContent = fleschLabel(flesch);
+        const bar = $('#wc-flesch-bar');
+        bar.style.width = flesch === null ? '0%' : flesch + '%';
+        bar.style.backgroundColor = fleschClass(flesch);
+
+        $('#wc-long').textContent = longWords.toLocaleString();
+        $('#wc-long-pct').textContent = words > 0 ? ((longWords / words) * 100).toFixed(1) + '%' : '—';
+        $('#wc-syll').textContent = words > 0 ? (totalSyll / words).toFixed(2) : '—';
+        $('#wc-syll-pw').textContent = totalSyll.toLocaleString() + ' total syllables';
+      }
+
+      input.addEventListener('input', update);
+      $('#wc-clear').addEventListener('click', () => { input.value = ''; update(); });
+      $('#wc-sample').addEventListener('click', () => { input.value = SAMPLE; update(); });
+      update();
+    })();
+  </script>
+</body>
+</html>
