@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a12" />
+  <title>Check anything — URL, domain, or IP. One input, full report. — SiteTrace</title>
+  <meta name="description" content="Paste a URL, domain, or IP. SiteTrace figures out what you want — screenshot + security headers + SEO for a URL, SSL + email + WHOIS for a domain, reputation + geo for an IP — and shows the results in one panel. Free, no signup." />
+  <meta name="keywords" content="url checker, domain checker, ip checker, multi-tool, all-in-one, site audit, free, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/check/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Check anything — URL, domain, or IP. SiteTrace" />
+  <meta property="og:description" content="Paste a URL, domain, or IP. One input, full report. Free, no signup." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/check.png" />
+  <meta property="og:url" content="https://sitetrace.it.com/check/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50:'#ecfeff',100:'#cffafe',200:'#a5f3fc',300:'#67e8f9',400:'#22d3ee',500:'#06b6d4',600:'#0891b2',700:'#0e7490',800:'#155e75',900:'#164e63' },
+            ink: { 900:'#070a12', 800:'#0b1220', 700:'#111827' },
+            good: '#34d399',
+            warn: '#fbbf24',
+            bad:  '#f87171',
+          },
+          fontFamily: {
+            sans: ['"IBM Plex Sans"','system-ui','-apple-system','Segoe UI','Roboto','sans-serif'],
+            mono: ['"JetBrains Mono"','ui-monospace','SFMono-Regular','Menlo','monospace'],
+          },
+          boxShadow: {
+            'glow-brand': '0 0 0 1px rgba(34,211,238,.18), 0 8px 32px rgba(34,211,238,.10)',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"SiteTrace Check",
+    "url":"https://sitetrace.it.com/check/",
+    "description":"One-input diagnostic tool that auto-detects URLs, domains, and IPs and runs the relevant sitetrace API checks in parallel.",
+    "applicationCategory":"UtilitiesApplication",
+    "operatingSystem":"Any (browser)",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+    "author":{"@type":"Person","name":"Edy Appenzeller","url":"https://sitetrace.it.com/about/"},
+    "publisher":{"@type":"Organization","name":"SiteTrace","url":"https://sitetrace.it.com/"}
+  }
+  </script>
+
+  <!-- FAQ schema for AI citation -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"What does this tool do?","acceptedAnswer":{"@type":"Answer","text":"Type a URL, domain, or IP into the box. SiteTrace detects the input type and runs the relevant diagnostic checks in parallel: screenshot + security headers + SEO for URLs, SSL + email deliverability + WHOIS for domains, reputation + geolocation for IPs."}},
+      {"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No signup, no payment. The free tier is 100 anonymous calls per day, or 1,000 with a free API key. Sign up at sitetrace.it.com if you need more."}},
+      {"@type":"Question","name":"How does it differ from the individual tool pages?","acceptedAnswer":{"@type":"Answer","text":"Individual tool pages (e.g. /what-is-my-ip/, /email-deliverability/) run a single check with all lookups in your browser via DNS-over-HTTPS for privacy. The /check/ dispatcher runs multiple checks in parallel against the sitetrace API — same backend, fewer round trips, results in one panel. Use individual pages when you want a deep single-purpose report and DoH privacy; use /check for a fast combined look across a server."
+    }}
+  }
+  </script>
+</head>
+<body class="bg-ink-900 text-slate-200 font-sans antialiased">
+
+  <!-- Header (matches site) -->
+  <header class="border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 rounded-lg bg-brand-500/20 border border-brand-400/30 grid place-items-center text-brand-300 font-mono text-sm">S</span>
+        <span class="font-semibold text-white">SiteTrace</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-5 text-sm text-slate-300">
+        <a href="/" class="hover:text-white">Home</a>
+        <a href="/what-is-my-ip/" class="hover:text-white">IP</a>
+        <a href="/email-deliverability/" class="hover:text-white">Email</a>
+        <a href="/is-it-down/" class="hover:text-white">Status</a>
+        <a href="/api/" class="text-brand-300 hover:text-brand-200">API</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+
+    <!-- Hero -->
+    <section class="text-center">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-mono uppercase tracking-widest bg-brand-500/10 border border-brand-400/20 text-brand-300 mb-5">one input · full report</span>
+      <h1 class="text-3xl sm:text-5xl font-bold text-white leading-tight">
+        Check anything — <span class="text-brand-300">URL, domain, or IP</span>.
+      </h1>
+      <p class="mt-4 text-base sm:text-lg text-slate-400 max-w-2xl mx-auto">
+        Paste it. We figure out what you want. SiteTrace runs screenshot + headers + SEO for a URL, SSL + email + WHOIS for a domain, reputation + geo for an IP — and shows the results in one panel.
+      </p>
+    </section>
+
+    <!-- Input -->
+    <section class="mt-10 max-w-3xl mx-auto">
+      <form id="check-form" class="relative" autocomplete="off">
+        <div class="flex items-center gap-2 bg-ink-800/80 border border-white/10 rounded-2xl p-2 focus-within:border-brand-400/40 focus-within:shadow-glow-brand transition-all">
+          <input
+            id="check-input"
+            type="text"
+            name="q"
+            inputmode="url"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+            placeholder="https://github.com  ·  example.com  ·  8.8.8.8"
+            class="flex-1 bg-transparent border-0 focus:ring-0 focus:outline-none px-4 py-3 text-base sm:text-lg font-mono text-white placeholder-slate-500"
+          />
+          <button type="submit" class="bg-brand-500 hover:bg-brand-400 text-ink-900 font-semibold rounded-xl px-5 sm:px-7 py-3 transition-colors">
+            Check
+          </button>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2 text-sm">
+          <span class="text-slate-500 mr-1">Try:</span>
+          <button type="button" class="example-chip text-brand-300 hover:text-brand-200 font-mono" data-q="https://github.com">github.com</button>
+          <span class="text-slate-600">·</span>
+          <button type="button" class="example-chip text-brand-300 hover:text-brand-200 font-mono" data-q="google.com">google.com</button>
+          <span class="text-slate-600">·</span>
+          <button type="button" class="example-chip text-brand-300 hover:text-brand-200 font-mono" data-q="8.8.8.8">8.8.8.8</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Detected type indicator -->
+    <section id="detected" class="mt-8 max-w-3xl mx-auto hidden">
+      <div class="text-center text-sm font-mono text-slate-400">
+        Detected: <span id="detected-type" class="text-brand-300"></span>
+        · <span id="detected-value" class="text-slate-300"></span>
+      </div>
+    </section>
+
+    <!-- Loading -->
+    <section id="loading" class="mt-10 max-w-md mx-auto hidden">
+      <div class="card text-center">
+        <div class="inline-block w-6 h-6 border-2 border-brand-500/30 border-t-brand-500 rounded-full animate-spin"></div>
+          <p class="mt-3 text-sm text-slate-400 font-mono" id="loading-text">Running checks…</p>
+        </div>
+    </section>
+
+    <!-- Error -->
+    <section id="error" class="mt-10 max-w-2xl mx-auto hidden">
+      <div class="card border border-bad/30 bg-bad/5">
+        <p class="text-bad text-sm font-mono" id="error-msg"></p>
+      </div>
+    </section>
+
+    <!-- Results container -->
+    <section id="results" class="mt-10 hidden space-y-6"></section>
+
+    <!-- Empty / hint state -->
+    <section id="hint" class="mt-12 max-w-3xl mx-auto text-center">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-sm">
+        <div class="card text-left">
+          <div class="text-brand-300 font-mono text-xs uppercase tracking-widest mb-1">URL</div>
+          <p class="text-slate-400">Screenshot, security headers, OG preview, SEO score, Wayback snapshots, redirect chain.</p>
+        </div>
+        <div class="card text-left">
+          <div class="text-brand-300 font-mono text-xs uppercase tracking-widest mb-1">Domain</div>
+          <p class="text-slate-400">SSL certificate history, email deliverability (SPF/DKIM/DMARC/MX), WHOIS via RDAP, subdomains.</p>
+        </div>
+        <div class="card text-left">
+          <div class="text-brand-300 font-mono text-xs uppercase tracking-widest mb-1">IP</div>
+          <p class="text-slate-400">Reputation across 7 DNSBLs (Spamhaus, Spamcop, CBL, etc.), ASN, geolocation, hosting/VPN/Tor detection.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works essay (under the tool, for AdSense + SEO) -->
+    <section class="mt-20 max-w-3xl mx-auto prose prose-invert">
+      <h2 class="text-2xl font-bold text-white">How the dispatcher decides what to run</h2>
+      <p class="text-slate-300 leading-relaxed mt-4">
+        When you paste an input, SiteTrace runs a 5-line classifier on it client-side. If it parses as an IPv4 or IPv6 address, you get an IP report. If it parses as a URL (begins with <code>http</code> or contains a slash beyond the apex), you get a URL report. Anything else with at least one dot is treated as a domain. The classifier doesn't talk to any server — it just decides which of three result panels to show.
+      </p>
+      <p class="text-slate-300 leading-relaxed mt-4">
+        All checks run in parallel against the sitetrace-api backend at <code>api.sitetrace.it.com</code>. The free tier is 100 anonymous calls per day per IP — that's enough for ~30 check sessions. If you hit the cap, sign up for a free API key at <a href="/signup/" class="text-brand-300 hover:text-brand-200">sitetrace.it.com/signup</a> for 1,000 calls/day with no per-tool math.
+      </p>
+      <p class="text-slate-300 leading-relaxed mt-4">
+        Each individual tool page (<a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">/what-is-my-ip/</a>, <a href="/email-deliverability/" class="text-brand-300 hover:text-brand-200">/email-deliverability/</a>, <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200">/is-it-down/</a>, <a href="/seo-checker/" class="text-brand-300 hover:text-brand-200">/seo-checker/</a>, <a href="/http-headers/" class="text-brand-300 hover:text-brand-200">/http-headers/</a>) runs a single deep check, often with lookups in your browser via DNS-over-HTTPS for privacy — your query never touches a server we operate. Use those when you want a thorough report on one input type. Use <code>/check/</code> when you want a fast combined look across multiple.
+      </p>
+      <p class="text-slate-400 text-sm font-mono mt-8">
+        // last updated 2026-10-04 · built by edy appenzeller · open source
+      </p>
+    </section>
+
+    <!-- AdSense slot -->
+    <section class="mt-12 max-w-3xl mx-auto">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8749554989768993"
+           data-ad-slot="auto"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/5 mt-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 text-sm text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>© SiteTrace · open source · powered by <a href="/api/" class="hover:text-brand-300">sitetrace-api</a></div>
+      <div class="flex items-center gap-4">
+        <a href="/" class="hover:text-brand-300">Home</a>
+        <a href="/api/" class="hover:text-brand-300">API</a>
+        <a href="/privacy/" class="hover:text-brand-300">Privacy</a>
+        <a href="/about/" class="hover:text-brand-300">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- AdSense loader -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+
+  <script>
+  // ===============================================================
+  // SiteTrace /check/ — smart dispatcher
+  // Paste a URL / domain / IP → routes to the right sitetrace-api
+  // endpoints and renders the combined report.
+  // ===============================================================
+  (function () {
+    'use strict';
+
+    const API = 'https://api.sitetrace.it.com';
+
+    // ----- Classify input -----
+    function classify(raw) {
+        const s = (raw || '').trim();
+        if (!s) return { type: 'empty' };
+        // IPv4
+        if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(s)) return { type: 'ip', value: s };
+        // IPv6 (contains : and is mostly hex)
+        if (/^[0-9a-fA-F:]+$/.test(s) && s.includes(':') && s.length >= 3) return { type: 'ip', value: s };
+        // URL with scheme
+        if (/^https?:\/\//i.test(s)) return { type: 'url', value: s };
+        // Bare hostname with a path → treat as URL
+        if (/^[a-z0-9.-]+\.[a-z]{2,}(:\d+)?(\/.*)?$/i.test(s) && s.includes('/')) {
+          return { type: 'url', value: 'https://' + s };
+        }
+        // Domain
+        if (/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(s)) return { type: 'domain', value: s };
+        return { type: 'invalid', value: s };
+      }
+
+      // ----- Fetch with timeout -----
+    async function fetchJSON(url, timeoutMs = 8000) {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), timeoutMs);
+      try {
+        const r = await fetch(url, { signal: ctrl.signal, cache: 'no-store' });
+        const text = await r.text();
+        let parsed; try { parsed = JSON.parse(text); } catch { parsed = { error: 'bad_json', raw: text.slice(0, 200) }; }
+        return { ok: r.ok, status: r.status, body: parsed };
+      } catch (e) {
+        return { ok: false, status: 0, error: e.message || 'fetch failed' };
+      } finally {
+        clearTimeout(t);
+      }
+    }
+
+    // Fire-and-forget fetch for non-blocking parallel calls
+    function fire(url) {
+      return fetchJSON(url).then(r => ({ url, ...r }));
+    }
+
+    // ----- URL checks -----
+    async function checkURL(u) {
+      const [shot, headers, preview, redirect, wayback] = await Promise.all([
+        fire(`${API}/api/shot?url=${encodeURIComponent(u)}&width=1280&height=720&format=jpeg`),
+        fire(`${API}/api/headers?url=${encodeURIComponent(u)}`),
+        fire(`${API}/api/preview?url=${encodeURIComponent(u)}`),
+        fire(`${API}/api/redirect-trace?url=${encodeURIComponent(u)}`),
+        fire(`${API}/api/wayback?url=${encodeURIComponent(u)}&limit=3`),
+      ]);
+      return { shot, headers, preview, redirect, wayback };
+    }
+
+    // ----- Domain checks -----
+    async function checkDomain(d) {
+      const [email, certs, rdap, subs] = await Promise.all([
+        fire(`${API}/api/email?domain=${encodeURIComponent(d)}`),
+        fire(`${API}/api/certs?domain=${encodeURIComponent(d)}&limit=5`),
+        fire(`${API}/api/rdap?domain=${encodeURIComponent(d)}`),
+        fire(`${API}/api/subdomains?domain=${encodeURIComponent(d)}`),
+      ]);
+      return { email, certs, rdap, subs };
+    }
+
+    // ----- IP checks -----
+    async function checkIP(i) {
+      const [rep] = await Promise.all([
+        fire(`${API}/api/ip?ip=${encodeURIComponent(i)}`),
+      ]);
+      return { rep };
+    }
+
+    // ----- Renderers -----
+    function el(tag, attrs = {}, ...kids) {
+      const e = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (k === 'class') e.className = v;
+        else if (k === 'html') e.innerHTML = v;
+        else e.setAttribute(k, v);
+      }
+      for (const k of kids) {
+        if (k == null) continue;
+        e.append(k.nodeType ? k : document.createTextNode(String(k)));
+      }
+      return e;
+    }
+    function card(title, body, opts = {}) {
+      const c = el('div', { class: 'card' + (opts.wide ? ' md:col-span-2' : '') });
+      if (title) c.append(el('h3', { class: 'text-sm font-mono uppercase tracking-widest text-brand-300 mb-2' }, title));
+      c.append(body);
+      return c;
+    }
+    function smallKV(items) {
+      const wrap = el('dl', { class: 'grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1 text-sm' });
+      for (const [k, v] of items) {
+        wrap.append(el('dt', { class: 'text-slate-500 font-mono' }, k));
+        wrap.append(el('dd', { class: 'text-slate-200 break-words' }, v));
+      }
+      return wrap;
+    }
+    function gradeBadge(label, score) {
+      const color = score >= 70 ? 'text-good border-good/40 bg-good/10'
+                  : score >= 40 ? 'text-warn border-warn/40 bg-warn/10'
+                  : 'text-bad border-bad/40 bg-bad/10';
+      return el('span', { class: `inline-flex items-center gap-2 px-2.5 py-1 rounded-md border text-sm font-mono ${color}` },
+        `${label}: ${score}`);
+    }
+
+    // ----- Render URL results -----
+    function renderURL(input, v) {
+      const out = el('div', { class: 'space-y-6' });
+
+      // Screenshot (hero)
+      const shotWrap = el('div', { class: 'card overflow-hidden p-0' });
+      const shotImg = el('img', {
+        src: v.shot.ok ? `${API}/api/shot?url=${encodeURIComponent(input)}&width=1280&height=720&format=jpeg` : '',
+        alt: 'Screenshot of ' + input,
+        class: 'w-full block',
+        loading: 'lazy',
+      });
+      if (!v.shot.ok) {
+        shotImg.replaceWith(el('div', { class: 'p-6 text-center text-slate-500 font-mono text-sm' }, 'screenshot unavailable: ' + (v.shot.error || v.shot.body?.error || 'HTTP ' + v.shot.status)));
+      }
+      shotWrap.append(shotImg);
+      const shotCard = el('div', { class: 'space-y-2' });
+      shotCard.append(el('h2', { class: 'text-lg font-semibold text-white' }, 'Screenshot'));
+      shotCard.append(shotWrap);
+      out.append(shotCard);
+
+      // Headers score
+      if (v.headers.ok && v.headers.body?.score != null) {
+        const score = v.headers.body.score;
+        const grade = v.headers.body.grade || '?';
+        const body = el('div', { class: 'flex items-center gap-4' },
+          gradeBadge(grade, score),
+          el('span', { class: 'text-sm text-slate-400' }, `${v.headers.body.passed_count ?? '?'} of ${v.headers.body.total_count ?? '?'} headers passed`),
+        );
+        out.append(card('Security headers', body));
+      }
+
+      // Preview
+      if (v.preview.ok && (v.preview.body?.og || v.preview.body?.title)) {
+        const p = v.preview.body;
+        const body = el('div', { class: 'space-y-2' });
+        if (p.title) body.append(el('div', { class: 'text-white font-medium' }, p.title));
+        if (p.og?.description || p.description) body.append(el('div', { class: 'text-sm text-slate-400' }, (p.og?.description || p.description || '').slice(0, 200)));
+        if (p.og?.image) body.append(el('img', { src: p.og.image, alt: '', class: 'rounded-lg max-h-40 border border-white/10' }));
+        out.append(card('Open Graph / Twitter card', body));
+      }
+
+      // Redirect chain
+      if (v.redirect.ok && Array.isArray(v.redirect.body?.chain) && v.redirect.body.chain.length > 1) {
+        const list = el('ol', { class: 'text-sm font-mono space-y-1 text-slate-300 list-decimal list-inside' });
+        for (const hop of v.redirect.body.chain) list.append(el('li', {}, hop.url + ' (' + hop.status + ')'));
+        out.append(card(`Redirect chain (${v.redirect.body.chain.length} hops)`, list));
+      }
+
+      // Wayback
+      if (v.wayback.ok && Array.isArray(v.wayback.body?.snapshots) && v.wayback.body.snapshots.length > 0) {
+        const list = el('ul', { class: 'text-sm font-mono space-y-1 text-slate-300' });
+        for (const s of v.wayback.body.snapshots.slice(0, 3)) {
+          list.append(el('li', {}, (s.timestamp || s.date || '?') + ' — ', el('a', { href: s.url || '#', target: '_blank', rel: 'noopener noreferrer', class: 'text-brand-300 hover:text-brand-200' }, 'view')));
+        }
+        out.append(card('Wayback Machine', list));
+      }
+
+      // Footer link to API
+      const apiLinks = el('div', { class: 'card text-sm text-slate-400' },
+        'Get this in your code: ',
+        el('a', { href: '/api/', class: 'text-brand-300 hover:text-brand-200' }, 'api.sitetrace.it.com/docs'),
+        ' · ',
+        el('a', { href: 'https://api.sitetrace.it.com/api/shot?url=' + encodeURIComponent(input), target: '_blank', rel: 'noopener noreferrer', class: 'text-brand-300 hover:text-brand-200' }, 'raw /api/shot'));
+      out.append(apiLinks);
+      return out;
+    }
+
+    // ----- Render Domain results -----
+    function renderDomain(d, v) {
+      const out = el('div', { class: 'space-y-6' });
+
+      // Email score
+      if (v.email.ok && v.email.body?.score != null) {
+        const body = el('div', { class: 'space-y-3' });
+        body.append(el('div', { class: 'flex items-center gap-4' }, gradeBadge('Score', v.email.body.score)));
+        if (v.email.body.spf) body.append(el('div', { class: 'text-sm' }, el('span', { class: 'text-slate-500 font-mono' }, 'SPF: '), v.email.body.spf.status || v.email.body.spf));
+        if (v.email.body.dmarc) body.append(el('div', { class: 'text-sm' }, el('span', { class: 'text-slate-500 font-mono' }, 'DMARC: '), v.email.body.dmarc.status || v.email.body.dmarc));
+        if (v.email.body.mx && Array.isArray(v.email.body.mx)) body.append(el('div', { class: 'text-sm' }, el('span', { class: 'text-slate-500 font-mono' }, 'MX: '), v.email.body.mx.slice(0, 3).join(', ')));
+        out.append(card('Email deliverability', body, { wide: true }));
+      }
+
+      // SSL
+      if (v.certs.ok && Array.isArray(v.certs.body?.certs) && v.certs.body.certs.length > 0) {
+        const latest = v.certs.body.certs[0];
+        const body = smallKV([
+          ['Issuer', (latest.issuer_name || latest.issuer || '?').slice(0, 60)],
+          ['Valid from', latest.not_before || '?'],
+          ['Valid to', latest.not_after || '?'],
+          ['Total certs', String(v.certs.body.certs.length)],
+        ]);
+        out.append(card('SSL certificate (latest of ' + v.certs.body.certs.length + ')', body));
+      }
+
+      // RDAP/WHOIS
+      if (v.rdap.ok && (v.rdap.body?.registrar || v.rdap.body?.handle)) {
+        const r = v.rdap.body;
+        const body = smallKV([
+          ['Registrar', r.registrar || '?'],
+          ['Created', r.creation_date || r.created || '?'],
+          ['Expires', r.expiration_date || r.expires || '?'],
+          ['Status', Array.isArray(r.status) ? r.status.join(', ') : (r.status || '?')],
+        ]);
+        out.append(card('WHOIS (RDAP)', body));
+      }
+
+      // Subdomains
+      if (v.subs.ok && Array.isArray(v.subs.body?.subdomains) && v.subs.body.subdomains.length > 0) {
+        const list = el('div', { class: 'flex flex-wrap gap-1.5' });
+        for (const s of v.subs.body.subdomains.slice(0, 30)) {
+          list.append(el('span', { class: 'px-2 py-0.5 rounded bg-white/5 border border-white/10 text-xs font-mono text-slate-300' }, s));
+        }
+        out.append(card(`Subdomains (${v.subs.body.subdomains.length})`, list, { wide: true }));
+      }
+
+      // Empty/error state
+      if (!out.children.length) {
+        out.append(el('div', { class: 'card text-center text-slate-500 font-mono text-sm' }, 'no data returned for this domain'));
+      }
+
+      const apiLinks = el('div', { class: 'card text-sm text-slate-400' },
+        'Get this in your code: ',
+        el('a', { href: '/api/', class: 'text-brand-300 hover:text-brand-200' }, 'api.sitetrace.it.com/docs'),
+        ' · ',
+        el('a', { href: 'https://api.sitetrace.it.com/api/email?domain=' + encodeURIComponent(d), target: '_blank', rel: 'noopener noreferrer', class: 'text-brand-300 hover:text-brand-200' }, 'raw /api/email'));
+      out.append(apiLinks);
+      return out;
+    }
+
+    // ----- Render IP results -----
+    function renderIP(i, v) {
+      const out = el('div', { class: 'space-y-6' });
+      if (v.rep.ok) {
+        const r = v.rep.body;
+        const score = r.reputation_score ?? r.score ?? null;
+        const listings = r.listed_on || r.listings || [];
+        const geo = r.geo || {};
+        const asn = r.asn || {};
+        const body = el('div', { class: 'space-y-3' });
+        if (score != null) body.append(el('div', { class: 'flex items-center gap-4' }, gradeBadge('Reputation', score)));
+        body.append(smallKV([
+          ['Country', geo.country || geo.country_name || '?'],
+          ['City', geo.city || '?'],
+          ['ISP', geo.isp || geo.org || '?'],
+          ['ASN', asn.asn || asn.id || '?'],
+          ['Listed on', String(listings.length) + ' DNSBL(s)'],
+        ]));
+        if (Array.isArray(listings) && listings.length > 0) {
+          const ul = el('ul', { class: 'text-xs font-mono space-y-1 text-bad mt-2' });
+          for (const l of listings.slice(0, 5)) ul.append(el('li', {}, '✗ ' + (l.name || l.dnsbl || l)));
+          body.append(ul);
+        }
+        out.append(card('IP reputation', body, { wide: true }));
+      } else {
+        out.append(el('div', { class: 'card text-center text-slate-500 font-mono text-sm' }, 'IP lookup failed: ' + (v.rep.error || v.rep.body?.error || 'HTTP ' + v.rep.status)));
+      }
+      const apiLinks = el('div', { class: 'card text-sm text-slate-400' },
+        'Get this in your code: ',
+        el('a', { href: '/api/', class: 'text-brand-300 hover:text-brand-200' }, 'api.sitetrace.it.com/docs'),
+        ' · ',
+        el('a', { href: 'https://api.sitetrace.it.com/api/ip?ip=' + encodeURIComponent(i), target: '_blank', rel: 'noopener noreferrer', class: 'text-brand-300 hover:text-brand-200' }, 'raw /api/ip'));
+      out.append(apiLinks);
+      return out;
+    }
+
+    // ----- Main flow -----
+    const form = document.getElementById('check-form');
+    const input = document.getElementById('check-input');
+    const detected = document.getElementById('detected');
+    const detectedType = document.getElementById('detected-type');
+    const detectedValue = document.getElementById('detected-value');
+    const loading = document.getElementById('loading');
+    const loadingText = document.getElementById('loading-text');
+    const errorEl = document.getElementById('error');
+    const errorMsg = document.getElementById('error-msg');
+    const results = document.getElementById('results');
+    const hint = document.getElementById('hint');
+
+    // Wire example chips
+    document.querySelectorAll('.example-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        input.value = btn.dataset.q;
+        form.dispatchEvent(new Event('submit', { cancelable: true }));
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      const cls = classify(raw);
+      if (cls.type === 'invalid' || cls.type === 'empty') {
+        errorMsg.textContent = 'Could not parse "' + raw + '" as a URL, domain, or IP. Try a full URL (https://...), a bare domain (example.com), or an IPv4/IPv6 address.';
+        errorEl.classList.remove('hidden');
+        results.classList.add('hidden');
+        detected.classList.add('hidden');
+        return;
+      }
+
+      // Reset state
+      errorEl.classList.add('hidden');
+      results.classList.add('hidden');
+      hint.classList.add('hidden');
+      detected.classList.remove('hidden');
+      detectedType.textContent = cls.type;
+      detectedValue.textContent = cls.value;
+      loading.classList.remove('hidden');
+      loadingText.textContent = {
+        url: 'Taking screenshot + auditing + preview…',
+        domain: 'Checking SSL + email + WHOIS + subdomains…',
+        ip: 'Querying 7 DNSBLs + geo + ASN…',
+      }[cls.type] || 'Running checks…';
+
+      try {
+        let resultData, render;
+        if (cls.type === 'url') {
+          resultData = await checkURL(cls.value);
+          render = renderURL;
+        } else if (cls.type === 'domain') {
+          resultData = await checkDomain(cls.value);
+          render = renderDomain;
+        } else {
+          resultData = await checkIP(cls.value);
+          render = renderIP;
+        }
+        loading.classList.add('hidden');
+        results.innerHTML = '';
+        results.append(render(cls.value, resultData));
+        results.classList.remove('hidden');
+      } catch (err) {
+        loading.classList.add('hidden');
+        errorMsg.textContent = 'Dispatcher failed: ' + (err.message || err);
+        errorEl.classList.remove('hidden');
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
