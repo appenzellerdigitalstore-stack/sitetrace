@@ -506,6 +506,50 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
 
 /* ================================================================
+ * Curl block — code-sample widget, used on the landing API banner
+ * and any tool page that shows the equivalent curl call.
+ * ================================================================ */
+.curl-block {
+  position: relative;
+  background: #050810;
+  border: 1px solid rgba(74, 222, 128, 0.18);
+  border-radius: 0.6rem;
+  padding: 1.1rem 1.15rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  overflow-x: auto;
+  line-height: 1.7;
+}
+.curl-block::before {
+  content: 'GET · api.sitetrace.it.com';
+  position: absolute;
+  top: 0.55rem;
+  right: 0.9rem;
+  font-size: 0.62rem;
+  color: #16a34a;
+  letter-spacing: 0.08em;
+}
+.curl-block .prompt { color: #4ade80; user-select: none; }
+.curl-block .flag { color: #fbbf24; }
+.curl-block .arg { color: #93c5fd; }
+.curl-block .str { color: #86efac; }
+.curl-block .comment { color: #64748b; font-style: italic; }
+@media (max-width: 640px) {
+  .curl-block::before { display: none; }
+}
+
+/* ================================================================
+ * Tool card grid (used by /tools/ directory + landing 6-card grid)
+ * Shared glassmorphism utility.
+ * ================================================================ */
+.tool-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.9rem;
+}
+
+/* ================================================================
  * Reduce motion
  * ================================================================ */
 @media (prefers-reduced-motion: reduce) {
