@@ -394,50 +394,12 @@
 
       <p><strong>Why this isn't a real ping.</strong> ICMP ping uses the ICMP protocol (IP protocol number 1) which is a separate protocol from TCP and UDP. The browser sends TCP packets (IP protocol 6) over the same underlying network, but the path can vary (different routing rules), the server's response is different, and the timing includes all of TCP's overhead. For a true ICMP test, run <code>ping example.com</code> from your terminal — you'll see numbers typically 2-5x lower than what this browser tool shows. Use ICMP for "is the path healthy?" and HTTPS for "is the site actually serving content?"</p>
 
-      <p>The checks behind this page happen entirely in your browser. The DNS resolution uses the public DoH endpoints (Google or Cloudflare), the HTTP fetch is a regular browser fetch with the timing captured at the response headers event. No data leaves your machine. If you want this from a script or CI:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-w</span> <span class="str">'%{time_starttransfer}s\n'</span> <span class="arg">-o</span> /dev/null <span class="arg">-s</span> <span class="str">https://example.com</span>
-        <br/><span class="comment"># → 0.234s</span>
-      </div>
-
       <p>For batch probing of many URLs, the API at <code>api.sitetrace.it.com</code> has <code>POST /api/status-check</code>:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/status-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"urls":["https://github.com","https://discord.com"]}'</span>
-        <br/><span class="comment"># → [{url, status, latency_ms, content_type, redirect_url?}, ...]</span>
-      </div>
 
       <p>The free tier allows 100 calls per day with no signup. For continuous monitoring (poll a list of services every 30 seconds), use this page in your browser or wire up your own cron job against the API. The numbers in this browser are the same numbers the API returns, computed the same way.</p>
     </section>
 
     <!-- FAQ (SEO) -->
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="ping_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_1_q">What does the domain inspector do?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_1_a">It runs three checks against a hostname in one shot: it resolves the IP addresses via DNS-over-HTTPS, attempts an HTTP fetch from your browser to measure reachability and round-trip time, and reports the result. The DNS record details live on the dedicated <a href="DNS tools" class="source-link">/dns-tools/</a> page.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_2_q">Why does the reachability sometimes show "unknown"?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_2_a">Some websites block cross-origin reads of their responses (CORS). When that happens, the browser still tells us the request completed — so we can usually mark the site reachable — but we cannot read the response body or status code. In that case the result shows "reachable (response not readable)".</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_3_q">What is a good HTTP latency?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_3_a">Under 100 ms is excellent for most websites. 100-300 ms is typical for cross-continental connections. Over 500 ms will feel sluggish. The number you see is the full request round-trip from your browser, including DNS, TCP, TLS, and the server's response time.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_4_q">Why is DNS not shown on this page?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_4_a">The <a href="DNS tools" class="source-link">/dns-tools/</a> page is dedicated to that — it queries every record type (A, AAAA, MX, TXT, NS, CNAME, SOA) at once and renders a grouped view. The domain inspector here only needs the resolved IPs to do the HTTP check, so the rest stays out of the way.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="ping_faq_5_q">What is the live multi-server ping below?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="ping_faq_5_a">A power-user feature: add any URL you want to monitor, set a polling interval, and the tool will keep pinging each one from your browser. Polling only happens when you press Start, and only targets you — no central server, no third-party pings. The 9 popular services shown by default are just examples; you can remove them and add your own.</p>
-        </div>
-      </div>
-    </section>
-
     <section class="mt-12 card">
       <h2 class="text-base font-bold mb-3">More tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">

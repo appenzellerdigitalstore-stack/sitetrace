@@ -295,25 +295,10 @@
 
       <p>If you want to do this from a script or CI, the data is at <code>api.sitetrace.it.com</code>:</p>
 
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/status-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"urls":["https://github.com","https://discord.com","https://cloudflare.com"]}'</span>
-        <br/><span class="comment"># → [{url, status, latency_ms, content_type, redirect_url?}, ...]</span>
-      </div>
-
       <p>The CLI equivalent for a single URL is <code>curl -sS -o /dev/null -w '%{http_code} %{time_total}s\n' https://github.com</code>. For 100 URLs you'd loop over them with a concurrency cap, or use a tool like <code>httpx</code> from ProjectDiscovery that handles the parallelism. The pattern is the same: send a request, capture the status code and timing, don't follow a redirect with another request (it would mask 3xx responses).</p>
     </section>
 
     <section id="services" class="mt-10" aria-label="Service status grid"></section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="wdc_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_1_q">What’s the difference between "down for me" and "down for everyone"?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_1_a">"Down for me" means your connection cannot reach the service, but the service itself is fine for everyone else. "Down for everyone" means the service has declared an outage on its official status page, affecting all (or many) users.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_2_q">How do I check if a specific site is down?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_2_a">Paste the full URL (including https://) into the search box at the top of this page and press Check. The tool probes the site from your network and shows reachability, HTTP status code, response time, and (for tracked services) the official status from the service's own status page.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_3_q">Where does the official status data come from?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_3_a">From each service's public status page, mostly hosted on Atlassian Statuspage. We poll the public summary endpoint and the incident feed.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_4_q">What if the site I want to check isn’t in your tracker?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_4_a">You can still paste its URL and probe it from your network. We also deep-link to Downdetector for community-reported issues, which is the next-best signal if the service has no public status page.</p></div>
-      </div>
-    </section>
 
     <div class="mt-8 card">
       <h2 class="text-base font-bold mb-3">Related tools</h2>

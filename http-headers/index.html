@@ -310,25 +310,7 @@
 
       <p><strong>Setting headers in different frameworks.</strong> nginx: <code>add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;</code>. Apache: <code>Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"</code>. Express (Node.js): use the <code>helmet</code> middleware — <code>app.use(helmet())</code> sets 12 security headers in one line. Rails: <code>config.force_ssl = true</code> enables HSTS. Django: <code>SECURE_HSTS_SECONDS = 31536000</code> in settings.py. Cloudflare: enable HSTS in the SSL/TLS app.</p>
 
-      <p>The headers view behind this page fetches the URL with a HEAD request (no body downloaded) and parses the response headers with a small client. The whole round trip is under 2 seconds. The security grade is computed from the parsed header set; the breakdown shows which headers are present, missing, or weak. If you want to do it from CI:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-sI</span> <span class="str">https://example.com</span>
-        <br/><span class="comment"># → HTTP/2 200\n# server: nginx\n# content-type: text/html; charset=utf-8\n# strict-transport-security: max-age=31536000; includeSubDomains\n# ...</span>
-      </div>
-
       <p>Or via the API: <code>curl -X POST https://api.sitetrace.it.com/api/http-headers -H 'Content-Type: application/json' -d '{"url":"https://example.com"}'</code> returns the parsed headers + security grade in JSON. The free tier allows 100 calls per day; paid plans allow more. For continuous monitoring, run weekly and watch for regressions — a header disappearing usually means a config change or a deployment that wiped a setting.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="hhd_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_1_q">What are HTTP response headers?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_1_a">HTTP response headers are key-value pairs the server sends back with every page load, before the page content. They tell your browser how to handle the response: how long to cache it, whether to allow scripts, where to redirect, what content type the body is, and so on.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_2_q">What is the Content-Security-Policy header?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_2_a">Content-Security-Policy (CSP) is a header that tells the browser which sources of scripts, styles, images, and connections are allowed to load on the page. A well-configured CSP prevents most XSS attacks because even if an attacker injects a script tag, the browser refuses to load the source. A missing or weak CSP is one of the most common security gaps on production sites.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_3_q">What is Strict-Transport-Security (HSTS)?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_3_a">Strict-Transport-Security (HSTS) is a header that tells the browser to always use HTTPS for this domain, even if the user types http:// or follows an http:// link. The header includes a max-age in seconds (commonly 31536000, which is one year) and an optional includeSubDomains flag. HSTS prevents downgrade attacks and cookie theft.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_4_q">Why does my site get a bad grade?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_4_a">Most production sites miss one or more of the high-weight security headers. The score is a rough guide — a site with no CSP is genuinely at higher risk for XSS, but a site with a strong CSP that breaks half the page is also not safe.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_5_q">Is this tool safe to use on any URL?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_5_a">You can use it on any public http:// or https:// URL. Private IPs, localhost, and .local / .internal hostnames are blocked to prevent the tool from being used to scan internal infrastructure. The tool only reads response headers — it does not execute the page, does not load scripts, and does not interact with the page in any way your browser would not if you visited the URL directly.</p></div>
-      </div>
     </section>
 
     <div class="mt-8 card">

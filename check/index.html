@@ -183,22 +183,6 @@
     </section>
 
     <!-- How it works essay (under the tool, for AdSense + SEO) -->
-    <section class="mt-20 max-w-3xl mx-auto prose prose-invert">
-      <h2 class="text-2xl font-bold text-white">How the dispatcher decides what to run</h2>
-      <p class="text-slate-300 leading-relaxed mt-4">
-        When you paste an input, SiteTrace runs a 5-line classifier on it client-side. If it parses as an IPv4 or IPv6 address, you get an IP report. If it parses as a URL (begins with <code>http</code> or contains a slash beyond the apex), you get a URL report. Anything else with at least one dot is treated as a domain. The classifier doesn't talk to any server — it just decides which of three result panels to show.
-      </p>
-      <p class="text-slate-300 leading-relaxed mt-4">
-        All checks run in parallel against the sitetrace-api backend at <code>api.sitetrace.it.com</code>. The free tier is 100 anonymous calls per day per IP — that's enough for ~30 check sessions. If you hit the cap, sign up for a free API key at <a href="/signup/" class="text-brand-300 hover:text-brand-200">sitetrace.it.com/signup</a> for 1,000 calls/day with no per-tool math.
-      </p>
-      <p class="text-slate-300 leading-relaxed mt-4">
-        Each individual tool page (<a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">/what-is-my-ip/</a>, <a href="/email-deliverability/" class="text-brand-300 hover:text-brand-200">/email-deliverability/</a>, <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200">/is-it-down/</a>, <a href="/seo-checker/" class="text-brand-300 hover:text-brand-200">/seo-checker/</a>, <a href="/http-headers/" class="text-brand-300 hover:text-brand-200">/http-headers/</a>) runs a single deep check, often with lookups in your browser via DNS-over-HTTPS for privacy — your query never touches a server we operate. Use those when you want a thorough report on one input type. Use <code>/check/</code> when you want a fast combined look across multiple.
-      </p>
-      <p class="text-slate-400 text-sm font-mono mt-8">
-        // last updated 2026-10-04 · built by edy appenzeller · open source
-      </p>
-    </section>
-
     <!-- AdSense slot -->
     <section class="mt-12 max-w-3xl mx-auto">
       <ins class="adsbygoogle"

@@ -303,33 +303,6 @@
       </div>
     </section>
 
-    <section class="mt-10 max-w-3xl mx-auto prose-content space-y-4">
-      <h2 class="text-lg sm:text-xl font-bold text-white">About this status checker</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">Paste any URL above to probe it from your browser, plus see live status indicators for 50+ popular services (Steam, GitHub, Discord, Cloudflare, OpenAI, Reddit, Twitter/X, and more) sourced directly from each service&rsquo;s official <a href="https://www.atlassian.com/software/statuspage" target="_blank" rel="noopener noreferrer" class="text-cyan-300 hover:text-cyan-200">Atlassian Statuspage</a>. I built this because Downdetector&rsquo;s homepage is overloaded with ads and clickbait, and most status aggregators lag the real Statuspage data by 5-15 minutes.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">The reachability check runs in your browser via the standard <code class="text-cyan-300">fetch</code> API &mdash; your computer asks the site directly, so the answer reflects your network, not some random probe. The official status indicators refresh on every page load (no background polling, no surprise CPU spikes). The Cloudflare Worker in front of the Statuspage API caches responses for 60 seconds to stay within their free tier rate limits.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">For programmatic bulk checks (from CI, from a monitoring system, from a server), the same logic is exposed via <a href="https://api.sitetrace.it.com/api/status-check" class="text-cyan-300 hover:text-cyan-200">api.sitetrace.it.com/api/status-check</a> &mdash; free tier allows 5 URLs per call, paid tiers up to 100.</p>
-    </section>
-
-    <section class="mt-8 max-w-3xl mx-auto">
-      <div class="flex items-center justify-between mb-2">
-        <h2 class="text-sm font-mono uppercase tracking-widest text-cyan-300">// same logic, from your terminal</h2>
-        <button id="curl-copy" class="text-[11px] font-mono text-cyan-400 hover:text-cyan-200 transition">copy</button>
-      </div>
-      <div class="curl-block">
-<span class="comment"># POST up to 5 URLs (free tier); paid tiers up to 100</span>
-<span class="prompt">$</span> curl <span class="flag">-s</span> <span class="flag">-X</span> POST <span class="arg">"https://api.sitetrace.it.com/api/status-check"</span> \
-       <span class="flag">-H</span> <span class="arg">"Content-Type: application/json"</span> \
-       <span class="flag">-d</span> <span class="arg">'{"urls":["https://github.com","https://discord.com"]}'</span> | jq
-{
-  <span class="flag">"results"</span>: [
-    { <span class="flag">"url"</span>: <span class="arg">"https://github.com"</span>, <span class="flag">"status"</span>: <span class="arg">200</span>, <span class="flag">"latency_ms"</span>: <span class="arg">142</span>, <span class="flag">"label"</span>: <span class="arg">"ok"</span> },
-    { <span class="flag">"url"</span>: <span class="arg">"https://discord.com"</span>, <span class="flag">"status"</span>: <span class="arg">200</span>, <span class="flag">"latency_ms"</span>: <span class="arg">187</span>, <span class="flag">"label"</span>: <span class="arg">"ok"</span> }
-  ],
-  <span class="flag">"healthy_pct"</span>: <span class="arg">100</span>
-}
-      </div>
-    </section>
-
     <section class="mt-12 card">
       <div class="text-xs uppercase tracking-widest text-slate-500 font-mono mb-4">// service status grid (50+ services)</div>
       <div id="status-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -337,71 +310,7 @@
       </div>
     </section>
 
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div>
-          <h3 class="font-semibold text-white mb-1">How do I check if a website is down for me?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">Paste the URL (e.g. <code class="text-cyan-300">https://github.com</code>) into the search box at the top of this page and press Check. The tool will probe the site from your browser, show whether it is reachable from your network, and link you to the service&rsquo;s official status page if we track it. The browser-based check runs in under 2 seconds for most URLs.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">What is the difference between &ldquo;down for me&rdquo; and &ldquo;down for everyone&rdquo;?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">&ldquo;Down for me&rdquo; means your connection cannot reach the service, but the service itself is fine for everyone else &mdash; usually a problem with your network, ISP, DNS, or VPN. &ldquo;Down for everyone&rdquo; means the service has declared an outage or degradation on its official status page, affecting all (or many) users. The two require very different responses: a personal outage usually means restarting your router or VPN; a global outage means waiting for the service to fix it.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">Where does the data come from?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">The reachability check runs in your own browser &mdash; your computer asks the site directly via HEAD or GET request. The official status indicators come from each service&rsquo;s status page (mostly Atlassian Statuspage) via their public JSON APIs, queried through a Cloudflare Worker that handles CORS and rate limiting. We do not guess or infer outages from user reports. The 24-hour incident timeline comes from the same Statuspage source.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">What if my browser says the site is reachable but the page is broken?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">That can happen for several reasons. Cross-origin restrictions (CORS) sometimes make the response unreadable, so the tool can confirm the site responds but cannot read the body. Try opening the site directly in a new tab. If the service is in our tracker, also check its official status &mdash; there may be a partial outage affecting only some features (login, API, search, etc.) while others work.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">How often is the status data updated?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">When you load the page, every service is fetched in parallel (with a small concurrency cap to respect the public API rate limits). The result you see is at most a few seconds old. There is no background polling &mdash; every refresh is fresh. The Cloudflare Worker caches responses at the edge for 60 seconds to keep API usage within Statuspage&rsquo;s free tier limits.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">Why do some services show &ldquo;unknown&rdquo; status?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">Either the service&rsquo;s status page returned an error (rare &mdash; usually a brief outage on their end), the service doesn&rsquo;t have a public status page we can query, or the Cloudflare Worker hit a rate limit. Refresh the page in 30 seconds and the status should appear. If a service consistently shows unknown, that service likely uses a custom status page not compatible with the Statuspage JSON API.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">Can I check multiple URLs at once?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">Not from this page, but the same logic is available as a bulk endpoint via the sitetrace-api. POST a list of URLs to <code class="text-cyan-300">/api/status-check</code> and you get back each URL&rsquo;s status, response time, and content-type. Free tier allows 5 URLs per call, paid tiers up to 100.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1">Is the reachability check from my browser accurate?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed">It tells you whether your browser can reach the site &mdash; which is the most useful question from your perspective. It does not tell you whether the site is down for everyone else. For global status, rely on the official status indicators on the page (the green/yellow/red dots next to service names). CORS restrictions sometimes prevent the tool from reading the response body, but reachability alone is enough to distinguish &lsquo;your problem&rsquo; from &lsquo;their problem&rsquo;.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="mt-12 card">
-      <h2 class="text-base font-bold mb-3 font-mono">// more tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-cyan-300 hover:text-cyan-200">What is my IP →</a>
-        <a href="/ping/" class="text-cyan-300 hover:text-cyan-200">Domain inspector →</a>
-        <a href="/dns-tools/" class="text-cyan-300 hover:text-cyan-200">DNS lookup →</a>
-        <a href="/" class="text-cyan-300 hover:text-cyan-200">All tools</a>
-      </div>
-    </section>
-
-    <section class="mt-12 max-w-3xl mx-auto space-y-3">
-      <p class="byline justify-center">built by edy appenzeller · solo developer · Honduras · 2026</p>
-      <div class="built-with justify-center">
-        <span><span class="dot"></span>Cloudflare Workers</span>
-        <span><span class="dot"></span>Cloudflare Pages</span>
-        <span><span class="dot"></span>Atlassian Statuspage API</span>
-        <span><span class="dot"></span>JetBrains Mono</span>
-        <span><span class="dot"></span>$0/month infra</span>
-      </div>
-      <p class="text-center">
-        <a href="https://github.com/appenzellerdigitalstore-stack/sitetrace" target="_blank" rel="noopener noreferrer" class="source-link">
-          view source on github
-        </a>
-      </p>
-    </section>
-
-  </main>
+    </main>
 
   <footer class="border-t border-cyan-500/10 mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">

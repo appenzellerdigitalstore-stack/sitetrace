@@ -263,60 +263,7 @@
       </div>
     </div>
 
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">Password entropy and time-to-crack: the math every developer should know</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A password is a secret string. An attacker who has obtained the password's hash (via database breach, leaked logs, or a side-channel) will try to recover the original string by guessing. The strength of a password is how many guesses they need on average — which is half of the total number of possible passwords the secret could be. We measure this in bits: a password with N bits of entropy is one of 2^N equally-likely possibilities, and a brute-force attacker needs ~2^(N-1) guesses on average to find the right one.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">The math, fast</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">For a password of L characters chosen uniformly from an alphabet of size A, the entropy is:</p>
-      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto mb-3"><code>entropy_bits = L * log2(A)</code></pre>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Common alphabets and their log2 sizes:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>Lowercase a-z: log2(26) ≈ 4.7 bits per character</li>
-        <li>Lowercase + uppercase: log2(52) ≈ 5.7 bits per character</li>
-        <li>Alphanumeric (a-z, A-Z, 0-9): log2(62) ≈ 5.95 bits per character</li>
-        <li>Full ASCII printable: log2(95) ≈ 6.57 bits per character</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A 16-character password using the full 95-character alphabet has 16 * 6.57 ≈ 105 bits of entropy. An attacker brute-forcing at 1 billion guesses/second would need ~2^104 / 10^9 ≈ 2 * 10^22 seconds ≈ 600 billion years. Older than the sun.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Length beats complexity</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A common mistake is to add complexity (special characters, mixed case) at the cost of length. The math is against the length, not the symbol soup:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>16-character lowercase only: 16 * 4.7 = 75 bits</li>
-        <li>8-character with everything: 8 * 6.57 = 52 bits</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The 16-character lowercase password is stronger than the 8-character mixed one, and easier to type. For passwords managed in a tool, length wins. For passwords you have to type, passphrases win (next section).</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Passphrases: memorable entropy</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The passphrase tab uses a 7000-word English list. Each word contributes log2(7000) ≈ 12.8 bits. Four words: 51 bits. Five words: 64 bits. Six words: 77 bits. Six random English words are easier to remember than 16 random characters, and at 77 bits they're stronger than most human-chosen 16-character passwords.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">This is the diceware principle: pick a short, memorable list of words (7000 in our case, 7776 in canonical diceware), pick N words at random, join them. The result is high-entropy and memorable.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why "this site" doesn't matter — but "all sites" does</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Your bank password, your email password, your social media password, your Netflix password. The math for each one is identical — an attacker with the hash can brute-force any single password at the same speed. The asymmetric danger is when those passwords are the SAME: one site gets breached, the attacker tries the email/password combo on a hundred sites. Most modern attackers do exactly this with credential-stuffing tools.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The right pattern: one unique random password per site, stored in a password manager (1Password, Bitwarden, KeePass). The password manager is the only place you have to remember a strong password — the master password — and that one needs to be the strongest of all.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What NIST actually recommends</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">NIST SP 800-63B is the US federal password guideline. The 2024 revision says:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>Minimum 8 characters (was 6 in earlier revisions), but encourage longer.</li>
-        <li>No mandatory complexity (no "must contain uppercase, lowercase, digit, symbol"). It actively discourages this — it produces passwords people write down.</li>
-        <li>No mandatory periodic rotation (the 90-day rotation rule was retired; it produces passwords people increment by one each cycle).</li>
-        <li>Check passwords against a breach corpus (HIBP API has 8+ billion compromised passwords; reject any user-chosen password that appears).</li>
-        <li>Allow all printable ASCII, including spaces. Allow Unicode. Allow passphrases.</li>
-        <li>Use a password strength meter at signup that shows entropy, not a vague "weak / strong" rating.</li>
-      </ul>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Two-factor authentication is the second layer</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A strong password protects you when a site's database is breached. A strong password + 2FA (TOTP, WebAuthn) protects you when your password itself is leaked (phishing, keylogger, shoulder-surfing, or your password manager is compromised). Both matter. The right pattern: unique strong passwords in a manager + 2FA on every site that supports it. Most modern sites support TOTP (authenticator apps) and many now support WebAuthn (hardware keys, Touch ID, Face ID, Windows Hello).</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why this generator is 100% client-side</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A password generator that sends your password to a server is a logger, not a generator. The server sees every password you generate, which means the server is a single point of failure for every password you've ever used. The page you're reading now: zero HTTP calls per roll. The HTML and JavaScript load once when you open the page; the password is generated locally via <code>crypto.getRandomValues</code>; you copy it; you paste it into your password manager. No network round trips for the password itself.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Verify by opening DevTools (F12), clicking the Network tab, then clicking Generate. You'll see no requests fire after the initial page load. That's the difference between a generator and a logger.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/random-color/">Random Color</a>, <a class="source-link" href="/word-counter/">Word Counter</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
-    </section>
-  </main>
+    </main>
 
   <footer class="border-t border-white/5 mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">

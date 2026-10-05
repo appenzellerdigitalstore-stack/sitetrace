@@ -299,23 +299,7 @@
 
       <p>The check behind this page runs entirely in a Cloudflare Worker. The Worker fetches the URL you give it (with a 5-second timeout), parses the HTML with the standard <code>DOMParser</code>, runs the 12 checks against the parsed tree, and computes the 0-100 result. Each check is a small function in <code>functions/api/seo-check.js</code> — adding a new check means appending an object to the <code>CHECKS</code> array with an id, weight, and run function. The whole round trip is typically 1-3 seconds. If you want the same check from a script or CI, the data is at <code>api.sitetrace.it.com</code>:</p>
 
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/seo-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"url":"https://example.com"}'</span>
-        <br/><span class="comment"># → {score, checks: [{id, pass, value, message, weight}, ...]}</span>
-      </div>
-
       <p>The free tier allows 100 calls per day; paid tiers allow more. For bulk audits (multiple URLs), batch them with a concurrency cap to respect rate limits. For continuous monitoring, run the audit weekly and watch for score regressions — a sudden drop usually means someone changed a template or removed a tag.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="seo_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_1_q">How does this SEO checker work?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_1_a">Each check is a small function in functions/api/seo-check.js — the CHECKS array has 12 objects, each with three fields: an id, a weight (out of 100), and a run function that returns { pass, value, message }. Read the file to see exactly what each check looks for, what makes it pass or fail, and how its score is weighted. The comment block at the top of the file documents how to add a new check (append an object, choose a weight, describe the rule). The function takes care of HTML parsing, scoring, and rendering — you just describe the check.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_2_q">Do you send the URL to anyone else?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_2_a">No. The URL is fetched from Cloudflare’s edge to the target site, and the result is returned to your browser. SiteTrace does not log URLs, does not share them with any third party, and does not store them.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_3_q">What SEO checks are included?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_3_a">Title tag, meta description, H1 (presence and count), H2, canonical URL, meta robots (not accidentally noindex), viewport meta, Open Graph tags (og:title, og:description, og:image), Twitter Card tags, image alt text coverage, HTTPS, and word count.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_4_q">Can I check any URL?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_4_a">Any public http:// or https:// page. Private IPs, localhost, and other internal addresses are blocked for security. The target site must respond to a normal HTTP GET and return HTML.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_5_q">How do I add my own SEO check?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_5_a">Open functions/api/seo-check.js. Add an object to the CHECKS array with an id, a weight, and a run function that returns { pass, value, message }. The function takes care of HTML parsing, scoring, and rendering — you just describe the check. Deploy and the new check appears on the page automatically.</p></div>
-      </div>
     </section>
 
     <div class="mt-8 card">

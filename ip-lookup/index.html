@@ -329,23 +329,7 @@
 
       <p>If you want to verify the result from a script or CI, the same data is at <code>api.sitetrace.it.com</code>:</p>
 
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="str">"https://api.sitetrace.it.com/api/ip-lookup?ip=203.0.113.42"</span>
-        <br/><span class="comment"># → {ip, country, region, city, postal, isp, org, asn, is_hosting, is_mobile, is_vpn, ...}</span>
-      </div>
-
       <p>If the city is wrong by hundreds of kilometers, don't panic — it's almost always CGNAT or a regional block, not a tracking bug. If the country is wrong, that's worth investigating further (the data may be stale, or your traffic may be exiting through a foreign VPN server). And remember that the same IP can geolocate to different cities for different services, because each one uses a different database with different sources.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="ipl_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_1_q">What does an IP lookup tell me?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_1_a">For any public IP, the lookup returns the registered country, region, city, postal code, ISP, organization, ASN (autonomous system number), and the connection type (residential, mobile, hosting, VPN, etc.). It also checks whether the IP is on known VPN, proxy, or Tor lists.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_2_q">Can I look up someone else’s IP?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_2_a">Yes. Type any public IP into the tool and you’ll get the same information a service sees when that IP connects to it. The lookup itself is read-only and uses public data — it does not contact the IP, does not scan it, and does not reveal any private information about the person behind it.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_3_q">How accurate is the geolocation?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_3_a">City-level accuracy is typical for residential and mobile IPs. Hosting and VPN IPs usually resolve to the data center or VPN endpoint, not the actual user. Country-level accuracy is close to 100% for most IP blocks.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_4_q">Does an IP lookup show my home address?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_4_a">No. Public IP geolocation only shows the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_5_q">Is IP lookup legal?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_5_a">Yes. The data is publicly registered and the lookup is read-only. The same data is shown to every site you visit, every API you call, and every email you send.</p></div>
-      </div>
     </section>
 
     <div class="mt-8 card">

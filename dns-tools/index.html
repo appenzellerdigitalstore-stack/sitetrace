@@ -248,11 +248,6 @@
       </section>
 
     <!-- Intro / About (SEO) -->
-    <section class="mt-10 max-w-3xl mx-auto">
-      <h2 class="text-lg sm:text-xl font-bold text-white mb-2" data-i18n="dns_intro_h2">About DNS lookups</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="dns_intro_text">DNS (Domain Name System) is the internet's address book. When you type example.com into a browser, DNS translates that human-readable name into the IP address the computer actually needs to connect. This tool queries every common record type — A, AAAA, MX, TXT, NS, CNAME, SOA — at the same time and groups the answers for easy scanning. All queries go over DNS-over-HTTPS (Google + Cloudflare) so your lookups are private.</p>
-    </section>
-
     <div class="card mt-8">
       <form id="dns-form" class="grid sm:grid-cols-[1fr_auto] gap-3">
         <label class="block">
@@ -316,41 +311,10 @@
 
       <p>The lookups behind this page happen in your browser. We use the public DoH endpoints that Google and Cloudflare publish at <code>https://dns.google/resolve</code> and <code>https://cloudflare-dns.com/dns-query</code>. Both resolvers return the answer in JSON, which we parse and render. No server we operate sees your query. If you want the same lookups from a script or CI, the same data is at <code>api.sitetrace.it.com</code>:</p>
 
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/dns-lookup</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"domain":"example.com"}'</span>
-        <br/><span class="comment"># → {a: [...], aaaa: [...], mx: [...], txt: [...], ns: [...], cname, soa} </span>
-      </div>
-
       <p>If you want to verify directly against the authoritative nameservers without using a public resolver, the CLI equivalent is <code>dig +short example.com A @8.8.8.8</code> (for A records against Google) or <code>nslookup -type=MX example.com 1.1.1.1</code> (for MX against Cloudflare). Both return the same answers this page shows, with the same caching behavior — the resolver caches, you see the cached answer.</p>
     </section>
 
     <!-- FAQ (SEO) -->
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="dns_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_1_q">What is a DNS lookup?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_1_a">A DNS lookup is a query sent to a DNS resolver asking for the records associated with a domain name. The most common query is for the A record (the IPv4 address), but DNS also stores AAAA (IPv6), MX (mail servers), TXT (verification and policy), NS (name servers), CNAME (alias), and SOA (zone authority) records.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_2_q">What are the different DNS record types?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_2_a">A maps a name to an IPv4 address. AAAA maps to IPv6. MX lists mail servers for the domain. TXT stores arbitrary text, commonly used for domain verification (Google, Microsoft, Facebook) and email policies like SPF/DKIM/DMARC. NS lists the authoritative name servers for the domain. CNAME creates an alias from one name to another. SOA holds administrative information about the zone.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_3_q">Which record type should I look up?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_3_a">You don't have to choose — this tool queries every common record type at once. For "where does this domain point," look at A and AAAA. For "where does its email go," look at MX. For "who runs this domain's DNS," look at NS. For "is this domain verified by Google/Microsoft/etc.," look at TXT. For "is this subdomain an alias of something else," look at CNAME.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_4_q">What is DNS-over-HTTPS?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_4_a">DNS-over-HTTPS (DoH) encrypts DNS queries so that no one on the path between you and the resolver can see what domains you are looking up. Traditional DNS sends queries in cleartext, which means your ISP, coffee-shop Wi-Fi, or anyone else on the network can log every site you visit. This tool uses DoH (via Google and Cloudflare) so your lookups are private.</p>
-        </div>
-        <div>
-          <h3 class="font-semibold text-white mb-1" data-i18n="dns_faq_5_q">Why are my DNS records different from what I configured?</h3>
-          <p class="text-slate-300 text-sm leading-relaxed" data-i18n="dns_faq_5_a">DNS changes take time to propagate. Most resolvers respect the TTL (time to live) on each record and refresh from the authoritative server when it expires. Typical propagation is minutes to a few hours, but in some cases it can take up to 48 hours. If you just changed a record, wait and look up again later.</p>
-        </div>
-      </div>
-    </section>
-
     <section class="mt-12 card">
       <h2 class="text-base font-bold mb-3">More tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">
