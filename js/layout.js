@@ -4,11 +4,13 @@
  * and #support-fab baked into the HTML, so the page is fully populated
  * without JavaScript. This script only UPGRADES the static markup:
  *   - sets the active nav link class
- *   - wires the language switcher (button toggles dropdown, clicks switch)
  *   - injects the floating support FAB if missing
  *   - keeps a fallback path: if a page is missing the static markup
  *     (e.g. an older cache), it will inject minimal chrome rather than
  *     leave the page naked.
+ *
+ * Language switcher is owned by i18n.js (event-delegated, no DOMContentLoaded
+ * race). wireLanguage() is kept as a no-op for back-compat with any caller.
  * ================================================================ */
 (function (global) {
   'use strict';
@@ -20,7 +22,7 @@
   }
 
   const LANG_LABELS = {
-    en: 'English', es: 'Español', pt: 'Português', fr: 'Français', de: 'Deutsch', it: 'Italiano'
+    en: 'English', es: 'Español'
   };
 
   // ---- Active nav marker ----
@@ -31,56 +33,11 @@
     });
   }
 
-  // ---- Language switcher (interactive only) ----
-  function wireLanguage() {
-    const wrap = document.getElementById('lang-wrap');
-    const btn  = document.getElementById('lang-toggle');
-    const menu = document.getElementById('lang-menu');
-    if (!wrap || !btn || !menu) return;
-
-    function setActive(lang) {
-      document.querySelectorAll('.lang-option').forEach(function (o) {
-        o.classList.toggle('is-active', o.getAttribute('data-lang') === lang);
-      });
-      const cur = document.getElementById('lang-current');
-      if (cur) cur.textContent = lang.toUpperCase();
-    }
-
-    function open(isOpen) {
-      menu.classList.toggle('hidden', !isOpen);
-      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    }
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      open(menu.classList.contains('hidden'));
-    });
-    document.addEventListener('click', function (e) {
-      if (!wrap.contains(e.target)) open(false);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') open(false);
-    });
-    menu.addEventListener('click', function (e) {
-      const b = e.target.closest('[data-lang]');
-      if (!b) return;
-      const lang = b.getAttribute('data-lang');
-      if (global.I18N) { global.I18N.setLanguage(lang); setActive(lang); }
-      open(false);
-    });
-
-    document.querySelectorAll('.lang-link').forEach(function (b) {
-      b.addEventListener('click', function (e) {
-        e.preventDefault();
-        const lang = b.getAttribute('data-lang');
-        if (global.I18N) { global.I18N.setLanguage(lang); setActive(lang); }
-      });
-    });
-
-    if (global.I18N) {
-      setActive(global.I18N.getLanguage());
-      global.I18N.onChange(function (lang) { setActive(lang); });
-    }
-  }
+  // ---- Language switcher ----
+  // Switcher is owned by i18n.js (event-delegated, no DOMContentLoaded race).
+  // This is kept as a no-op for back-compat with any caller that still invokes
+  // it. The actual binding lives in i18n.js → wireSwitcher().
+  function wireLanguage() { /* no-op: see i18n.js */ }
 
   // ---- Support FAB: only inject if missing ----
   function ensureSupportFab() {
