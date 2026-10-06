@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
-  <title>The Dev & Security Stack We Actually Use — 40 hand-picked tools — SiteTrace</title>
-  <meta name="description" content="Forty dev, security, and AI tools Ed Appenzeller uses daily — network, DNS, security headers, SEO, password managers, design, AI, and privacy. Organized by category with one-line descriptions." />
-  <meta name="keywords" content="developer tools, security tools, ai tools, dev stack, network tools, password manager, design tools, sitetrace" />
+  <title>All tools — SiteTrace</title>
+  <meta name="description" content="Twenty free network, DNS, web, email, SEO and utility tools. Click a card to open. No signup, no tracking, no API keys." />
+  <meta name="keywords" content="free tools, network tools, dns tools, security headers, seo checker, password generator, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
   <meta name="author" content="Edy Appenzeller" />
   <link rel="canonical" href="https://sitetrace.it.com/tools/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="The Dev & Security Stack We Actually Use — 40 hand-picked tools" />
-  <meta property="og:description" content="Forty dev, security, and AI tools we use daily — network, DNS, security headers, SEO, password managers, design, AI, privacy." />
+  <meta property="og:title" content="All tools — SiteTrace" />
+  <meta property="og:description" content="Twenty free tools — network, DNS, web, email, SEO, utilities. No signup. Click to open." />
   <meta property="og:image" content="https://sitetrace.it.com/og/tools.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta property="og:url" content="https://sitetrace.it.com/tools/" />
@@ -25,7 +25,7 @@
       theme: { extend: {
         fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
         colors: { ink: { 900:'#070a12', 800:'#0b1120', 700:'#0f172a', 600:'#1a2438', 500:'#222d44' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' } },
-        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)' },
         boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
       } },
     };
@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=29" />
+  <link rel="stylesheet" href="/styles.css?v=32" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='white' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
@@ -42,24 +42,11 @@
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "The Dev & Security Stack We Actually Use",
+    "name": "All tools — SiteTrace",
     "url": "https://sitetrace.it.com/tools/",
-    "description": "Forty hand-picked dev, security, and AI tools organized by category.",
+    "description": "Twenty free network, DNS, web, email, SEO and utility tools. No signup, no tracking.",
     "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
     "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What is this list?","acceptedAnswer":{"@type":"Answer","text":"A curated list of the dev, security, and AI tools Ed Appenzeller actually uses to build sitetrace.it.com. Not a generic 'top 100 tools' list — a personal stack with one-line descriptions of why each tool is on the list. Updated as the stack evolves."}},
-      {"@type":"Question","name":"How often is this updated?","acceptedAnswer":{"@type":"Answer","text":"Whenever Ed's stack changes. The page is part of sitetrace.it.com so it ships on the same GitHub-driven deploy as the rest of the site; the commit history shows every edit."}},
-      {"@type":"Question","name":"Are these affiliate links?","acceptedAnswer":{"@type":"Answer","text":"No. sitetrace's /about/ page criticizes affiliate-spam sites — every link on this list is a plain rel=\"nofollow\" link with no tracking. If a tool has a paid tier we mention the free tier; if there's only a paid tier we say so and link to the official site."}},
-      {"@type":"Question","name":"Can I suggest a tool to add?","acceptedAnswer":{"@type":"Answer","text":"Open an issue on the sitetrace GitHub. We add tools Ed has used for at least 30 days and would recommend to a colleague. We don't add tools for pay, and we don't add tools that are pure-AI wrappers without a defensible technical moat."}}
-    ]
   }
   </script>
 
@@ -69,7 +56,7 @@
     "@type": "BreadcrumbList",
     "itemListElement": [
       {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
-      {"@type":"ListItem","position":2,"name":"Dev & Security Stack","item":"https://sitetrace.it.com/tools/"}
+      {"@type":"ListItem","position":2,"name":"All tools","item":"https://sitetrace.it.com/tools/"}
     ]
   }
   </script>
@@ -90,49 +77,139 @@
     .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
     .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
     .bg-brand-gradient { background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important; }
-    .bg-hero-glow { background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important; }
     .shadow-glow-brand { box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important; }
     .text-brand-300 { color: #67e8f9 !important; }
     .text-brand-400 { color: #22d3ee !important; }
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none; z-index: 0;
-    }
-    body > * { position: relative; z-index: 1; }
-    .card {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)) !important;
-      border: 1px solid var(--trace-border) !important;
-    }
-    .card:hover { border-color: var(--trace-border-strong) !important; }
+
     .byline {
       display: inline-flex; align-items: center; gap: 0.5rem;
       font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
       color: rgb(100, 116, 139); letter-spacing: 0.02em;
     }
     .byline::before { content: '//'; color: var(--trace-cyan-deep); }
-    .tool-card { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-radius: 0.75rem; border: 1px solid rgba(34, 211, 238, 0.08); background: linear-gradient(180deg, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.3)); transition: border-color 200ms ease, transform 200ms ease; }
-    .tool-card:hover { border-color: rgba(34, 211, 238, 0.25); transform: translateY(-2px); }
-    .tool-card .icon { width: 38px; height: 38px; border-radius: 0.5rem; background: rgba(34, 211, 238, 0.08); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-    .tool-card .name { font-weight: 600; color: #fff; }
-    .tool-card .name a { color: #fff; text-decoration: none; border-bottom: 1px dashed rgba(34, 211, 238, 0.4); }
-    .tool-card .name a:hover { color: var(--trace-cyan-soft); }
-    .tool-card .desc { color: rgb(148, 163, 184); font-size: 0.85rem; margin-top: 0.25rem; line-height: 1.5; }
-    .tool-card .why { color: var(--trace-cyan-soft); font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; margin-top: 0.4rem; }
-    .cat-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--trace-cyan-soft); font-family: 'JetBrains Mono', monospace; padding-top: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px dashed rgba(34, 211, 238, 0.15); display: flex; align-items: center; gap: 0.5rem; }
-    .cat-header .num { color: var(--trace-cyan); font-weight: 700; }
+
+    /* Category header (above each grid) */
+    .category {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem;
+      margin: 2.5rem 0 0.85rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.10);
+    }
+    .category:first-of-type { margin-top: 0; }
+    .category-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--trace-cyan-soft);
+      margin: 0;
+    }
+    .category-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: rgb(100, 116, 139);
+    }
+
+    /* Tool grid */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.85rem;
+    }
+
+    /* Tool card */
+    .tool-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005));
+      border: 1px solid rgba(148, 163, 184, 0.10);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 200ms ease,
+                  background 200ms ease,
+                  box-shadow 200ms ease;
+      overflow: hidden;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), transparent 55%);
+      opacity: 0;
+      transition: opacity 200ms ease;
+      pointer-events: none;
+    }
+    .tool-card > * { position: relative; z-index: 1; }
+    .tool-card:hover {
+      border-color: rgba(34, 211, 238, 0.40);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px -16px rgba(34, 211, 238, 0.30);
+    }
+    .tool-card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tool-icon {
+      width: 36px; height: 36px;
+      border-radius: 0.55rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(34, 211, 238, 0.10);
+      border: 1px solid rgba(34, 211, 238, 0.20);
+      color: var(--trace-cyan);
+    }
+    .tool-icon svg { width: 18px; height: 18px; stroke-width: 1.8; fill: none; stroke: currentColor; }
+    .command {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--trace-cyan);
+      letter-spacing: 0.02em;
+    }
+    .tool-name {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+    .tool-description {
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: rgb(148 163 184);
+      flex: 1;
+    }
+    .card-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.5rem;
+      border-top: 1px dashed rgba(148, 163, 184, 0.12);
+    }
+    .tool-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: rgb(100 116 139);
+    }
+    .card-arrow {
+      color: rgb(148 163 184);
+      transition: color 200ms ease, transform 200ms ease;
+    }
+    .card-arrow svg { width: 14px; height: 14px; }
+    .tool-card:hover .card-arrow {
+      color: var(--trace-cyan);
+      transform: translate(2px, -2px);
+    }
   </style>
 </head>
 
 <body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
-  <div class="fixed inset-0 -z-10 pointer-events-none">
-    <div class="absolute inset-0 bg-hero-glow"></div>
-  </div>
-
   <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <a href="/" class="flex items-center gap-2.5 group">
@@ -147,7 +224,7 @@
         <a class="nav-link" href="/random-color/">Color</a>
         <a class="nav-link" href="/password/">Password</a>
         <a class="nav-link" href="/headers-checker/">Headers</a>
-        <a class="nav-link" href="/network-tools/">All tools</a>
+        <a class="nav-link" href="/tools/">All tools</a>
       </nav>
     </div>
   </header>
@@ -157,468 +234,331 @@
       <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
         <a href="/" class="hover:text-slate-300">SiteTrace</a>
         <span class="mx-1.5">/</span>
-        <span>Dev &amp; Security Stack</span>
+        <span>All tools</span>
       </nav>
       <div class="text-center max-w-3xl mx-auto space-y-3">
-        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Curated Directory</p>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">The dev &amp; security stack we actually use</h1>
-        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Forty hand-picked tools — network, DNS, security headers, SEO, password managers, design, AI, privacy. Every entry is something we use daily. No affiliate links, no paid placements, no AI wrapper fluff. Plain <code>rel="nofollow"</code> links to the official site.</p>
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">All tools</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">Twenty tools. One workspace.</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">Network, DNS, web, email, SEO, and utilities. Click a card to open. No signup, no API keys, no tracking.</p>
       </div>
-      <p class="byline justify-center">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+      <p class="byline justify-center">free · no signup · open source</p>
     </section>
 
-    <div class="mt-10 max-w-5xl mx-auto space-y-8">
-      <!-- 1. NETWORK & DNS -->
-      <section>
-        <h2 class="cat-header"><span class="num">01</span> · Network &amp; DNS <span class="text-slate-500">(6)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">🌐</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.cloudflare.com/" rel="nofollow noopener noreferrer" target="_blank">Cloudflare</a></div>
-              <div class="desc">DNS, CDN, DDoS protection, Workers (serverless edge), Pages (JAMstack hosting), Email routing. sitetrace.it.com is hosted on Pages; the API runs on Workers.</div>
-              <div class="why">// sitetrace's actual infra. Free tier covers everything we need.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🔍</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://dns.google/" rel="nofollow noopener noreferrer" target="_blank">Google Public DNS</a> · <a href="https://1.1.1.1/" rel="nofollow noopener noreferrer" target="_blank">Cloudflare 1.1.1.1</a></div>
-              <div class="desc">Public DNS-over-HTTPS (DoH) and DNS-over-TLS resolvers. Used inside the browser for client-side DNS lookups — no app server needed.</div>
-              <div class="why">// sitetrace's /dns-tools uses 1.1.1.1 over DoH for privacy.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📡</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://bgp.tools/" rel="nofollow noopener noreferrer" target="_blank">bgp.tools</a> · <a href="https://bgp.he.net/" rel="nofollow noopener noreferrer" target="_blank">Hurricane Electric</a></div>
-              <div class="desc">BGP routing inspection, ASN lookups, prefix advertisements. The single best answer to "where is this IP actually routed from".</div>
-              <div class="why">// pair with sitetrace's /ip-lookup for the full picture.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🛰</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.virtualmin.com/" rel="nofollow noopener noreferrer" target="_blank">mtr</a> (My Traceroute)</div>
-              <div class="desc">Combines traceroute + ping into a single live diagnostic. Shows packet loss + jitter per hop. The right tool when a network is being weird.</div>
-              <div class="why">// terminal-only. pair with sitetrace's /ping/ for browser-only check.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📑</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://crt.sh/" rel="nofollow noopener noreferrer" target="_blank">crt.sh</a></div>
-              <div class="desc">Certificate Transparency log search. Every certificate ever issued for any domain, with the issuing CA, validity dates, and SAN list. The data layer behind sitetrace's /cert-checker.</div>
-              <div class="why">// open, free, no API key. slow UI → sitetrace wraps with 24h cache.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📜</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.rfc-editor.org/" rel="nofollow noopener noreferrer" target="_blank">RFC Editor</a></div>
-              <div class="desc">The authoritative source for every Internet protocol. RFC 7231 (HTTP semantics), RFC 6962 (CT), RFC 8446 (TLS 1.3) — when in doubt, the RFC is right.</div>
-              <div class="why">// dry reading. better than any blog post on protocol mechanics.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div class="mt-10 max-w-5xl mx-auto">
+      <!-- 1. NETWORK & IP -->
+      <div class="category">
+        <h2 class="category-title">Network &amp; IP</h2>
+        <span class="category-count">4 tools</span>
+      </div>
+      <div class="tool-grid">
 
-      <!-- 2. SECURITY & HEADERS -->
-      <section>
-        <h2 class="cat-header"><span class="num">02</span> · Security &amp; Headers <span class="text-slate-500">(6)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">🛡</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://securityheaders.com/" rel="nofollow noopener noreferrer" target="_blank">securityheaders.com</a></div>
-              <div class="desc">Tim Sneath's classic A-F grader for HTTP security headers. The historical reference. sitetrace's /headers-checker is a faster, no-queue alternative.</div>
-              <div class="why">// use both. securityheaders.com for the historical baseline.</div>
-            </div>
+        <a href="/ip-lookup/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
+            <span class="command">$ lookup</span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🔒</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.ssllabs.com/ssltest/" rel="nofollow noopener noreferrer" target="_blank">SSL Labs</a></div>
-              <div class="desc">Live TLS configuration grading. Cipher suites, protocol versions, chain order, session resumption, vulnerabilities. The single best answer to "is my HTTPS correctly configured".</div>
-              <div class="why">// pair with /cert-checker (history) for full TLS picture.</div>
-            </div>
+          <h3 class="tool-name">IP lookup</h3>
+          <p class="tool-description">Look up any IPv4 or IPv6 — geolocation, ASN, owner.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">ANY IPv4 / IPv6</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🐛</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://owasp.org/" rel="nofollow noopener noreferrer" target="_blank">OWASP</a></div>
-              <div class="desc">Open Web Application Security Project. The OWASP Top 10, the Secure Headers Project, the ASVS standard. The canonical references for "what is web app security".</div>
-              <div class="why">// if you've never read OWASP Top 10, start there.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">👁</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://haveibeenpwned.com/" rel="nofollow noopener noreferrer" target="_blank">Have I Been Pwned</a></div>
-              <div class="desc">Troy Hunt's breach corpus. The API lets you check a password or email against 8+ billion compromised records without sending the password in cleartext (k-anonymity).</div>
-              <div class="why">// sitetrace-api blocks disposable domains + could integrate HIBP later.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🤖</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.cloudflare.com/products/turnstile/" rel="nofollow noopener noreferrer" target="_blank">Cloudflare Turnstile</a></div>
-              <div class="desc">Free CAPTCHA alternative. No puzzles, no images, no "I am not a robot" — passive browser-fingerprint challenges. sitetrace-api's /api/signup is scaffolded to use it.</div>
-              <div class="why">// no user friction, free up to 1M validations/mo.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🪪</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://developer.mozilla.org/en-US/docs/Web/Security" rel="nofollow noopener noreferrer" target="_blank">MDN Web Security</a></div>
-              <div class="desc">Mozilla's reference for browser security: CSP, CORS, Same-Origin Policy, Subresource Integrity, Permissions Policy. The right place to look up exactly what each header does.</div>
-              <div class="why">// if MDN doesn't have it, the browser doesn't support it.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </a>
 
-      <!-- 3. SEO & WEBSITES -->
-      <section>
-        <h2 class="cat-header"><span class="num">03</span> · SEO &amp; Websites <span class="text-slate-500">(6)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">📊</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://search.google.com/search-console" rel="nofollow noopener noreferrer" target="_blank">Google Search Console</a></div>
-              <div class="desc">Free, official. The only source of truth for what Google sees on your site. Index coverage, manual actions, Core Web Vitals, search performance.</div>
-              <div class="why">// sitetrace's organic traffic source of truth. Ed owns the dashboard.</div>
-            </div>
+        <a href="/ip-reputation/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            <span class="command">$ reputation</span>
           </div>
-          <div class="tool-card">
-            <div class="icon">📈</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.bing.com/webmasters" rel="nofollow noopener noreferrer" target="_blank">Bing Webmaster Tools</a></div>
-              <div class="desc">Microsoft's equivalent of GSC. Less traffic than Google but Bing + DuckDuckGo + Yahoo all use it. Submit sitemaps, see crawl errors.</div>
-              <div class="why">// free, no downside. ~10% of search traffic is here.</div>
-            </div>
+          <h3 class="tool-name">IP reputation</h3>
+          <p class="tool-description">Check any IPv4 against 7 DNS blacklists (Spamhaus, Spamcop, Barracuda, CBL, ...).</p>
+          <div class="card-bottom">
+            <span class="tool-tag">DNSBL / SCORE</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </div>
-          <div class="tool-card">
-            <div class="icon">⚡</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://pagespeed.web.dev/" rel="nofollow noopener noreferrer" target="_blank">PageSpeed Insights</a></div>
-              <div class="desc">Google's Core Web Vitals checker. LCP, FID, CLS, plus suggestions. The right baseline for "is my page fast".</div>
-              <div class="why">// sitetrace pages target 95+ PSI mobile / 100 desktop.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🗺</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.opengraph.xyz/" rel="nofollow noopener noreferrer" target="_blank">opengraph.xyz</a></div>
-              <div class="desc">Open Graph preview debugger. sitetrace's /og-preview is a similar but free / no-signup alternative with Slack/LinkedIn/Discord panels side-by-side.</div>
-              <div class="why">// use both. opengraph.xyz for Twitter/Facebook specifically.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📡</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://developers.facebook.com/tools/debug/" rel="nofollow noopener noreferrer" target="_blank">Facebook Sharing Debugger</a></div>
-              <div class="desc">The official way to force Facebook to re-scrape your og:image. Required after every og:image change.</div>
-              <div class="why">// cache-bust og:image URLs with ?v=N for instant fixes.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🧭</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.xml-sitemaps.com/" rel="nofollow noopener noreferrer" target="_blank">XML-Sitemaps.com</a></div>
-              <div class="desc">Free sitemap.xml generator. sitetrace's sitemap is hand-maintained (40 pages, all listed) but this is the right move for sites in the 200+ URL range.</div>
-              <div class="why">// small → hand-written. large → generate.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </a>
 
-      <!-- 4. DEVELOPER & API -->
-      <section>
-        <h2 class="cat-header"><span class="num">04</span> · Developer &amp; API <span class="text-slate-500">(7)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">⌨️</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://code.visualstudio.com/" rel="nofollow noopener noreferrer" target="_blank">VS Code</a></div>
-              <div class="desc">Default editor for everything. The extension ecosystem is the only reason it's not just a text editor — sitetrace uses GitHub Copilot + Prettier + ESLint.</div>
-              <div class="why">// Ed's primary editor. Free, runs on every platform.</div>
-            </div>
+        <a href="/vpn-checker/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.5 9 9 11 5.5-2 9-6 9-11V6l-9-4z"/></svg></span>
+            <span class="command">$ vpn-check</span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🐙</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://github.com/appenzellerdigitalstore-stack" rel="nofollow noopener noreferrer" target="_blank">GitHub</a></div>
-              <div class="desc">Source hosting. sitetrace.cloud + sitetrace-tracker both live here. The Pages + Cloudflare pairing auto-deploys on every push to main.</div>
-              <div class="why">// sitetrace's source of truth. CF Pages watches main.</div>
-            </div>
+          <h3 class="tool-name">VPN detector</h3>
+          <p class="tool-description">See if an IP is a known VPN, proxy, or Tor exit.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">VPN / PROXY / TOR</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🚀</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.cloudflare.com/workers/" rel="nofollow noopener noreferrer" target="_blank">Cloudflare Workers</a></div>
-              <div class="desc">Serverless edge functions. sitetrace-api runs entirely on Workers — KV for cache, D1 for accounts, R2 for screenshots. Free up to 100k req/day.</div>
-              <div class="why">// sitetrace-api's runtime. $0/month with free tier.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📬</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.postman.com/" rel="nofollow noopener noreferrer" target="_blank">Postman</a> · <a href="https://hoppscotch.io/" rel="nofollow noopener noreferrer" target="_blank">Hoppscotch</a></div>
-              <div class="desc">API testing. Hoppscotch is the open-source alternative (browser-based, free). sitetrace-api's /api/openapi generates a Postman collection.</div>
-              <div class="why">// hoppscotch for browser. postman for offline.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🟢</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://nodejs.org/" rel="nofollow noopener noreferrer" target="_blank">Node.js</a></div>
-              <div class="desc">JavaScript runtime. sitetrace's build scripts + Workers runtime + frontend tooling all run Node. LTS version only.</div>
-              <div class="why">// sitetrace scripts are .mjs, run with Node 20 LTS.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🐚</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://fishshell.com/" rel="nofollow noopener noreferrer" target="_blank">Fish shell</a> · <a href="https://www.zsh.org/" rel="nofollow noopener noreferrer" target="_blank">Zsh</a></div>
-              <div class="desc">Default shell for sitetrace's agents. Autosuggestions on by default; no plugin config needed. Ed uses PowerShell on Windows.</div>
-              <div class="why">// mac/linux: fish. windows: powershell 7.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🧪</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://playwright.dev/" rel="nofollow noopener noreferrer" target="_blank">Playwright</a></div>
-              <div class="desc">Browser automation for end-to-end tests. sitetrace's e2e-launch-test.mjs uses puppeteer-core; Playwright is the modern alternative with cross-browser support out of the box.</div>
-              <div class="why">// Playwright > Puppeteer for new projects.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </a>
 
-      <!-- 5. AI & PRODUCTIVITY -->
-      <section>
-        <h2 class="cat-header"><span class="num">05</span> · AI &amp; Productivity <span class="text-slate-500">(7)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">🧠</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://minimax.io/" rel="nofollow noopener noreferrer" target="_blank">MiniMax-M3</a></div>
-              <div class="desc">The model powering this build. Ed runs MiniMax Code (mavis) as the development agent — code review, build, push, deploy, all from a terminal.</div>
-              <div class="why">// agent of record for sitetrace. Not endorsing — describing.</div>
-            </div>
+        <a href="/subnet-calculator/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></span>
+            <span class="command">$ subnet</span>
           </div>
-          <div class="tool-card">
-            <div class="icon">✍️</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://chat.openai.com/" rel="nofollow noopener noreferrer" target="_blank">ChatGPT</a> · <a href="https://claude.ai/" rel="nofollow noopener noreferrer" target="_blank">Claude</a></div>
-              <div class="desc">Direct chat for long-form reasoning. Use them as a "second pair of eyes" — paste a code snippet or essay and ask "what am I missing".</div>
-              <div class="why">// pair with sitetrace's /api/ai-content-detector to check your own drafts.</div>
-            </div>
+          <h3 class="tool-name">Subnet calculator</h3>
+          <p class="tool-description">Paste a CIDR, get network, broadcast, host range, wildcard, IP class.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">CIDR / RANGE</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🔍</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://perplexity.ai/" rel="nofollow noopener noreferrer" target="_blank">Perplexity</a></div>
-              <div class="desc">Search with cited sources. Best of both: a real-time web search plus an LLM that summarizes and links. Replaces 30% of Ed's "let me Google this and read 5 tabs".</div>
-              <div class="why">// default for "what is X" + "compare X vs Y" queries.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📓</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://obsidian.md/" rel="nofollow noopener noreferrer" target="_blank">Obsidian</a></div>
-              <div class="desc">Local-first markdown notes. Plain text files on disk, no vendor lock-in, works offline. Ed's tracker-roadmap.csv + ROADMAP.md live in a sibling repo, mirrored as Obsidian vault.</div>
-              <div class="why">// local-first. plain text. no SaaS.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📝</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://typora.io/" rel="nofollow noopener noreferrer" target="_blank">Typora</a> · <a href="https://code.visualstudio.com/" rel="nofollow noopener noreferrer" target="_blank">VS Code</a></div>
-              <div class="desc">Markdown editors. Typora for distraction-free writing, VS Code for code-heavy docs. Both produce clean, readable markdown with no proprietary lock-in.</div>
-              <div class="why">// .md always. never .docx. never Notion blocks.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🖼</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://nano-banana-pro.com/" rel="nofollow noopener noreferrer" target="_blank">nano-banana-pro</a></div>
-              <div class="desc">Image generation. Use for blog headers, social images, mockups. Ed uses it via mcode-tools, not direct API. Generation cost is real (don't over-iterate).</div>
-              <div class="why">// sitetrace OG cards are generated, not photographed.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🎙</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://github.com/openai/whisper" rel="nofollow noopener noreferrer" target="_blank">Whisper</a></div>
-              <div class="desc">Open-source speech-to-text from OpenAI. Run locally on your own machine. Free, accurate, no quota. The right tool for transcribing meetings or audio without sending audio to a cloud service.</div>
-              <div class="why">// local-only. no audio leaves your laptop.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </a>
 
-      <!-- 6. PASSWORD & AUTH -->
-      <section>
-        <h2 class="cat-header"><span class="num">06</span> · Password &amp; Auth <span class="text-slate-500">(4)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">🔑</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://bitwarden.com/" rel="nofollow noopener noreferrer" target="_blank">Bitwarden</a></div>
-              <div class="desc">Open-source password manager. Free for personal use, $10/year for premium. Ed's recommendation for everyone; sitetrace's own staff uses it.</div>
-              <div class="why">// self-hostable. FOSS. cross-platform.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🔐</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://keepass.info/" rel="nofollow noopener noreferrer" target="_blank">KeePass</a></div>
-              <div class="desc">Offline password database, single file, no cloud. The right choice if you don't trust any cloud-based password manager with your vault.</div>
-              <div class="why">// offline-only. the most privacy-preserving.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📱</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.yubico.com/" rel="nofollow noopener noreferrer" target="_blank">YubiKey</a></div>
-              <div class="desc">Hardware 2FA token. USB-A, USB-C, NFC, and Lightning variants. The right defense against phishing — even if your password leaks, the attacker can't use it without the physical key.</div>
-              <div class="why">// $25-50 each. buy two. store one offsite.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🆔</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.authy.com/" rel="nofollow noopener noreferrer" target="_blank">Authy</a> · <a href="https://support.microsoft.com/en-us/account/authenticator" rel="nofollow noopener noreferrer" target="_blank">MS Authenticator</a></div>
-              <div class="desc">TOTP authenticator apps. The free fallback to hardware keys. Authy for cloud-synced TOTP, MS Authenticator if you're in the Microsoft ecosystem.</div>
-              <div class="why">// TOTP > SMS. hardware keys > TOTP.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      <!-- 7. DESIGN & COLOR -->
-      <section>
-        <h2 class="cat-header"><span class="num">07</span> · Design &amp; Color <span class="text-slate-500">(5)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">🎨</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.figma.com/" rel="nofollow noopener noreferrer" target="_blank">Figma</a></div>
-              <div class="desc">Browser-based design tool. Free for personal use, $15/user/mo for teams. The right choice over Sketch (Mac-only) or Adobe XD (subscription-bundled).</div>
-              <div class="why">// browser-based. cross-platform. free tier is generous.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🌈</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://tailwindcss.com/" rel="nofollow noopener noreferrer" target="_blank">Tailwind CSS</a></div>
-              <div class="desc">Utility-first CSS framework. sitetrace uses the CDN build (`cdn.tailwindcss.com`) — no build step, no Node config, just a `<script>` tag. The right choice for static sites.</div>
-              <div class="why">// CDN for static sites. JIT for apps. never hand-write CSS again.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">✏️</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://fonts.google.com/" rel="nofollow noopener noreferrer" target="_blank">Google Fonts</a></div>
-              <div class="desc">sitetrace uses IBM Plex Sans + JetBrains Mono — the humanist / monospace pair that says "engineer" the way Helvetica/Inter says "marketing site".</div>
-              <div class="why">// sitetrace = IBM Plex Sans + JetBrains Mono. never Inter.</div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">🖌</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.blobmaker.app/" rel="nofollow noopener noreferrer" target="_blank">Blobmaker</a> · <a href="https://www.shapedivider.app/" rel="nofollow noopener noreferrer" target="_blank">Shape Divider</a></div>
-              <div class="desc">Free SVG generators for organic shapes and section dividers. Useful for breaking up the "boxes of text" feel without paying a designer.</div>
-              <div class="why">// free SVG. the AI-default is mostly </div>
-            </div>
-          </div>
-          <div class="tool-card">
-            <div class="icon">📐</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://webaim.org/resources/contrastchecker/" rel="nofollow noopener noreferrer" target="_blank">WebAIM Contrast Checker</a></div>
-              <div class="desc">WCAG 2.x contrast checker. Pair with sitetrace's /random-color — pick a color, check the contrast against white/black/cyan, ship an accessible palette.</div>
-              <div class="why">// WCAG 2.x only. WCAG 3 APCA is coming but not stable.</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <!-- 2. DNS & CONNECTIVITY -->
+      <div class="category">
+        <h2 class="category-title">DNS &amp; connectivity</h2>
+        <span class="category-count">3 tools</span>
+      </div>
+      <div class="tool-grid">
 
-      <!-- 8. PRIVACY & MISC -->
-      <section>
-        <h2 class="cat-header"><span class="num">08</span> · Privacy &amp; Misc <span class="text-slate-500">(5)</span></h2>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4">
-          <div class="tool-card">
-            <div class="icon">🛡</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.eff.org/" rel="nofollow noopener noreferrer" target="_blank">EFF</a></div>
-              <div class="desc">Electronic Frontier Foundation. The non-profit that funds Let's Encrypt, Certbot, Privacy Badger, HTTPS Everywhere, and fights for encryption in court. Worth supporting.</div>
-              <div class="why">// sitetrace uses Let's Encrypt (EFF project) for all certs.</div>
-            </div>
+        <a href="/ping/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span>
+            <span class="command">$ dig</span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🌐</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.mozilla.org/firefox/" rel="nofollow noopener noreferrer" target="_blank">Firefox</a></div>
-              <div class="desc">Browser. sitetrace doesn't track visitors but Firefox's built-in tracker blocking + container tabs + Total Cookie Protection is the right baseline. Ed uses Edge for browser automation, Firefox for daily browsing.</div>
-              <div class="why">// containers. tracker blocking. FOSS.</div>
-            </div>
+          <h3 class="tool-name">Domain inspector</h3>
+          <p class="tool-description">DNS + HTTP + 9-server latency for any domain in one shot.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">DNS / HTTP / LATENCY</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </div>
-          <div class="tool-card">
-            <div class="icon">📨</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.proton.me/" rel="nofollow noopener noreferrer" target="_blank">Proton Mail</a> · <a href="https://tutanota.com/" rel="nofollow noopener noreferrer" target="_blank">Tutanota</a></div>
-              <div class="desc">End-to-end encrypted email. Proton also does VPN, calendar, drive. The right choice if you want email that isn't being scanned for ad targeting.</div>
-              <div class="why">// E2EE by default. free tier exists. based in Switzerland.</div>
-            </div>
+        </a>
+
+        <a href="/dns-tools/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="command">$ dig +short</span>
           </div>
-          <div class="tool-card">
-            <div class="icon">🌍</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://www.cloudflare.com/products/1dns/" rel="nofollow noopener noreferrer" target="_blank">1.1.1.1 + WARP</a></div>
-              <div class="desc">Cloudflare's VPN. Free, fast, no logs (audited). The right alternative to "trust a random VPN company with your traffic".</div>
-              <div class="why">// free, audited, fast. better than most paid VPNs.</div>
-            </div>
+          <h3 class="tool-name">DNS lookup</h3>
+          <p class="tool-description">A, AAAA, MX, TXT, NS, CNAME, SOA via DNS-over-HTTPS.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">A / AAAA / MX / TXT</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
           </div>
-          <div class="tool-card">
-            <div class="icon">📧</div>
-            <div class="flex-1 min-w-0">
-              <div class="name"><a href="https://simplelogin.io/" rel="nofollow noopener noreferrer" target="_blank">SimpleLogin</a></div>
-              <div class="desc">Email aliasing — every signup gets a unique alias. When a site spams you, kill it without affecting your real address. Free tier: 10 aliases.</div>
-              <div class="why">// pair with sitetrace's /api/email for deliverability testing.</div>
-            </div>
+        </a>
+
+        <a href="/dns-propagation-checker/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg></span>
+            <span class="command">$ propagate</span>
           </div>
-        </div>
-      </section>
+          <h3 class="tool-name">DNS propagation</h3>
+          <p class="tool-description">Check a record across 8 global resolvers.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">8 RESOLVERS</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- 3. WEB STATUS & HEADERS -->
+      <div class="category">
+        <h2 class="category-title">Web status &amp; headers</h2>
+        <span class="category-count">4 tools</span>
+      </div>
+      <div class="tool-grid">
+
+        <a href="/is-it-down/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+            <span class="command">$ status</span>
+          </div>
+          <h3 class="tool-name">Is it down</h3>
+          <p class="tool-description">URL reachability + live status of 50+ popular services.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">50+ SERVICES</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/website-down-checker/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 9 4-18 3 9h4"/></svg></span>
+            <span class="command">$ bulk</span>
+          </div>
+          <h3 class="tool-name">Bulk URL status</h3>
+          <p class="tool-description">Check up to 20 URLs in one pass — status + latency + content type.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">20 URLs / PASS</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/http-headers/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+            <span class="command">$ curl -I</span>
+          </div>
+          <h3 class="tool-name">HTTP headers</h3>
+          <p class="tool-description">Full response headers + 0-100 security grade.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">RESPONSE / GRADE</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/headers-checker/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+            <span class="command">$ grade</span>
+          </div>
+          <h3 class="tool-name">Security headers</h3>
+          <p class="tool-description">A–F grade + missing-header checklist (CSP, HSTS, X-Frame-Options, ...).</p>
+          <div class="card-bottom">
+            <span class="tool-tag">A–F GRADE</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- 4. EMAIL & CERTS -->
+      <div class="category">
+        <h2 class="category-title">Email &amp; certs</h2>
+        <span class="category-count">2 tools</span>
+      </div>
+      <div class="tool-grid">
+
+        <a href="/email-deliverability/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+            <span class="command">$ deliver</span>
+          </div>
+          <h3 class="tool-name">Email deliverability</h3>
+          <p class="tool-description">MX, SPF, DKIM, DMARC, blacklists, SMTP TLS.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">MX / SPF / DKIM</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/cert-checker/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="command">$ cert</span>
+          </div>
+          <h3 class="tool-name">Certificate checker</h3>
+          <p class="tool-description">CT-log history + expiry + issuer + SAN list.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">CT / EXPIRY / CHAIN</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- 5. SEO & PREVIEW -->
+      <div class="category">
+        <h2 class="category-title">SEO &amp; preview</h2>
+        <span class="category-count">2 tools</span>
+      </div>
+      <div class="tool-grid">
+
+        <a href="/seo-checker/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 4 5-5"/></svg></span>
+            <span class="command">$ seo</span>
+          </div>
+          <h3 class="tool-name">SEO checker</h3>
+          <p class="tool-description">Title, meta, OG tags, robots, sitemap, JSON-LD validation.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">META / OG / JSON-LD</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/og-preview/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="22" height="16" rx="2"/><path d="M3 9h22"/></svg></span>
+            <span class="command">$ preview</span>
+          </div>
+          <h3 class="tool-name">OG preview</h3>
+          <p class="tool-description">How your link looks on Slack, Twitter, LinkedIn, Discord.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">SLACK / TWITTER / LI</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- 6. UTILITIES -->
+      <div class="category">
+        <h2 class="category-title">Utilities</h2>
+        <span class="category-count">5 tools</span>
+      </div>
+      <div class="tool-grid">
+
+        <a href="/password/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="command">$ passwd</span>
+          </div>
+          <h3 class="tool-name">Password generator</h3>
+          <p class="tool-description">Cryptographic random + entropy meter + breach check.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">128-BIT / ENTROPY</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/random-color/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2a10 10 0 1 0 0 20 4 4 0 0 0 0-8 2 2 0 0 1 0-4h2a6 6 0 0 0 6-6c0-1.7-.7-3.3-2-4.5A10 10 0 0 0 12 2z"/></svg></span>
+            <span class="command">$ color</span>
+          </div>
+          <h3 class="tool-name">Random color</h3>
+          <p class="tool-description">HSL/RGB/HEX + WCAG contrast + copy + save palette.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">WCAG / PALETTE</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/word-counter/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></span>
+            <span class="command">$ count</span>
+          </div>
+          <h3 class="tool-name">Word counter</h3>
+          <p class="tool-description">Words, characters, sentences, reading time, keyword density.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">READ / KEYWORDS</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/check/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="m9 12 2 2 4-4"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg></span>
+            <span class="command">$ check</span>
+          </div>
+          <h3 class="tool-name">Smart dispatcher</h3>
+          <p class="tool-description">Paste any URL, IP, or domain — auto-routes to the right tool.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">ROUTE ANYTHING</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+        <a href="/tools/" class="tool-card">
+          <div class="card-top">
+            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+            <span class="command">$ ls</span>
+          </div>
+          <h3 class="tool-name">All tools</h3>
+          <p class="tool-description">The directory you're reading.</p>
+          <div class="card-bottom">
+            <span class="tool-tag">20 TOOLS</span>
+            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
+          </div>
+        </a>
+
+      </div>
     </div>
-
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">Why this list exists, and what's NOT on it</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">There's no shortage of "100 best tools for developers" lists. They all suffer from the same problem: they're either affiliate-spam farms or curated by AI with no human judgment. This list is different in that it documents what Ed actually uses, with one-line descriptions of why. Every entry has been on Ed's machine for at least 30 days; we don't add tools because they're trendy.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What's not on this list</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Three categories of tools we deliberately exclude:</p>
-      <ol class="list-decimal list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
-        <li><strong>Paid-only tools without a free tier that's worth using.</strong> We mention 1Password and Dashlane exist, but Bitwarden is on the list because the free tier is a legitimate full-featured password manager. We don't link to "free trials that require a credit card to start".</li>
-        <li><strong>Tools we can't independently recommend.</strong> Closed-source AI tools that lock your data in, password managers with known breaches, productivity tools that just wrap Notion blocks. We don't add them just because they exist.</li>
-        <li><strong>AI-wrappers-for-better-AI-wrappers.</strong> There's an entire category of "GPT-4 + PDF = startup" that adds nothing of value. They die in 6 months when OpenAI ships the same thing natively. We don't list them.</li>
-      </ol>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What gets replaced and how</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The list changes about twice a year. When a tool on the list gets acquired and shut down, or pivots to something we don't want to support, it gets removed. When Ed finds a new tool that's been on his machine for 60+ days and would recommend to a colleague, it gets added. The git history shows every edit.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why no affiliate links</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">sitetrace's <a class="source-link" href="/about/">/about</a> page criticizes affiliate-spam sites — every "best X tools" listicle with affiliate links looks the same. So this list has plain <code>rel="nofollow"</code> links to the official sites, no tracking, no paid promotion. If a tool has a paid tier we link to the official site and let them explain their own plan; we don't get a commission. That keeps the list honest.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A second reason: affiliate links rot fast. Tools get acquired, domains change, the affiliate program disappears. Plain links to official domains last longer and are easier to maintain.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">How to use this list</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you're a solo developer: pick one tool from each of the 8 categories. Don't try to use all 40 at once — that's exhausting. The point is to have a complete stack where each piece pulls its weight. A complete stack is one where, when you need to do X, you know which tool to use, and you trust it to do the job.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you're a team: this is a useful baseline for "what do we standardize on?" Pick 1 password manager, 1 editor, 1 design tool, 1 CI/CD system. Standardizing saves more time than picking the "best" tool in each category.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/headers-checker/">Security Headers Checker</a>, <a class="source-link" href="/cert-checker/">SSL Checker</a>, <a class="source-link" href="/random-color/">Random Color</a>, <a class="source-link" href="/network-tools/">All network tools</a>.</p>
-    </section>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -633,7 +573,6 @@
       </div>
       <div class="flex flex-wrap gap-4">
         <a href="/" class="hover:text-slate-300">Home</a>
-        <a href="/network-tools/" class="hover:text-slate-300">All tools</a>
         <a href="/about/" class="hover:text-slate-300">About</a>
         <a href="/privacy/" class="hover:text-slate-300">Privacy</a>
       </div>
