@@ -26,57 +26,7 @@
   <meta name="twitter:image:alt" content="Free SEO checker — SiteTrace" />
   <meta property="og:url" content="https://sitetrace.it.com/seo-checker/" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://www.schema.org",
-    "@type": "WebApplication",
-    "name": "SiteTrace SEO Checker",
-    "url": "https://sitetrace.it.com/seo-checker/",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Free SEO checker. Paste any URL to get a 12-point SEO audit covering title, meta description, H1, canonical, Open Graph, image alt text, and more."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "What an SEO checker actually checks — and what it doesn't",
-    "description": "A practical walkthrough of the 12 SEO signals worth measuring, why each matters for ranking, and what the audit misses.",
-    "author": {
-      "@type": "Person",
-      "name": "Edy Appenzeller",
-      "url": "https://sitetrace.it.com/about/",
-      "sameAs": ["https://github.com/appenzellerdigitalstore-stack"]
-    },
-    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
-    "datePublished": "2026-08-01",
-    "dateModified": "2026-10-02",
-    "inLanguage": "en",
-    "mainEntityOfPage": "https://sitetrace.it.com/seo-checker/",
-    "about": [
-      {"@type": "Thing", "name": "Search engine optimization"},
-      {"@type": "Thing", "name": "On-page SEO"},
-      {"@type": "Thing", "name": "Open Graph"}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What does this SEO checker actually measure?","acceptedAnswer":{"@type":"Answer","text":"Twelve on-page SEO signals: title tag length, meta description presence and length, H1 count and uniqueness, Open Graph tags (og:title, og:description, og:image, og:url, og:type), Twitter Card tags, canonical URL, robots meta, viewport meta, image alt text coverage, structured data (JSON-LD), favicon, and language declaration. The audit is rule-based — each signal has a pass/fail/warn threshold, and the overall score is the weighted sum."}},
-      {"@type":"Question","name":"Is a 100% audit the same as ranking #1?","acceptedAnswer":{"@type":"Answer","text":"No. The audit measures whether your page is technically correct — all the metadata present, the structure sound, no obvious mistakes. It does not measure content quality, backlinks, page speed, mobile usability (Google's separate Core Web Vitals), or any of the off-page signals that drive ranking. A 100% audit is a hygiene check, not a ranking guarantee. Most pages ranking #1 for competitive terms have middling technical SEO."}},
-      {"@type":"Question","name":"What's the difference between SEO and GEO?","acceptedAnswer":{"@type":"Answer","text":"SEO (Search Engine Optimization) optimizes for traditional search engines like Google — keywords, backlinks, on-page signals. GEO (Generative Engine Optimization) optimizes for AI assistants like ChatGPT, Claude, Perplexity — citation patterns, structured data, author expertise signals (the EEAT framework), and quotable paragraphs. The on-page mechanics overlap heavily; the difference is in the schema, the author byline, and the citation style. Our audit focuses on traditional SEO; for GEO, the audit plus author byline plus structured data plus original data and quotes is what counts."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -267,66 +217,7 @@
 
     <div id="seo-result" class="mt-5"></div>
 
-    <section class="mt-12 card p-6 sm:p-8 essay">
-      <h2 class="text-xl font-bold mb-2">What an SEO checker actually checks — and what it doesn't</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">An SEO audit is a hygiene check, not a ranking guarantee. The 12 on-page signals this tool measures (title, meta description, H1, Open Graph, image alt text, etc.) are signals Google uses to understand what your page is about and how to present it in search results. A page that gets all 12 right will be displayed correctly in SERPs and have a clean shot at ranking. A page that gets 5 of 12 right might still rank for the right terms if the content is excellent and the backlinks are strong, but the SERP snippet will be ugly and click-through will be lower.</p>
-
-      <p><strong>What each check is actually measuring.</strong></p>
-
-      <p><strong>Title tag.</strong> The 50-60 character string that shows up in the browser tab and as the blue headline in Google. Google truncates around 580-600px wide (60 chars on desktop, 50 on mobile). Missing title = Google generates one from your H1 or page content, which is rarely what you want. Multiple titles = bad; pick one. The check is "is there exactly one title tag, between 30 and 65 characters, and does it describe what the page is about?"</p>
-
-      <p><strong>Meta description.</strong> The 150-160 character snippet under the title in SERPs. Google doesn't always use it (it often picks page content that matches the search query better), but when you write a good one, click-through rates go up 5-15%. Missing = Google picks something, often not what you'd choose. The check is "is there a meta description, between 70 and 200 characters, and does it summarize the page content?"</p>
-
-      <p><strong>H1.</strong> The main heading of the page. Should be unique on the page (only one H1), should match the topic, and should be different from the title tag (or at least not identical — Google doesn't penalize identical title/H1 but readers find it weird). Missing H1 = Google has to guess which text is the most important, which it does badly. The check is "is there exactly one H1?"</p>
-
-      <p><strong>Open Graph and Twitter Card.</strong> The tags that control how your page looks when shared on Facebook, Twitter, LinkedIn, Slack, Discord. og:title, og:description, og:image (1200x630 is the magic number for FB), og:url, og:type. Without them, the social network picks the worst-looking preview — usually a tiny logo or a random paragraph. With them, you control the share preview. The check is "are all 5 OG tags present, and is the og:image at least 600px wide?"</p>
-
-      <p><strong>Canonical URL.</strong> Tells search engines which URL is the "main" one when the same content is reachable from multiple paths (with and without trailing slash, with and without query parameters, http vs https, www vs apex). Without a canonical, Google has to pick, and it picks the URL it saw first — sometimes a redirect loop or a query-stringed version that nobody should be ranking for. The check is "is there a canonical link element, and does it match the current URL (or is it intentional)?"</p>
-
-      <p><strong>Meta robots.</strong> The tag that tells search engines whether to index the page or follow the links. "index, follow" is the default and what you want for normal pages. "noindex" hides the page from search. "nofollow" tells crawlers not to pass link equity. Accidentally setting "noindex, nofollow" on a page you want to rank is one of the most common SEO mistakes. The check is "is the meta robots tag absent (good), or is it 'index, follow' (good), or does it have 'noindex' (warn)?"</p>
-
-      <p><strong>Viewport.</strong> The <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> tag that tells mobile browsers to render at the device's native width instead of pretending to be 1024px. Without it, mobile rendering breaks — Google's mobile-friendly test fails, and ranking drops for mobile queries. The check is "is the viewport meta tag present and correct?"</p>
-
-      <p><strong>Image alt text coverage.</strong> Every <code>&lt;img&gt;</code> should have an <code>alt=""</code> attribute, even if it's empty for decorative images. Alt text is read by screen readers (accessibility), used by Google Images for ranking, and shown when the image fails to load. The check is "what percentage of images have alt text? Aim for 95%+ on content images; decorative images can have alt='' but should be marked with role='presentation'."</p>
-
-      <p><strong>Structured data (JSON-LD).</strong> The schema.org vocabulary that lets Google understand your page as a Product, Article, FAQ, Recipe, Event, etc. With structured data, Google can show rich snippets (star ratings, prices, FAQ accordions directly in SERPs). Without it, your result is a plain blue link. The check is "is there a JSON-LD script tag with @context: schema.org?"</p>
-
-      <p><strong>HTTPS, word count, favicon, language declaration.</strong> HTTPS has been a Google ranking signal since 2014 — pages without HTTPS get demoted in Chrome too ("Not secure" warning). Word count is a rough content depth proxy (thin pages under 200 words rarely rank). Favicon and language declaration are technical correctness signals; missing them doesn't hurt rankings but missing favicon looks unprofessional in browser tabs.</p>
-
-      <p><strong>What this audit doesn't measure.</strong> Five big things. (1) Content quality — no rule-based audit can read your 80-word intro paragraph and tell you it doesn't answer the searcher's intent. (2) Backlinks and PageRank — the off-page authority that Google weighs heavily in competitive SERPs. (4) Page speed and Core Web Vitals — Google's separate ranking signal measured by Lighthouse and Chrome UX Report. (5) Mobile usability beyond viewport — touch target sizes, font sizes, content reflow. (6) Internal linking structure — does the page link to other relevant pages on the site in a useful way? Lighthouse measures some of (3) and (4); the rest requires a human editor.</p>
-
-      <p><strong>SEO vs GEO.</strong> SEO (Search Engine Optimization) optimizes for traditional search engines like Google. GEO (Generative Engine Optimization) optimizes for AI assistants — ChatGPT, Claude, Perplexity, Google Gemini. The on-page mechanics overlap heavily: schema.org markup, clear title and meta description, semantic HTML. The differences are in the citation style (AI engines prefer paragraphs that can be quoted, with explicit attribution), the author byline (AI engines weight EEAT — Experience, Expertise, Authoritativeness, Trustworthiness — heavily), and the structured data (FAQ schema and TechArticle schema are picked up by both Google and AI engines). Our audit focuses on traditional SEO; for GEO, the same audit plus original data and quotes is what counts.</p>
-
-      <p>The check behind this page runs entirely in a Cloudflare Worker. The Worker fetches the URL you give it (with a 5-second timeout), parses the HTML with the standard <code>DOMParser</code>, runs the 12 checks against the parsed tree, and computes the 0-100 result. Each check is a small function in <code>functions/api/seo-check.js</code> — adding a new check means appending an object to the <code>CHECKS</code> array with an id, weight, and run function. The whole round trip is typically 1-3 seconds. If you want the same check from a script or CI, the data is at <code>api.sitetrace.it.com</code>:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/seo-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"url":"https://example.com"}'</span>
-        <br/><span class="comment"># → {score, checks: [{id, pass, value, message, weight}, ...]}</span>
-      </div>
-
-      <p>The free tier allows 100 calls per day; paid tiers allow more. For bulk audits (multiple URLs), batch them with a concurrency cap to respect rate limits. For continuous monitoring, run the audit weekly and watch for score regressions — a sudden drop usually means someone changed a template or removed a tag.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="seo_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_1_q">How does this SEO checker work?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_1_a">Each check is a small function in functions/api/seo-check.js — the CHECKS array has 12 objects, each with three fields: an id, a weight (out of 100), and a run function that returns { pass, value, message }. Read the file to see exactly what each check looks for, what makes it pass or fail, and how its score is weighted. The comment block at the top of the file documents how to add a new check (append an object, choose a weight, describe the rule). The function takes care of HTML parsing, scoring, and rendering — you just describe the check.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_2_q">Do you send the URL to anyone else?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_2_a">No. The URL is fetched from Cloudflare’s edge to the target site, and the result is returned to your browser. SiteTrace does not log URLs, does not share them with any third party, and does not store them.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_3_q">What SEO checks are included?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_3_a">Title tag, meta description, H1 (presence and count), H2, canonical URL, meta robots (not accidentally noindex), viewport meta, Open Graph tags (og:title, og:description, og:image), Twitter Card tags, image alt text coverage, HTTPS, and word count.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_4_q">Can I check any URL?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_4_a">Any public http:// or https:// page. Private IPs, localhost, and other internal addresses are blocked for security. The target site must respond to a normal HTTP GET and return HTML.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="seo_faq_5_q">How do I add my own SEO check?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="seo_faq_5_a">Open functions/api/seo-check.js. Add an object to the CHECKS array with an id, a weight, and a run function that returns { pass, value, message }. The function takes care of HTML parsing, scoring, and rendering — you just describe the check. Deploy and the new check appears on the page automatically.</p></div>
-      </div>
-    </section>
-
-    <div class="mt-8 card">
-      <h2 class="text-base font-bold mb-3">Related tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
-        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS lookup →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
-      </div>
-    </div>
+</div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">

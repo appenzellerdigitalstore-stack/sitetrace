@@ -38,38 +38,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Strong Password Generator — SiteTrace",
-    "url": "https://sitetrace.it.com/password/",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
-    "description": "Cryptographically random password generator with entropy and time-to-crack displayed. 100% client-side, no signup, no tracking."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"How random is this password?","acceptedAnswer":{"@type":"Answer","text":"The generator uses crypto.getRandomValues where available, which is the browser's cryptographically-secure RNG backed by the OS (Linux's /dev/urandom, Windows BCryptGenRandom, macOS SecRandomCopyBytes). It is suitable for password generation. On older browsers without crypto.getRandomValues, it falls back to Math.random which is NOT cryptographically secure — these browsers should not be used for password generation."}},
-      {"@type":"Question","name":"What does the entropy number mean?","acceptedAnswer":{"@type":"Answer","text":"Entropy is measured in bits. A password with N bits of entropy is one of 2^N equally-likely passwords. 30 bits is weak (1 billion possibilities, crackable in seconds at modern attack speeds). 60 bits is reasonable (10^18 possibilities, takes years at 1B guesses/sec). 80+ bits is strong (10^24 possibilities, longer than the age of the universe at any conceivable attack rate). 128 bits is overkill for a single site."}},
-      {"@type":"Question","name":"What is the time-to-crack estimate?","acceptedAnswer":{"@type":"Answer","text":"The estimate assumes an attacker who has obtained the password hash and is brute-forcing it offline at 1 billion guesses per second — the rate a modern GPU can hash bcrypt or a fast hash like SHA-256. Online attacks (rate-limited to a few tries per second by the website) take much longer. The estimate is the worst case: the attacker knows everything about the format (length, charset) but not the password."}},
-      {"@type":"Question","name":"Should I use a passphrase instead of a password?","acceptedAnswer":{"@type":"Answer","text":"For passwords you have to type (laptop login, phone unlock), a long passphrase is easier to remember than a random string. Use the passphrase tab to generate 4-6 random words from a 7000-word list (~76 bits of entropy with 4 words). For passwords in a password manager (where you copy-paste), random strings are equally good and shorter. Don't use a memorable password for anything that matters — use a manager."}},
-      {"@type":"Question","name":"Is this tool safe? Does it send my password to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The entire generator runs in your browser. The HTML page loads once; the JavaScript generates the password from crypto.getRandomValues locally; the password is displayed in your browser; you copy it. No HTTP request leaves the browser for the password itself. Verify by opening DevTools (F12) and watching the network tab while generating."}},
-      {"@type":"Question","name":"How long should my password be?","acceptedAnswer":{"@type":"Answer","text":"For random passwords (managed in a password manager): 16 characters minimum, 20+ is better. For passphrases you have to type: 4-6 random words. Length matters more than complexity — a 16-character lowercase password (16 * 4.7 = 75 bits) is stronger than an 8-character mixed-case-symbols password (16 * 6.5 = 52 bits). The math is against the length, not the symbol soup."}},
-      {"@type":"Question","name":"Why are some password managers' passwords so long?","acceptedAnswer":{"@type":"Answer","text":"Because length is the only thing that scales. A 32-character random password is 188 bits of entropy — more than the age-of-the-universe-times-age-of-the-universe crack times. The downside is you can never type it from memory, which is why you put it in a password manager. If you trust your password manager (1Password, Bitwarden, KeePass), the longer the better."}},
-      {"@type":"Question","name":"What are diceware passphrases?","acceptedAnswer":{"@type":"Answer","text":"Diceware is a passphrase scheme where you roll a 6-sided die 5 times to pick a word from a 7776-word list (~12.9 bits per word), and repeat for 4-7 words. The passphrase tab above approximates this with a 7000-word English list (slightly lower entropy per word) and crypto.getRandomValues (slightly faster than dice). The principle is the same: entropy from a small random word list beats entropy from a large character set at the same memorability cost."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -263,60 +232,7 @@
       </div>
     </div>
 
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">Password entropy and time-to-crack: the math every developer should know</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A password is a secret string. An attacker who has obtained the password's hash (via database breach, leaked logs, or a side-channel) will try to recover the original string by guessing. The strength of a password is how many guesses they need on average — which is half of the total number of possible passwords the secret could be. We measure this in bits: a password with N bits of entropy is one of 2^N equally-likely possibilities, and a brute-force attacker needs ~2^(N-1) guesses on average to find the right one.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">The math, fast</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">For a password of L characters chosen uniformly from an alphabet of size A, the entropy is:</p>
-      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto mb-3"><code>entropy_bits = L * log2(A)</code></pre>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Common alphabets and their log2 sizes:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>Lowercase a-z: log2(26) ≈ 4.7 bits per character</li>
-        <li>Lowercase + uppercase: log2(52) ≈ 5.7 bits per character</li>
-        <li>Alphanumeric (a-z, A-Z, 0-9): log2(62) ≈ 5.95 bits per character</li>
-        <li>Full ASCII printable: log2(95) ≈ 6.57 bits per character</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A 16-character password using the full 95-character alphabet has 16 * 6.57 ≈ 105 bits of entropy. An attacker brute-forcing at 1 billion guesses/second would need ~2^104 / 10^9 ≈ 2 * 10^22 seconds ≈ 600 billion years. Older than the sun.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Length beats complexity</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A common mistake is to add complexity (special characters, mixed case) at the cost of length. The math is against the length, not the symbol soup:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>16-character lowercase only: 16 * 4.7 = 75 bits</li>
-        <li>8-character with everything: 8 * 6.57 = 52 bits</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The 16-character lowercase password is stronger than the 8-character mixed one, and easier to type. For passwords managed in a tool, length wins. For passwords you have to type, passphrases win (next section).</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Passphrases: memorable entropy</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The passphrase tab uses a 7000-word English list. Each word contributes log2(7000) ≈ 12.8 bits. Four words: 51 bits. Five words: 64 bits. Six words: 77 bits. Six random English words are easier to remember than 16 random characters, and at 77 bits they're stronger than most human-chosen 16-character passwords.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">This is the diceware principle: pick a short, memorable list of words (7000 in our case, 7776 in canonical diceware), pick N words at random, join them. The result is high-entropy and memorable.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why "this site" doesn't matter — but "all sites" does</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Your bank password, your email password, your social media password, your Netflix password. The math for each one is identical — an attacker with the hash can brute-force any single password at the same speed. The asymmetric danger is when those passwords are the SAME: one site gets breached, the attacker tries the email/password combo on a hundred sites. Most modern attackers do exactly this with credential-stuffing tools.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The right pattern: one unique random password per site, stored in a password manager (1Password, Bitwarden, KeePass). The password manager is the only place you have to remember a strong password — the master password — and that one needs to be the strongest of all.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What NIST actually recommends</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">NIST SP 800-63B is the US federal password guideline. The 2024 revision says:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>Minimum 8 characters (was 6 in earlier revisions), but encourage longer.</li>
-        <li>No mandatory complexity (no "must contain uppercase, lowercase, digit, symbol"). It actively discourages this — it produces passwords people write down.</li>
-        <li>No mandatory periodic rotation (the 90-day rotation rule was retired; it produces passwords people increment by one each cycle).</li>
-        <li>Check passwords against a breach corpus (HIBP API has 8+ billion compromised passwords; reject any user-chosen password that appears).</li>
-        <li>Allow all printable ASCII, including spaces. Allow Unicode. Allow passphrases.</li>
-        <li>Use a password strength meter at signup that shows entropy, not a vague "weak / strong" rating.</li>
-      </ul>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Two-factor authentication is the second layer</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A strong password protects you when a site's database is breached. A strong password + 2FA (TOTP, WebAuthn) protects you when your password itself is leaked (phishing, keylogger, shoulder-surfing, or your password manager is compromised). Both matter. The right pattern: unique strong passwords in a manager + 2FA on every site that supports it. Most modern sites support TOTP (authenticator apps) and many now support WebAuthn (hardware keys, Touch ID, Face ID, Windows Hello).</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why this generator is 100% client-side</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A password generator that sends your password to a server is a logger, not a generator. The server sees every password you generate, which means the server is a single point of failure for every password you've ever used. The page you're reading now: zero HTTP calls per roll. The HTML and JavaScript load once when you open the page; the password is generated locally via <code>crypto.getRandomValues</code>; you copy it; you paste it into your password manager. No network round trips for the password itself.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Verify by opening DevTools (F12), clicking the Network tab, then clicking Generate. You'll see no requests fire after the initial page load. That's the difference between a generator and a logger.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/random-color/">Random Color</a>, <a class="source-link" href="/word-counter/">Word Counter</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
-    </section>
-  </main>
+</main>
 
   <footer class="border-t border-white/5 mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">

@@ -45,37 +45,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Security Headers Checker — SiteTrace",
-    "url": "https://sitetrace.it.com/headers-checker/",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
-    "description": "Free HTTP security headers checker. Grade A-F across CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. No login, no queue."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What is a security header?","acceptedAnswer":{"@type":"Answer","text":"A security header is an HTTP response header that tells the browser to enforce a security policy on the response: refuse to load scripts from unapproved origins, force HTTPS, block framing, disable MIME sniffing, or restrict powerful APIs (camera, microphone, geolocation). The most important ones are Content-Security-Policy, Strict-Transport-Security, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy."}},
-      {"@type":"Question","name":"How is the grade calculated?","acceptedAnswer":{"@type":"Answer","text":"Each header carries a weight: CSP 20, HSTS 15, X-Frame-Options 10, X-Content-Type-Options 10, Referrer-Policy 5, Permissions-Policy 5. The total adds up to 65 points maximum across the six critical headers, but the score is scaled so 100 is achievable. A is 90+, B is 80+, C is 60+, F is below 40. A missing CSP is -20, a missing HSTS is -15, etc."}},
-      {"@type":"Question","name":"Why is CSP the heaviest weighted header?","acceptedAnswer":{"@type":"Answer","text":"Content-Security-Policy is the single most effective defense against cross-site scripting (XSS). Even when an attacker manages to inject a <script> tag, a well-configured CSP makes the browser refuse to load the script source. HSTS protects against downgrade attacks, but downgrade attacks require an active network attacker; XSS happens on every page load via form input, query string, third-party scripts, and stored content. CSP is weighted highest because it prevents the most common attack class."}},
-      {"@type":"Question","name":"Is this tool different from securityheaders.com?","acceptedAnswer":{"@type":"Answer","text":"securityheaders.com by Tim Sneath's is the historical reference for header scanning and remains accurate. SiteTrace is faster (no queue, no rate-limit on the free tier), provides the same six-header grade, and additionally returns the full response header set so you can see every header — not just the security ones — including Server, X-Powered-By, Cache-Control, and Content-Type. Sitetrace also surfaces leak headers (Server / X-Powered-By) which should be removed for production sites."}},
-      {"@type":"Question","name":"What headers should I remove?","acceptedAnswer":{"@type":"Answer","text":"Remove Server (or set it to a generic value like 'webserver' instead of 'Apache/2.4.52') and X-Powered-By (or just delete it). These leak software version info that helps them target the right exploit. The other 'leaky' header to remove is any custom header that says what framework you use (X-Generator: WordPress 6.2). Modern exploits are automated; attackers scan for known-version sites and attack them in bulk."}},
-      {"@type":"Question","name":"What is the difference between Referrer-Policy values?","acceptedAnswer":{"@type":"Answer","text":"Referrer-Policy controls how much of the URL is sent in the Referer header on outgoing requests. no-referrer sends nothing. same-origin sends the full URL only on same-origin requests. strict-origin sends only the origin (no path). orange-full-back is the default in older browsers and leaks the full URL across sites. Use sitetrast-origin-when-cross-origin for most sites: full URL on same-origin, only origin on cross-origin requests."}},
-      {"@type":"Question","name":"Why does my header scan work but my site still feels insecure?","acceptedAnswer":{"@type":"Answer","text":"Because security headers are necessary but not sufficient. A header scan checks your transport and browser-enforcement policy. It does not check your application code for SQL injection, your authentication for session fixation, your dependencies for known CVEs, or your server config for directory traversal. Run a header scan regularly (weekly is fine), but pair it with: dependency scanning (npm audit / pip-audit / snyk), server-side log monitoring, and a periodic manual penetration test by a qualified auditor."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -250,65 +220,7 @@
 
     <div id="sh-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
 
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">The six HTTP security headers every site should set in 2026</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">Every HTTP response carries a set of headers — small key-value pairs the server sends before the page body. Most of them are routine: <code>Content-Type</code> tells the browser what's coming, <code>Cache-Control</code> says how long to keep it, <code>Set-Cookie</code> tracks the session. But a handful of headers are security-critical: they tell the browser to enforce a policy on the response itself. Skip them, and a perfectly-coded site becomes clickjackable, downgradeable, or vulnerable to cross-site scripting because the browser wasn't told to refuse.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">1. Content-Security-Policy (the heavyweight)</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CSP is a single header that says: "Browser, here is a whitelist of where scripts, styles, images, fonts, and connections are allowed to come from. Refuse anything else, even if the page tries to load it." A well-configured CSP stops most cross-site scripting because the attacker's injected <code>tag</code> simply won't load.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Example: <code>Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'</code>. That policy says: load scripts only from your own origin plus jsdelivr; load styles from your own origin plus inline (needed for most frameworks); block all plugins; lock down the <code>base</code> tag so an attacker can't redirect relative URLs.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CSP is the heaviest weight (20 points) in the grader because it covers the most common attack class. Sites that have no CSP and a single XSS bug lose customer data. Sites that have a strong CSP and a single XSS bug stay safe.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">2. Strict-Transport-Security (HSTS)</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">HSTS tells the browser: "For this domain, always use HTTPS — even if the user types <code>http://</code> or follows an HTTP link." Without HSTS, the first request to your site over plain HTTP can be intercepted by an active network attacker and rewritten to an HTTPS URL of their choosing (sslstrip). With HSTS, the browser refuses to make the plain-HTTP request at all.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Example: <code>Strict-Transport-Security: max-age=31536000; includeSubDomains; preload</code>. One year, all subdomains, eligible for browser preload list. The preload flag means you've submitted to the Chrome HSTS preload list — the browser ships knowing never to make an HTTP request to your domain, before even checking headers.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">3. X-Frame-Options (anti-clickjacking)</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">X-Frame-Options: <code>DENY</code> or <code>SAMEORIGIN</code> prevents your site from being framed by another site. Without it, an attacker can put your login page inside their malicious page, overlay it with a transparent "Click here to win" button, and capture your users' passwords when they try to log into what looks like your site.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Modern alternative: <code>Content-Security-Policy: frame-ancestors 'none'</code> or <code>frame-ancestors 'self'</code>. CSP frame-ancestors supersedes X-Frame-Options, but X-Frame-Options is still useful for older browsers. Set both.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">4. X-Content-Type-Options: nosniff</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">One-line header, large impact. <code>X-Content-Type-Options: nosniff</code> tells the browser: "Trust the Content-Type I sent. Don't try to sniff the body to figure out if a .jpg is actually JavaScript." Without it, an attacker who can upload a file with a misleading extension can sometimes get it executed as the wrong MIME type. With nosniff, the browser refuses.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">5. Referrer-Policy</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">When a user clicks a link from your page to another site, the browser sends the <code>Referer</code> header with the URL they came from. By default that includes the full path, which can leak sensitive information (private admin URLs, session tokens in URLs, internal search terms). <code>Referrer-Policy: strict-origin-when-cross-origin</code> sends the full URL on same-origin requests and only the origin (no path) on cross-origin requests. The right balance for most sites.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">6. Permissions-Policy</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Permissions-Policy (replacing the older Feature-Policy header) controls which powerful browser features your page can use: camera, microphone, geolocation, payment, USB, accelerometer, gyroscope, magnetometer. Example: <code>Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=()</code>. The <code>()</code> means "no origin can use this"; <code>(self)</code> means "only this origin can use this". If you don't use any of these features on a particular page, disable them entirely.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What to remove (the leak headers)</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Just as important as adding the right headers is removing the leaky ones:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li><code>Server: Apache/2.4.52 (Ubuntu)</code> — tells attackers your exact software version. Replace with <code>Server: WebServer</code> or remove entirely.</li>
-        <li><code>X-Powered-By: PHP/8.1.0</code> — same problem, worse. Most frameworks let you disable it.</li>
-        <li><code>X-Generator: WordPress 6.2</code> — WordPress-specific leak, tells attackers which plugin CVEs to look for.</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Modern attackers scan the internet with tools like Shodan and Censys looking for known-version sites. The more you leak, the faster they find you. A scan that shows nothing is harder to attack than a scan that shows everything.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Common mistakes when configuring CSP</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CSP is the hardest of the six to configure correctly. Three patterns I see most often:</p>
-      <ol class="list-decimal list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
-        <li><strong>Unsafe-inline in script-src.</strong> Allowing inline scripts defeats most of the XSS protection because every XSS payload is by definition an inline script. Use nonces or hashes instead.</li>
-        <li><strong>Wildcard source for scripts.</strong> <code>script-src *</code> allows scripts from any origin, including attacker-controlled ones. Use a narrow whitelist.</li>
-        <li><strong>CSP that allows eval().</strong> <code>script-src 'unsafe-eval'</code> permits <code>eval()</code>, which is how most obfuscated XSS payloads execute. Avoid it unless you have a hard dependency (some template engines need it).</li>
-      </ol>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you can't get a strict CSP working immediately, use CSP in report-only mode first: <code>Content-Security-Policy-Report-Only</code>. The browser logs violations to your report-uri but doesn't enforce. Fix the violations, then switch to enforcing mode.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why a header scan is necessary but not sufficient</h3>
-      <p class="text-slate-300 text-sm sm-base leading-relaxed mb-3">A header scan tells you your browser-enforcement policy. It does not check your application code for SQL injection, your authentication for session fixation, your dependencies for known CVEs, or your server config for directory traversal. Run a header scan weekly (set a reminder), but pair it with:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>Dependency scanning: <code>npm audit</code>, <code>pip-audit</code>, <code>snyk test</code>, or GitHub's built-in Dependabot.</li>
-        <li>Server-side log monitoring: tail auth logs for failed logins, 4xx spikes, unfamiliar user agents.</li>
-        <li>Periodic manual code review by someone other than the original author.</li>
-        <li>Annual penetration test by a qualified external auditor.</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">The header scan is your first line of defense — the cheap, fast, automated check that catches the most common misconfigurations. Everything else builds on top.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/check/">/check</a>, <a class="source-link" href="/dns-tools/">DNS lookup</a>, <a class="source-link" href="/seo-checker/">SEO checker</a>, <a class="source-link" href="/http-headers/">HTTP headers viewer</a> (for sites that pass the security check and want to see the rest).</p>
-    </section>
-
-    <section class="mt-12 max-w-3xl mx-auto card p-6">
+<section class="mt-12 max-w-3xl mx-auto card p-6">
       <h2 class="text-xl font-bold mb-3">Use the API directly</h2>
       <p class="text-slate-300 text-sm leading-relaxed mb-3">The grader is also a JSON API. Free, no signup for the first 100 calls per day, 1,000 with a free API key.</p>
       <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto"><code>curl "https://api.sitetrace.it.com/api/headers?url=https://example.com" \

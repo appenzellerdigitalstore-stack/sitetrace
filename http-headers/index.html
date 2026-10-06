@@ -26,23 +26,7 @@
   <meta name="twitter:image:alt" content="HTTP headers viewer — SiteTrace" />
   <meta property="og:url" content="https://sitetrace.it.com/http-headers/" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What are HTTP response headers?","acceptedAnswer":{"@type":"Answer","text":"HTTP response headers are key-value pairs the server sends back with every page load, before the page content. They tell your browser how to handle the response: how long to cache it, whether to allow scripts, where to redirect, what content type the body is, and so on. Some headers are security-critical (CSP, HSTS, X-Frame-Options); others leak information about the server (Server, X-Powered-By) and should be removed."}},
-      {"@type":"Question","name":"What is the Content-Security-Policy header?","acceptedAnswer":{"@type":"Answer","text":"Content-Security-Policy (CSP) is a header that tells the browser which sources of scripts, styles, images, and connections are allowed to load on the page. A well-configured CSP prevents most XSS attacks because even if an attacker injects a script tag, the browser refuses to load the source. Example: Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.example.com; object-src 'none'. A missing or weak CSP is one of the most common security gaps on production sites."}},
-      {"@type":"Question","name":"What is Strict-Transport-Security (HSTS)?","acceptedAnswer":{"@type":"Answer","text":"Strict-Transport-Security (HSTS) is a header that tells the browser to always use HTTPS for this domain, even if the user types http:// or follows an http:// link. The header includes a max-age in seconds (commonly 31536000, which is one year) and an optional includeSubDomains flag. HSTS prevents downgrade attacks and cookie theft. Without it, the first request to your site over HTTP can be intercepted and rewritten."}},
-      {"@type":"Question","name":"Why does my site get a bad grade?","acceptedAnswer":{"@type":"Answer","text":"Most production sites miss one or more of the high-weight security headers: Content-Security-Policy is the most commonly missing because it requires careful tuning to avoid breaking the site; HSTS is missing on sites that have never turned it on; X-Frame-Options is missing on sites that pre-date clickjacking awareness. The score is a rough guide, not a guarantee — a site with no CSP is genuinely at higher risk for XSS, but a site with a strong CSP that breaks half the page is also not safe."}},
-      {"@type":"Question","name":"Is this tool safe to use on any URL?","acceptedAnswer":{"@type":"Answer","text":"You can use it on any public http:// or https:// URL. Private IPs, localhost, and .local / .internal hostnames are blocked to prevent the tool from being used to scan internal infrastructure. The tool only reads response headers — it does not execute the page, does not load scripts, and does not interact with the page in any way your browser would not if you visited the URL directly."}},
-      {"@type":"Question","name":"Which security headers matter most?","acceptedAnswer":{"@type":"Answer","text":"Six high-priority ones: Strict-Transport-Security (HSTS, prevents HTTP→HTTPS downgrade), Content-Security-Policy (CSP, blocks most XSS), X-Frame-Options (prevents iframe embedding), X-Content-Type-Options: nosniff (stops MIME sniffing), Referrer-Policy (controls referer header scope), and a clean Server / X-Powered-By (don't leak software versions). Lower-priority but useful: Permissions-Policy (restricts camera, microphone, geolocation), Cross-Origin-Opener-Policy, Cross-Origin-Embedder-Policy, Cross-Origin-Resource-Policy."}},
-      {"@type":"Question","name":"What does the security grade mean?","acceptedAnswer":{"@type":"Answer","text":"It's a weighted score across the six critical headers. HSTS missing is -25. CSP missing is -25 (because XSS is the most common web vulnerability). X-Frame-Options missing is -15. X-Content-Type-Options missing is -10. Referrer-Policy too permissive is -10. Permissions-Policy missing is -15. Above 80 is A (excellent), 65-79 is B, 50-64 is C, below 50 is D or F. The score is intentionally generous — a site with no CSP and no HSTS is 50 (C), and that's still dangerously low."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -282,65 +266,7 @@
 
     <div id="hhd-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
 
-    <section class="mt-12 card p-6 sm:p-8 essay">
-      <h2 class="text-xl font-bold mb-2" data-i18n="hhd_how_h2">How the security-header grade works</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3" data-i18n="hhd_how_text">The grade is a 0–100 score built from six weighted security headers. Content-Security-Policy is worth 25 points and is the most commonly missed; Strict-Transport-Security is worth 20; X-Frame-Options is worth 15; X-Content-Type-Options and Referrer-Policy and Permissions-Policy are worth 10 each. A+ means 95+, A is 85–94, B is 70–84, C is 55–69, D is 40–54, and F is below 40. The grade also surfaces any Server, X-Powered-By, or version-leaking headers — these are not scored against you, but they tell an attacker what stack you run, and most security guides recommend stripping them.</p>
-
-      <p>HTTP response headers are the metadata your server sends with every page load. Most of them you'll never see — they're set by the server framework (Express, Rails, Spring) or a reverse proxy (Cloudflare, Apache, nginx) and the browser handles them silently. A few are security-critical; the rest control caching, content negotiation, and behavior. Here's the practical breakdown.</p>
-
-      <p><strong>Caching headers.</strong> <code>Cache-Control</code> is the one you'll see most often. Values like <code>max-age=3600</code> tell the browser to cache for an hour; <code>no-cache</code> means "always revalidate"; <code>no-store</code> means "don't cache at all" (used for sensitive content). <code>ETag</code> is a hash of the response that the browser sends back with conditional requests — if the resource hasn't changed, the server returns 304 Not Modified and the browser uses its cache. <code>Last-Modified</code> and <code>Expires</code> are older versions of the same idea. <code>Vary</code> is the one most production sites get wrong — it tells the cache "the response varies by Accept-Encoding" or "by Origin" or similar, so the cache doesn't serve the wrong version to the wrong client. For an API serving JSON to SPAs, <code>Vary: Origin</code> is critical.</p>
-
-      <p><strong>Content negotiation.</strong> <code>Content-Type</code> tells the browser what's in the body — <code>text/html; charset=utf-8</code>, <code>application/json; charset=utf-8</code>, <code>image/png</code>. <code>Content-Encoding</code> says the body is encoded — usually <code>gzip</code>, sometimes <code>br</code> (Brotli). <code>Content-Length</code> is the body size in bytes (helpful for download progress). <code>Content-Language</code> is the language of the body — used by Google's hreflang signals for multilingual sites.</p>
-
-      <p><strong>Security headers — the six critical ones.</strong></p>
-
-      <p><strong>Strict-Transport-Security (HSTS).</strong> Tells the browser "always use HTTPS for this domain, even if the user types http://". Value: <code>max-age=31536000; includeSubDomains; preload</code>. The <code>preload</code> directive lets you submit to Chrome's HSTS preload list, which is baked into the browser so even the first request (before any header has been received) goes to HTTPS. HSTS prevents downgrade attacks where an attacker intercepts the first HTTP request and rewrites it. Without HSTS, the first request to your site can be hijacked; with HSTS, even that first request is encrypted.</p>
-
-      <p><strong>Content-Security-Policy (CSP).</strong> Tells the browser "these are the only sources of scripts, images, and connections allowed on the page." Value: <code>default-src 'self'; script-src 'self' https://cdn.example.com; object-src 'none'; base-uri 'self'</code>. CSP prevents most XSS attacks because even if an attacker injects a script tag, the browser refuses to load it. Most production sites run CSP in <code>report-only</code> mode first (CSP-RO) to discover violations without breaking the site, then tighten to enforce. A site without CSP is at materially higher XSS risk; a site with a strong CSP that breaks half the page is also not safe.</p>
-
-      <p><strong>X-Frame-Options.</strong> Tells the browser "don't let anyone embed this page in an iframe." Value: <code>DENY</code> or <code>SAMEORIGIN</code>. Prevents clickjacking — where an attacker overlays a malicious button over a legitimate one in an iframe. <code>DENY</code> is the safer default; <code>SAMEORIGIN</code> allows your own site to iframe your own pages (useful for some flows). Modern alternative: <code>frame-ancestors 'none'</code> in CSP, which supersedes X-Frame-Options.</p>
-
-      <p><strong>X-Content-Type-Options: nosniff.</strong> Tells the browser "don't guess the content type from the body — trust the Content-Type header." Without it, a text file served with Content-Type: text/plain can be interpreted as JavaScript if the contents happen to look like a script. <code>nosniff</code> stops the browser from doing MIME sniffing. Always set this — it's free, has no downside, and closes a real attack vector.</p>
-
-      <p><strong>Referrer-Policy.</strong> Tells the browser when navigating away from your page whether to send the full URL in the <code>Referer</code> header. Value: <code>strict-origin-when-cross-origin</code> is the modern safe default. Sends the full URL on same-origin navigation, only the origin on cross-origin. <code>no-referrer</code> sends nothing — privacy-maximizing, but some analytics tools depend on the referrer to attribute traffic.</p>
-
-      <p><strong>Permissions-Policy.</strong> Tells the browser which powerful features (camera, microphone, geolocation, USB, payment, accelerometer) are allowed on this page and on iframes. Value: <code>camera=(), microphone=(), geolocation=()</code> disables all three. Most sites should set this defensively to <code>()</code> for any feature they don't actively need. Reduces the blast radius of an injection — even if an attacker injects JavaScript, the script can't request camera access.</p>
-
-      <p><strong>Headers that leak information you don't want.</strong> <code>Server: nginx/1.21.0</code> tells an attacker your exact nginx version. <code>X-Powered-By: PHP/8.1.7</code> is a goldmine for CVE matching. The <code>Via</code> header reveals every proxy in the chain. None of these are scored in the audit (security researchers know how to find versions anyway), but stripping them reduces the surface area for targeted attacks. Most web servers let you blank the version with one config line.</p>
-
-      <p><strong>Setting headers in different frameworks.</strong> nginx: <code>add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;</code>. Apache: <code>Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"</code>. Express (Node.js): use the <code>helmet</code> middleware — <code>app.use(helmet())</code> sets 12 security headers in one line. Rails: <code>config.force_ssl = true</code> enables HSTS. Django: <code>SECURE_HSTS_SECONDS = 31536000</code> in settings.py. Cloudflare: enable HSTS in the SSL/TLS app.</p>
-
-      <p>The headers view behind this page fetches the URL with a HEAD request (no body downloaded) and parses the response headers with a small client. The whole round trip is under 2 seconds. The security grade is computed from the parsed header set; the breakdown shows which headers are present, missing, or weak. If you want to do it from CI:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-sI</span> <span class="str">https://example.com</span>
-        <br/><span class="comment"># → HTTP/2 200\n# server: nginx\n# content-type: text/html; charset=utf-8\n# strict-transport-security: max-age=31536000; includeSubDomains\n# ...</span>
-      </div>
-
-      <p>Or via the API: <code>curl -X POST https://api.sitetrace.it.com/api/http-headers -H 'Content-Type: application/json' -d '{"url":"https://example.com"}'</code> returns the parsed headers + security grade in JSON. The free tier allows 100 calls per day; paid plans allow more. For continuous monitoring, run weekly and watch for regressions — a header disappearing usually means a config change or a deployment that wiped a setting.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="hhd_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_1_q">What are HTTP response headers?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_1_a">HTTP response headers are key-value pairs the server sends back with every page load, before the page content. They tell your browser how to handle the response: how long to cache it, whether to allow scripts, where to redirect, what content type the body is, and so on.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_2_q">What is the Content-Security-Policy header?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_2_a">Content-Security-Policy (CSP) is a header that tells the browser which sources of scripts, styles, images, and connections are allowed to load on the page. A well-configured CSP prevents most XSS attacks because even if an attacker injects a script tag, the browser refuses to load the source. A missing or weak CSP is one of the most common security gaps on production sites.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_3_q">What is Strict-Transport-Security (HSTS)?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_3_a">Strict-Transport-Security (HSTS) is a header that tells the browser to always use HTTPS for this domain, even if the user types http:// or follows an http:// link. The header includes a max-age in seconds (commonly 31536000, which is one year) and an optional includeSubDomains flag. HSTS prevents downgrade attacks and cookie theft.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_4_q">Why does my site get a bad grade?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_4_a">Most production sites miss one or more of the high-weight security headers. The score is a rough guide — a site with no CSP is genuinely at higher risk for XSS, but a site with a strong CSP that breaks half the page is also not safe.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="hhd_faq_5_q">Is this tool safe to use on any URL?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="hhd_faq_5_a">You can use it on any public http:// or https:// URL. Private IPs, localhost, and .local / .internal hostnames are blocked to prevent the tool from being used to scan internal infrastructure. The tool only reads response headers — it does not execute the page, does not load scripts, and does not interact with the page in any way your browser would not if you visited the URL directly.</p></div>
-      </div>
-    </section>
-
-    <div class="mt-8 card">
-      <h2 class="text-base font-bold mb-3" data-i18n="hhd_related">Related tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/ip-reputation/" class="text-brand-300 hover:text-brand-200">IP reputation →</a>
-        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200">Is it down →</a>
-        <a href="/subnet-calculator/" class="text-brand-300 hover:text-brand-200">Subnet calculator →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
-      </div>
-    </div>
+</div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">

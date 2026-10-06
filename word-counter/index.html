@@ -38,37 +38,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Word Counter — SiteTrace",
-    "url": "https://sitetrace.it.com/word-counter/",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
-    "description": "Free word counter. Counts characters, words, sentences, paragraphs; estimates reading time, speaking time, Flesch reading-ease. 100% client-side."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"Does this tool send my text to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The page loads once from the static-site CDN; the JavaScript counts your text locally in the browser; nothing leaves your machine. Verify by opening DevTools (F12) and watching the network tab — no requests fire after the initial page load."}},
-      {"@type":"Question","name":"How is the reading time calculated?","acceptedAnswer":{"@type":"Answer","text":"At 200 words/minute for typical silent reading, with a 1-second floor for very short texts. Some studies put silent reading speed at 250 wpm for fiction, 180 wpm for technical material, 100 wpm for dense academic. The default of 200 is a reasonable average. Speaking time uses 130 words/minute (the typical public speaking rate for English). Both are estimates, not exact."}},
-      {"@type":"Question","name":"What is the Flesch reading-ease score?","acceptedAnswer":{"@type":"Answer","text":"A 0-100 score that estimates how easy a text is to read. Higher is easier. 90-100: 5th-grade level (very easy, like comics). 60-70: standard 8th-9th grade (typical web writing). 30-50: college level. 0-30: graduate / legal / scientific. The formula uses sentence length (longer = harder) and word complexity (longer syllables = harder). Plain English aimed at a broad audience scores 60-70."}},
-      {"@type":"Question","name":"Why isn't my Flesch score matching what Google Docs shows?","acceptedAnswer":{"@type":"Answer","text":"Three reasons: (a) syllable counting has multiple valid algorithms — Docs uses one, we use another; results differ by a few percent. (b) Punctuation handling differs (what counts as a sentence boundary). (c) Hyphenated words: Docs counts hyphenated as one word; we do too, but some tools split them. None of these differences are usually enough to change the qualitative reading-level label (easy / moderate / hard). Use the score as a trend, not an exact target."}},
-      {"@type":"Question","name":"How are words counted?","acceptedAnswer":{"@type":"Answer","text":"As sequences of non-whitespace characters separated by whitespace or string boundaries. This matches what Google Docs, Microsoft Word, and most word processors count. Hyphenated words (e.g. 'well-known') count as one word; contractions (don't) count as one word; numbers count as one word. Unicode words count correctly."}},
-      {"@type":"Question","name":"What is a 'long word'?","acceptedAnswer":{"@type":"Answer","text":"Six or more characters. Long-word percentage is a rough proxy for reading difficulty: technical writing has more long words (10-20%), news writing has fewer (5-10%), children's books have very few (1-3%). Aim for under 15% if you're writing for a general audience."}},
-      {"@type":"Question","name":"Why no upload, no save?","acceptedAnswer":{"@type":"Answer","text":"Because saving your text requires storing it somewhere, and that somewhere is a liability. We don't store your text; we don't log it; we don't even have a backend for this page. If you close the tab, the text is gone. Paste it back from your clipboard or document when you need it. The privacy trade-off is intentional."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -247,54 +217,7 @@
       </div>
     </div>
 
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">Word counts, reading time, and Flesch: how to use them without obsessing</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A word counter is one of those tools that every writer, student, and content marketer has open in a tab. The simple version is "is my essay long enough" — the more useful version is "is my writing readable". This essay covers the metrics this page computes, what they actually measure, when they matter, and when they're noise.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Character counts (with and without spaces)</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Most platforms that have a character limit (Twitter historically, LinkedIn headlines, SMS, meta descriptions, ad copy) count characters with spaces. Some (Twitter's media pool, GitHub commit titles) count without spaces. The two numbers are usually close. The with-spaces count is the one you almost always want to check first.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A 280-character tweet typically allows for 30-50 words of text. Not a lot. Short writing benefits from compression more than length: cut every word that doesn't add information.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Words and unique words</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Word count is the most-used metric. It's also the most-cited incorrectly: "the average novel is 80,000 words" — true for adult fiction; picture books are 500-1500; middle grade is 25,000-40,000; young adult is 55,000-80,000. The genre matters.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Unique-word percentage (unique / total) is a rough proxy for vocabulary diversity. Technical writing: 30-40% unique. Fiction: 50-60%. Poetry: 70%+. Numbers above 60% in non-fiction usually signal that the writer is varying vocabulary for its own sake — sometimes good, sometimes an obstacle. Numbers below 30% in fiction usually signal a word you've leaned on too hard (find it and cut it).</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Reading time and speaking time</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Reading time at 200 wpm is the average silent reading speed for adult native English readers on typical material. Fiction readers average 250 wpm; technical readers average 180 wpm; dense academic readers average 100 wpm. Children and second-language readers are slower.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Speaking time at 130 wpm is the typical public-speaking rate. A 5-minute talk is 650 words; a 10-minute talk is 1300; a 30-minute talk is 3900. If you're a podcast host, these are the numbers to watch. The 130 wpm default is for an experienced speaker; nervous speakers are closer to 100 wpm; auctioneers are 250 wpm.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Flesch reading-ease</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Flesch reading-ease is a 0-100 score, higher being easier. Formula:</p>
-      <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto mb-3"><code>206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words)</code></pre>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The two factors that hurt the score are long sentences and long words. The fix is the same as every writing guide has said for a century: short sentences, plain words. The reading-ease score quantifies what feels obvious after you read enough.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Score ranges (US school-grade equivalent):</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>90-100: 5th grade (very easy — comics, children's books)</li>
-        <li>80-90: 6th grade (easy — conversational)</li>
-        <li>70-80: 7th grade (fairly easy — typical web content)</li>
-        <li>60-70: 8th-10th grade (standard — news, magazine)</li>
-        <li>50-60: 10th-12th grade (fairly difficult — academic)</li>
-        <li>30-50: college (difficult — technical)</li>
-        <li>10-30: college graduate (very difficult — scientific, academic)</li>
-        <li>0-10: professional (extremely difficult — legal, government)</li>
-      </ul>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">When the score doesn't matter</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Three situations where the Flesch score is misleading and you should ignore it:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
-        <li><strong>Technical reference material.</strong> Documentation for an API has to use precise terms like "asynchronous event-driven architecture" because the alternative is a misleading sentence. A low Flesch score is correct here.</li>
-        <li><strong>Poetry.</strong> Short lines, weird syllables, deliberately complex words. The score will be 10-30 and that's exactly right.</li>
-        <li><strong>Very short text.</strong> A 30-word paragraph has statistical noise — one long sentence drops the score 20 points. The score stabilizes above 200 words.</li>
-      </ul>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why this tool is 100% client-side</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">A word counter that sends your text to a server is a logger. The server sees every paragraph you've ever counted, which is a single point of failure for whatever you've been writing — emails to your lawyer, draft cover letters, half-finished novels. We don't store your text; we don't even have a backend for this page. The HTML and JavaScript load once when you open the page; the count runs locally; you close the tab; the text is gone. Verify by opening DevTools (F12) and watching the network tab — no requests fire after the initial page load.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed">Same pattern as <a class="source-link" href="/random-color/">/random-color</a> and <a class="source-link" href="/password/">/password</a>: nothing leaves the browser.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/random-color/">Random Color</a>, <a class="source-link" href="/password/">Password Generator</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
-    </section>
-  </main>
+</main>
 
   <footer class="border-t border-white/5 mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">

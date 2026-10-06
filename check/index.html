@@ -48,33 +48,6 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <!-- Schema.org: WebApplication -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebApplication",
-    "name":"SiteTrace Check",
-    "url":"https://sitetrace.it.com/check/",
-    "description":"One-input diagnostic tool that auto-detects URLs, domains, and IPs and runs the relevant sitetrace API checks in parallel.",
-    "applicationCategory":"UtilitiesApplication",
-    "operatingSystem":"Any (browser)",
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
-    "author":{"@type":"Person","name":"Edy Appenzeller","url":"https://sitetrace.it.com/about/"},
-    "publisher":{"@type":"Organization","name":"SiteTrace","url":"https://sitetrace.it.com/"}
-  }
-  </script>
-
-  <!-- FAQ schema for AI citation -->
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {"@type":"Question","name":"What does this tool do?","acceptedAnswer":{"@type":"Answer","text":"Type a URL, domain, or IP into the box. SiteTrace detects the input type and runs the relevant diagnostic checks in parallel: screenshot + security headers + SEO for URLs, SSL + email deliverability + WHOIS for domains, reputation + geolocation for IPs."}},
-      {"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer","text":"Yes. No signup, no payment. The free tier is 100 anonymous calls per day, or 1,000 with a free API key. Sign up at sitetrace.it.com if you need more."}},
-      {"@type":"Question","name":"How does it differ from the individual tool pages?","acceptedAnswer":{"@type":"Answer","text":"Individual tool pages (e.g. /what-is-my-ip/, /email-deliverability/) run a single check with all lookups in your browser via DNS-over-HTTPS for privacy. The /check/ dispatcher runs multiple checks in parallel against the sitetrace API — same backend, fewer round trips, results in one panel. Use individual pages when you want a deep single-purpose report and DoH privacy; use /check for a fast combined look across a server."
-    }}
-  }
-  </script>
 </head>
 <body class="bg-ink-900 text-slate-200 font-sans antialiased">
 
@@ -180,23 +153,6 @@
           <p class="text-slate-400">Reputation across 7 DNSBLs (Spamhaus, Spamcop, CBL, etc.), ASN, geolocation, hosting/VPN/Tor detection.</p>
         </div>
       </div>
-    </section>
-
-    <!-- How it works essay (under the tool, for AdSense + SEO) -->
-    <section class="mt-20 max-w-3xl mx-auto prose prose-invert">
-      <h2 class="text-2xl font-bold text-white">How the dispatcher decides what to run</h2>
-      <p class="text-slate-300 leading-relaxed mt-4">
-        When you paste an input, SiteTrace runs a 5-line classifier on it client-side. If it parses as an IPv4 or IPv6 address, you get an IP report. If it parses as a URL (begins with <code>http</code> or contains a slash beyond the apex), you get a URL report. Anything else with at least one dot is treated as a domain. The classifier doesn't talk to any server — it just decides which of three result panels to show.
-      </p>
-      <p class="text-slate-300 leading-relaxed mt-4">
-        All checks run in parallel against the sitetrace-api backend at <code>api.sitetrace.it.com</code>. The free tier is 100 anonymous calls per day per IP — that's enough for ~30 check sessions. If you hit the cap, sign up for a free API key at <a href="/signup/" class="text-brand-300 hover:text-brand-200">sitetrace.it.com/signup</a> for 1,000 calls/day with no per-tool math.
-      </p>
-      <p class="text-slate-300 leading-relaxed mt-4">
-        Each individual tool page (<a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">/what-is-my-ip/</a>, <a href="/email-deliverability/" class="text-brand-300 hover:text-brand-200">/email-deliverability/</a>, <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200">/is-it-down/</a>, <a href="/seo-checker/" class="text-brand-300 hover:text-brand-200">/seo-checker/</a>, <a href="/http-headers/" class="text-brand-300 hover:text-brand-200">/http-headers/</a>) runs a single deep check, often with lookups in your browser via DNS-over-HTTPS for privacy — your query never touches a server we operate. Use those when you want a thorough report on one input type. Use <code>/check/</code> when you want a fast combined look across multiple.
-      </p>
-      <p class="text-slate-400 text-sm font-mono mt-8">
-        // last updated 2026-10-04 · built by edy appenzeller · open source
-      </p>
     </section>
 
     <!-- AdSense slot -->

@@ -26,24 +26,7 @@
   <meta name="twitter:image:alt" content="IP address lookup — SiteTrace" />
   <meta property="og:url" content="https://sitetrace.it.com/ip-lookup/" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://www.schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What does an IP lookup tell me?","acceptedAnswer":{"@type":"Answer","text":"For any public IP, the lookup returns the registered country, region, city, postal code, ISP, organization, ASN, and connection type (residential, mobile, hosting, VPN, etc.). It also checks whether the IP is on known VPN, proxy, or Tor lists."}},
-      {"@type":"Question","name":"Can I look up someone else’s IP?","acceptedAnswer":{"@type":"Answer","text":"Yes. Type any public IP into the tool and you’ll get the same information a service sees when that IP connects to it. The lookup itself is read-only and uses public data — it does not contact the IP, does not scan it, and does not reveal any private information about the person behind it."}},
-      {"@type":"Question","name":"How accurate is the geolocation?","acceptedAnswer":{"@type":"Answer","text":"City-level accuracy is typical for residential and mobile IPs. Hosting and VPN IPs usually resolve to the data center or VPN endpoint, not the actual user. Country-level accuracy is close to 100% for most IP blocks."}},
-      {"@type":"Question","name":"Does an IP lookup show my home address?","acceptedAnswer":{"@type":"Answer","text":"No. Public IP geolocation only shows the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order."}},
-      {"@type":"Question","name":"Is IP lookup legal?","acceptedAnswer":{"@type":"Answer","text":"Yes. The data is publicly registered and the lookup is read-only. There is no expectation of privacy for the public IP your ISP assigns to you."}},
-      {"@type":"Question","name":"Where does the geolocation data come from?","acceptedAnswer":{"@type":"Answer","text":"Four sources, roughly. (1) The five regional Internet registries (ARIN, RIPE, APNIC, LACNIC, AfriNIC) publish WHOIS data showing which organization was allocated which IP block — this gives you the country and the registered owner. (2) The routing tables (BGP) show which autonomous system is currently announcing each prefix, which usually agrees with the WHOIS but not always. (3) Commercial databases like MaxMind GeoIP2, IP2Location, IPinfo, and DB-IP combine the above with submitted corrections from partners, latency measurements to perform, and user-reported data. No single source is fully accurate — the commercial databases get to 80-95% city-level accuracy by aggregating all four."}},
-      {"@type":"Question","name":"Why is the city wrong sometimes?","acceptedAnswer":{"@type":"Answer","text":"Three common reasons. (1) Your ISP allocates IP blocks by region, not by city — large ISPs like Comcast, Orange, or Deutsche Telekom have blocks that span entire metro areas, and the geolocation picks the regional headquarters. (2) Mobile carriers use Carrier-Grade NAT (CGNAT), which means thousands of subscribers share a small pool of public IPs and the IP's registered city is the carrier's main office. (3) Hosting and VPN IPs resolve to the data center, not to whoever is using the IP. If the city shown is hundreds of kilometers from where you actually are, it's one of these three, not a bug."}},
-      {"@type":"Question","name":"Is IP lookup GDPR-compliant?","acceptedAnswer":{"@type":"Answer","text":"Mostly. The German DPA ruled in 2016 (the 'Breyer case') that dynamic IP addresses are personal data under GDPR when the controller has the legal means to identify the data subject (which ISPs and website operators do). The court allowed processing for security purposes (anti-DDoS, fraud prevention) but required either consent, contract, or legitimate interest. Public IP lookup tools that don't store or log the IP aren't the controller in the GDPR's sense and don't need a legal basis. The data they return is also less identifying than what your browser sends in the HTTP request headers on every site you visit."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -305,58 +288,7 @@
       </div>
     </div>
 
-    <section class="mt-12 card p-6 sm:p-8 essay">
-      <h2 class="text-xl font-bold mb-2" data-i18n="ipl_how_h2">How IP geolocation lookup actually works</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3" data-i18n="ipl_how_text">An IP lookup is a lookup against one of a few commercial databases that combine WHOIS allocations, BGP routing observations, and submitted corrections from partners into a single best-guess for the city, region, and country of any IP. The accuracy is uneven — country-level is close to 100% reliable, region-level is roughly 80-90%, city-level is 60-80% on residential IPs and far worse on mobile and VPN ranges.</p>
-
-      <p>Every public IP belongs to someone. The allocations are public: ARIN (North America), RIPE NCC (Europe, Middle East, Central Asia), APNIC (Asia-Pacific), LACNIC (Latin America), and AfriNIC (Africa) all publish the WHOIS records that map every allocated block back to a single organization. When a German ISP applies for 5,000 IPv4 addresses, RIPE records which block they got and which organization owns it. That's the foundation of every geolocation database — the rest is layering on top.</p>
-
-      <p><strong>Source 1: WHOIS allocations.</strong> The five regional registries publish the original allocations, but only at country or region granularity. They don't know where the ISP's customers actually are — that's the ISP's problem. So WHOIS tells you "this IP block belongs to Deutsche Telekom in Germany" but not "this specific IP is in a Berlin apartment." Useful for blocking whole countries, useless for serving location-specific content.</p>
-
-      <p><strong>Source 2: BGP routing tables.</strong> Each autonomous system (ISP, hosting provider, mobile network) announces its IP blocks to the global routing table. Looking up which AS is currently announcing a prefix gives you the current operator, which usually agrees with WHOIS but not always — blocks get transferred, sold, or sub-leased, and the routing table is sometimes slow to update. Useful for "hosting" vs "residential" classification.</p>
-
-      <p><strong>Source 3: commercial geolocation databases.</strong> MaxMind GeoIP2, IP2Location, IPinfo, DB-IP, and a handful of smaller vendors combine WHOIS, BGP, and submitted corrections from CDN partners (Cloudflare, Akamai, Fastly) into commercial products that claim 80-95% city-level accuracy. The corrections come from latency triangulation (ping the IP from many locations, the lowest RTT is geographically closest) and from user-reported location data ("this IP shows me as Tokyo, I'm in Osaka, here's the correction"). No single source is fully accurate — the commercial databases get to 80-95% city-level accuracy by aggregating all four.</p>
-
-      <p><strong>Source 4: infrastructure-based heuristics.</strong> Hosting providers (AWS, GCP, Azure, Hetzner, OVH, DigitalOcean) and mobile carriers are well-known — the IP blocks are published and stable. VPN providers (NordVPN, Surfshark, Mullvad, etc.) publish their IP ranges or are detectable by reverse-DNS. Tor publishes its exit-node list every hour. These four sources account for most of the "connection type" classification (residential, mobile, hosting, VPN, Tor).</p>
-
-      <p><strong>Where does it fail?</strong> CGNAT (Carrier-Grade NAT). Mobile carriers like T-Mobile, Vodafone, and Verizon Wireless use CGNAT to share a small pool of public IPs across thousands of subscribers. The IP's registered city is the carrier's main office, not the actual subscriber's location. If you're on mobile data and the IP shows "Kansas City" but you're in Miami, that's why. A second failure mode is large ISPs that allocate blocks by region — Comcast's Bay Area block might cover San Francisco, San Mateo, Santa Clara, and Alameda counties, and the database can only narrow to "Bay Area." A third is anycast — Cloudflare and many large providers announce the same IP from dozens of cities worldwide, so the geolocation picks whatever is geographically closest to the requesting server, not to the user's actual location.</p>
-
-      <p><strong>Real-world uses of IP lookup.</strong> Anti-fraud systems use IP reputation to score sign-ups — a fresh IP from a known datacenter is suspicious for a consumer sign-up; an IP from a residential ISP with a 2-year history is normal. Content licensing (geoblocking) uses country-level IP data to enforce "this content is only available in the EU." Tax calculation uses country and sometimes state/province to figure out the right VAT or GST to charge. News sites use country to default to the right edition. Ad networks use it to target by region. The data isn't perfect, but it's good enough for most of these to work without being too restrictive.</p>
-
-      <p><strong>GDPR and IP lookup.</strong> The German data-protection authority ruled in 2016 (the "Breyer case") that dynamic IP addresses are personal data under GDPR when the controller can identify the data subject, which ISPs and website operators can. The court allowed processing for security purposes (anti-DDoS, fraud) but required consent, contract, or legitimate interest. A public IP lookup tool that doesn't store or log the IP isn't the controller in the GDPR sense and doesn't need a legal basis. The data they return is also less identifying than what your browser sends in the HTTP request headers on every site you visit (User-Agent, Accept-Language, Referer).</p>
-
-      <p>The lookup behind this page works in two steps. Your browser makes a request to a Cloudflare Worker (the same one <a href="What is my IP" class="source-link">/what-is-my-ip/</a> uses). Cloudflare adds <code>cf-connecting-ip</code> to the request headers — your public IP. The Worker then forwards to <code>ip-api.com</code> for the geolocation enrichment (they keep a fast, well-curated database that updates daily). The Worker caches the result for 5 minutes to stay under the ip-api.com free quota. The lookup is read-only, no input is logged, no data is sold.</p>
-
-      <p>If you want to verify the result from a script or CI, the same data is at <code>api.sitetrace.it.com</code>:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="str">"https://api.sitetrace.it.com/api/ip-lookup?ip=203.0.113.42"</span>
-        <br/><span class="comment"># → {ip, country, region, city, postal, isp, org, asn, is_hosting, is_mobile, is_vpn, ...}</span>
-      </div>
-
-      <p>If the city is wrong by hundreds of kilometers, don't panic — it's almost always CGNAT or a regional block, not a tracking bug. If the country is wrong, that's worth investigating further (the data may be stale, or your traffic may be exiting through a foreign VPN server). And remember that the same IP can geolocate to different cities for different services, because each one uses a different database with different sources.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="ipl_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_1_q">What does an IP lookup tell me?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_1_a">For any public IP, the lookup returns the registered country, region, city, postal code, ISP, organization, ASN (autonomous system number), and the connection type (residential, mobile, hosting, VPN, etc.). It also checks whether the IP is on known VPN, proxy, or Tor lists.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_2_q">Can I look up someone else’s IP?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_2_a">Yes. Type any public IP into the tool and you’ll get the same information a service sees when that IP connects to it. The lookup itself is read-only and uses public data — it does not contact the IP, does not scan it, and does not reveal any private information about the person behind it.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_3_q">How accurate is the geolocation?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_3_a">City-level accuracy is typical for residential and mobile IPs. Hosting and VPN IPs usually resolve to the data center or VPN endpoint, not the actual user. Country-level accuracy is close to 100% for most IP blocks.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_4_q">Does an IP lookup show my home address?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_4_a">No. Public IP geolocation only shows the city or region registered to your ISP, not your home address. The only parties who can map an IP to a specific physical address are your ISP and law enforcement with a court order.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="ipl_faq_5_q">Is IP lookup legal?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="ipl_faq_5_a">Yes. The data is publicly registered and the lookup is read-only. The same data is shown to every site you visit, every API you call, and every email you send.</p></div>
-      </div>
-    </section>
-
-    <div class="mt-8 card">
-      <h2 class="text-base font-bold mb-3">Related tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/vpn-checker/" class="text-brand-300 hover:text-brand-200">VPN checker →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
-      </div>
-    </div>
+</div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">

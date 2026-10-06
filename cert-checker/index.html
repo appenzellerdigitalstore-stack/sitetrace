@@ -40,37 +40,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "SSL / TLS Certificate Checker — SiteTrace",
-    "url": "https://sitetrace.it.com/cert-checker/",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
-    "description": "Free SSL/TLS certificate transparency search. See every certificate ever issued for any domain, the issuing CA, validity dates, and SAN coverage."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What is certificate transparency?","acceptedAnswer":{"@type":"Answer","text":"Certificate Transparency (CT) is a public, append-only log of every TLS certificate ever issued by a participating Certificate Authority. The log is signed and auditable: any CA that issues a certificate for your domain must log it within 24 hours. Browsers like Chrome and Firefox refuse to trust certificates that aren't logged. The point is to catch mis-issued certificates: if a rogue CA issues a cert for your domain, it shows up in the log and you can revoke it."}},
-      {"@type":"Question","name":"How is this different from SSL Labs?","acceptedAnswer":{"@type":"Answer","text":"SSL Labs (ssllabs.com/ssltest) probes a single host's TLS configuration: cipher suites, protocol versions, certificate chain order, session resumption, vulnerabilities like Heartbleed and POODLE. SiteTrace shows the certificate transparency history: every certificate ever issued for a domain, the SAN coverage, the issuing CA, validity dates. The two are complementary: use SSL Labs for live configuration; use SiteTrace for certificate history and brand monitoring."}},
-      {"@type":"Question","name":"Why are expired certificates shown?","acceptedAnswer":{"@type":"Answer","text":"Because the goal is to see what has been issued, not just what's currently valid. Brand monitoring teams use this to detect typosquatting or unauthorized certificates. Security teams use it to confirm that old service hosts are properly cleaned up. Penetration testers use it to enumerate the attack surface — every host that's ever had a certificate is potentially still in DNS."}},
-      {"@type":"Question","name":"What is a SAN?","acceptedAnswer":{"@type":"Answer","text":"Subject Alternative Name (SAN) is the list of hostnames the certificate is valid for. A certificate for example.com typically also covers www.example.com and api.example.com via SAN entries. Modern browsers ignore the Common Name field and use only SAN. The SAN list is what tells you the full set of names a single cert protects."}},
-      {"@type":"Question","name":"How do I detect a mis-issued certificate?","acceptedAnswer":{"@type":"Answer","text":"Subscribe to certificate transparency monitoring for your domain. Free services: certificate-transparency.org, ctfrrr.io, monitor.ctf.solutions. Set up an alert for any certificate issued for your domain that you did not request. Common attack scenarios: a phishing site operator requests a cert for a typo of your brand; a compromised CA signs a cert for your domain; a former employee with a corp account requests a cert after termination."}},
-      {"@type":"Question","name":"Is this data real-time?","acceptedAnswer":{"@type":"Answer","text":"Up to 24 hours. crt.sh aggregates CT logs and updates them as the underlying logs sync. There's also a 24-hour cache on our end to keep the response fast. If you've just issued a certificate and don't see it yet, wait a few hours and re-check."}},
-      {"@type":"Question","name":"Can I see certificates for subdomains only?","acceptedAnswer":{"@type":"Answer","text":"Yes. Query the parent domain to see all subdomain certificates (the CT log matches domain and any subdomain that contains it as a label). Use the 'exclude' parameter to filter out names you don't care about: e.g. exclude=dev.example.com,staging.example.com to remove noise from development hosts."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -238,45 +208,7 @@
 
     <div id="cc-result" class="hidden mt-8 space-y-5 max-w-5xl mx-auto"></div>
 
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">Certificate transparency: what it is and why it exists</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">Every TLS certificate the browser trusts is signed by a Certificate Authority — one of a few hundred organizations that the browser vendors have decided to trust by default. The browser assumes that any certificate signed by a trusted CA is legitimate. The question Certificate Transparency (CT) answers is: how do you know the CA didn't sign a certificate for your domain that you didn't ask for? If a malicious CA signs a cert for your bank and serves it to phishing victims, the browser would dutifully trust it — unless the CA also logged it to a public CT log that the bank's security team monitors.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">How CT logs work</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">When a CA issues a certificate, it must submit a Signed Certificate Timestamp (SCT) to at least two CT logs (Chrome's requirement; Firefox is similar). The log is append-only and cryptographically signed — once a certificate is in the log, it cannot be removed or modified. The browser, when validating a certificate, checks that the certificate has valid SCTs from logs it trusts.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">crt.sh is a community-run aggregator that queries all major CT logs and presents a unified view. The data is public. Anyone can search for any domain and see every certificate ever issued for it (and any subdomain that contains it as a label). SiteTrace wraps crt.sh with a clean JSON response, a 24-hour cache layer, and a UI that renders the result — no need to wait on crt.sh's slow load times.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">What to look for</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Three patterns matter when you review a CT history for your domain:</p>
-      <ol class="list-decimal list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-2">
-        <li><strong>Certificates you didn't request.</strong> If you see a cert for a hostname you don't own, that means someone requested it from a CA — possibly legitimately (a former employee, a CDN provider you no longer use) or possibly not (a typosquatter, a phishing operator). Investigate.</li>
-        <li><strong>CAs you didn't choose.</strong> Some CAs have weaker verification processes or have been compromised historically. If you only ever requested from Let's Encrypt and you see a cert from an unknown CA, that's worth flagging.</li>
-        <li><strong>Old certificates still in DNS.</strong> If you decommissioned a service 6 months ago but a CT log shows a cert from 8 months ago for that hostname, check that the hostname is no longer in DNS. Stale records are an attack surface.</li>
-      </ol>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Brand monitoring</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you operate a brand, you should monitor CT logs for typosquats and look-alike domains. The setup:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li>List your brand and common typos (yourbrand.com, yourbrand.io, yourbrnad.com, etc.).</li>
-        <li>Query each weekly against the CT logs.</li>
-        <li>Alert on any new issuance you didn't authorize.</li>
-        <li>File complaints or takedown requests for malicious look-alikes.</li>
-      </ul>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Free services exist for this: certspotter runs free monitors for personal use; Facebook has a free CT monitor for brand-protection teams; Cloudflare Registrar customers can enable certificate transparency monitoring on the dashboard.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Why CT matters for incident response</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CT logs have caught real attacks. In 2019, a researcher noticed that a CT log contained a certificate for a subdomain of a major cryptocurrency service — issued by a CA that the service did not authorize. The certificate was being prepared for an active man-in-the-middle attack. Because the CT log flagged it within hours, the service was able to revoke the cert and block the attack before significant damage.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Without CT, the certificate would have been silently trusted by every browser in the world, and the attacker would have had a free pass to intercept traffic until someone noticed. CT is not perfect — a malicious CA could refuse to log, and older browsers don't enforce SCT requirements — but it raises the cost of a successful attack significantly.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Practical limits</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">CT logs only show certificates issued after the participating CAs began logging. For most CAs this is 2015 or later. Certificates issued before that are not in CT and won't appear here. Also: CT logs do not show private certificates (issued by internal CAs) — only public ones that went through a public CA.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">For live TLS configuration testing (cipher suites, protocol versions, chain order, session resumption), use <a class="source-link" href="https://www.ssllabs.com/ssltest/" rel="noopener noreferrer" target="_blank">SSL Labs</a>. For certificate history and brand monitoring, use SiteTrace.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/headers-checker/">Security Headers Checker</a>, <a class="source-link" href="/dns-tools/">DNS lookup</a>, <a class="source-link" href="/check/">/check</a>.</p>
-    </section>
-
-    <section class="mt-12 max-w-3xl mx-auto card p-6">
+<section class="mt-12 max-w-3xl mx-auto card p-6">
       <h2 class="text-xl font-bold mb-3">Use the API directly</h2>
       <p class="text-slate-300 text-sm leading-relaxed mb-3">The certificate transparency search is also a JSON API. Free, 50 calls/day without signup, 500/day with a free API key.</p>
       <pre class="font-mono text-xs bg-ink-900/80 border border-white/10 rounded-lg p-4 overflow-x-auto"><code>curl "https://api.sitetrace.it.com/api/certs?domain=example.com" \

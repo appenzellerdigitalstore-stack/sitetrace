@@ -26,21 +26,7 @@
   <meta name="twitter:image:alt" content="Subnet calculator — SiteTrace" />
   <meta property="og:url" content="https://sitetrace.it.com/subnet-calculator/" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What is CIDR notation?","acceptedAnswer":{"@type":"Answer","text":"CIDR (Classless Inter-Domain Routing) notation writes a network as an IP address followed by a slash and a number from 0 to 32. The number is the prefix length — the count of leading 1-bits in the subnet mask. 192.168.1.0/24 means the first 24 bits identify the network and the last 8 bits identify hosts. /24 is the most common on private networks, equivalent to the old class-C 255.255.255.0 mask."}},
-      {"@type":"Question","name":"How do I calculate the number of hosts in a subnet?","acceptedAnswer":{"@type":"Answer","text":"Take 2 to the power of (32 minus the prefix length) and subtract 2. The two you subtract are the network address (all host bits zero) and the broadcast address (all host bits one), neither of which can be assigned to a device. For /24, that's 2^8 - 2 = 254 usable hosts. /31 and /32 are special: /31 has 2 usable hosts (RFC 3021) and /32 is a single address."}},
-      {"@type":"Question","name":"What is the difference between a subnet mask and a wildcard mask?","acceptedAnswer":{"@type":"Answer","text":"A subnet mask marks the network portion of an address with 1s and the host portion with 0s, in the same bit positions as the address. A wildcard mask is the bitwise inverse: 0s in the network portion, 1s in the host portion. Subnet masks are used for routing; wildcard masks are used in Cisco ACLs and some routing protocols. The math is identical, just inverted."}},
-      {"@type":"Question","name":"What is VLSM?","acceptedAnswer":{"@type":"Answer","text":"VLSM (Variable Length Subnet Masking) is the practice of splitting a network into subnets of different sizes based on how many hosts each subnet actually needs. A point-to-point link only needs 2 addresses (/31), a small office might need 50 (/26), and a data center might need 1000 (/22). VLSM avoids wasting address space — the old classful system required every subnet to be the same size."}},
-      {"@type":"Question","name":"How do I know which IP class I have?","acceptedAnswer":{"@type":"Answer","text":"The class is determined by the leading bits of the first octet: Class A starts with 0 (1–126), Class B starts with 10 (128–191), Class C starts with 110 (192–223), Class D starts with 1110 (224–239, used for multicast), and Class E starts with 1111 (240–255, reserved). 127.x.x.x is loopback and not assigned to any class. Classful addressing is largely historical — modern networks use CIDR — but the classes still show up in textbooks, exams, and some routing configurations."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -277,66 +263,7 @@
 
     <div id="snc-result" class="hidden mt-8 space-y-5 max-w-4xl mx-auto"></div>
 
-    <section class="mt-12 card p-6 sm:p-8 essay">
-      <h2 class="text-xl font-bold mb-2" data-i18n="snc_how_h2">How subnet math actually works</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3" data-i18n="snc_how_text">An IPv4 address is 32 bits. CIDR notation splits those 32 bits into a network portion and a host portion: the number after the slash is the length of the network portion. For a /24, the first 24 bits identify the network and the remaining 8 bits identify a specific host. The network address has all host bits set to 0; the broadcast address has all host bits set to 1. Usable hosts are everything in between. The subnet mask is 32 ones followed by (32 minus prefix) zeros in binary, or a dotted-decimal like 255.255.255.0 for /24. The wildcard mask is the bitwise inverse of the subnet mask and is used in Cisco ACLs and some routing protocols.</p>
-
-      <p>Most people who use this calculator are doing one of three things: figuring out how many addresses fit in a network someone handed them, planning a new network, or trying to remember if /28 gives 14 or 16 hosts. All three questions reduce to the same five-minute exercise once you know the trick. The trick is that the prefix length is the answer to almost every other question about the subnet, and most of the rest is just bitwise math.</p>
-
-      <p>IPv4 addresses are 32 bits. CIDR notation splits those 32 bits into a network portion and a host portion. The number after the slash tells you how many bits are network. For 192.168.1.0/24, the first 24 bits are network and the last 8 are host. The network address is the address with all host bits set to zero (192.168.1.0), the broadcast is all host bits set to one (192.168.1.255), and everything in between is a usable host. Total addresses is 2^8 = 256, usable hosts is 256 - 2 = 254.</p>
-
-      <p>The two you subtract are the network address and the broadcast address, neither of which can be assigned to a device. RFC 3021 made an exception for /31: a /31 has just two addresses, and both are usable, because the routing protocol can derive the network and broadcast from the point-to-point partner. /32 is a single address — used for loopbacks and host routes. Everything else follows the 2^(32-prefix) - 2 rule.</p>
-
-      <p>The subnet mask is the network portion as ones and the host portion as zeros, written in the same dotted-quad as an address. /24 is <code>11111111.11111111.11111111.00000000</code> in binary, or <code>255.255.255.0</code> dotted. /16 is <code>255.255.0.0</code>. /8 is <code>255.0.0.0</code>. The wildcard mask is the bitwise inverse: 0s in the network portion, 1s in the host portion. Wildcard masks are used in Cisco ACLs and some routing protocols (OSPF, EIGRP). The math is the same, just inverted.</p>
-
-      <p><strong>VLSM</strong> (Variable Length Subnet Masking) is the practice of splitting a network into subnets of different sizes based on what each one needs. The old classful system forced every subnet to be the same size — Class C was always /24, Class B was always /16. If you needed 50 hosts and 1000, you had to give the 50-host subnet a full /24 (254 addresses) and waste 200. With VLSM you give the small one a /26 (62 usable) and the big one a /22 (1022 usable), no waste. Subnetting a /20 into a /22, /24, /26, and /27 is a standard CCNA exercise for this reason.</p>
-
-      <p>A practical example: home network. Most home routers ship with <code>192.168.1.0/24</code> by default. That's 254 usable hosts, more than anyone needs at home. ISP gateways typically reserve the first 30 or so for static DHCP (printers, NAS, smart-home hubs), and the rest goes to dynamic DHCP. If you have a /23 from your ISP (510 usable), you can split it into /24 for your home and /29 for a guest VLAN — the guest VLAN has 6 usable addresses, which is enough for a few phones and a TV. Strict subnet math.</p>
-
-      <p>A practical example: corporate network. A /22 is 1022 usable hosts, which is enough for a small office. Split it into a /24 for the office LAN, a /27 for the server VLAN (30 usable — enough for 20 servers and some headroom), a /28 for the printer VLAN (14 usable — 12 printers, 2 spare), a /29 for the management VLAN (6 usable — 4 switches, 2 spare), and a /30 for each point-to-point link to a router (2 usable each, RFC 3021). Sum the host counts: 254 + 30 + 14 + 6 + 4×2 = 312 hosts, well within the /22 budget. The math works.</p>
-
-      <p>A practical example: point-to-point links. Two routers connected by a serial link or a metro Ethernet circuit only need 2 addresses — one for each end. RFC 3021 says you can use /31 for this, and modern routing protocols handle the implicit network and broadcast addresses. Before RFC 3021, you'd use /30 (2 usable, 2 reserved) and waste half the subnet. With /31 you use 100% of the available addresses. This matters at scale — an ISP with 10,000 point-to-point links saves 10,000 addresses by using /31 instead of /30.</p>
-
-      <p>A practical example: IPv6 changes everything. IPv6 addresses are 128 bits, not 32. The subnet math is the same in principle (the prefix length works the same way), but the address space is so large that no one ever runs out. A typical home network gets a /56 or /64 from the ISP — that's 2^72 or 2^64 addresses, respectively. Subnetting for the sake of address conservation is unnecessary; you subnet for the sake of routing hierarchy and traffic isolation. /64 per subnet is the convention; some networkers use /60 or /56 for stricter grouping. The point is that the math is identical to IPv4, just with much bigger numbers.</p>
-
-      <p>A practical note: most home routers don't let you set a prefix length. They give you /24 and that's it. If you want to subnet your home network, you need a router that runs OpenWrt, pfSense, OPNsense, or a real Linux routing stack. The consumer-grade routers from big-box stores are too locked down to support arbitrary prefix lengths, and they won't show you the subnet mask — it's a hidden default. If you're using one of these, the calculator behind this link is the only way you'll see the math.</p>
-
-      <p>The calculator itself runs entirely in your browser. There's no server call, no data leaves your machine, no analytics on what you type. The whole subnet-derivation logic is in a single function in <a href="https://github.com/appenzellerdigitalstore-stack/sitetrace/blob/main/js/subnet-calculator.js" class="source-link" target="_blank" rel="noopener noreferrer">/js/subnet-calculator.js</a> — it parses the CIDR, splits the address into four octets, builds the mask from the prefix length, and computes everything else with bitwise operations. About 80 lines of JavaScript, all readable in the source on GitHub. If you want to verify, paste <code>192.168.1.0/24</code> into a CLI subnet calculator like <code>sipcalc</code> or Python's <code>ipaddress</code> module and you'll get the same numbers.</p>
-
-      <p>If you want to look up the IPs you discover inside your subnet — geolocation, ISP, ASN, whether it's on a DNS blacklist — <a href="https://sitetrace.it.com/ip-lookup/">the IP lookup tool</a> and <a href="https://sitetrace.it.com/ip-reputation/">the IP reputation check</a> do that from your browser. For programmatic checks, the same data is at <code>api.sitetrace.it.com</code>: the subnet math itself doesn't need an API — it's just arithmetic — but the IPs you discover inside your subnet probably need a lookup, and that's where the API helps.</p>
-
-      <p>One quick verification if you want to check the result yourself:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="str">"https://api.sitetrace.it.com/api/ip-lookup?ip=192.168.1.0"</span>
-        <br/><span class="comment"># → {ip, country, region, city, isp, asn, proxy/vpn/tor flags, ...}</span>
-      </div>
-
-      <p>That's the whole pitch: subnet math is just bitwise arithmetic, the prefix length is the answer to most of your questions, and you can verify the result in your head if you remember that the host count is 2^(32-prefix) - 2.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="snc_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="snc_faq_1_q">What is CIDR notation?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="snc_faq_1_a">CIDR (Classless Inter-Domain Routing) notation writes a network as an IP address followed by a slash and a number from 0 to 32. The number is the prefix length — the count of leading 1-bits in the subnet mask. 192.168.1.0/24 means the first 24 bits identify the network and the last 8 bits identify hosts. /24 is the most common on private networks, equivalent to the old class-C 255.255.255.0 mask.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="snc_faq_2_q">How do I calculate the number of hosts in a subnet?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="snc_faq_2_a">Take 2 to the power of (32 minus the prefix length) and subtract 2. The two you subtract are the network address (all host bits zero) and the broadcast address (all host bits one), neither of which can be assigned to a device. For /24, that is 2^8 - 2 = 254 usable hosts. /31 and /32 are special: /31 has 2 usable hosts (RFC 3021) and /32 is a single address.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="snc_faq_3_q">What is the difference between a subnet mask and a wildcard mask?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="snc_faq_3_a">A subnet mask marks the network portion of an address with 1s and the host portion with 0s, in the same bit positions as the address. A wildcard mask is the bitwise inverse: 0s in the network portion, 1s in the host portion. Subnet masks are used for routing; wildcard masks are used in Cisco ACLs and some routing protocols. The math is identical, just inverted.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="snc_faq_4_q">What is VLSM?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="snc_faq_4_a">VLSM (Variable Length Subnet Masking) is the practice of splitting a network into subnets of different sizes based on how many hosts each subnet actually needs. A point-to-point link only needs 2 addresses (/31), a small office might need 50 (/26), and a data center might need 1000 (/22). VLSM avoids wasting address space — the old classful system required every subnet to be the same size.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="snc_faq_5_q">How do I know which IP class I have?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="snc_faq_5_a">The class is determined by the leading bits of the first octet: Class A starts with 0 (1–126), Class B starts with 10 (128–191), Class C starts with 110 (192–223), Class D starts with 1110 (224–239, used for multicast), and Class E starts with 1111 (240–255, reserved). 127.x.x.x is loopback and not assigned to any class.</p></div>
-      </div>
-    </section>
-
-    <div class="mt-8 card">
-      <h2 class="text-base font-bold mb-3" data-i18n="snc_related">Related tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/ip-lookup/" class="text-brand-300 hover:text-brand-200">IP lookup →</a>
-        <a href="/ip-reputation/" class="text-brand-300 hover:text-brand-200">IP reputation →</a>
-        <a href="/dns-tools/" class="text-brand-300 hover:text-brand-200">DNS tools →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
-      </div>
-    </div>
+</div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">

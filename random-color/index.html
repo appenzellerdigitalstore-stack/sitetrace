@@ -38,36 +38,7 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Random Color Generator — SiteTrace",
-    "url": "https://sitetrace.it.com/random-color/",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "creator": { "@type": "Person", "name": "Edy Appenzeller", "url": "https://sitetrace.it.com/about/" },
-    "description": "Free random color generator. Hex, RGB, HSL. 100% client-side — your colors never leave the browser."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"Is this color picker random?","acceptedAnswer":{"@type":"Answer","text":"Yes. The hex generator uses crypto.getRandomValues where available, falls back to Math.random elsewhere. Both are statistically uniform across the 16,777,216 possible 24-bit colors. The hue-range variants use Math.random within the constrained hue range, which is also uniform within that subset."}},
-      {"@type":"Question","name":"Does the tool send my colors to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The entire generator runs in your browser via JavaScript. The page does not fetch any color data, does not log your rolls, and does not track which colors you generated. Press F12 and watch the network tab: only static assets load, no per-roll requests."}},
-      {"@type":"Question","name":"What format should I copy?","acceptedAnswer":{"@type":"Answer","text":"Hex (#RRGGBB) is the most common for web/CSS. RGB (rgb(255, 128, 0)) is the most common for code. HSL (hsl(180, 50%, 50%)) is the most useful for design — it's easier to reason about lightness and saturation in HSL than to mentally convert between RGB channels. CSS variables work with any of them."}},
-      {"@type":"Question","name":"Can I lock the hue or saturation?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the 'Hue' tab to pick a hue range (e.g. only greens, only warm colors). Use the 'Saturation' tab to constrain saturation to a range. Use the 'Lightness' tab to constrain lightness. The picked color will stay inside all three constraints. Useful for generating a palette of related colors rather than truly random ones."}},
-      {"@type":"Question","name":"Why are the warm / cool / pastel variants useful?","acceptedAnswer":{"@type":"Answer","text":"Random colors are uniformly distributed across the color wheel, which means about 40% of them are muddy browns or near-black. Constraining to warm/cool/pastel/dark-strips skips the muddy range and produces more usable palettes. If you need 5 colors for a UI, constrain to a hue range and pull 5 colors — they'll be related, not random."}},
-      {"@type":"Question","name":"Can I generate accessibility-friendly palettes?","acceptedAnswer":{"@type":"Answer","text":"The WCAG contrast check shows the contrast ratio between the current color and white, black, and the cyan accent. Anything 4.5:1 or higher passes WCAG AA for normal text; 7:1 passes AAA. Use the slider to find a lightness that gives you 4.5:1 against your text color."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -268,34 +239,7 @@
       <div class="palette-strip" id="rc-palette"></div>
     </div>
 
-    <section class="mt-12 max-w-4xl mx-auto essay">
-      <h2 class="text-2xl font-bold mb-3">How random colors work, and why "true random" is mostly useless</h2>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">A 24-bit color space has 16,777,216 possible colors. A uniformly-random pick across that space gives you a brown or muddy gray about 60% of the time, and a usable color about 40% of the time. Most people want the 40% — the warm pastels, the vivid primaries, the soft greens and dusky purples. The "constraints" panel above lets you skip the muddy 60%.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">Hex vs RGB vs HSL</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">All three describe the same color, in different coordinate systems:</p>
-      <ul class="list-disc list-inside text-slate-300 text-sm sm:text-base leading-relaxed mb-4 space-y-1">
-        <li><strong>Hex</strong> (#RRGGBB): each pair is a base-16 byte from 00 to FF. Compact, works everywhere, and the most common format in CSS, design tools, and code.</li>
-        <li><strong>RGB</strong> (rgb(R, G, B)): three integers from 0 to 255. Easier to read in code, slightly easier to reason about channel-by-channel (e.g. "lots of red, no green, lots of blue" → magenta).</li>
-        <li><strong>HSL</strong> (hsl(H, S%, L%)): hue in degrees (0–360), saturation as a percentage, lightness as a percentage. Most useful for design because lightness and saturation are intuitive to reason about: "I want this color but lighter" means bumping L from 30% to 60%; doing the same in RGB requires mental gymnastics.</li>
-      </ul>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">HSL is more useful for palettes</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">If you need 5 related colors, pick a hue, pick a saturation range, pick 5 different lightness values. The "Generate a related palette" section above does exactly this: same hue as the rolled color, lightness at 15%, 30%, 50%, 70%, 85%. All 5 colors are visibly related but distinct enough to be a usable palette.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The same trick doesn't work in RGB or HSL-constrained-by-channel. RGB channel-by-channel variation tends to wash out the hue (e.g. add 20 to every channel → washed-out pastel; subtract 20 → muddier color). HSL stays on the same hue ring by construction.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">WCAG contrast basics</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">WCAG defines a contrast ratio between two colors as (L1 + 0.05) / (L2 + 0.05) where L is the relative luminance. Lighter colors have higher L. For normal text, you want at least 4.5:1 (WCAG AA). For large text (18pt or 14pt bold), 3:1 is enough. For the strictest accessibility, 7:1 (WCAG AAA).</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">The contrast panel above shows the ratio between the rolled color and white, black, and the cyan brand color. Use the sliders / constraints to find a color that gives 4.5:1 against your text color. A cyan (#22d3ee) against white passes 4.5:1 barely; cyan against black passes it strongly. That's why sitetrace uses dark backgrounds with cyan accents.</p>
-
-      <h3 class="text-xl font-bold mt-8 mb-3 text-white">The privacy story</h3>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Every "random color generator" I could find online either (a) sends your color to a server (some tracker), (b) uses a server-side generation script that requires a round trip, or (c) loads megabytes of ad-tracking JavaScript before letting you click. This one runs entirely on the client. The HTML, CSS, and JavaScript are open source at the sitetrace GitHub repo, and the page sends exactly one HTTP request when you load it (the static HTML); no per-color, no per-roll, no per-keystroke. Press F12 and watch the network tab.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">Why does this matter for a color picker? Honestly, it doesn't. But it's the right pattern, and once you start building client-side for the right reason, you start building client-side for everything — the color picker is just the easiest place to start. See <a href="/about/" class="source-link">/about</a> for the full privacy story.</p>
-
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-6">Related SiteTrace tools: <a class="source-link" href="/password/">Password Generator</a>, <a class="source-link" href="/word-counter/">Word Counter</a>, <a class="source-link" href="/headers-checker/">Security Headers Checker</a>.</p>
-    </section>
-  </main>
+</main>
 
   <footer class="border-t border-white/5 mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">

@@ -26,23 +26,7 @@
   <meta name="twitter:image:alt" content="VPN checker — SiteTrace" />
   <meta property="og:url" content="https://sitetrace.it.com/vpn-checker/" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://www.schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"How do I know my VPN is connected?","acceptedAnswer":{"@type":"Answer","text":"Open this page while your VPN is running. If the tool shows a different country and city from your real one, and the connection type is hosting or VPN, your tunnel is up. If it shows your real city and your real ISP, the tunnel is down."}},
-      {"@type":"Question","name":"Can a VPN hide my IP completely?","acceptedAnswer":{"@type":"Answer","text":"From the sites you visit, yes. From your VPN provider, no — the provider sees your real IP because your traffic enters their network before exiting to the public internet. Choose a reputable VPN provider with a no-logs policy."}},
-      {"@type":"Question","name":"Does Tor show up as a VPN?","acceptedAnswer":{"@type":"Answer","text":"No. Tor exit nodes are tracked separately. This tool flags Tor connections specifically so you can tell the three apart at a glance: regular connection, VPN, proxy, or Tor."}},
-      {"@type":"Question","name":"My VPN shows my real city — what is wrong?","acceptedAnswer":{"@type":"Answer","text":"Common causes: the VPN tunnel dropped mid-session, the VPN is configured to use split tunneling for browser traffic, or the VPN client hasn’t finished handshaking before you loaded the page. Disconnect, reconnect, and re-check."}},
-      {"@type":"Question","name":"Does a VPN make me anonymous?","acceptedAnswer":{"@type":"Answer","text":"No. A VPN changes your IP and encrypts your traffic between your device and the VPN server, but the VPN provider can still see your real IP, your DNS lookups, and the timestamps of your connections. Real anonymity requires Tor (three random hops), a no-logs VPN in a jurisdiction that doesn't share data with your real country, and disciplined operational security (no logins, no cookies, no JavaScript). A VPN is privacy from your ISP and from public Wi-Fi operators, not anonymity from the VPN operator."}},
-      {"@type":"Question","name":"What's the difference between a VPN and a proxy?","acceptedAnswer":{"@type":"Answer","text":"A VPN encrypts all traffic from your device at the OS level and routes it through a tunnel to the VPN server. A proxy is per-application (browser, curl, a single game client) and usually doesn't encrypt — it just forwards your request from a different IP. HTTP proxies add X-Forwarded-For and Via headers that identify themselves. SOCKS5 proxies don't add identifying headers but also don't encrypt. Tor is a special case — three random encrypted hops, the destination only sees the exit node's IP."}},
-      {"@type":"Question","name":"Can this page detect my VPN?","acceptedAnswer":{"@type":"Answer","text":"It detects whether your IP belongs to a known VPN provider's published range, which covers the top ~150 commercial VPNs (NordVPN, ExpressVPN, Mullvad, Proton, Surfshark, etc.). It also flags datacenter IPs (most VPNs host on AWS, Hetzner, DigitalOcean) and Tor exit nodes. It does NOT detect residential proxy networks (Bright Data, Oxylabs, IPRoyal) because those routes use real consumer ISP ranges and look identical to a regular home user. Detection for those is approximate and based on ASN reputation, not IP-block match."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -302,59 +286,7 @@
       </div>
     </div>
 
-    <section class="mt-12 card p-6 sm:p-8 essay">
-      <h2 class="text-xl font-bold mb-2" data-i18n="vpc_how_h2">How VPN detection works</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3" data-i18n="vpc_how_text">Every public IP belongs to an autonomous system (AS) — usually an ISP, a hosting provider, or a mobile carrier. VPN providers use hosting provider IPs because the VPN servers themselves run in data centers. This tool cross-references the IP's AS and registered organization against known VPN, proxy, and Tor exit-node lists, and flags the connection type accordingly.</p>
-
-      <p>VPN detection isn't magic. There are three signals that websites use to tell whether you're on a VPN, and each has well-known failure modes.</p>
-
-      <p><strong>Signal 1: ASN lookup.</strong> Every public IP belongs to an autonomous system — a residential ISP like Comcast or Verizon, a hosting provider like Hetzner or AWS, or a mobile carrier. VPN providers run their servers in data centers, so the IP they hand you is almost always a hosting provider's IP. The first check is therefore "is this IP in a known hosting ASN?" — if yes, you're probably behind a VPN, a proxy, or a server. This catches 90% of VPN traffic.</p>
-
-      <p><strong>Signal 2: IP-block match.</strong> Major VPN companies publish the IP ranges they lease. NordVPN, Surfshark, Mullvad, Proton, ExpressVPN, PIA — all of them have large published IP lists that update weekly. The second check is "is this IP in any of the top 150 commercial VPN providers' ranges?" — this catches most consumer VPN traffic even when the IP is technically hosted on a smaller provider that the ASN check missed. The Tor Project publishes a similar list of exit nodes every hour.</p>
-
-      <p><strong>Signal 3: Reverse-DNS and threat reputation.</strong> VPN providers often set a reverse-DNS record like <code>us-nyc-1.nordvpn.com</code> or <code>fr-par-relay.proton.me</code>. Looking up the reverse DNS is a free, fast third signal — if the PTR record says it's a VPN, it's a VPN. Services like IP2Location, IPinfo, IPQualityScore, and MaxMind bundle these signals (and hundreds of others) into commercial reputation databases that websites subscribe to. The detection isn't perfect, but it's good enough for most use cases.</p>
-
-      <p><strong>Where detection fails.</strong> Residential proxy networks (Bright Data, Oxylabs, Smartproxy, IPRoyal) rent real consumer ISP connections from people who have installed their software in exchange for free VPN access. The traffic emerges from a real residential IP — Comcast, Orange, Deutsche Telekom — that has no commercial relationship with any VPN provider. The detection rate for these is roughly 50%, and it depends on ASN reputation heuristics (e.g., "this residential IP was observed as a proxy exit yesterday") rather than IP-block match. If you need to defeat this kind of detection, you need a residential proxy of your own — and that costs real money.</p>
-
-      <p><strong>VPN vs proxy vs Tor — what's the same, what isn't.</strong> A VPN encrypts all traffic from your device at the OS level and routes it through a tunnel to the VPN server. A proxy is per-application (browser, curl, a single game client) and usually doesn't encrypt — it just forwards your request from a different IP. HTTP proxies add X-Forwarded-For and Via headers that identify themselves. SOCKS5 proxies don't add identifying headers but also don't encrypt. Tor is a special case — three random encrypted hops, the destination only sees the exit node's IP, and the exit node operator can see plaintext for non-HTTPS connections. From a detection standpoint: VPN IPs look like datacenter IPs, proxy IPs look like datacenter IPs (or residential for residential proxies), and Tor IPs are explicitly published and flagged.</p>
-
-      <p><strong>DNS leaks.</strong> Even if your VPN is up, your DNS queries might still go to your ISP's resolver — which leaks every domain you visit to your ISP. Most modern VPN clients route DNS through the tunnel to a private resolver (Mullvad uses 10.64.0.1, Proton uses 10.0.0.1, etc.). You can verify by visiting a DNS leak test page; the tool will show which resolvers answered. If your ISP's resolver is in the list, your VPN is leaking DNS.</p>
-
-      <p><strong>WebRTC leaks.</strong> WebRTC (the protocol behind video calls in the browser) can leak your real local IP through STUN requests, bypassing the tunnel. Modern browsers (Firefox, Brave, Chrome with extensions) disable WebRTC by default or let you control which IPs are exposed. Most modern VPN clients also include a WebRTC-block setting. If you see a 192.168.x.x or 10.x.x.x address alongside your VPN IP in a WebRTC test, your browser is leaking your local IP.</p>
-
-      <p><strong>Common VPN failure modes.</strong> The tunnel can drop mid-session if the VPN server reboots or your internet blips — most clients have a "kill switch" that blocks all traffic when the tunnel is down. Split tunneling sends only specific traffic (browser, a specific app) through the tunnel while everything else uses your real connection — handy for streaming local content, but if you forget it's on, your real IP is exposed for everything outside the tunnel. The handshake can take 5-30 seconds when you first connect; loading a page before the handshake completes shows your real IP. And of course, free VPNs often log your traffic and sell it — which is no better than having no VPN.</p>
-
-      <p>The detection behind this page works entirely in your browser and a Cloudflare Worker. Your browser makes a request to the Worker, the Worker fetches your public IP from the request headers (Cloudflare adds <code>cf-connecting-ip</code>), then forwards to IP2Location for geolocation enrichment and to a small bundled database of VPN-provider IP ranges for the connection-type classification. The whole round trip is typically 300-700ms. We don't log the IP, don't read Cloudflare's logs, and don't store anything beyond the response cache (5 minutes for IP-lookup data, 1 hour for VPN ranges).</p>
-
-      <p>If you want to verify the result from a script, the same IP-lookup data is at <code>api.sitetrace.it.com</code>:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="str">"https://api.sitetrace.it.com/api/ip-lookup?ip=203.0.113.42"</span>
-        <br/><span class="comment"># → {ip, country, region, city, isp, asn, is_vpn, is_proxy, is_tor, is_datacenter, threat_level, ...}</span>
-      </div>
-
-      <p>The VPN / proxy / Tor / datacenter flags are heuristic and update weekly. Don't make life-or-death decisions based on a single lookup. If you're worried about a specific connection, run the check twice from two different networks (home + mobile) and compare — a true VPN IP will look the same from both.</p>
-    </section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="vpc_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="vpc_faq_1_q">How do I know my VPN is connected?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="vpc_faq_1_a">Open this page while your VPN is running. If the tool shows a different country and city from your real one, and the connection type is "hosting" or "VPN", your tunnel is up. If it shows your real city and your real ISP, the tunnel is down.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="vpc_faq_2_q">Can a VPN hide my IP completely?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="vpc_faq_2_a">From the sites you visit, yes. From your VPN provider, no — the provider sees your real IP because your traffic enters their network before exiting to the public internet.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="vpc_faq_3_q">Does Tor show up as a VPN?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="vpc_faq_3_a">No. Tor exit nodes are tracked separately. This tool flags Tor connections specifically so you can tell the three apart at a glance.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="vpc_faq_4_q">My VPN shows my real city — what is wrong?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="vpc_faq_4_a">Common causes: the VPN tunnel dropped mid-session, the VPN is configured to use split tunneling for browser traffic, or the VPN client hasn’t finished handshaking. Disconnect, reconnect, and re-check.</p></div>
-      </div>
-    </section>
-
-    <div class="mt-8 card">
-      <h2 class="text-base font-bold mb-3">Related tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/what-is-my-ip/" class="text-brand-300 hover:text-brand-200">What is my IP →</a>
-        <a href="/ip-lookup/" class="text-brand-300 hover:text-brand-200">IP lookup →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
-      </div>
-    </div>
+</div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">

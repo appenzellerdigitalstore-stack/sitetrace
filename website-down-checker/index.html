@@ -26,22 +26,7 @@
   <meta name="twitter:image:alt" content="Website down checker — SiteTrace" />
   <meta property="og:url" content="https://sitetrace.it.com/website-down-checker/" />
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://www.schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What’s the difference between “down for me” and “down for everyone”?","acceptedAnswer":{"@type":"Answer","text":"“Down for me” means your connection cannot reach the service, but the service itself is fine for everyone else. “Down for everyone” means the service has declared an outage on its official status page, affecting all (or many) users."}},
-      {"@type":"Question","name":"How do I check if a specific site is down?","acceptedAnswer":{"@type":"Answer","text":"Paste the full URL (including https://) into the search box at the top of this page and press Check. The tool probes the site from your network and shows reachability, HTTP status code, response time, and (for tracked services) the official status from the service’s own status page."}},
-      {"@type":"Question","name":"Where does the official status data come from?","acceptedAnswer":{"@type":"Answer","text":"From each service’s public status page, mostly hosted on Atlassian Statuspage. We poll the public summary endpoint and the incident feed."}},
-      {"@type":"Question","name":"What if the site I want to check isn’t in your tracker?","acceptedAnswer":{"@type":"Answer","text":"You can still paste its URL and probe it from your network. We also deep-link to Downdetector for community-reported issues, which is the next-best signal if the service has no public status page."}},
-      {"@type":"Question","name":"What HTTP status codes will I see?","acceptedAnswer":{"@type":"Answer","text":"200 OK means reachable, the site returned content. 3xx redirects are followed automatically (you'll see the final 200 unless you ask for the chain). 4xx are client errors — 401 means the site requires auth (still up), 403 means forbidden (often CDN block), 404 means the path doesn't exist (the domain is up but that route is gone), 429 means rate-limited. 5xx are server errors — 500 is generic, 502 Bad Gateway is usually an upstream timeout, 503 Service Unavailable means the site is up but deliberately rejecting traffic (maintenance or overload), 504 Gateway Timeout means an upstream proxy didn't respond in time. 0 means the connection never completed — DNS failure, network timeout, or blocked."}},
-      {"@type":"Question","name":"How is this different from Downdetector?","acceptedAnswer":{"@type":"Answer","text":"Downdetector aggregates user-submitted outage reports — 'I can't reach this, I must not be there either' — and shows a graph of complaints. Useful during big outages, less useful during quiet periods. This tool probes the site from your browser, returns a single answer (reachability, status code, latency), and links to the service's official status page if it's in our tracker. Different signals for different use cases."}}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
+<script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
@@ -277,52 +262,9 @@
       </ul>
     </section>
 
-    <section class="mt-12 card p-6 sm:p-8 essay">
-      <h2 class="text-xl font-bold mb-2">How reachability + status checks actually work</h2>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-3">When you paste a URL and hit Check, your browser issues a real HTTP request from your network to the target. We don't run a server-side probe — the probe runs in your browser via <code>fetch()</code>, so the result tells you whether <em>your</em> network can reach the site, not whether the site is up for everyone. Different networks can reach different parts of the internet (corporate firewalls, ISP outages, regional CDN failures), so the same probe from your phone on a different network might show different results.</p>
+<section id="services" class="mt-10" aria-label="Service status grid"></section>
 
-      <p>The HTTP status code tells you the rest of the story. <strong>200 OK</strong> means the server received it, processed it, and returned content. <strong>3xx</strong> codes are redirects — <code>301 Permanent</code> and <code>302 Found</code> are common, and your browser follows them automatically. <strong>4xx</strong> are client errors: <code>400 Bad Request</code> means the request itself was malformed (rare), <code>401 Unauthorized</code> means auth is required (the site is up but you don't have credentials), <code>403 Forbidden</code> means the server actively rejected you (often a CDN block on your IP range), <code>404 Not Found</code> means the path doesn't exist (the domain is up but that route is gone), <code>429 Too Many Requests</code> means rate-limited. <strong>5xx</strong> are server-side problems: <code>500 Internal Server Error</code> is a generic crash, <code>502 Bad Gateway</code> means an upstream proxy got nothing back, <code>503 Service Unavailable</code> means the site is up but deliberately rejecting traffic (maintenance or overload), <code>504 Gateway Timeout</code> means an upstream proxy didn't respond in time. <strong>0</strong> (no status code at all) means the connection never completed — DNS failure, TCP timeout, or the request was blocked before reaching the network.</p>
-
-      <p><strong>Why your probe might fail when the service is fine.</strong> Five common reasons. (1) Your DNS is hijacked or slow — try 1.1.1.1 or 8.8.8.8. (2) Your VPN is blocked — many services (Cloudflare, Discord, GitHub) maintain blocklists of known VPN provider IPs. (3) Your ISP or country is blocking the domain — common in regions with active censorship. (4) You're on a corporate or coffee-shop Wi-Fi with aggressive egress filtering. (5) The service has a regional outage that doesn't affect their official status page because it's just a single edge node failing.</p>
-
-      <p><strong>Why the official status page might say "all green" when you can't reach the site.</strong> Most status pages (Atlassian Statuspage is the dominant platform, used by Cloudflare, GitHub, Discord, OpenAI, and ~80% of the major SaaS vendors) track the service's internal infrastructure, not the customer's ability to reach it. If your ISP is having a routing problem, or the CDN you're assigned to is having a regional issue, the service's core might be 100% healthy and zero error response visible to their dashboards. The status page is necessary but not sufficient.</p>
-
-      <p><strong>What's the difference between a status page and a reachability check?</strong> A status page tells you what the service says about itself. A reachability check tells you what your network sees. Both are useful. The right diagnostic flow: if you can't reach a site, check the official status page first — if it says everything is green, the problem is on your end (DNS, VPN, ISP, your connection). If it says there's an incident, the problem is theirs. This page tries to combine both signals — the reachability probe is yours, the status data is from the service's own page.</p>
-
-      <p><strong>Why use Downdetector at all if you have official status pages?</strong> For services that don't have a public status page (smaller SaaS tools, niche platforms, anything built before status pages were standard), Downdetector aggregates user reports — when a site stops responding, people search for "is X down" and Downdetector counts those searches as complaints, and a spike indicates an outage. Useful signal, especially for older services or services without the resources for a public status feed. The signal-to-noise is worse than official status pages (searches aren't real connection failures), but it's better than nothing.</p>
-
-      <p>The 50+ official status feeds behind the "live" grid come from each service's Atlassian Statuspage. The Statuspage platform publishes a JSON endpoint at <code>/api/v2/summary.json</code> for every hosted status site — we read 7 of them in parallel with a small concurrency cap to respect rate limits. The full status data refreshes every 30 seconds; the per-resolver reachability check happens on demand when you paste a URL.</p>
-
-      <p>If you want to do this from a script or CI, the data is at <code>api.sitetrace.it.com</code>:</p>
-
-      <div class="curl-block mt-3">
-        <span class="prompt">$</span> <span class="flag">curl</span> <span class="arg">-X</span> POST <span class="str">https://api.sitetrace.it.com/api/status-check</span> <span class="arg">-H</span> <span class="str">'Content-Type: application/json'</span> <span class="arg">-d</span> <span class="str">'{"urls":["https://github.com","https://discord.com","https://cloudflare.com"]}'</span>
-        <br/><span class="comment"># → [{url, status, latency_ms, content_type, redirect_url?}, ...]</span>
-      </div>
-
-      <p>The CLI equivalent for a single URL is <code>curl -sS -o /dev/null -w '%{http_code} %{time_total}s\n' https://github.com</code>. For 100 URLs you'd loop over them with a concurrency cap, or use a tool like <code>httpx</code> from ProjectDiscovery that handles the parallelism. The pattern is the same: send a request, capture the status code and timing, don't follow a redirect with another request (it would mask 3xx responses).</p>
-    </section>
-
-    <section id="services" class="mt-10" aria-label="Service status grid"></section>
-
-    <section class="mt-12 card" aria-label="Frequently asked questions">
-      <h2 class="text-xl font-bold mb-4" data-i18n="wdc_faq_h2">Frequently asked questions</h2>
-      <div class="space-y-5">
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_1_q">What’s the difference between "down for me" and "down for everyone"?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_1_a">"Down for me" means your connection cannot reach the service, but the service itself is fine for everyone else. "Down for everyone" means the service has declared an outage on its official status page, affecting all (or many) users.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_2_q">How do I check if a specific site is down?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_2_a">Paste the full URL (including https://) into the search box at the top of this page and press Check. The tool probes the site from your network and shows reachability, HTTP status code, response time, and (for tracked services) the official status from the service's own status page.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_3_q">Where does the official status data come from?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_3_a">From each service's public status page, mostly hosted on Atlassian Statuspage. We poll the public summary endpoint and the incident feed.</p></div>
-        <div><h3 class="font-semibold text-white mb-1" data-i18n="wdc_faq_4_q">What if the site I want to check isn’t in your tracker?</h3><p class="text-slate-300 text-sm leading-relaxed" data-i18n="wdc_faq_4_a">You can still paste its URL and probe it from your network. We also deep-link to Downdetector for community-reported issues, which is the next-best signal if the service has no public status page.</p></div>
-      </div>
-    </section>
-
-    <div class="mt-8 card">
-      <h2 class="text-base font-bold mb-3">Related tools</h2>
-      <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/is-it-down/" class="text-brand-300 hover:text-brand-200">Is it down? →</a>
-        <a href="/ping/" class="text-brand-300 hover:text-brand-200">Ping →</a>
-        <a href="/" class="text-brand-300 hover:text-brand-200">All tools</a>
-      </div>
-    </div>
+</div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
