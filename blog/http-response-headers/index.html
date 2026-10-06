@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>HTTP response headers: what your server is actually sending — SiteTrace</title>
+  <meta name="description" content="Every HTTP response carries 10-20 headers. Most are invisible to users, but they control caching, security, content negotiation, and tracking. Here is what each major one does." />
+  <meta name="keywords" content="http, response, headers, what, your, server, is, actually, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/blog/http-response-headers/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="HTTP response headers: what your server is actually sending" />
+  <meta property="og:description" content="Every HTTP response carries 10-20 headers. Most are invisible to users, but they control caching, security, content negotiation, and tracking. Here is what each major one does." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/http-response-headers.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="HTTP response headers: what your server is actually sending — SiteTrace" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="HTTP response headers: what your server is actually sending" />
+  <meta name="twitter:description" content="Every HTTP response carries 10-20 headers. Most are invisible to users, but they control caching, security, content negotiation, and tracking. Here is what each major one does." />
+  <meta name="twitter:image" content="https://sitetrace.it.com/og/http-response-headers.png" />
+  <meta name="twitter:image:alt" content="HTTP response headers: what your server is actually sending — SiteTrace" />
+  <meta property="og:url" content="https://sitetrace.it.com/blog/http-response-headers/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "HTTP response headers: what your server is actually sending",
+    "url": "https://sitetrace.it.com/blog/http-response-headers/",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "author": { "@type": "Person", "name": "Edy Appenzeller" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace" },
+    "description": "Every HTTP response carries 10-20 headers. Most are invisible to users, but they control caching, security, content negotiation, and tracking. Here is what each major one does.",
+    "articleSection": "Web status & headers"
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#ecfeff', 100:'#cffafe', 200:'#a5f3fc', 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4', 600:'#0891b2', 700:'#0e7490', 800:'#155e75', 900:'#164e63' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='%23070a12' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+    <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">
+          SiteTrace
+          <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free network tools</span>
+        </span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2" aria-label="Main">
+        <a class="nav-link" href="/what-is-my-ip/">What is my IP</a>
+        <a class="nav-link" href="/ping/">Domain inspector</a>
+        <a class="nav-link" href="/dns-tools/">DNS lookup</a>
+        <a class="nav-link" href="/is-it-down/">Is it down</a>
+        <div class="relative ml-1 sm:ml-2" id="lang-wrap">
+          <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
+          </button>
+          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
+            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
+            <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <article class="pt-8 sm:pt-12 space-y-5">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <a href="/blog/" class="hover:text-slate-300">Blog</a>
+        <span class="mx-1.5">/</span>
+        <span>Web status & headers</span>
+      </nav>
+
+      <header>
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Web status · Web status & headers</p>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">HTTP response headers: what your server is actually sending</h1>
+        <p class="byline mt-4">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+        <div class="mt-2 text-xs text-slate-500 font-mono">Published 2026-10-05</div>
+        <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">When a server returns a page, it sends headers before the body. These headers tell the browser how to handle the response: cache it or not, compress it or not, embed it in an iframe or not, send a CORS request from another origin or not. Most are invisible to users. A few, like Content-Type and Set-Cookie, are visible indirectly. The bad ones, like missing security headers, are invisible until something breaks.</p>
+      </header>
+
+      <section class="card">
+        <h2 class="text-lg font-bold mb-2">TL;DR</h2>
+        <p class="text-slate-300 text-sm leading-relaxed">Every HTTP response carries 10-20 headers. Most are invisible to users, but they control caching, security, content negotiation, and tracking. Here is what each major one does.</p>
+      </section>
+
+      <section class="prose-content space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <h2>The headers every response should have</h2>
+        <p>Content-Type tells the browser what the body is (text/html vs application/json vs image/png). Cache-Control tells it how long to cache. Content-Encoding tells it the body is compressed (gzip, br). Server and Date tell you who served it and when. Strict-Transport-Security tells the browser to use HTTPS for the next 6–12 months. X-Content-Type-Options: nosniff tells the browser to not guess the content type.</p>
+
+        <h2>Security headers worth checking</h2>
+        <p>Content-Security-Policy restricts what scripts and styles the page can load. X-Frame-Options prevents the page from being embedded in an iframe (clickjacking). Referrer-Policy controls how much referrer information the browser sends. Permissions-Policy disables features like camera, microphone, geolocation by default. A-F grade on /headers-checker/ measures these.</p>
+
+        <h2>Caching headers</h2>
+        <p>Cache-Control: max-age=3600 means "cache this for 1 hour". ETag is a fingerprint of the content — the browser sends If-None-Match back and the server returns 304 if the content is unchanged. Last-Modified is the older equivalent. Cloudflare and other CDNs add Age and CF-Cache-Status headers you can use to debug caching.</p>
+
+        <h2>When headers cause problems</h2>
+        <p>A missing Content-Type header makes the browser guess, which can cause XSS vulnerabilities. A wrong Cache-Control header makes your pages cache-stale (visitors see old content). A CORS header that is too permissive lets other sites read your responses (security issue). A CORS header that is too restrictive breaks legitimate cross-origin requests. The right balance depends on what your site does.</p>
+      </section>
+
+      <section class="mt-8 card p-5 border-brand-400/30" style="border-color: rgba(34, 211, 238, 0.30);">
+        <h2 class="text-base font-bold mb-2 text-brand-300">Try it →</h2>
+        <p class="text-slate-300 text-sm leading-relaxed mb-3">Run the HTTP headers tool on sitetrace.it.com — paste a value and get an instant answer.</p>
+        <a href="/http-headers/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-gradient text-ink-900 font-semibold text-sm hover:opacity-90 transition">
+          Open HTTP headers
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+      </section>
+
+      <div class="mt-8 text-sm text-slate-500">
+        <a href="/blog/" class="hover:text-brand-300">← Back to all articles</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-brand-gradient"></span>
+          <span class="font-bold">SiteTrace</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed max-w-md">Free, no-login network tools. No accounts, no tracking, no nonsense.</p>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2">About</div>
+        <ul class="space-y-1 text-slate-300">
+          <li><a href="/about/" class="hover:text-white">About</a></li>
+          <li><a href="/blog/" class="hover:text-white">Blog</a></li>
+          <li><a href="/privacy/" class="hover:text-white">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2">Language</div>
+        <ul class="space-y-1 text-slate-300 text-sm">
+          <li><button class="lang-link hover:text-white" data-lang="en">English</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="es">Espa&ntilde;ol</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>&copy; 2026 SiteTrace. All rights reserved.</span>
+        <span class="font-mono">v1.0.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/i18n.js?v=32"></script>
+  <script src="/js/layout.js?v=32"></script>
+</body>
+</html>

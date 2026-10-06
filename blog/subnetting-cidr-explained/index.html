@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>Subnetting 101: CIDR, networks, broadcasts, and host ranges — SiteTrace</title>
+  <meta name="description" content="A subnet calculator takes a CIDR like 192.168.1.0/24 and gives you back the network address, broadcast, host range, wildcard, and IP class. Here is what each piece means." />
+  <meta name="keywords" content="subnetting, 101, cidr, networks, broadcasts, and, host, ranges, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/blog/subnetting-cidr-explained/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Subnetting 101: CIDR, networks, broadcasts, and host ranges" />
+  <meta property="og:description" content="A subnet calculator takes a CIDR like 192.168.1.0/24 and gives you back the network address, broadcast, host range, wildcard, and IP class. Here is what each piece means." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/subnetting-cidr-explained.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Subnetting 101: CIDR, networks, broadcasts, and host ranges — SiteTrace" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Subnetting 101: CIDR, networks, broadcasts, and host ranges" />
+  <meta name="twitter:description" content="A subnet calculator takes a CIDR like 192.168.1.0/24 and gives you back the network address, broadcast, host range, wildcard, and IP class. Here is what each piece means." />
+  <meta name="twitter:image" content="https://sitetrace.it.com/og/subnetting-cidr-explained.png" />
+  <meta name="twitter:image:alt" content="Subnetting 101: CIDR, networks, broadcasts, and host ranges — SiteTrace" />
+  <meta property="og:url" content="https://sitetrace.it.com/blog/subnetting-cidr-explained/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Subnetting 101: CIDR, networks, broadcasts, and host ranges",
+    "url": "https://sitetrace.it.com/blog/subnetting-cidr-explained/",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "author": { "@type": "Person", "name": "Edy Appenzeller" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace" },
+    "description": "A subnet calculator takes a CIDR like 192.168.1.0/24 and gives you back the network address, broadcast, host range, wildcard, and IP class. Here is what each piece means.",
+    "articleSection": "Network & IP"
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#ecfeff', 100:'#cffafe', 200:'#a5f3fc', 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4', 600:'#0891b2', 700:'#0e7490', 800:'#155e75', 900:'#164e63' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='%23070a12' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+    <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">
+          SiteTrace
+          <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free network tools</span>
+        </span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2" aria-label="Main">
+        <a class="nav-link" href="/what-is-my-ip/">What is my IP</a>
+        <a class="nav-link" href="/ping/">Domain inspector</a>
+        <a class="nav-link" href="/dns-tools/">DNS lookup</a>
+        <a class="nav-link" href="/is-it-down/">Is it down</a>
+        <div class="relative ml-1 sm:ml-2" id="lang-wrap">
+          <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
+          </button>
+          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
+            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
+            <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <article class="pt-8 sm:pt-12 space-y-5">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <a href="/blog/" class="hover:text-slate-300">Blog</a>
+        <span class="mx-1.5">/</span>
+        <span>Network & IP</span>
+      </nav>
+
+      <header>
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Networking · Network & IP</p>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">Subnetting 101: CIDR, networks, broadcasts, and host ranges</h1>
+        <p class="byline mt-4">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+        <div class="mt-2 text-xs text-slate-500 font-mono">Published 2026-10-05</div>
+        <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">CIDR notation looks cryptic — 10.0.0.0/8, 192.168.1.0/24, 172.16.0.0/12 — but each piece has a clear meaning. The number after the slash is the prefix length, which tells you how many bits of the IP address are the network part and how many are the host part. From that, you can derive every other field.</p>
+      </header>
+
+      <section class="card">
+        <h2 class="text-lg font-bold mb-2">TL;DR</h2>
+        <p class="text-slate-300 text-sm leading-relaxed">A subnet calculator takes a CIDR like 192.168.1.0/24 and gives you back the network address, broadcast, host range, wildcard, and IP class. Here is what each piece means.</p>
+      </section>
+
+      <section class="prose-content space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <h2>Reading a CIDR</h2>
+        <p>192.168.1.0/24 means the first 24 bits are the network, the remaining 8 bits are the host. 24 bits = 3 bytes = the first three octets of the IP. So 192.168.1.0 is the network address, and the 8 host bits give 2^8 = 256 possible addresses (0 through 255). Of those 256, two are reserved — the network itself (192.168.1.0) and the broadcast (192.168.1.255). That leaves 254 usable host addresses.</p>
+
+        <h2>Where the common masks come from</h2>
+        <p>/8 = 255.0.0.0 = 16,777,214 usable hosts. /16 = 255.255.0.0 = 65,534 hosts. /24 = 255.255.255.0 = 254 hosts. /30 = 255.255.255.252 = 2 hosts (used for point-to-point links between routers). /32 = 255.255.255.255 = 1 host (a single IP). The relationship is exponential: each prefix-length step doubles the host count.</p>
+
+        <h2>IP classes (the historical system)</h2>
+        <p>Class A was 0.0.0.0/8 to 127.255.255.255 (huge blocks for governments and big companies). Class B was 128.0.0.0/16 to 191.255.255.255 (mid-size networks). Class D is 224.0.0.0/4 (multicast). Class E is 240.0.0.0/4 (experimental, reserved). Classful networking was replaced by CIDR in 1993, but the terminology persists and Class C is still used colloquially to mean "a /24 block".</p>
+
+        <h2>Wildcard masks vs subnet masks</h2>
+        <p>The subnet mask says which bits are the network (255 for network bits, 0 for host bits). The wildcard mask is the inverse — it says which bits to ignore when matching (0 for network bits, 255 for host bits). You will see wildcard masks in Cisco ACL config and in firewall rules. The math is identical: a /24 has subnet mask 255.255.255.0 and wildcard mask 0.0.0.255.</p>
+      </section>
+
+      <section class="mt-8 card p-5 border-brand-400/30" style="border-color: rgba(34, 211, 238, 0.30);">
+        <h2 class="text-base font-bold mb-2 text-brand-300">Try it →</h2>
+        <p class="text-slate-300 text-sm leading-relaxed mb-3">Run the Subnet calculator tool on sitetrace.it.com — paste a value and get an instant answer.</p>
+        <a href="/subnet-calculator/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-gradient text-ink-900 font-semibold text-sm hover:opacity-90 transition">
+          Open Subnet calculator
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+      </section>
+
+      <div class="mt-8 text-sm text-slate-500">
+        <a href="/blog/" class="hover:text-brand-300">← Back to all articles</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-brand-gradient"></span>
+          <span class="font-bold">SiteTrace</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed max-w-md">Free, no-login network tools. No accounts, no tracking, no nonsense.</p>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2">About</div>
+        <ul class="space-y-1 text-slate-300">
+          <li><a href="/about/" class="hover:text-white">About</a></li>
+          <li><a href="/blog/" class="hover:text-white">Blog</a></li>
+          <li><a href="/privacy/" class="hover:text-white">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2">Language</div>
+        <ul class="space-y-1 text-slate-300 text-sm">
+          <li><button class="lang-link hover:text-white" data-lang="en">English</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="es">Espa&ntilde;ol</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>&copy; 2026 SiteTrace. All rights reserved.</span>
+        <span class="font-mono">v1.0.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/i18n.js?v=32"></script>
+  <script src="/js/layout.js?v=32"></script>
+</body>
+</html>

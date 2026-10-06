@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <title>WCAG color contrast: how to pick accessible colors — SiteTrace</title>
+  <meta name="description" content="WCAG 2.x requires a contrast ratio of 4.5:1 for normal text and 3:1 for large text. Here is the math, the tool, and how to design accessible palettes." />
+  <meta name="keywords" content="wcag, color, contrast, how, to, pick, accessible, colors, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/blog/wcag-color-contrast/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="WCAG color contrast: how to pick accessible colors" />
+  <meta property="og:description" content="WCAG 2.x requires a contrast ratio of 4.5:1 for normal text and 3:1 for large text. Here is the math, the tool, and how to design accessible palettes." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/wcag-color-contrast.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="WCAG color contrast: how to pick accessible colors — SiteTrace" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WCAG color contrast: how to pick accessible colors" />
+  <meta name="twitter:description" content="WCAG 2.x requires a contrast ratio of 4.5:1 for normal text and 3:1 for large text. Here is the math, the tool, and how to design accessible palettes." />
+  <meta name="twitter:image" content="https://sitetrace.it.com/og/wcag-color-contrast.png" />
+  <meta name="twitter:image:alt" content="WCAG color contrast: how to pick accessible colors — SiteTrace" />
+  <meta property="og:url" content="https://sitetrace.it.com/blog/wcag-color-contrast/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "WCAG color contrast: how to pick accessible colors",
+    "url": "https://sitetrace.it.com/blog/wcag-color-contrast/",
+    "datePublished": "2026-10-05",
+    "dateModified": "2026-10-05",
+    "author": { "@type": "Person", "name": "Edy Appenzeller" },
+    "publisher": { "@type": "Organization", "name": "SiteTrace" },
+    "description": "WCAG 2.x requires a contrast ratio of 4.5:1 for normal text and 3:1 for large text. Here is the math, the tool, and how to design accessible palettes.",
+    "articleSection": "Utilities"
+  }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['IBM Plex Sans','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','sans-serif'], mono: ['JetBrains Mono','ui-monospace','SFMono-Regular','Menlo','monospace'] },
+          colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e', 600:'#1a2438', 500:'#222d44' }, brand: { 50:'#ecfeff', 100:'#cffafe', 200:'#a5f3fc', 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4', 600:'#0891b2', 700:'#0e7490', 800:'#155e75', 900:'#164e63' } },
+          backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+          boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322d3ee'/%3E%3Cstop offset='100%25' stop-color='%2314b8a6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='%23070a12' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
+</head>
+
+<body class="min-h-screen bg-ink-900 text-slate-100 font-sans antialiased selection:bg-brand-500/40 selection:text-white">
+  <div class="fixed inset-0 -z-10 pointer-events-none">
+    <div class="absolute inset-0 bg-hero-glow"></div>
+    <div class="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,white_1px,transparent_0)] [background-size:24px_24px]"></div>
+  </div>
+
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
+          <svg viewBox="0 0 100 100" class="w-5 h-5" aria-hidden="true">
+            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="white" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="text-base sm:text-lg font-bold tracking-tight">
+          SiteTrace
+          <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2">Free network tools</span>
+        </span>
+      </a>
+      <nav class="flex items-center gap-1 sm:gap-2" aria-label="Main">
+        <a class="nav-link" href="/what-is-my-ip/">What is my IP</a>
+        <a class="nav-link" href="/ping/">Domain inspector</a>
+        <a class="nav-link" href="/dns-tools/">DNS lookup</a>
+        <a class="nav-link" href="/is-it-down/">Is it down</a>
+        <div class="relative ml-1 sm:ml-2" id="lang-wrap">
+          <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
+          </button>
+          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
+            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
+            <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+    <article class="pt-8 sm:pt-12 space-y-5">
+      <nav class="text-xs text-slate-500" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5">/</span>
+        <a href="/blog/" class="hover:text-slate-300">Blog</a>
+        <span class="mx-1.5">/</span>
+        <span>Utilities</span>
+      </nav>
+
+      <header>
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-brand-300">Design · Utilities</p>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">WCAG color contrast: how to pick accessible colors</h1>
+        <p class="byline mt-4">last updated 2026-10-05 · built by edy appenzeller · open source</p>
+        <div class="mt-2 text-xs text-slate-500 font-mono">Published 2026-10-05</div>
+        <p class="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">Color contrast is the single biggest accessibility issue on the web. WCAG 2.x defines minimum contrast ratios: 4.5:1 for normal text, 3:1 for large text, 3:1 for UI components. If your text does not meet these ratios, low-vision users cannot read it. The /random-color/ tool measures the contrast against white, black, and cyan and tells you whether each pairing is AA-compliant.</p>
+      </header>
+
+      <section class="card">
+        <h2 class="text-lg font-bold mb-2">TL;DR</h2>
+        <p class="text-slate-300 text-sm leading-relaxed">WCAG 2.x requires a contrast ratio of 4.5:1 for normal text and 3:1 for large text. Here is the math, the tool, and how to design accessible palettes.</p>
+      </section>
+
+      <section class="prose-content space-y-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+        <h2>How contrast ratio is calculated</h2>
+        <p>Contrast ratio = (L1 + 0.05) / (L2 + 0.05), where L1 and L2 are the relative luminances of the two colors. Relative luminance is a measure of how bright a color appears to the human visual system, weighted by the eye's sensitivity to red, green, and blue. White has luminance 1.0, black has luminance 0.0. The ratio between pure white and pure black is 21:1 — the maximum possible.</p>
+
+        <h2>What the WCAG levels mean</h2>
+        <p>AA is the standard target. AA-normal: 4.5:1 for body text (under 18pt or 14pt bold). AA-large: 3:1 for large text (18pt+ or 14pt+ bold). AAA is stricter. AAA-normal: 7:1. AAA-large: 4.5:1. UI components and graphical objects need 3:1 against adjacent colors. The /random-color/ tool flags AA violations and shows the actual ratio.</p>
+
+        <h2>Designing accessible palettes</h2>
+        <p>Three rules: (1) Use dark text on light backgrounds or light text on dark backgrounds — never mid-gray on mid-gray. (2) Don't rely on color alone to convey meaning (use icons, patterns, or text labels). (3) Test with a contrast tool, not your eyes — what looks fine to you can be unreadable for users with cataracts, color blindness, or low vision.</p>
+
+        <h2>Why random color is useful here</h2>
+        <p>When designing, picking a starting color is often the hardest part. A random color generator produces colors you would not have chosen, and the contrast meter tells you immediately whether it works against white, black, and your brand color. The result is often a palette you would not have reached through deliberate choice but that meets accessibility standards.</p>
+      </section>
+
+      <section class="mt-8 card p-5 border-brand-400/30" style="border-color: rgba(34, 211, 238, 0.30);">
+        <h2 class="text-base font-bold mb-2 text-brand-300">Try it →</h2>
+        <p class="text-slate-300 text-sm leading-relaxed mb-3">Run the Random color tool on sitetrace.it.com — paste a value and get an instant answer.</p>
+        <a href="/random-color/" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-gradient text-ink-900 font-semibold text-sm hover:opacity-90 transition">
+          Open Random color
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+        </a>
+      </section>
+
+      <div class="mt-8 text-sm text-slate-500">
+        <a href="/blog/" class="hover:text-brand-300">← Back to all articles</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="border-t border-white/5 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-7 h-7 rounded-lg bg-brand-gradient"></span>
+          <span class="font-bold">SiteTrace</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed max-w-md">Free, no-login network tools. No accounts, no tracking, no nonsense.</p>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2">About</div>
+        <ul class="space-y-1 text-slate-300">
+          <li><a href="/about/" class="hover:text-white">About</a></li>
+          <li><a href="/blog/" class="hover:text-white">Blog</a></li>
+          <li><a href="/privacy/" class="hover:text-white">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-slate-500 text-xs uppercase tracking-widest mb-2">Language</div>
+        <ul class="space-y-1 text-slate-300 text-sm">
+          <li><button class="lang-link hover:text-white" data-lang="en">English</button></li>
+          <li><button class="lang-link hover:text-white" data-lang="es">Espa&ntilde;ol</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>&copy; 2026 SiteTrace. All rights reserved.</span>
+        <span class="font-mono">v1.0.0</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/i18n.js?v=32"></script>
+  <script src="/js/layout.js?v=32"></script>
+</body>
+</html>

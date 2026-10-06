@@ -120,9 +120,171 @@
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight" data-i18n="blog_h1">SiteTrace blog — networking, explained</h1>
   <p class="byline justify-center mt-4">last updated 2026-10-02 · built by edy appenzeller · open source</p>
       <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="blog_subtitle">Short, practical articles about IP addresses, DNS, latency, and how the internet actually works. Written for curious users, not network engineers.</p>
-      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-3">The articles here answer the questions that come up most often when people use the tools: why DNS changes don't appear everywhere at once, what your IP address actually reveals about you, and how to make sense of the latency numbers a ping test gives you. Each post is short (5–10 minutes), uses no jargon, and ends with the practical takeaway. We add one new post every few weeks when we have a topic that genuinely helps people use the tools better — not for SEO.</p>
+      <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-3">The articles here answer the questions that come up most often when people use the tools: why DNS changes don't appear everywhere at once, what your IP address actually reveals about you, and how to make sense of the latency numbers a ping test gives you. Each post is short (5–10 minutes), uses no jargon, and ends with the practical takeaway. We add new posts as we find topics that genuinely help people use the tools better — every sitetrace tool has a corresponding explainer here.</p>
 
       <ul class="mt-6 space-y-4">
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Networking</div>
+          <a href="/blog/ip-geolocation-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">What an IP lookup actually tells you (and what it doesn't)</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Your public IP reveals a city, an ISP, and an ASN. It does not reveal your home address. Here is what is actually being shown when you run an IP lookup.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Networking</div>
+          <a href="/blog/ip-reputation-dnsbl-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">How IP reputation works: DNSBLs and what makes an IP get listed</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">IP reputation scores come from real-time DNS blacklists. Seven of them, plus heuristics. Here is how the check works and what to do if your IP is listed.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Networking</div>
+          <a href="/blog/vpn-detection-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">How VPN detection actually works</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Services identify VPN traffic using IP ranges, ASN lookups, and known relay lists. Here is the data they correlate and how accurate the check really is.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Networking</div>
+          <a href="/blog/subnetting-cidr-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Subnetting 101: CIDR, networks, broadcasts, and host ranges</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">A subnet calculator takes a CIDR like 192.168.1.0/24 and gives you back the network address, broadcast, host range, wildcard, and IP class. Here is what each piece means.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · DNS</div>
+          <a href="/blog/dns-records-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">DNS records explained: A, AAAA, MX, TXT, NS, CNAME, SOA</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Every DNS record type has a purpose. A and AAAA point to IPs. MX routes mail. TXT carries SPF, DKIM, DMARC. NS delegates to a nameserver. Here is what each one does.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Networking</div>
+          <a href="/blog/latency-ping-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Latency, jitter, and what ping actually measures</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Ping is round-trip time in milliseconds. Jitter is the variation. Packet loss is the percentage that never arrived. Here is how to read a ping test.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Web status</div>
+          <a href="/blog/how-to-check-if-site-is-down/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">How to check if a website is really down (and not just you)</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">If a site won't load, the question is "is it them or me?" Here is how to find out in 10 seconds using reachability tests and live status pages.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Web status</div>
+          <a href="/blog/bulk-url-monitoring/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Bulk URL status checks for small teams</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Need to check 20 URLs in one shot? The bulk URL status tool returns a JSON-friendly table of status codes, latency, and content type for each.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Web status</div>
+          <a href="/blog/http-response-headers/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">HTTP response headers: what your server is actually sending</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Every HTTP response carries 10–20 headers. Most are invisible to users, but they control caching, security, content negotiation, and tracking. Here is what each major one does.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Web status</div>
+          <a href="/blog/security-headers-grade/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Security headers: the A–F grade explained</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">A security headers grader checks your site for HSTS, CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy, and 5 others. Here is what each one does and how to fix it.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Email</div>
+          <a href="/blog/email-deliverability-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Email deliverability: SPF, DKIM, and DMARC in plain English</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Three DNS records decide whether your email lands in the inbox or the spam folder. SPF says who can send. DKIM signs the message. DMARC says what to do if it fails. Here is how to set them up.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · TLS</div>
+          <a href="/blog/tls-certificate-transparency/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">TLS certificates: how Certificate Transparency works</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Every TLS certificate issued for your domain is logged publicly. The CT logs let you see who issued what, when, and for which names. Here is how to use them.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · SEO</div>
+          <a href="/blog/on-page-seo-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">On-page SEO in 2026: the 12 things that actually matter</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Title, meta, OG tags, robots, sitemap, JSON-LD. Skip the 200-item checklists. Here is what moves the needle for organic search.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · SEO</div>
+          <a href="/blog/open-graph-previews/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Open Graph previews: how your link looks on Slack, Twitter, LinkedIn</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Each social network has its own preview rules. Slack wants og:image. Twitter wants twitter:card. LinkedIn wants square images. Here is how to get previews right.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Security</div>
+          <a href="/blog/password-entropy-explained/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Password entropy: why length beats complexity</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">A 16-character password made of lowercase letters is stronger than an 8-character password with mixed case, numbers, and symbols. Here is the math.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Design</div>
+          <a href="/blog/wcag-color-contrast/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">WCAG color contrast: how to pick accessible colors</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">WCAG 2.x requires a contrast ratio of 4.5:1 for normal text and 3:1 for large text. Here is the math, the tool, and how to design accessible palettes.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Writing</div>
+          <a href="/blog/read-time-keyword-density/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Read time, keyword density, and content length</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Read time is words divided by reading speed (typically 200–250 wpm). Keyword density is the percentage of words that match your target keyword. Both have rules of thumb.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
+        <li class="card">
+          <div class="text-xs text-slate-500 mb-1 font-mono">2026-10-05 · Tools</div>
+          <a href="/blog/network-query-dispatcher/" class="block group">
+            <h2 class="text-lg font-bold text-white group-hover:text-brand-300 mb-1">Why we built /check/: a smart dispatcher for network queries</h2>
+            <p class="text-slate-400 text-sm leading-relaxed">Paste any URL, IP, or domain. /check/ figures out what you mean and runs the right network tool. It's the fastest path to an answer.</p>
+            <div class="mt-2 text-xs text-brand-300 font-semibold">Read article →</div>
+          </a>
+        </li>
+
         <li class="card">
           <div class="text-xs text-slate-500 mb-1 font-mono" data-i18n="blog_dnsprop_date">2026-08-27</div>
           <a href="/blog/dns-propagation/" class="block group">
