@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
   <title>Random Color Generator — pick a random hex / RGB / HSL — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="Random color" data-tool-url="/random-color/" />
   <meta name="description" content="Free random color generator. Pick a random color in hex, RGB, or HSL. Spacebar to roll a new color. Lock the format, lock the hue range, copy to clipboard. 100% client-side, no signup, no tracking." />
   <meta name="keywords" content="random color generator, random hex color, random rgb color, color picker, random hsl, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
@@ -239,6 +240,8 @@
       <div class="palette-strip" id="rc-palette"></div>
     </div>
 
+  <div id="report-export-mount" hidden></div>
+
 </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -261,7 +264,8 @@
   </footer>
 
   <script src="/js/layout.js?v=32"></script>
-  <script src="/js/i18n.js?v=32"></script>
+    <script src="/js/report-export.js?v=32"></script>
+<script src="/js/i18n.js?v=32"></script>
   <script>
     (function () {
       const $ = (s) => document.querySelector(s);

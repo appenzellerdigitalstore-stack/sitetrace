@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
   <title>Word Counter — characters, words, sentences, reading time, Flesch — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="Word counter" data-tool-url="/word-counter/" />
   <meta name="description" content="Free word counter and text analyzer. Counts characters, words, sentences, paragraphs; estimates reading time, speaking time, and Flesch reading-ease score. 100% client-side — your text never leaves the browser." />
   <meta name="keywords" content="word counter, character counter, sentence counter, paragraph counter, reading time, speaking time, flesch reading ease, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
@@ -217,6 +218,8 @@
       </div>
     </div>
 
+  <div id="report-export-mount" hidden></div>
+
 </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -239,7 +242,8 @@
   </footer>
 
   <script src="/js/layout.js?v=32"></script>
-  <script src="/js/i18n.js?v=32"></script>
+    <script src="/js/report-export.js?v=32"></script>
+<script src="/js/i18n.js?v=32"></script>
   <script>
     (function () {
       const $ = (s) => document.querySelector(s);

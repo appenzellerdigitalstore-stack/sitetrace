@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
   <title>SSL / TLS Certificate Checker — certificate transparency search — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="Certificate checker" data-tool-url="/cert-checker/" />
   <meta name="description" content="Free SSL/TLS certificate transparency checker. See all certificates ever issued for any domain (incl. expired), issuer CA, validity dates, and SAN coverage. Faster than crt.sh direct, no queue, no login." />
   <meta name="keywords" content="ssl checker, tls checker, certificate transparency, crt.sh alternative, ssl labs alternative, certificate search, ca issuer, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
@@ -215,6 +216,8 @@
   -H "X-API-Key: $SITETRACE_KEY"</code></pre>
       <p class="text-slate-400 text-xs mt-3">Returns <code>{ domain, count, certs[] }</code> with each cert containing issuer, validity dates, SAN list, and serial. The same endpoint powers this page.</p>
     </section>
+
+  <div id="report-export-mount" hidden></div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -237,7 +240,8 @@
   </footer>
 
   <script src="/js/layout.js?v=32"></script>
-  <script src="/js/i18n.js?v=32"></script>
+    <script src="/js/report-export.js?v=32"></script>
+<script src="/js/i18n.js?v=32"></script>
   <script>
     (function () {
       const API = 'https://api.sitetrace.it.com/api/certs';

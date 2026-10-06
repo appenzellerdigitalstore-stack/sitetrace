@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
   <title>Strong Password Generator — entropy + time-to-crack — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="Password generator" data-tool-url="/password/" />
   <meta name="description" content="Free strong password generator. Generate cryptographically random passwords, see the entropy in bits, the time-to-crack at 1B guesses/sec, and the math. 100% client-side. No signup, no tracking." />
   <meta name="keywords" content="password generator, strong password, random password, password entropy, time to crack, password strength, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
@@ -232,6 +233,8 @@
       </div>
     </div>
 
+  <div id="report-export-mount" hidden></div>
+
 </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -254,7 +257,8 @@
   </footer>
 
   <script src="/js/layout.js?v=32"></script>
-  <script src="/js/i18n.js?v=32"></script>
+    <script src="/js/report-export.js?v=32"></script>
+<script src="/js/i18n.js?v=32"></script>
   <script>
     (function () {
       const $ = (s) => document.querySelector(s);

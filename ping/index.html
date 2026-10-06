@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
   <title data-i18n="ping_h1">Domain inspector — DNS, IP &amp; latency — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="Domain inspector" data-tool-url="/ping/" />
   <meta name="description" data-i18n-attr="content:page_ping_desc" content="Free online domain inspector. Type any website, get its resolved IPs, HTTP reachability, and round-trip latency — all from your browser, no install." />
   <meta name="keywords" content="ping test, ping online, ping a website, ping a server, ping an ip, network latency, latency test, ms test, server response time, domain inspector, is site up, is my website up, is this site down, check site status, check website, reachability, http latency, website response time, check domain" />
   <meta name="robots" content="index, follow" />
@@ -370,6 +371,8 @@
         <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
+
+  <div id="report-export-mount" hidden></div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -419,5 +422,6 @@
     });
   </script>
 <script src="/js/layout.js?v=32"></script>
+  <script src="/js/report-export.js?v=32"></script>
 </body>
 </html>

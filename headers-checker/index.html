@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
   <title>Security Headers Checker — grade A-F, free, no signup — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="Security headers" data-tool-url="/headers-checker/" />
   <meta name="description" content="Free HTTP security headers checker. Grade your site A-F across CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. Faster than securityheaders.com, no queue, no login." />
   <meta name="keywords" content="security headers checker, http security headers, securityheaders.com alternative, csp checker, hsts checker, content security policy, x-frame-options, x-content-type-options, referrer-policy, permissions-policy, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
@@ -227,6 +228,8 @@
   -H "X-API-Key: $SITETRACE_KEY"</code></pre>
       <p class="text-slate-400 text-xs mt-3">Returns <code>{ score, grade, checks[], all_headers }</code>. The same endpoint powers this page — the form just renders the result.</p>
     </section>
+
+  <div id="report-export-mount" hidden></div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -249,7 +252,8 @@
   </footer>
 
   <script src="/js/layout.js?v=32"></script>
-  <script src="/js/i18n.js?v=32"></script>
+    <script src="/js/report-export.js?v=32"></script>
+<script src="/js/i18n.js?v=32"></script>
   <script>
     (function () {
       const API = 'https://api.sitetrace.it.com/api/headers';

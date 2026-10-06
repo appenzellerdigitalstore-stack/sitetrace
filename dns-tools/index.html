@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0a0e1a" />
   <title data-i18n="dns_h1">DNS lookup — every record type in one shot — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="DNS lookup" data-tool-url="/dns-tools/" />
   <meta name="description" data-i18n-attr="content:page_dns_desc" content="Free online DNS lookup. Get every common record (A, AAAA, MX, TXT, NS, CNAME, SOA) for any domain in one query, grouped for easy scanning. DNS-over-HTTPS, no login, no tracking." />
   <meta name="keywords" content="dns lookup, dns query, dig online, dns check, dns tool, dns resolver, dns propagation, all dns records, a record, aaaa record, mx record, mx lookup, mx record lookup, txt record, txt record lookup, spf check, dmarc check, dkim check, nslookup, nameserver lookup, cname, soa record, doh, dns over https" />
   <meta name="robots" content="index, follow" />
@@ -279,6 +280,8 @@
         <a href="/" class="text-brand-300 hover:text-brand-200" data-i18n="tools_more_all">All tools</a>
       </div>
     </section>
+
+  <div id="report-export-mount" hidden></div>
   </main>
 
   <footer class="border-t border-white/5 mt-12">
@@ -328,5 +331,6 @@
     });
   </script>
 <script src="/js/layout.js?v=32"></script>
+  <script src="/js/report-export.js?v=32"></script>
 </body>
 </html>
