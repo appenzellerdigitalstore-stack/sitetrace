@@ -128,6 +128,16 @@
         <a class="nav-link" href="/random-color/">Color</a>
         <a class="nav-link" href="/headers-checker/">Headers</a>
         <a class="nav-link" href="/network-tools/">All tools</a>
+              <div class="relative ml-1 sm:ml-2" id="lang-wrap">
+          <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
+          </button>
+          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
+            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
+            <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
+          </ul>
+        </div>
       </nav>
     </div>
   </header>
