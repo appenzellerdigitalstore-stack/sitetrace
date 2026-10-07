@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+Disallow: /api/
+Disallow: /check/
+
 Sitemap: https://sitetrace.it.com/sitemap.xml
