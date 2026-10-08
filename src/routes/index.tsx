@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, ArrowDown, Terminal, Search, ShieldCheck, Zap
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { MatrixRain } from "@/components/matrix-rain";
-import { SiteHeader } from "@/components/site-header";
+import { SiteHeader, BrandMark } from "@/components/site-header";
 import { categories, tools, getToolSlug } from "@/lib/tools";
 
 export const Route = createFileRoute("/")({
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
   ] }),
 });
 
-function Brand() { return <a href="#" className="brand" aria-label="SiteTrace home"><span className="brand-mark"><Terminal /></span><span>SiteTrace<span className="brand-dot">.</span></span></a>; }
+function Brand() { return <a href="#" className="brand" aria-label="SiteTrace home"><span className="brand-mark"><BrandMark /></span><span>SiteTrace<span className="brand-dot">.</span></span></a>; }
 
 function Index() {
   const [category, setCategory] = useState("All tools");

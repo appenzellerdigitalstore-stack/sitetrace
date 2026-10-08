@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="SiteTrace">
+  <title>SiteTrace</title>
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#39FF14" stop-opacity="1" />
+      <stop offset="1" stop-color="#0b0f19" stop-opacity="0" />
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2" />
+    </filter>
+  </defs>
+  <!-- glow halo behind magnifier -->
+  <circle cx="28" cy="28" r="22" fill="url(#glow)" opacity="0.18" />
+
+  <!-- globe (inside magnifier lens) -->
+  <g stroke="#39FF14" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- sphere -->
+    <circle cx="28" cy="28" r="13" />
+    <!-- equator -->
+    <ellipse cx="28" cy="28" rx="13" ry="4.5" />
+    <!-- meridian -->
+    <ellipse cx="28" cy="28" rx="4.5" ry="13" />
+    <!-- poles / verticals -->
+    <line x1="28" y1="15" x2="28" y2="41" />
+  </g>
+
+  <!-- magnifier lens (sits over the globe, slightly thicker) -->
+  <circle cx="28" cy="28" r="16.5" stroke="#39FF14" stroke-width="2.4" fill="none" />
+  <!-- subtle inner ring -->
+  <circle cx="28" cy="28" r="16.5" stroke="#39FF14" stroke-width="0.8" fill="none" opacity="0.55" filter="url(#soft)" />
+
+  <!-- handle -->
+  <line x1="40" y1="40" x2="54" y2="54" stroke="#39FF14" stroke-width="3.4" stroke-linecap="round" />
+  <line x1="40" y1="40" x2="54" y2="54" stroke="#0b0f19" stroke-width="1.4" stroke-linecap="round" opacity="0.35" />
+</svg>
