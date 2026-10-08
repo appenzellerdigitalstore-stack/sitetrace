@@ -14,6 +14,7 @@ import {
   fetchSeoCheck,
   fetchOpenGraph,
 } from "./tool-fetchers";
+import { detectMyIp } from "./server-tools";
 
 // Live diagnostic integration boundary: replace this function for remote checks.
 // These responses deliberately remain fixed fixtures, never inferred live data.
@@ -25,18 +26,30 @@ export function getDiagnosticSample(slug: string): ToolResult {
 
 export async function runLocalUtility(slug: string, values: Record<string, string>): Promise<ToolResult> {
   const text = values["target"] ?? "";
+  if (slug === "ip-lookup") return await fetchIpLookup(text);
+  if (slug === "ip-reputation") return await fetchIpReputation(text);
+  if (slug === "vpn-check") return await fetchVpnCheck(text);
+  if (slug === "dns-lookup") return await fetchDnsLookup(text, values["record"] ?? "A");
+  if (slug === "dns-propagation") return await fetchDnsPropagation(text, values["record"] ?? "A");
+  if (slug === "ping-test") return await fetchPingTest(text, Number(values["count"] ?? 4));
+  if (slug === "is-it-down") return await fetchIsItDown(text);
+  if (slug === "bulk-url-status") return await fetchBulkUrlStatus(text.split(/\n/).map(s => s.trim()).filter(Boolean));
+  if (slug === "http-headers") return await fetchHttpHeaders(text, (values["method"] === "GET" ? "GET" : "HEAD"));
+  if (slug === "security-headers") return await fetchSecurityHeaders(text);
+  if (slug === "email-deliverability") return await fetchEmailDeliverability(text, values["selector"] ?? "default");
+  if (slug === "seo-checker") return await fetchSeoCheck(text);
+  if (slug === "open-graph-preview") return await fetchOpenGraph(text, values["platform"] ?? "Open Graph");
   if (slug === "what-is-my-ip") {
-    const response = await fetch("https://ipapi.co/json/");
-    if (!response.ok) throw new Error("Could not detect your network right now. Try again in a moment.");
-    const data = await response.json() as Record<string, unknown>;
-    if (data.error) throw new Error((data.reason as string) ?? "IP lookup service returned an error.");
-    const str = (v: unknown, fallback = "—") => (typeof v === "string" || typeof v === "number") ? String(v) : fallback;
+    const result = await detectMyIp({}) as { error?: string; message?: string; detectedIp?: string; geo?: Record<string, unknown> };
+    if (result.error) throw new Error(result.message ?? "Could not detect your network.");
+    const data = result.geo ?? {};
+    const str = (v: unknown, fallback = "—") => (typeof v === "string" || typeof v === "number") && v !== "" ? String(v) : fallback;
     const yesNo = (v: unknown) => v === true ? "Yes" : v === false ? "No" : "—";
     const langs = Array.isArray(data.languages) ? (data.languages as string[]).join(", ") : "—";
     return {
       title: "Your network",
       metrics: [
-        ["Public IP", str(data.ip, "Unknown")],
+        ["Public IP", result.detectedIp ?? "Unknown"],
         ["Country", data.country_name ? `${str(data.country_name)} (${str(data.country_code, "?")})` : "Unknown"],
         ["City", `${str(data.city, "Unknown")}, ${str(data.region)}`],
         ["ISP", str(data.org, "Unknown")],
@@ -70,24 +83,12 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
         ["Color depth", typeof screen !== "undefined" ? `${screen.colorDepth} bit` : "—"],
         ["Cookies", typeof navigator !== "undefined" ? (navigator.cookieEnabled ? "Enabled" : "Disabled") : "—"],
         ["CPU cores", typeof navigator !== "undefined" ? str(navigator.hardwareConcurrency, "Unknown") : "—"],
-        ["Source", "ipapi.co · live detection"],
+        ["Source", "ipapi.co · live detection (server)"],
         ["Cached", "Not stored"],
       ],
+      live: true,
     };
   }
-  if (slug === "ip-lookup") return await fetchIpLookup(text);
-  if (slug === "ip-reputation") return await fetchIpReputation(text);
-  if (slug === "vpn-check") return await fetchVpnCheck(text);
-  if (slug === "dns-lookup") return await fetchDnsLookup(text, values["record"] ?? "A");
-  if (slug === "dns-propagation") return await fetchDnsPropagation(text, values["record"] ?? "A");
-  if (slug === "ping-test") return await fetchPingTest(text, Number(values["count"] ?? 4));
-  if (slug === "is-it-down") return await fetchIsItDown(text);
-  if (slug === "bulk-url-status") return await fetchBulkUrlStatus(text.split(/\n/).map(s => s.trim()).filter(Boolean));
-  if (slug === "http-headers") return await fetchHttpHeaders(text, (values["method"] === "GET" ? "GET" : "HEAD"));
-  if (slug === "security-headers") return await fetchSecurityHeaders(text);
-  if (slug === "email-deliverability") return await fetchEmailDeliverability(text, values["selector"] ?? "default");
-  if (slug === "seo-checker") return await fetchSeoCheck(text);
-  if (slug === "open-graph-preview") return await fetchOpenGraph(text, values["platform"] ?? "Open Graph");
   if (slug === "word-counter") {
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     return { title: "Text statistics", metrics: [["Words", String(words)], ["Characters", String(Array.from(text).length)], ["Without spaces", String(Array.from(text.replace(/\s/g, "")).length)], ["Reading time", `${Math.ceil(words / 200)} min`]], columns: ["Measure", "Count"], rows: [["Sentences", String(text.trim() ? text.split(/[.!?]+/).filter(s => s.trim()).length : 0)], ["Paragraphs", String(text.trim() ? text.trim().split(/\n\s*\n/).length : 0)], ["Lines", String(text ? text.split("\n").length : 0)]] };

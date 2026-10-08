@@ -405,3 +405,28 @@ export const checkEmailDeliverability = createServerFn({ method: "GET" })
       },
     };
   });
+
+// =====================================================================
+// What is my IP (reads CF-Connecting-IP server-side, then geolocates)
+// Avoids CORS issues that affect browser-direct ipapi.co calls.
+// =====================================================================
+export const detectMyIp = createServerFn({ method: "GET" })
+  .handler(async ({ request }: { request?: Request } = {}) => {
+    let detectedIp = "";
+    try {
+      const req = (globalThis as { __nitro_req__?: { headers: Headers } }).__nitro_req__;
+      const headers = request?.headers ?? req?.headers;
+      if (headers) {
+        detectedIp = headers.get("cf-connecting-ip") ||
+                     headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+                     "";
+      }
+    } catch { /* ignore */ }
+    if (!detectedIp) return { error: "no_ip", message: "Could not detect your network. Try refreshing." };
+    const start = Date.now();
+    const response = await fetch(`https://ipapi.co/${encodeURIComponent(detectedIp)}/json/`);
+    if (!response.ok) return { error: "lookup_failed", message: `IP lookup service returned HTTP ${response.status}.` };
+    const data = await response.json() as Record<string, unknown>;
+    if (data.error) return { error: "lookup_failed", message: str(data.reason, "IP lookup service returned an error.") };
+    return { detectedIp, fetchedMs: Date.now() - start, geo: data };
+  });
