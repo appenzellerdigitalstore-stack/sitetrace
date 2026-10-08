@@ -1,25 +1,45 @@
 # Cloudflare Pages redirects
 # https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# Post-Lovable migration (2026-10-08):
+#   - /home, /tools → /  : REMOVED. /tools/<slug>/ is now a real SSR route.
+#   - /downdetector → /is-it-down/  : old → new. /is-it-down/ also moved under
+#     /tools/ by the Lovable app, so update the destination.
+#
+# Old URL → new URL (301 = permanent, transfers SEO equity)
+# Sitetrace's old static pages are no longer served; the Lovable app owns
+# /tools/<slug>/. Adjust as needed if GSC shows more broken-entry URLs.
 
-# NOTE: host-based redirect (www -> apex) is configured as a Cloudflare Page Rule
-# on the zone, not here. The _redirects file is for path-only matches within a
-# single host. The Page Rule id is 2ec2f781693f5a0aa43a53da5ff9ebd3.
-
-# Convenience: trailing-slash normalization (Pages already does this; here for safety)
-/home                /                  301
-/tools               /                  301
-
-# /downdetector/ was renamed to /is-it-down/ on 2026-08-26. Permanent 301
-# so any external links and search engine equity transfer.
-/downdetector        /is-it-down/       301
-/downdetector/       /is-it-down/       301
-
-# Old hash-routed URLs (from the previous single-page version) — redirect
-# to the new per-tool pages for SEO. 301 = permanent.
-# NOTE: hash-fragment sources are technically invalid (clients never send #frag
-# to the server) and Cloudflare's _redirects parser appears to mis-match them,
-# causing the root URL to 301 to /what-is-my-ip/. Keeping these as no-op
-# comments to preserve intent documentation.
-#/#/home              /what-is-my-ip/    301
-#/#/ping              /ping/             301
-#/#/dns               /dns-tools/        301
+/downdetector            /tools/is-it-down/        301
+/downdetector/           /tools/is-it-down/        301
+/ip-lookup/              /tools/ip-lookup/         301
+/ip-lookup               /tools/ip-lookup/         301
+/dns-tools/              /tools/dns-lookup/        301
+/dns-tools               /tools/dns-lookup/        301
+/headers-checker/        /tools/security-headers/  301
+/headers-checker         /tools/security-headers/  301
+/cert-checker/           /tools/ssl-certificate/   301
+/cert-checker            /tools/ssl-certificate/   301
+/og-preview/             /tools/open-graph-preview/ 301
+/og-preview              /tools/open-graph-preview/ 301
+/what-is-my-ip/          /tools/ip-lookup/         301
+/what-is-my-ip           /tools/ip-lookup/         301
+/ping/                   /tools/ping-test/         301
+/ping                    /tools/ping-test/         301
+/is-it-down/             /tools/is-it-down/        301
+/is-it-down              /tools/is-it-down/        301
+/website-down-checker/   /tools/bulk-url-status/   301
+/website-down-checker    /tools/bulk-url-status/   301
+/vpn-checker/            /tools/vpn-check/         301
+/vpn-checker             /tools/vpn-check/         301
+/subnet-calculator/      /tools/subnet-calculator/ 301
+/subnet-calculator       /tools/subnet-calculator/ 301
+/email-deliverability/   /tools/email-deliverability/ 301
+/email-deliverability    /tools/email-deliverability/ 301
+/seo-checker/            /tools/seo-checker/       301
+/seo-checker             /tools/seo-checker/       301
+/http-headers/           /tools/http-headers/      301
+/http-headers            /tools/http-headers/      301
+/privacy/                /tools/ip-lookup/         301
+/about/                  /                          301
+/home                    /                          301

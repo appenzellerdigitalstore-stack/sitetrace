@@ -1,8 +1,11 @@
 # Cloudflare Pages configuration for SiteTrace
-# Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+# https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+#
+# Post-Lovable migration (2026-10-08): sitetrace is now a TanStack-Start + Nitro
+# SSR app served as a Cloudflare Pages Function. The build output is the
+# Nitro `cloudflare-pages` preset's `dist/` directory; build command runs
+# in the Cloudflare Pages dashboard (npm install && npm run build).
 name = "sitetrace"
-compatibility_date = "2024-11-01"
-pages_build_output_dir = "."
-
-# No build step — site is plain static files. Cloudflare Pages serves them as-is.
-# The "site" is the project root (index.html + styles.css + js/).
+compatibility_date = "2026-10-03"
+pages_build_output_dir = "dist"
+compatibility_flags = ["nodejs_compat"]
