@@ -81,11 +81,11 @@ export const blogPosts: BlogPost[] = Object.entries(rawPosts)
       .trim();
     return {
       slug,
-      title: meta.title ?? slug,
-      description: meta.description ?? "",
-      date: meta.date ?? "",
-      readingTime: meta.readingTime ?? "5 min",
-      category: meta.category ?? "Network & IP",
+      title: meta["title"] ?? slug,
+      description: meta["description"] ?? "",
+      date: meta["date"] ?? "",
+      readingTime: meta["readingTime"] ?? "5 min",
+      category: meta["category"] ?? "Network & IP",
       command: { ...command, sampleOutput: command.sampleOutput.trimEnd() },
       walkthrough,
       content,
