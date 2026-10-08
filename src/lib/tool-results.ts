@@ -1,4 +1,19 @@
 import { workspaces, type ToolResult } from "./tool-workspaces";
+import {
+  fetchIpLookup,
+  fetchIpReputation,
+  fetchVpnCheck,
+  fetchDnsLookup,
+  fetchDnsPropagation,
+  fetchPingTest,
+  fetchIsItDown,
+  fetchBulkUrlStatus,
+  fetchHttpHeaders,
+  fetchSecurityHeaders,
+  fetchEmailDeliverability,
+  fetchSeoCheck,
+  fetchOpenGraph,
+} from "./tool-fetchers";
 
 // Live diagnostic integration boundary: replace this function for remote checks.
 // These responses deliberately remain fixed fixtures, never inferred live data.
@@ -60,6 +75,19 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
       ],
     };
   }
+  if (slug === "ip-lookup") return await fetchIpLookup(text);
+  if (slug === "ip-reputation") return await fetchIpReputation(text);
+  if (slug === "vpn-check") return await fetchVpnCheck(text);
+  if (slug === "dns-lookup") return await fetchDnsLookup(text, values["record"] ?? "A");
+  if (slug === "dns-propagation") return await fetchDnsPropagation(text, values["record"] ?? "A");
+  if (slug === "ping-test") return await fetchPingTest(text, Number(values["count"] ?? 4));
+  if (slug === "is-it-down") return await fetchIsItDown(text);
+  if (slug === "bulk-url-status") return await fetchBulkUrlStatus(text.split(/\n/).map(s => s.trim()).filter(Boolean));
+  if (slug === "http-headers") return await fetchHttpHeaders(text, (values["method"] === "GET" ? "GET" : "HEAD"));
+  if (slug === "security-headers") return await fetchSecurityHeaders(text);
+  if (slug === "email-deliverability") return await fetchEmailDeliverability(text, values["selector"] ?? "default");
+  if (slug === "seo-checker") return await fetchSeoCheck(text);
+  if (slug === "open-graph-preview") return await fetchOpenGraph(text, values["platform"] ?? "Open Graph");
   if (slug === "word-counter") {
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     return { title: "Text statistics", metrics: [["Words", String(words)], ["Characters", String(Array.from(text).length)], ["Without spaces", String(Array.from(text.replace(/\s/g, "")).length)], ["Reading time", `${Math.ceil(words / 200)} min`]], columns: ["Measure", "Count"], rows: [["Sentences", String(text.trim() ? text.split(/[.!?]+/).filter(s => s.trim()).length : 0)], ["Paragraphs", String(text.trim() ? text.trim().split(/\n\s*\n/).length : 0)], ["Lines", String(text ? text.split("\n").length : 0)]] };
