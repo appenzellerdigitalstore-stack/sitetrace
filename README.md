@@ -1,26 +1,26 @@
-# Matrix Landing Magic
+# SiteTrace
 
-create me a landing page for the following website which i will show you in a screenshot, do some improvements and what i want to make it original idea on my own is that i want a background of the matrix, the iconic letters falling in the background, add polished elements as fading, bluring, glossy effects and quality text
+> Clarity in every connection.
 
-This project was built with [Lovable](https://lovable.dev).
+SiteTrace is a focused toolkit of 21 internet diagnostic tools — IP lookups, DNS resolution, HTTP inspection, security checks, email deliverability, SEO, and more. Each tool does one thing well, in your browser, with no signup and no tracking.
 
-**Live app**: https://falling-code-sparkle.lovable.app
+## Tools
 
-## Build with Lovable
+- **Network & IP** — IP lookup · IP reputation · VPN check · Subnet calculator
+- **DNS & connectivity** — Ping test · DNS lookup · DNS propagation · Traceroute
+- **Web & security** — Is it down? · Bulk URL status · HTTP headers · Security headers · Port check
+- **Email & certificates** — Email deliverability · SSL certificate
+- **SEO & preview** — SEO checker · Open Graph preview
+- **Utilities** — Password generator · Random color · Word counter · Smart dispatcher
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/ad7f7613-b6db-439d-b541-d9a6f0d22e74).
+## Privacy
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+SiteTrace doesn't ask you to sign up, doesn't set tracking cookies, and doesn't store what you look up. Diagnostics that need a server-side check are processed and discarded — Cloudflare only sees the same request data every visitor sends.
 
-## Development
+## Live
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+**[sitetrace.it.com](https://sitetrace.it.com)**
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+## Credits
+
+Built by [Edy Appenzeller](https://github.com/appenzellerdigitalstore-stack) with [MiniMax Code](https://minimaxi.com/).
