@@ -13,16 +13,48 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
   if (slug === "what-is-my-ip") {
     const response = await fetch("https://ipapi.co/json/");
     if (!response.ok) throw new Error("Could not detect your network right now. Try again in a moment.");
-    const data = await response.json() as { ip?: string; city?: string; region?: string; country_name?: string; country_code?: string; org?: string; timezone?: string; latitude?: number; longitude?: number; error?: boolean; reason?: string };
-    if (data.error) throw new Error(data.reason ?? "IP lookup service returned an error.");
-    const ip = data.ip ?? "Unknown";
+    const data = await response.json() as Record<string, unknown>;
+    if (data.error) throw new Error((data.reason as string) ?? "IP lookup service returned an error.");
+    const str = (v: unknown, fallback = "—") => (typeof v === "string" || typeof v === "number") ? String(v) : fallback;
+    const yesNo = (v: unknown) => v === true ? "Yes" : v === false ? "No" : "—";
+    const langs = Array.isArray(data.languages) ? (data.languages as string[]).join(", ") : "—";
     return {
       title: "Your network",
-      metrics: [["Public IP", ip], ["Country", data.country_name ? `${data.country_name} (${data.country_code ?? "?"})` : "Unknown"], ["City", data.city ?? "Unknown"], ["Region", data.region ?? "Unknown"], ["ISP", data.org ?? "Unknown"], ["Timezone", data.timezone ?? "Unknown"]],
+      metrics: [
+        ["Public IP", str(data.ip, "Unknown")],
+        ["Country", data.country_name ? `${str(data.country_name)} (${str(data.country_code, "?")})` : "Unknown"],
+        ["City", `${str(data.city, "Unknown")}, ${str(data.region)}`],
+        ["ISP", str(data.org, "Unknown")],
+        ["Timezone", str(data.timezone, "Unknown")],
+        ["Connection", typeof navigator !== "undefined" && navigator.onLine ? "Online" : "Offline"],
+      ],
       columns: ["Property", "Value"],
       rows: [
-        ["Latitude", data.latitude !== undefined ? String(data.latitude) : "Unknown"],
-        ["Longitude", data.longitude !== undefined ? String(data.longitude) : "Unknown"],
+        ["IP version", str(data.version, "4")],
+        ["ASN", str(data.asn)],
+        ["Organization", str(data.org)],
+        ["Region", str(data.region)],
+        ["Region code", str(data.region_code)],
+        ["Postal code", str(data.postal)],
+        ["Latitude", data.latitude !== undefined ? String(data.latitude) : "—"],
+        ["Longitude", data.longitude !== undefined ? String(data.longitude) : "—"],
+        ["UTC offset", str(data.utc_offset)],
+        ["Calling code", str(data.country_calling_code)],
+        ["Capital", str(data.country_capital)],
+        ["TLD", str(data.country_tld)],
+        ["Continent", str(data.continent_code)],
+        ["In EU", yesNo(data.in_eu)],
+        ["Currency", str(data.currency_name)],
+        ["Languages", langs],
+        ["Country area", data.country_area !== undefined ? `${str(data.country_area)} km²` : "—"],
+        ["Country population", data.country_population !== undefined ? Number(data.country_population).toLocaleString("en-US") : "—"],
+        ["User agent", typeof navigator !== "undefined" ? navigator.userAgent : "—"],
+        ["Platform", typeof navigator !== "undefined" ? (navigator.platform || "Unknown") : "—"],
+        ["Language", typeof navigator !== "undefined" ? navigator.language : "—"],
+        ["Screen", typeof screen !== "undefined" ? `${screen.width} × ${screen.height}` : "—"],
+        ["Color depth", typeof screen !== "undefined" ? `${screen.colorDepth} bit` : "—"],
+        ["Cookies", typeof navigator !== "undefined" ? (navigator.cookieEnabled ? "Enabled" : "Disabled") : "—"],
+        ["CPU cores", typeof navigator !== "undefined" ? str(navigator.hardwareConcurrency, "Unknown") : "—"],
         ["Source", "ipapi.co · live detection"],
         ["Cached", "Not stored"],
       ],

@@ -38,7 +38,7 @@ export function defaultValues(workspace: Workspace) {
 
 export function validateTarget(slug: string, values: Record<string, string>) {
   const target = values["target"]?.trim() ?? "";
-  if (["password-generator", "random-color", "word-counter"].includes(slug)) return "";
+  if (["password-generator", "random-color", "word-counter", "what-is-my-ip"].includes(slug)) return "";
   if (slug === "subnet-calculator") return /^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/.test(target) && target.split("/")[0]?.split(".").every(n => Number(n) <= 255) && Number(target.split("/")[1]) <= 32 ? "" : "Enter an IPv4 network with a prefix from /0 to /32.";
   const validIp = (value: string) => /^\d{1,3}(\.\d{1,3}){3}$/.test(value) ? value.split(".").every(n => Number(n) <= 255) : (() => { try { return value.includes(":") && new URL(`http://[${value}]/`).hostname.length > 0; } catch { return false; } })();
   const validHost = (value: string) => validIp(value) || (value.length <= 253 && value.includes(".") && value.split(".").every(part => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(part)));
