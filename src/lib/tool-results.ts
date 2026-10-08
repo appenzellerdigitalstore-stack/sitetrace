@@ -8,8 +8,26 @@ export function getDiagnosticSample(slug: string): ToolResult {
   return structuredClone(workspace.sample);
 }
 
-export function runLocalUtility(slug: string, values: Record<string, string>): ToolResult {
+export async function runLocalUtility(slug: string, values: Record<string, string>): Promise<ToolResult> {
   const text = values["target"] ?? "";
+  if (slug === "what-is-my-ip") {
+    const response = await fetch("https://ipapi.co/json/");
+    if (!response.ok) throw new Error("Could not detect your network right now. Try again in a moment.");
+    const data = await response.json() as { ip?: string; city?: string; region?: string; country_name?: string; country_code?: string; org?: string; timezone?: string; latitude?: number; longitude?: number; error?: boolean; reason?: string };
+    if (data.error) throw new Error(data.reason ?? "IP lookup service returned an error.");
+    const ip = data.ip ?? "Unknown";
+    return {
+      title: "Your network",
+      metrics: [["Public IP", ip], ["Country", data.country_name ? `${data.country_name} (${data.country_code ?? "?"})` : "Unknown"], ["City", data.city ?? "Unknown"], ["Region", data.region ?? "Unknown"], ["ISP", data.org ?? "Unknown"], ["Timezone", data.timezone ?? "Unknown"]],
+      columns: ["Property", "Value"],
+      rows: [
+        ["Latitude", data.latitude !== undefined ? String(data.latitude) : "Unknown"],
+        ["Longitude", data.longitude !== undefined ? String(data.longitude) : "Unknown"],
+        ["Source", "ipapi.co · live detection"],
+        ["Cached", "Not stored"],
+      ],
+    };
+  }
   if (slug === "word-counter") {
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     return { title: "Text statistics", metrics: [["Words", String(words)], ["Characters", String(Array.from(text).length)], ["Without spaces", String(Array.from(text.replace(/\s/g, "")).length)], ["Reading time", `${Math.ceil(words / 200)} min`]], columns: ["Measure", "Count"], rows: [["Sentences", String(text.trim() ? text.split(/[.!?]+/).filter(s => s.trim()).length : 0)], ["Paragraphs", String(text.trim() ? text.trim().split(/\n\s*\n/).length : 0)], ["Lines", String(text ? text.split("\n").length : 0)]] };

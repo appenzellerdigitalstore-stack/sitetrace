@@ -18,15 +18,21 @@ export function ToolWorkspace({ tool }: { tool: Tool }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+  useEffect(() => { if (workspace && workspace.fields.length === 0 && !result && !busy) { void run(); } /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [slug]);
   if (!workspace) return null;
   const related = tools.filter(item => item.category === tool.category && item.name !== tool.name).slice(0, 3);
   const change = (key: string, value: string) => { setValues(previous => ({ ...previous, [key]: value })); setError(""); };
-  const run = () => {
+  const run = async () => {
     setError(""); setCopied(false); setResult(null);
     const issue = validateTarget(slug, values);
     if (issue) { setError(issue); return; }
     try {
-      if (workspace.local) { setResult(runLocalUtility(slug, values)); return; }
+      if (workspace.local) {
+        setBusy(true);
+        try { setResult(await runLocalUtility(slug, values)); }
+        finally { setBusy(false); }
+        return;
+      }
       setBusy(true);
       timer.current = setTimeout(() => { setResult(getDiagnosticSample(slug)); setBusy(false); }, 550);
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not generate a result."); setBusy(false); }

@@ -22,8 +22,8 @@
 /cert-checker            /tools/ssl-certificate/   301
 /og-preview/             /tools/open-graph-preview/ 301
 /og-preview              /tools/open-graph-preview/ 301
-/what-is-my-ip/          /tools/ip-lookup/         301
-/what-is-my-ip           /tools/ip-lookup/         301
+/what-is-my-ip/          /tools/what-is-my-ip/     301
+/what-is-my-ip           /tools/what-is-my-ip/     301
 /ping/                   /tools/ping-test/         301
 /ping                    /tools/ping-test/         301
 /is-it-down/             /tools/is-it-down/        301

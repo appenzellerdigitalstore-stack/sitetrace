@@ -1,9 +1,10 @@
-import { Globe, ShieldCheck, Shield, Network, Activity, Radio, Orbit, Server, ListChecks, Braces, LockKeyhole, Mail, Search, PanelsTopLeft, KeyRound, Palette, AlignLeft, Zap, Terminal, Fingerprint, Waypoints, type LucideIcon } from "lucide-react";
+import { Globe, ShieldCheck, Shield, Network, Activity, Radio, Orbit, Server, ListChecks, Braces, LockKeyhole, Mail, Search, PanelsTopLeft, KeyRound, Palette, AlignLeft, Zap, Terminal, Fingerprint, Waypoints, Locate, type LucideIcon } from "lucide-react";
 
 export type Tool = { name: string; description: string; category: string; command: string; icon: LucideIcon; label: string };
 export const getToolSlug = (tool: Tool) => tool.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-$/, "");
 export const categories = ["All tools", "Network & IP", "DNS & connectivity", "Web & security", "Email & certificates", "SEO & preview", "Utilities"] as const;
 export const tools: Tool[] = [
+  { name: "What is my IP", description: "Auto-detect your public IP, country, ISP, and timezone — no input needed.", category: categories[1], command: "curl https://api.ipify.org", icon: Locate, label: "my ip" },
   { name: "IP lookup", description: "Every IP has a story. Find its location, ISP, and network.", category: categories[1], command: "curl https://ipinfo.io/8.8.8.8", icon: Globe, label: "ip lookup" },
   { name: "IP reputation", description: "Check an IP against blocklists. Know who you're connecting to.", category: categories[1], command: "nslookup 8.8.8.8.zen.spamhaus.org", icon: ShieldCheck, label: "ip reputation" },
   { name: "VPN check", description: "Uncover VPN, proxy, and hosting signals behind an IP.", category: categories[1], command: "curl https://ipinfo.io/8.8.8.8", icon: Fingerprint, label: "vpn check" },
