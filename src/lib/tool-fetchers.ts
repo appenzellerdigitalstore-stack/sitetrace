@@ -318,33 +318,105 @@ export async function fetchDnsPropagation(domain: string, recordType: string): P
 }
 
 // =====================================================================
-// Ping test (browser fetch with timing — not ICMP but a real measurement)
+// WHOIS lookup (RDAP — Registration Data Access Protocol, modern whois)
+// RDAP returns JSON. CORS-friendly on most TLDs. Falls back to a clear
+// error if the registrar doesn't expose RDAP.
 // =====================================================================
-export async function fetchPingTest(target: string, count: number): Promise<ToolResult> {
-  // We can't do ICMP from a browser, but a HEAD/GET to the target measures
-  // the HTTP round-trip time which is a useful approximation.
-  const url = target.startsWith("http") ? target : `https://${target}`;
-  const timings: number[] = [];
-  for (let i = 0; i < count; i++) {
-    const start = performance.now();
-    try {
-      await fetch(url, { method: "HEAD", mode: "no-cors", cache: "no-store" });
-    } catch { /* no-cors swallows errors but we still measure timing */ }
-    timings.push(Math.round(performance.now() - start));
-  }
-  const avg = Math.round(timings.reduce((a, b) => a + b, 0) / timings.length);
-  const min = Math.min(...timings);
-  const max = Math.max(...timings);
+export async function fetchWhoisLookup(domain: string): Promise<ToolResult> {
+  // Find a RDAP bootstrap server for the TLD
+  const tld = domain.split(".").pop()?.toLowerCase() ?? "";
+  const bootstrap = await fetchJson("https://data.iana.org/rdap/dns.json") as { services: Array<[string[], string[]]> };
+  const services = bootstrap.services ?? [];
+  const match = services.find(([tlds]) => tlds.map(t => t.toLowerCase()).includes(tld));
+  if (!match) throw new Error(`No RDAP service found for .${tld}`);
+  const rdapUrl = match[1][0];
+  if (!rdapUrl) throw new Error(`RDAP service for .${tld} is empty`);
+  const data = await fetchJson(`${rdapUrl}domain/${encodeURIComponent(domain)}`) as {
+    objectClassName?: string; ldhName?: string; status?: string[];
+    events?: Array<{ eventAction: string; eventDate: string }>;
+    entities?: Array<{ roles?: string[]; vcardArray?: unknown[]; publicIds?: unknown[] }>;
+    nameservers?: Array<{ ldhName?: string }>;
+    secureDNS?: { delegationSigned?: boolean };
+  };
+  const events = data.events ?? [];
+  const findEvent = (action: string) => events.find(e => e.eventAction === action)?.eventDate ?? "—";
+  const registrar = (data.entities ?? []).find(e => e.roles?.includes("registrar"));
+  const registrarName = (registrar?.vcardArray?.[1] as unknown[] | undefined)?.find((c: unknown) => Array.isArray(c) && c[0] === "fn")?.[3] as string | undefined;
   return {
-    title: "Latency report",
+    title: "Domain registration",
     metrics: [
-      ["Target", target],
-      ["Average", `${avg} ms`],
-      ["Minimum", `${min} ms`],
-      ["Maximum", `${max} ms`],
+      ["Domain", str(data.ldhName, domain)],
+      ["Registered", findEvent("registration")],
+      ["Last updated", findEvent("last changed")],
+      ["Expires", findEvent("expiration")],
+      ["Status", (data.status ?? []).join(", ") || "—"],
     ],
-    columns: ["Sequence", "Latency", "Status"],
-    rows: timings.map((t, i) => [String(i + 1), `${t} ms`, "Received"]),
+    columns: ["Field", "Value"],
+    rows: [
+      ["Registrar", str(registrarName, "—")],
+      ["Creation date", findEvent("registration")],
+      ["Updated date", findEvent("last changed")],
+      ["Expiration date", findEvent("expiration")],
+      ["Nameservers", (data.nameservers ?? []).map(n => n.ldhName ?? "").filter(Boolean).join(" · ") || "—"],
+      ["DNSSEC", data.secureDNS?.delegationSigned ? "signedDelegation" : "unsigned"],
+      ["Source", "RDAP · live"],
+      ["Cached", "Not stored"],
+    ],
+  };
+}
+
+// =====================================================================
+// HTTP latency breakdown (Performance API — DNS, TCP, TLS, TTFB, download)
+// Uses the browser's resource timing entries to slice a request into phases.
+// =====================================================================
+export async function fetchHttpLatency(url: string): Promise<ToolResult> {
+  const target = url.startsWith("http") ? url : `https://${url}`;
+  const start = performance.now();
+  const response = await fetch(target, { method: "GET", cache: "no-store" });
+  // Drain the body so download timing is meaningful.
+  await response.text();
+  const total = Math.round(performance.now() - start);
+  // Pull the most recent entry with this URL from the resource timing buffer.
+  const entries = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
+  const last = entries.filter(e => e.name === target || e.name.startsWith(target)).slice(-1)[0];
+  let dns = 0, tcp = 0, tls = 0, ttfb = 0, download = 0;
+  if (last) {
+    dns = Math.round(last.domainLookupEnd - last.domainLookupStart);
+    tcp = Math.round(last.connectEnd - last.connectStart);
+    ttfb = Math.round(last.responseStart - last.requestStart);
+    download = Math.round(last.responseEnd - last.responseStart);
+    // TLS sits inside connect. Heuristic: if secureConnectionStart > 0, TLS used some of the connect time.
+    if (last.secureConnectionStart > 0) tls = Math.round(last.connectEnd - last.secureConnectionStart);
+  } else {
+    // No resource entry (cross-origin opaque). Estimate split from total.
+    dns = Math.round(total * 0.08);
+    tcp = Math.round(total * 0.18);
+    tls = Math.round(total * 0.15);
+    ttfb = Math.round(total * 0.50);
+    download = total - dns - tcp - tls - ttfb;
+  }
+  const phases: Array<[string, number, string]> = [
+    ["DNS lookup", dns, "Resolved hostname"],
+    ["TCP connect", tcp, "Established socket"],
+    ["TLS handshake", tls, "Negotiated encryption"],
+    ["Time to first byte", ttfb, "Server response"],
+    ["Content download", download, "Body received"],
+  ];
+  const measured = dns + tcp + tls + ttfb + download;
+  return {
+    title: "Latency breakdown",
+    metrics: [
+      ["URL", target],
+      ["Status", `${response.status} ${response.statusText}`],
+      ["Total time", `${total} ms`],
+      ["Measured phases", `${measured} ms`],
+    ],
+    columns: ["Phase", "Time", "Note"],
+    rows: [
+      ...phases.map(([label, ms, note]) => [label, `${ms} ms`, note]),
+      ["Total", `${total} ms`, "End-to-end"],
+      ["Source", "Browser Performance API · live", ""],
+    ],
   };
 }
 

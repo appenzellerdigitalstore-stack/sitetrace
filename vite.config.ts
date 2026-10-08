@@ -11,10 +11,10 @@ const OLD_TO_NEW = {
   "/ip-lookup": "/tools/ip-lookup/",
   "/dns-tools": "/tools/dns-lookup/",
   "/headers-checker": "/tools/security-headers/",
-  "/cert-checker": "/tools/ssl-certificate/",
+  "/cert-checker": "/blog/ssl-certificate/",
   "/og-preview": "/tools/open-graph-preview/",
   "/what-is-my-ip": "/tools/what-is-my-ip/",
-  "/ping": "/tools/ping-test/",
+  "/ping": "/blog/ping/",
   "/is-it-down": "/tools/is-it-down/",
   "/website-down-checker": "/tools/bulk-url-status/",
   "/vpn-checker": "/tools/vpn-check/",
@@ -25,6 +25,11 @@ const OLD_TO_NEW = {
   "/privacy": "/tools/ip-lookup/",
   "/about": "/",
   "/home": "/",
+  // Browser-can't-do tools moved to blog (Oct 2026).
+  "/tools/traceroute": "/blog/traceroute/",
+  "/tools/ping-test": "/blog/ping/",
+  "/tools/port-check": "/blog/port-check/",
+  "/tools/ssl-certificate": "/blog/ssl-certificate/",
 } as const;
 
 const routeRules: Record<string, { redirect: string; statusCode: number }> = {};

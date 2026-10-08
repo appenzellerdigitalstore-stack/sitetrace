@@ -5,11 +5,12 @@ import {
   fetchVpnCheck,
   fetchDnsLookup,
   fetchDnsPropagation,
-  fetchPingTest,
+  fetchWhoisLookup,
   fetchIsItDown,
   fetchBulkUrlStatus,
   fetchHttpHeaders,
   fetchSecurityHeaders,
+  fetchHttpLatency,
   fetchEmailDeliverability,
   fetchSeoCheck,
   fetchOpenGraph,
@@ -31,11 +32,12 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
   if (slug === "vpn-check") return await fetchVpnCheck(text);
   if (slug === "dns-lookup") return await fetchDnsLookup(text, values["record"] ?? "A");
   if (slug === "dns-propagation") return await fetchDnsPropagation(text, values["record"] ?? "A");
-  if (slug === "ping-test") return await fetchPingTest(text, Number(values["count"] ?? 4));
+  if (slug === "whois-lookup") return await fetchWhoisLookup(text);
   if (slug === "is-it-down") return await fetchIsItDown(text);
   if (slug === "bulk-url-status") return await fetchBulkUrlStatus(text.split(/\n/).map(s => s.trim()).filter(Boolean));
   if (slug === "http-headers") return await fetchHttpHeaders(text, (values["method"] === "GET" ? "GET" : "HEAD"));
   if (slug === "security-headers") return await fetchSecurityHeaders(text);
+  if (slug === "http-latency") return await fetchHttpLatency(text);
   if (slug === "email-deliverability") return await fetchEmailDeliverability(text, values["selector"] ?? "default");
   if (slug === "seo-checker") return await fetchSeoCheck(text);
   if (slug === "open-graph-preview") return await fetchOpenGraph(text, values["platform"] ?? "Open Graph");
@@ -123,7 +125,98 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
   if (slug === "smart-dispatcher") {
     const target = text.trim(); const isUrl = /^https?:\/\//i.test(target); const isIp = /^\d{1,3}(\.\d{1,3}){3}$/.test(target) || (!isUrl && target.includes(":"));
     const hostname = isUrl ? new URL(target).hostname : target;
-    return { title: "Target classification", metrics: [["Target", hostname], ["Type", isUrl ? "Website URL" : isIp ? "IP address" : "Domain"], ["Protocol", isUrl ? new URL(target).protocol.replace(":", "").toUpperCase() : "—"]], columns: ["Suggested tool", "Purpose"], rows: isIp ? [["IP lookup", "Location and network ownership"], ["IP reputation", "Blocklist signals"], ["VPN check", "Connection classification"]] : isUrl ? [["HTTP headers", "Inspect response headers"], ["Security headers", "Audit website protection"], ["SEO checker", "Inspect page metadata"]] : [["DNS lookup", "Resolve domain records"], ["DNS propagation", "Compare global answers"], ["SSL certificate", "Inspect certificate validity"]] };
+    return { title: "Target classification", metrics: [["Target", hostname], ["Type", isUrl ? "Website URL" : isIp ? "IP address" : "Domain"], ["Protocol", isUrl ? new URL(target).protocol.replace(":", "").toUpperCase() : "—"]], columns: ["Suggested tool", "Purpose"], rows: isIp ? [["IP lookup", "Location and network ownership"], ["IP reputation", "Blocklist signals"], ["VPN check", "Connection classification"]] : isUrl ? [["HTTP headers", "Inspect response headers"], ["Security headers", "Audit website protection"], ["HTTP latency", "Break request into phases"]] : [["DNS lookup", "Resolve domain records"], ["WHOIS lookup", "Registration data"], ["DNS propagation", "Compare global answers"]] };
+  }
+  if (slug === "jwt-decoder") {
+    const raw = text.trim();
+    if (!raw) throw new Error("Paste a JWT to decode.");
+    const parts = raw.split(".");
+    if (parts.length !== 3) throw new Error("A JWT has three parts separated by dots (header.payload.signature).");
+    const decode = (segment: string) => {
+      const pad = segment + "===".slice(0, (4 - segment.length % 4) % 4);
+      const norm = pad.replace(/-/g, "+").replace(/_/g, "/");
+      try { return JSON.parse(atob(norm)); } catch { throw new Error("Could not decode — is this a valid JWT?"); }
+    };
+    let header: Record<string, unknown>, payload: Record<string, unknown>;
+    try { header = decode(parts[0]!); payload = decode(parts[1]!); }
+    catch (e) { throw new Error(e instanceof Error ? e.message : "Decode failed."); }
+    const sigPreview = (parts[2] ?? "").slice(0, 16) + (parts[2] && parts[2].length > 16 ? "…" : "");
+    const str = (v: unknown, fallback = "—") => (typeof v === "string" || typeof v === "number") && v !== "" ? String(v) : fallback;
+    return {
+      title: "JWT contents",
+      metrics: [
+        ["Algorithm", String(header.alg ?? "—")],
+        ["Type", String(header.typ ?? "—")],
+        ["Issued at", payload.iat ? new Date(Number(payload.iat) * 1000).toISOString() : "—"],
+        ["Expires", payload.exp ? new Date(Number(payload.exp) * 1000).toISOString() : "—"],
+        ["Signature preview", sigPreview || "—"],
+      ],
+      text: JSON.stringify({ header, payload }, null, 2),
+      columns: ["Field", "Value"],
+      rows: [
+        ["header.alg", String(header.alg ?? "—")],
+        ["header.typ", String(header.typ ?? "—")],
+        ["payload.iss", str(payload.iss, "—")],
+        ["payload.sub", str(payload.sub, "—")],
+        ["payload.aud", str(payload.aud, "—")],
+        ["payload.iat", payload.iat ? new Date(Number(payload.iat) * 1000).toISOString() : "—"],
+        ["payload.exp", payload.exp ? new Date(Number(payload.exp) * 1000).toISOString() : "—"],
+        ["payload.jti", str(payload.jti, "—")],
+        ["Signature", sigPreview || "—"],
+        ["Storage", "Decoded in browser · not sent anywhere"],
+      ],
+    };
+  }
+  if (slug === "email-header-parser") {
+    const raw = text.trim();
+    if (!raw) throw new Error("Paste a raw email header to parse.");
+    // Split lines, fold continuation lines (those starting with whitespace) into the previous header.
+    const lines = raw.split(/\r?\n/);
+    const folded: string[] = [];
+    for (const line of lines) {
+      if (/^[ \t]/.test(line) && folded.length) folded[folded.length - 1] += " " + line.trim();
+      else if (line.length) folded.push(line);
+    }
+    const get = (name: string) => folded.find(l => l.toLowerCase().startsWith(name.toLowerCase() + ":"));
+    const headerValue = (name: string) => {
+      const line = get(name);
+      if (!line) return "—";
+      return line.slice(name.length + 1).trim();
+    };
+    const received = folded.filter(l => /^received\s*:/i.test(l));
+    const authResults = headerValue("Authentication-Results");
+    const spfMatch = authResults.match(/\bspf=(\w+)/i)?.[1] ?? "—";
+    const dkimMatch = authResults.match(/\bdkim=(\w+)/i)?.[1] ?? "—";
+    const dmarcMatch = authResults.match(/\bdmarc=(\w+)/i)?.[1] ?? "—";
+    const fromIp = received[0]?.match(/\[(\d{1,3}(?:\.\d{1,3}){3})\]/)?.[1] ?? "—";
+    return {
+      title: "Email header parsed",
+      metrics: [
+        ["From", headerValue("From")],
+        ["To", headerValue("To")],
+        ["Subject", headerValue("Subject")],
+        ["Date", headerValue("Date")],
+        ["SPF", spfMatch],
+        ["DKIM", dkimMatch],
+        ["DMARC", dmarcMatch],
+        ["Originating IP", fromIp],
+      ],
+      columns: ["Field", "Value"],
+      rows: [
+        ["From", headerValue("From")],
+        ["To", headerValue("To")],
+        ["Subject", headerValue("Subject")],
+        ["Date", headerValue("Date")],
+        ["Message-ID", headerValue("Message-ID")],
+        ["Return-Path", headerValue("Return-Path")],
+        ["SPF", spfMatch],
+        ["DKIM", dkimMatch],
+        ["DMARC", dmarcMatch],
+        ["Originating IP", fromIp],
+        ["Hops", String(received.length)],
+        ["Parsed in", "Browser · not sent anywhere"],
+      ],
+    };
   }
   throw new Error("Unknown local utility");
 }
