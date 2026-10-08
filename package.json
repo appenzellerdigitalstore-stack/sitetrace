@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "postbuild": "node -e \"import('node:fs').then(({copyFileSync,existsSync})=>{if(existsSync('_redirects')&&existsSync('dist'))copyFileSync('_redirects','dist/_redirects')})\"",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
