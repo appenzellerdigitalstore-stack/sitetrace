@@ -23,7 +23,7 @@ import {
 // in functions/api/*.js were ported to src/lib/server-tools.ts and are
 // called via createServerFn wrappers, so the fetcher layer is unchanged.
 
-const IPAPI = (ip: string) => `https://ipapi.co/${encodeURIComponent(ip)}/json/`;
+const IPAPI = (ip: string) => `https://ipwho.is/${encodeURIComponent(ip)}`;
 const DOH_CF = "https://cloudflare-dns.com/dns-query";
 const DOH_GOOGLE = "https://dns.google/resolve";
 const DOH_QUAD9 = "https://dns.quad9.net/dns-query";
@@ -46,32 +46,40 @@ async function fetchJson(url: string, init?: RequestInit): Promise<unknown> {
 // IP lookup (ipapi.co)
 // =====================================================================
 export async function fetchIpLookup(ip: string): Promise<ToolResult> {
+  // ipwho.is is CORS-friendly for browser calls; ipapi.co now blocks
+  // browser-direct requests via a Cloudflare challenge.
   const data = await fetchJson(IPAPI(ip)) as Record<string, unknown>;
-  if (data.error) throw new Error(str(data.reason, "IP lookup service returned an error."));
+  if (data.success === false) throw new Error(str(data.message, "IP lookup service returned an error."));
+  // ipwho.is nests ASN/org/ISP under a `connection` object.
+  const conn = (data["connection"] && typeof data["connection"] === "object" ? data["connection"] : {}) as Record<string, unknown>;
+  const tz = (data["timezone"] && typeof data["timezone"] === "object" ? data["timezone"] : {}) as Record<string, unknown>;
+  const asn = conn["asn"] ?? data["asn"];
+  const org = conn["org"] ?? data["org"] ?? conn["isp"] ?? data["isp"];
   return {
     title: "IP overview",
     metrics: [
-      ["IP address", str(data.ip, ip)],
-      ["Organization", str(data.org)],
-      ["Location", `${str(data.city)}, ${str(data.country_name)}`],
-      ["Network", str(data.asn)],
+      ["IP address", str(data["ip"], ip)],
+      ["Organization", str(org)],
+      ["Location", `${str(data["city"])}, ${str(data["country"])}`],
+      ["Network", asn !== undefined ? `AS${str(asn)}` : "—"],
     ],
     columns: ["Property", "Value"],
     rows: [
-      ["Country", str(data.country_name)],
-      ["Country code", str(data.country_code)],
-      ["Region", str(data.region)],
-      ["Region code", str(data.region_code)],
-      ["City", str(data.city)],
-      ["Postal code", str(data.postal)],
-      ["Latitude", data.latitude !== undefined ? String(data.latitude) : "—"],
-      ["Longitude", data.longitude !== undefined ? String(data.longitude) : "—"],
-      ["Timezone", str(data.timezone)],
-      ["UTC offset", str(data.utc_offset)],
-      ["ASN", str(data.asn)],
-      ["Organization", str(data.org)],
-      ["Address type", data.version ? `IPv${data.version}` : "—"],
-      ["Source", "ipapi.co · live"],
+      ["Country", str(data["country"])],
+      ["Country code", str(data["country_code"])],
+      ["Region", str(data["region"])],
+      ["Region code", str(data["region_code"])],
+      ["City", str(data["city"])],
+      ["Postal code", str(data["postal"])],
+      ["Latitude", data["latitude"] !== undefined ? String(data["latitude"]) : "—"],
+      ["Longitude", data["longitude"] !== undefined ? String(data["longitude"]) : "—"],
+      ["Timezone", str(tz["id"] ?? data["timezone"])],
+      ["UTC offset", str(tz["utc"] ?? data["utc_offset"])],
+      ["ASN", asn !== undefined ? `AS${str(asn)}` : "—"],
+      ["Organization", str(org)],
+      ["ISP", str(conn["isp"] ?? data["isp"])],
+      ["Address type", data["type"] ? `IPv${String(data["type"]).replace(/^IPv/, "")}` : "—"],
+      ["Source", "ipwho.is · live"],
     ],
   };
 }
@@ -201,36 +209,43 @@ export async function fetchMyIp(): Promise<Record<string, unknown>> {
 }
 
 // =====================================================================
-// VPN check (ipapi.co — has proxy/hosting/mobile fields)
+// VPN check (ipwho.is — browser-CORS-friendly)
+// Classifies the connection based on ASN + org heuristics. ipwho.is
+// doesn't expose explicit proxy/hosting/mobile fields, so we infer from
+// the network operator's name. Same heuristic as before, just a
+// different data source.
 // =====================================================================
 export async function fetchVpnCheck(ip: string): Promise<ToolResult> {
   const data = await fetchJson(IPAPI(ip)) as Record<string, unknown>;
-  if (data.error) throw new Error(str(data.reason, "VPN check failed."));
-  // ipapi.co doesn't have explicit proxy/VPN fields in the free tier.
-  // Use the connection data: ASN, org, and country to characterize.
-  const asn = str(data.asn);
-  const org = str(data.org);
-  const isHosting = /cloud|host|datacenter|server|digital|amazon|google|microsoft|oracle|linode|vultr|ovh|hetzner/i.test(org + " " + asn);
-  const isMobile = /mobile|wireless|cellular|verizon|att|t-mobile|vodafone|orange|telefonica/i.test(org);
+  if (data.success === false) throw new Error(str(data.message, "VPN check failed."));
+  // ipwho.is nests ASN/org/ISP under `connection`; older fields were top-level.
+  const conn = (data["connection"] && typeof data["connection"] === "object" ? data["connection"] : {}) as Record<string, unknown>;
+  const asn = str(conn["asn"] ?? data["asn"]);
+  const org = str(conn["org"] ?? data["org"]);
+  const isp = str(conn["isp"] ?? data["isp"] ?? org);
+  const haystack = `${org} ${isp} ${asn}`;
+  const isHosting = /cloud|host|datacenter|server|digital|amazon|google|microsoft|oracle|linode|vultr|ovh|hetzner|leaseweb|choopa|psychz|cogent|ntt|verisign|akamai|fastly|cloudflare/i.test(haystack);
+  const isMobile = /mobile|wireless|cellular|verizon|att|t-mobile|vodafone|orange|telefonica|t-mobile|three|EE |sprint/i.test(haystack);
   const classification = isHosting ? "Datacenter / hosting" : isMobile ? "Mobile carrier" : "Residential / business";
   return {
     title: "Connection classification",
     metrics: [
-      ["IP address", str(data.ip, ip)],
+      ["IP address", str(data["ip"], ip)],
       ["Connection", classification],
       ["Provider", org],
-      ["Network", asn],
+      ["Network", asn ? `AS${asn}` : "—"],
     ],
     columns: ["Signal", "Detected", "Detail"],
     rows: [
       ["Hosting", isHosting ? "Yes" : "No", isHosting ? "Datacenter network" : "Not a known hosting provider"],
       ["Mobile carrier", isMobile ? "Yes" : "No", isMobile ? "Mobile network" : "Not a mobile network"],
-      ["ASN", asn, "Autonomous system"],
+      ["ASN", asn ? `AS${asn}` : "—", "Autonomous system"],
       ["Organization", org, "Network operator"],
-      ["Country", str(data.country_name), "Geographic location"],
-      ["Region", str(data.region), "Sub-country region"],
-      ["City", str(data.city), "City"],
-      ["Source", "ipapi.co · live", "Connection signals"],
+      ["ISP", isp, "Internet service provider"],
+      ["Country", str(data["country"]), "Geographic location"],
+      ["Region", str(data["region"]), "Sub-country region"],
+      ["City", str(data["city"]), "City"],
+      ["Source", "ipwho.is · live", "Connection signals"],
     ],
   };
 }
