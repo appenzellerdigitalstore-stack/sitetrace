@@ -169,6 +169,18 @@
     fallbackIfEmpty();         // defensive: only injects when placeholders are empty
     ensureSupportFab();         // always safe — no-op if FAB already present in static HTML
     wireLanguage();             // always — interactive part
+    ensureMatrixBg();           // animated code-bg on inner pages (skips on landing)
+  }
+
+  // Loads js/matrix-bg.js on inner pages. Landing (.home) has its own animated matrix,
+  // so we skip there. The script itself also self-skips if body has .home or reduced-motion.
+  function ensureMatrixBg() {
+    if (document.body && document.body.classList.contains('home')) return;
+    if (document.getElementById('matrix-rain-bg')) return; // already loaded / inserted
+    var s = document.createElement('script');
+    s.src = '/js/matrix-bg.js?v=1';
+    s.async = true;
+    document.body.appendChild(s);
   }
 
   global.SiteTrace = global.SiteTrace || {};

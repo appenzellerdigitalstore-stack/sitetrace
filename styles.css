@@ -21,6 +21,20 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Falling-code canvas background — inserted by js/matrix-bg.js on inner pages only.
+   Landing already has its own live animated matrix via .matrix-bg div. */
+#matrix-rain-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 80%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 35%, transparent 80%);
+}
+
 /* Byline — small monospaced author/last-updated marker, cyan accent.
    Used after hero/intro on every page. */
 .byline {
@@ -276,11 +290,11 @@ body {
   border-radius: 999px;
   background: currentColor;
   box-shadow: 0 0 0 4px color-mix(in oklab, currentColor 25%, transparent);
-  animation: pulseDot 2s ease-in-out infinite;
+  /* Static — no pulse, per Ed 2026-10-07. */
 }
 @keyframes pulseDot {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 
 .status-badge--loading {
