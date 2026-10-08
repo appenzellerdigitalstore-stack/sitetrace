@@ -1,1140 +1,483 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color"="#050810" />
-  <title>SiteTrace — Clarity for every connection</title>
-  <meta name="description" content="Trace a domain, measure latency, see if a service is up, audit any page's SEO. Free browser-based network diagnostics — no signup, no tracking, no install. Twenty free tools. Open source on GitHub." />
-  <meta name="keywords" content="what is my ip, my ip address, ip lookup, public ip, ip geolocation, ping test, dns lookup, dns record, dns propagation, vpn check, vpn detector, http headers, security headers, is it down, service status, mx record, txt record, whois, rdap, free network tools, network utilities, no signup tools, sitetrace" />
+  <meta name="theme-color" content="#0a0f0d" />
+  <title>SiteTrace — Clarity in every connection</title>
+  <meta name="description" content="Trace an IP, resolve a domain, understand your network. Discover 21 focused internet diagnostic tools with SiteTrace." />
+  <meta name="keywords" content="what is my ip, ip lookup, ping, dns, http headers, is it down, network tools, sitetrace" />
   <meta name="robots" content="index, follow, noai, noimageai" />
   <meta name="author" content="Edy Appenzeller" />
   <link rel="canonical" href="https://sitetrace.it.com/" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="SiteTrace — Clarity for every connection" />
-  <meta property="og:description" content="Trace an IP, resolve a domain, understand your network. Precision diagnostics, without the noise." />
+  <meta property="og:title" content="SiteTrace — Clarity in every connection" />
+  <meta property="og:description" content="Trace an IP, resolve a domain, understand your network. Precision tools for a connected world." />
   <meta property="og:image" content="https://sitetrace.it.com/og/home.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="SiteTrace — twenty free network tools" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:url" content="https://sitetrace.it.com/" />
-  <meta property="og:site_name" content="SiteTrace" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="SiteTrace — Clarity for every connection" />
-  <meta name="twitter:description" content="Trace an IP, resolve a domain, understand your network. Free browser-based network diagnostics." />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "SiteTrace",
-    "url": "https://sitetrace.it.com/",
-    "applicationCategory": "UtilityApplication",
-    "operatingSystem": "Any (web browser)",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "creator": { "@type": "Person", "name": "Edy Appenzeller" },
-    "description": "Twenty free, no-login network tools: IP lookup with VPN/proxy/Tor detection, DNS-over-HTTPS, ping, HTTP reachability, live service status, email deliverability, SEO audits, password generator, OG previews, certificate checks."
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    "headline": "SiteTrace: twenty free, no-tracking network tools for IP, DNS, web, email, and SEO",
-    "description": "SiteTrace is a small set of free browser-based network utilities. Every tool runs in your browser, talks directly to public services, and stores nothing on a server we control. Open source on GitHub.",
-    "author": {
-      "@type": "Person",
-      "name": "Edy Appenzeller",
-      "url": "https://sitetrace.it.com/about/",
-      "sameAs": ["https://github.com/appenzellerdigitalstore-stack"]
-    },
-    "publisher": { "@type": "Organization", "name": "SiteTrace", "url": "https://sitetrace.it.com/" },
-    "datePublished": "2026-08-01",
-    "dateModified": "2026-10-05",
-    "inLanguage": "en",
-    "mainEntityOfPage": "https://sitetrace.it.com/",
-    "about": [
-      {"@type": "Thing", "name": "Network tools"},
-      {"@type": "Thing", "name": "DNS"},
-      {"@type": "Thing", "name": "IP address"},
-      {"@type": "Thing", "name": "Service status"}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"}
-    ]
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "SiteTrace — twenty free network tools",
-    "itemListOrder": "https://schema.org/ItemListOrderAscending",
-    "numberOfItems": 20,
-    "itemListElement": [
-      {"@type":"ListItem","position":1,"name":"IP lookup","url":"https://sitetrace.it.com/ip-lookup/"},
-      {"@type":"ListItem","position":3,"name":"IP reputation","url":"https://sitetrace.it.com/ip-reputation/"},
-      {"@type":"ListItem","position":4,"name":"VPN detector","url":"https://sitetrace.it.com/vpn-checker/"},
-      {"@type":"ListItem","position":5,"name":"Subnet calculator","url":"https://sitetrace.it.com/subnet-calculator/"},
-      {"@type":"ListItem","position":6,"name":"Domain inspector","url":"https://sitetrace.it.com/ping/"},
-      {"@type":"ListItem","position":7,"name":"DNS lookup","url":"https://sitetrace.it.com/dns-tools/"},
-      {"@type":"ListItem","position":8,"name":"DNS propagation","url":"https://sitetrace.it.com/dns-propagation-checker/"},
-      {"@type":"ListItem","position":9,"name":"Is it down","url":"https://sitetrace.it.com/is-it-down/"},
-      {"@type":"ListItem","position":10,"name":"Bulk URL status","url":"https://sitetrace.it.com/website-down-checker/"},
-      {"@type":"ListItem","position":11,"name":"HTTP headers","url":"https://sitetrace.it.com/http-headers/"},
-      {"@type":"ListItem","position":12,"name":"Email deliverability","url":"https://sitetrace.it.com/email-deliverability/"},
-      {"@type":"ListItem","position":13,"name":"SEO checker","url":"https://sitetrace.it.com/seo-checker/"},
-      {"@type":"ListItem","position":14,"name":"Security headers checker","url":"https://sitetrace.it.com/headers-checker/"},
-      {"@type":"ListItem","position":15,"name":"SSL certificate checker","url":"https://sitetrace.it.com/cert-checker/"},
-      {"@type":"ListItem","position":16,"name":"Open Graph preview","url":"https://sitetrace.it.com/og-preview/"},
-      {"@type":"ListItem","position":17,"name":"Random color","url":"https://sitetrace.it.com/random-color/"},
-      {"@type":"ListItem","position":18,"name":"Password generator","url":"https://sitetrace.it.com/password/"},
-      {"@type":"ListItem","position":19,"name":"Word counter","url":"https://sitetrace.it.com/word-counter/"},
-      {"@type":"ListItem","position":20,"name":"Smart /check/ dispatcher","url":"https://sitetrace.it.com/check/"},
-      {"@type":"ListItem","position":21,"name":"Browse all tools","url":"https://sitetrace.it.com/tools/"}
-    ]
-  }
-  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: { extend: {
-        fontFamily: { sans: ['IBM Plex Sans','system-ui','sans-serif'], mono: ['JetBrains Mono','ui-monospace','monospace'] },
-        colors: {
-          ink: { 950:'#050810', 900:'#0a0e18', 800:'#0d1424', 700:'#111a2e' },
-          green: { 50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 300:'#86efac', 400:'#4ade80', 500:'#22c55e', 600:'#16a34a', 700:'#15803d' }
-        },
-        backgroundImage: {
-          'hero-radial': 'radial-gradient(ellipse 70% 60% at 50% 0%, rgba(74, 222, 128, 0.10), transparent 65%)'
-        },
-        boxShadow: {
-          'glow-green': '0 0 0 1px rgba(74, 222, 128, 0.30), 0 12px 40px -12px rgba(74, 222, 128, 0.45)'
-        }
-      } }
-    };
-  </script>
-
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%234ade80'/%3E%3Cstop offset='100%25' stop-color='%2316a34a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M30 50 L45 50 L52 35 L62 65 L70 50 L80 50' stroke='%23070a12' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-
-  <!-- AdSense: site verification + ad library (auto-ads) for ca-pub-8749554989768993 -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8749554989768993" crossorigin="anonymous"></script>
-
-  <style>
-    /* ===== SiteTrace — Lovable-mockup-inspired landing =====
-       Hero art: animated SVG network topology
-       Tool cards: CLI commands ($ dig, $ curl -I)
-       Decoration: floating coordinate markers + status badge
-       ============================================================ */
-
-    :root {
-      --trace-bg: #050810;
-      --trace-green: #4ade80;
-      --trace-green-deep: #16a34a;
-      --trace-green-soft: #86efac;
-      --trace-amber: #fbbf24;
-      --trace-slate: #94a3b8;
-      --trace-fg: #f1f5f9;
-      --trace-fg-muted: #cbd5e1;
-      --trace-fg-dim: #64748b;
-      --trace-border: rgba(74, 222, 128, 0.12);
-      --trace-border-strong: rgba(74, 222, 128, 0.30);
-      --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-      --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-      --dur-fast: 180ms;
-      --dur-base: 240ms;
-      --dur-slow: 380ms;
-    }
-
-    * { -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-      background: var(--trace-bg);
-      color: var(--trace-fg);
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
-
-    /* ============ HEADER ============ */
-    .site-header {
-      position: sticky; top: 0; z-index: 40;
-      backdrop-filter: blur(20px) saturate(150%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-      background: rgba(5, 8, 16, 0.78);
-      border-bottom: 1px solid rgba(74, 222, 128, 0.06);
-    }
-    .brand-mark {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #86efac 0%, #22c55e 50%, #15803d 100%);
-      color: #050810;
-      box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.25),
-                  0 8px 24px -8px rgba(74, 222, 128, 0.45);
-    }
-    .brand-mark svg { width: 18px; height: 18px; }
-    .brand-name {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: -0.01em;
-      color: white;
-    }
-    .brand-name .dot { color: var(--trace-green); }
-
-    /* Status badge in header */
-    .status-badge {
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 999px;
-      background: rgba(74, 222, 128, 0.08);
-      border: 1px solid rgba(74, 222, 128, 0.18);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--trace-green-soft);
-      letter-spacing: 0.02em;
-    }
-    .status-badge .status-dot {
-      width: 6px; height: 6px; border-radius: 999px;
-      background: var(--trace-green);
-      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.22);
-      animation: pulseDot 2s ease-in-out infinite;
-    }
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(0.85); }
-    }
-
-    /* Nav links */
-    .nav-link {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.5rem 0.85rem;
-      border-radius: 0.5rem;
-      color: rgb(203 213 225);
-      font-size: 0.825rem;
-      font-weight: 500;
-      transition: color var(--dur-fast) var(--ease-out);
-      text-decoration: none;
-    }
-    .nav-link:hover { color: white; }
-
-    /* Lang switcher (EN + ES only) */
-    .lang-option {
-      display: block; width: 100%;
-      text-align: left;
-      padding: 0.55rem 0.9rem;
-      color: rgb(226 232 240);
-      font-size: 0.85rem;
-      background: transparent;
-      border: 0;
-      cursor: pointer;
-      transition: background 150ms ease;
-    }
-    .lang-option:hover { background: rgba(74, 222, 128, 0.08); }
-    .lang-option.is-active { color: var(--trace-green); background: rgba(74, 222, 128, 0.10); }
-
-    /* ============ HERO ============ */
-    .hero {
-      position: relative;
-      padding: 5rem 0 2rem;
-      max-width: 84rem;
-      margin: 0 auto;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      overflow: hidden;
-    }
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(74, 222, 128, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74, 222, 128, 0.025) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 75%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 75%);
-      pointer-events: none;
-    }
-
-    /* Hero release badge — terminal style */
-    .release-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.5rem 0.85rem;
-      border-radius: 999px;
-      background: rgba(74, 222, 128, 0.06);
-      border: 1px solid rgba(74, 222, 128, 0.20);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.06em;
-      color: var(--trace-green-soft);
-      margin-bottom: 1.5rem;
-    }
-    .release-badge .arrow { color: var(--trace-green); }
-
-    /* Massive brand display */
-    .brand-display {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: clamp(3.5rem, 10vw, 7.5rem);
-      font-weight: 800;
-      line-height: 0.92;
-      letter-spacing: -0.045em;
-      color: white;
-      margin: 0;
-    }
-    .brand-display .dot { color: var(--trace-green); }
-
-    .hero-tagline {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: clamp(1.75rem, 4vw, 2.75rem);
-      font-weight: 600;
-      line-height: 1.05;
-      letter-spacing: -0.025em;
-      color: rgb(226 232 240);
-      margin: 1rem 0 0;
-    }
-
-    .hero-description {
-      max-width: 36rem;
-      margin: 1.5rem 0 0;
-      font-size: 1.05rem;
-      line-height: 1.55;
-      color: rgb(148 163 184);
-    }
-
-    /* Hero CTAs */
-    .hero-actions {
-      display: flex; flex-wrap: wrap; gap: 0.75rem;
-      margin-top: 2.25rem;
-    }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 0.55rem;
-      padding: 0.85rem 1.4rem;
-      border-radius: 0.6rem;
-      font-size: 0.95rem; font-weight: 600;
-      color: #050810;
-      background: linear-gradient(135deg, #86efac 0%, #22c55e 50%, #15803d 100%);
-      box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.30),
-                  0 14px 36px -10px rgba(74, 222, 128, 0.45);
-      text-decoration: none;
-      transition: transform var(--dur-fast) var(--ease-out),
-                  filter var(--dur-base) var(--ease-out);
-    }
-    .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.06); }
-    .btn-primary:active { transform: translateY(0); }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 0.55rem;
-      padding: 0.85rem 1.4rem;
-      border-radius: 0.6rem;
-      font-size: 0.95rem; font-weight: 500;
-      color: rgb(203 213 225);
-      background: transparent;
-      border: 1px solid rgba(148, 163, 184, 0.18);
-      text-decoration: none;
-      transition: all var(--dur-base) var(--ease-out);
-    }
-    .btn-secondary:hover { color: white; border-color: rgba(148, 163, 184, 0.30); background: rgba(255, 255, 255, 0.02); }
-
-    /* Hero benefits row */
-    .hero-benefits {
-      display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
-      margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(148, 163, 184, 0.08);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.05em;
-      color: rgb(148 163 184);
-    }
-    .hero-benefits span { display: inline-flex; align-items: center; gap: 0.4rem; }
-    .hero-benefits svg { width: 13px; height: 13px; color: var(--trace-green); }
-
-    /* ============ HERO SVG ART ============ */
-    .hero-art {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 100%;
-      pointer-events: none;
-      opacity: 0.85;
-    }
-    @media (max-width: 1023px) { .hero-art { opacity: 0.45; } }
-
-    .hero-svg .node {
-      fill: rgba(74, 222, 128, 0.85);
-      filter: drop-shadow(0 0 6px rgba(74, 222, 128, 0.55));
-    }
-    .hero-svg .node-minor { fill: rgba(74, 222, 128, 0.4); filter: none; }
-    .hero-svg .link {
-      stroke: rgba(74, 222, 128, 0.18);
-      stroke-width: 1;
-      fill: none;
-    }
-    .hero-svg .link-data {
-      stroke: rgba(74, 222, 128, 0.65);
-      stroke-width: 1.5;
-      stroke-dasharray: 6 8;
-      fill: none;
-      animation: dataFlow 4s linear infinite;
-    }
-    @keyframes dataFlow {
-      to { stroke-dashoffset: -140; }
-    }
-    .hero-svg .node-pulse {
-      animation: nodePulse 3.5s ease-in-out infinite;
-      transform-origin: center;
-    }
-    .hero-svg .node-pulse-2 {
-      animation: nodePulse 4.2s ease-in-out infinite;
-      animation-delay: 0.8s;
-    }
-    .hero-svg .node-pulse-3 {
-      animation: nodePulse 5s ease-in-out infinite;
-      animation-delay: 1.6s;
-    }
-    @keyframes nodePulse {
-      0%, 100% { opacity: 1; r: 3.5; }
-      50%      { opacity: 0.55; r: 4.5; }
-    }
-
-    /* ============ TOOLS SECTION ============ */
-    .tools-section {
-      padding: 5rem 1.5rem 4rem;
-      max-width: 84rem;
-      margin: 0 auto;
-    }
-    .section-top {
-      display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
-    }
-    .section-eyebrow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.4rem 0.85rem;
-      border-radius: 999px;
-      background: rgba(74, 222, 128, 0.06);
-      border: 1px solid rgba(74, 222, 128, 0.20);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      color: var(--trace-green);
-      margin-bottom: 0.85rem;
-    }
-    .section-eyebrow svg { width: 12px; height: 12px; }
-    .section-title {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.025em;
-      color: white;
-      margin: 0;
-    }
-    .section-sub {
-      font-size: 1rem;
-      color: rgb(148 163 184);
-      margin: 0.6rem 0 0;
-    }
-    .tools-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      color: var(--trace-green);
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid rgba(74, 222, 128, 0.20);
-    }
-
-    /* Tool grid — categorized 21 cards, CLI-command style */
-    .tool-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 0.85rem;
-    }
-
-    /* Category section header (above each grid) */
-    .category {
-      display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem;
-      margin: 2.5rem 0 0.85rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.10);
-    }
-    .category:first-of-type { margin-top: 0; }
-    .category-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--trace-green);
-      margin: 0;
-    }
-    .category-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: rgb(100, 116, 139);
-    }
-
-    .tool-card {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005));
-      border: 1px solid rgba(148, 163, 184, 0.10);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      text-decoration: none;
-      color: inherit;
-      transition: transform var(--dur-base) var(--ease-out),
-                  border-color var(--dur-base) var(--ease-out),
-                  background var(--dur-base) var(--ease-out),
-                  box-shadow var(--dur-base) var(--ease-out);
-      overflow: hidden;
-    }
-    .tool-card::before {
-      content: '';
-      position: absolute; inset: -1px;
-      border-radius: inherit;
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.20), transparent 55%);
-      opacity: 0;
-      transition: opacity var(--dur-base) var(--ease-out);
-      pointer-events: none;
-    }
-    .tool-card > * { position: relative; z-index: 1; }
-    .tool-card:hover {
-      border-color: rgba(74, 222, 128, 0.40);
-      transform: translateY(-3px);
-      box-shadow: 0 18px 40px -16px rgba(74, 222, 128, 0.30);
-    }
-    .tool-card:hover::before { opacity: 1; }
-
-    .card-top {
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .tool-icon {
-      width: 36px; height: 36px;
-      border-radius: 0.55rem;
-      display: inline-flex; align-items: center; justify-content: center;
-      background: rgba(74, 222, 128, 0.10);
-      border: 1px solid rgba(74, 222, 128, 0.20);
-      color: var(--trace-green);
-    }
-    .tool-icon svg { width: 18px; height: 18px; stroke-width: 1.8; fill: none; stroke: currentColor; }
-    .command {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--trace-green);
-      letter-spacing: 0.02em;
-    }
-    .tool-name {
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: white;
-      line-height: 1.2;
-    }
-    .tool-description {
-      font-size: 0.875rem;
-      line-height: 1.55;
-      color: rgb(148 163 184);
-      flex: 1;
-    }
-    .card-bottom {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 0.5rem;
-      border-top: 1px dashed rgba(148, 163, 184, 0.12);
-    }
-    .tool-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      color: var(--trace-fg-dim);
-    }
-    .card-arrow {
-      color: rgb(148 163 184);
-      transition: color var(--dur-fast) var(--ease-out),
-                  transform var(--dur-fast) var(--ease-out);
-    }
-    .card-arrow svg { width: 14px; height: 14px; }
-    .tool-card:hover .card-arrow {
-      color: var(--trace-green);
-      transform: translate(2px, -2px);
-    }
-
-    /* Browse all link */
-    .browse-all {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--trace-green);
-      text-decoration: none;
-      margin-top: 2.5rem;
-      padding: 0.65rem 1rem;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(74, 222, 128, 0.20);
-      transition: all var(--dur-base) var(--ease-out);
-    }
-    .browse-all:hover {
-      background: rgba(74, 222, 128, 0.06);
-      border-color: rgba(74, 222, 128, 0.40);
-    }
-    .browse-all-wrap { text-align: center; }
-
-    /* ============ FOOTER ============ */
-    .site-footer {
-      margin-top: 4rem;
-      padding: 2rem 1.5rem;
-      border-top: 1px solid rgba(148, 163, 184, 0.06);
-    }
-    .footer-inner {
-      max-width: 84rem;
-      margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-      flex-wrap: wrap;
-      font-size: 0.85rem;
-      color: rgb(148 163 184);
-    }
-    .footer-brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; color: white; font-weight: 700; }
-    .footer-note { font-family: 'IBM Plex Sans', sans-serif; }
-    .footer-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.06em; color: var(--trace-fg-dim); }
-
-    /* ============ ENTRANCE ANIMATIONS ============ */
-    [data-view] { animation: viewIn var(--dur-slow) var(--ease-out) both; }
-    [data-fade-in] { animation: viewIn var(--dur-slow) var(--ease-out) both; }
-    [data-fade-in]:nth-child(1) { animation-delay: 0ms; }
-    [data-fade-in]:nth-child(2) { animation-delay: 80ms; }
-    [data-fade-in]:nth-child(3) { animation-delay: 160ms; }
-    [data-fade-in]:nth-child(4) { animation-delay: 240ms; }
-    [data-fade-in]:nth-child(5) { animation-delay: 320ms; }
-    @keyframes viewIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    :focus-visible { outline-color: rgba(74, 222, 128, 0.7) !important; }
-  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/sitetrace.css" />
 </head>
-
-<body class="min-h-screen font-sans antialiased selection:bg-brand-500/40 selection:text-white">
-
-  <header class="site-header">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      <a href="/" class="flex items-center gap-2.5 group">
-        <span class="brand-mark">
-          <svg viewBox="0 0 100 100" aria-hidden="true">
-            <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="#050810" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </span>
-        <span class="brand-name">SiteTrace<span class="dot">.</span></span>
-      </a>
-
-      <nav class="flex items-center gap-1 sm:gap-2" aria-label="Main">
-        <span class="status-badge" title="Service status">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span data-i18n="nav_status">All systems operational</span>
-        </span>
-        <a class="nav-link" href="/tools/" data-i18n="nav_tools">Diagnostic tools</a>
-        <a class="nav-link" href="/about/" data-i18n="nav_about">About</a>
-        <div class="relative ml-1 sm:ml-2" id="lang-wrap">
-          <button id="lang-toggle" class="nav-link" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider font-mono">EN</span>
-          </button>
-          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-36 rounded-xl border border-white/10 bg-ink-900/95 backdrop-blur-xl shadow-2xl py-1 text-sm z-50">
-            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
-            <li><button class="lang-option" data-lang="es" role="option">Español</button></li>
-          </ul>
-        </div>
-      </nav>
+<body>
+  <div class="site-page">
+    <div class="matrix-background" aria-hidden="true">
+      <canvas class="matrix-rain"></canvas>
+      <div class="matrix-shade"></div>
     </div>
-  </header>
 
-  <main>
-
-    <!-- =================== HERO =================== -->
-    <section class="hero" data-view>
-
-      <div class="hero-grid" aria-hidden="true"></div>
-
-      <!-- Animated SVG hero art — network topology -->
-      <svg class="hero-art hero-svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs>
-          <radialGradient id="nodeGlow">
-            <stop offset="0%" stop-color="rgba(74, 222, 128, 1)" />
-            <stop offset="60%" stop-color="rgba(74, 222, 128, 0.4)" />
-            <stop offset="100%" stop-color="rgba(74, 222, 128, 0)" />
-          </radialGradient>
-        </defs>
-
-        <!-- Background link web -->
-        <line class="link" x1="120" y1="180" x2="280" y2="120" />
-        <line class="link" x1="280" y1="120" x2="420" y2="240" />
-        <line class="link" x1="420" y1="240" x2="560" y2="160" />
-        <line class="link" x1="560" y1="160" x2="720" y2="280" />
-        <line class="link" x1="720" y1="280" x2="880" y2="180" />
-        <line class="link" x1="880" y1="180" x2="1020" y2="320" />
-        <line class="link" x1="120" y1="380" x2="280" y2="460" />
-        <line class="link" x1="280" y1="460" x2="420" y2="380" />
-        <line class="link" x1="420" y1="380" x2="560" y2="500" />
-        <line class="link" x1="560" y1="500" x2="720" y2="420" />
-        <line class="link" x1="720" y1="420" x2="880" y2="480" />
-        <line class="link" x1="200" y1="280" x2="380" y2="320" />
-        <line class="link" x1="380" y1="320" x2="600" y2="340" />
-        <line class="link" x1="600" y1="340" x2="820" y2="300" />
-        <line class="link" x1="820" y1="300" x2="1000" y2="380" />
-
-        <!-- Animated data flow lines (3 paths) -->
-        <line class="link-data" x1="280" y1="120" x2="720" y2="280" />
-        <line class="link-data" x1="420" y1="380" x2="880" y2="180" />
-        <line class="link-data" x1="120" y1="380" x2="560" y2="500" />
-
-        <!-- Minor nodes (filler dots) -->
-        <circle class="node-minor" cx="120" cy="180" r="1.5" />
-        <circle class="node-minor" cx="280" cy="120" r="1.5" />
-        <circle class="node-minor" cx="420" cy="240" r="1.5" />
-        <circle class="node-minor" cx="560" cy="160" r="1.5" />
-        <circle class="node-minor" cx="720" cy="280" r="1.5" />
-        <circle class="node-minor" cx="880" cy="180" r="1.5" />
-        <circle class="node-minor" cx="1020" cy="320" r="1.5" />
-        <circle class="node-minor" cx="120" cy="380" r="1.5" />
-        <circle class="node-minor" cx="280" cy="460" r="1.5" />
-        <circle class="node-minor" cx="420" cy="380" r="1.5" />
-        <circle class="node-minor" cx="560" cy="500" r="1.5" />
-        <circle class="node-minor" cx="720" cy="420" r="1.5" />
-        <circle class="node-minor" cx="880" cy="480" r="1.5" />
-        <circle class="node-minor" cx="200" cy="280" r="1.5" />
-        <circle class="node-minor" cx="380" cy="320" r="1.5" />
-        <circle class="node-minor" cx="600" cy="340" r="1.5" />
-        <circle class="node-minor" cx="820" cy="300" r="1.5" />
-        <circle class="node-minor" cx="1000" cy="380" r="1.5" />
-
-        <!-- Prominent nodes (pulsing) -->
-        <circle cx="280" cy="120" r="14" fill="url(#nodeGlow)" class="node-pulse" />
-        <circle class="node node-pulse" cx="280" cy="120" r="3.5" />
-
-        <circle cx="720" cy="280" r="14" fill="url(#nodeGlow)" class="node-pulse-2" />
-        <circle class="node node-pulse-2" cx="720" cy="280" r="3.5" />
-
-        <circle cx="420" cy="380" r="14" fill="url(#nodeGlow)" class="node-pulse-3" />
-        <circle class="node node-pulse-3" cx="420" cy="380" r="3.5" />
-      </svg>
-
-      <!-- Hero content -->
-      <div class="relative z-10 max-w-3xl">
-        <div class="release-badge">
-          <span>SiteTrace</span>
-          <span class="opacity-60">/</span>
-          <span data-i18n="hero_release">The internet, under the microscope.</span>
-          <span class="arrow" aria-hidden="true">→</span>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="SiteTrace home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
+          </span>
+          <span>SiteTrace<span class="brand-dot">.</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a class="nav-link active" href="/#tools" aria-current="page">Diagnostic tools</a>
+          <a class="nav-link" href="/about/">About</a>
+          <a class="nav-link" href="/blog/">Blog</a>
+        </nav>
+        <div class="header-clock" aria-label="Current local time">
+          <span class="live-dot" aria-hidden="true"></span>
+          <time id="header-time" datetime="">--:--:--</time>
+          <span>LOCAL</span>
         </div>
-        <h1 class="brand-display" data-i18n="hero_brand">SiteTrace<span class="dot">.</span></h1>
-        <h2 class="hero-tagline" data-i18n="hero_tagline">Clarity for every connection.</h2>
-        <p class="hero-description" data-i18n="hero_description">Trace an IP. Resolve a domain. Understand your network. Precision diagnostics, without the noise.</p>
-        <div class="hero-actions">
-          <a href="#tools" class="btn-primary">
-            <span data-i18n="hero_cta_explore">Explore the tools</span>
-            <span aria-hidden="true">→</span>
-          </a>
-          <a href="/check/" class="btn-secondary">
-            <span data-i18n="hero_cta_quick">Quick lookup</span>
-            <span aria-hidden="true">↗</span>
-          </a>
+        <button class="header-search" aria-label="Open quick search" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="shell">
+          <div class="hero-eyebrow">
+            <span class="status-dot" aria-hidden="true"></span>
+            The internet, under the surface
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+          </div>
+          <h1>Clarity in every<br><span class="accent">connection.</span></h1>
+          <p class="hero-copy">Trace an IP. Resolve a domain. Understand your network.<br>Precision tools for a connected world. No noise. Just answers.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#tools">Explore the tools
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-outline" href="/what-is-my-ip/">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
+              Quick lookup
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+            </a>
+          </div>
+          <div class="trust">
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg> Built for speed</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Privacy first</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Free to explore</span>
+          </div>
+
+          <div class="terminal-card" aria-label="Example diagnostic output">
+            <div class="terminal-header">
+              <span class="terminal-dot r" aria-hidden="true"></span>
+              <span class="terminal-dot y" aria-hidden="true"></span>
+              <span class="terminal-dot g" aria-hidden="true"></span>
+              <span class="terminal-title">sitetrace — network diagnostics</span>
+              <span class="terminal-example">Example</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="terminal-prompt">$</span> sitetrace lookup 8.8.8.8</div>
+              <div class="terminal-out">
+                <span class="k">IP address</span>      <span class="v">8.8.8.8</span>
+                <span class="k">Organization</span>    <span class="v">Google LLC</span>
+                <span class="k">Network</span>         <span class="v">AS15169 · United States</span>
+                <span class="k">Status</span>          <span class="v ok">✓ Connection resolved</span>
+              </div>
+              <div class="terminal-cursor"><span class="terminal-prompt">&gt;</span> <span class="blink" aria-hidden="true"></span></div>
+            </div>
+          </div>
         </div>
-        <div class="hero-benefits">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span data-i18n="hero_benefit_speed">Built for speed</span></span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span data-i18n="hero_benefit_privacy">Privacy first</span></span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg><span data-i18n="hero_benefit_free">Free to explore</span></span>
+      </section>
+
+      <section id="tools" class="tool-section">
+        <div class="shell">
+          <div class="eyebrow">&gt; The diagnostic toolkit</div>
+          <h2>Your network. No guesswork.</h2>
+          <p class="lede">Small tools. Clear answers. Everything you need to look a little deeper.</p>
+          <div class="tool-meta">21 tools / one workspace</div>
+
+          <div class="tool-filters" role="tablist" aria-label="Filter tools by category">
+            <button class="tool-filter active" type="button" data-filter="all">All tools</button>
+            <button class="tool-filter" type="button" data-filter="network">Network & IP</button>
+            <button class="tool-filter" type="button" data-filter="dns">DNS & connectivity</button>
+            <button class="tool-filter" type="button" data-filter="web">Web & security</button>
+            <button class="tool-filter" type="button" data-filter="email">Email & certificates</button>
+            <button class="tool-filter" type="button" data-filter="seo">SEO & preview</button>
+            <button class="tool-filter" type="button" data-filter="utilities">Utilities</button>
+            <label class="tool-search" for="tool-search-input">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="tool-search-input" type="search" placeholder="Find a tool..." style="background:transparent;border:0;outline:0;color:inherit;font:inherit;width:100%" />
+              <kbd>⌘K</kbd>
+            </label>
+          </div>
+
+          <!-- Network & IP -->
+          <div class="tool-category" data-category="network">
+            <div class="tool-category-head">
+              <span class="tool-category-name">Network & IP</span>
+              <span class="tool-category-count">4 tools</span>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="/ip-lookup/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+                  <span class="tool-command">$ lookup</span>
+                </div>
+                <h4>IP lookup</h4>
+                <p>Every IP has a story. Find its location, ISP, and network.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/ip-reputation/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                  <span class="tool-command">$ reputation</span>
+                </div>
+                <h4>IP reputation</h4>
+                <p>Check an IP against blocklists. Know who you're connecting to.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/vpn-checker/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01"/><path d="M10 12h.01"/></svg></span>
+                  <span class="tool-command">$ vpn-check</span>
+                </div>
+                <h4>VPN check</h4>
+                <p>Uncover VPN, proxy, and hosting signals behind an IP.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/subnet-calculator/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
+                  <span class="tool-command">$ subnet</span>
+                </div>
+                <h4>Subnet calculator</h4>
+                <p>From CIDR to address ranges. Make your network make sense.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- DNS & connectivity -->
+          <div class="tool-category" data-category="dns">
+            <div class="tool-category-head">
+              <span class="tool-category-name">DNS & connectivity</span>
+              <span class="tool-category-count">4 tools</span>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="/ping/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+                  <span class="tool-command">$ ping</span>
+                </div>
+                <h4>Ping test</h4>
+                <p>Measure response times and find the distance in milliseconds.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/dns-tools/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-8"/><path d="M12 12c-2-3-6-5-9-5 0 4 3 7 6 9"/><path d="M12 12c2-3 6-5 9-5 0 4-3 7-6 9"/></svg></span>
+                  <span class="tool-command">$ dig +short</span>
+                </div>
+                <h4>DNS lookup</h4>
+                <p>Resolve the details. A, AAAA, MX, TXT, and everything between.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/dns-propagation-checker/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a14.5 14.5 0 0 1 0 20"/><path d="M12 2a14.5 14.5 0 0 0 0 20"/></svg></span>
+                  <span class="tool-command">$ propagate</span>
+                </div>
+                <h4>DNS propagation</h4>
+                <p>See your DNS changes travel across global resolvers.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/what-is-my-ip/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 1 0 20"/><path d="M12 2a14.5 14.5 0 0 0 0 20"/><path d="M2 12h20"/></svg></span>
+                  <span class="tool-command">$ ip</span>
+                </div>
+                <h4>What is my IP</h4>
+                <p>Your public IP, geolocation, and connection profile.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Web & security -->
+          <div class="tool-category" data-category="web">
+            <div class="tool-category-head">
+              <span class="tool-category-name">Web & security</span>
+              <span class="tool-category-count">4 tools</span>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="/is-it-down/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg></span>
+                  <span class="tool-command">$ status</span>
+                </div>
+                <h4>Is it down?</h4>
+                <p>Just you or everyone? Check whether a website is reachable.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/website-down-checker/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></span>
+                  <span class="tool-command">$ bulk</span>
+                </div>
+                <h4>Bulk URL status</h4>
+                <p>Multiple URLs. One clear picture of what's up and what's not.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/http-headers/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>
+                  <span class="tool-command">$ curl -I</span>
+                </div>
+                <h4>HTTP headers</h4>
+                <p>Go beneath the page. Inspect response, caching, and server.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/headers-checker/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                  <span class="tool-command">$ sec-headers</span>
+                </div>
+                <h4>Security headers</h4>
+                <p>Spot missing protection in your website's response headers.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Email & certificates -->
+          <div class="tool-category" data-category="email">
+            <div class="tool-category-head">
+              <span class="tool-category-name">Email & certificates</span>
+              <span class="tool-category-count">2 tools</span>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="/email-deliverability/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+                  <span class="tool-command">$ spf / dkim</span>
+                </div>
+                <h4>Email deliverability</h4>
+                <p>Inspect SPF, DKIM, and DMARC. Give your email a clear path.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/cert-checker/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                  <span class="tool-command">$ ssl cert</span>
+                </div>
+                <h4>SSL certificate</h4>
+                <p>Check your certificate's issuer, validity, and expiration.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- SEO & preview -->
+          <div class="tool-category" data-category="seo">
+            <div class="tool-category-head">
+              <span class="tool-category-name">SEO & preview</span>
+              <span class="tool-category-count">2 tools</span>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="/seo-checker/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+                  <span class="tool-command">$ seo audit</span>
+                </div>
+                <h4>SEO checker</h4>
+                <p>Look closer at titles, metadata, canonical tags, and indexing.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/og-preview/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></span>
+                  <span class="tool-command">$ og preview</span>
+                </div>
+                <h4>Open Graph preview</h4>
+                <p>Inspect the metadata that shapes your social first impression.</p>
+                <div class="tool-card-bottom">Explore tool <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Utilities -->
+          <div class="tool-category" data-category="utilities">
+            <div class="tool-category-head">
+              <span class="tool-category-name">Utilities</span>
+              <span class="tool-category-count">5 tools</span>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="/password/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+                  <span class="tool-command">$ pwgem</span>
+                </div>
+                <h4>Password generator</h4>
+                <p>Strong, random, and yours alone. Security starts here.</p>
+                <div class="tool-card-bottom">Open utility <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/random-color/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/></svg></span>
+                  <span class="tool-command">$ color</span>
+                </div>
+                <h4>Random color</h4>
+                <p>Find your next color. Generate a random hexadecimal value.</p>
+                <div class="tool-card-bottom">Open utility <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/word-counter/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg></span>
+                  <span class="tool-command">$ wc</span>
+                </div>
+                <h4>Word counter</h4>
+                <p>Words, characters, and lines. Every little detail accounted for.</p>
+                <div class="tool-card-bottom">Open utility <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/tools/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span>
+                  <span class="tool-command">$ dispatch</span>
+                </div>
+                <h4>Smart dispatcher</h4>
+                <p>Identify a URL, domain, or IP and choose the right diagnostic.</p>
+                <div class="tool-card-bottom">Open utility <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+              <a class="tool-card" href="/network-tools/">
+                <div class="tool-card-top">
+                  <span class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg></span>
+                  <span class="tool-command">$ nettools</span>
+                </div>
+                <h4>Network tools</h4>
+                <p>Multi-tool page: traceroute, whois, blacklist, port scan.</p>
+                <div class="tool-card-bottom">Open utility <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></div>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-    </section>
-
-    <!-- =================== TOOLS SECTION =================== -->
-    <section id="tools" class="tools-section">
-      <header class="section-top">
-        <div>
-          <div class="section-eyebrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
-            <span data-i18n="tools_eyebrow">Diagnostic tools</span>
+      <section id="about" class="about-band">
+        <div class="shell about-inner">
+          <div>
+            <div class="eyebrow">A little more clarity</div>
+            <h2>The internet is complex.<br>Your tools shouldn't be.</h2>
           </div>
-          <h2 class="section-title" data-i18n="tools_title">Your network. No guesswork.</h2>
-          <p class="section-sub" data-i18n="tools_sub">The right tools to see what's really happening.</p>
+          <div class="about-values">
+            <div class="about-value">
+              <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                Purposefully simple
+              </h3>
+              <p>Focused tools. Nothing between you and the details.</p>
+            </div>
+            <div class="about-value">
+              <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="16" r="1"/><rect x="3" y="10" width="18" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3"/></svg>
+                Privacy by design
+              </h3>
+              <p>No account required. Your curiosity stays yours.</p>
+            </div>
+            <div class="about-value">
+              <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 1 0 20 14.5 14.5 0 0 1 0-20"/><path d="M2 12h20"/></svg>
+                Open to everyone
+              </h3>
+              <p>For builders, problem solvers, and curious minds.</p>
+            </div>
+          </div>
         </div>
-        <span class="tools-count" data-i18n="tools_count">20 TOOLS · ONE WORKSPACE</span>
-      </header>
+      </section>
+    </main>
 
-      <!-- ===== Category: Network & IP ===== -->
-      <div class="category">
-        <h3 class="category-title" data-i18n="cat_network">Network &amp; IP</h3>
-        <span class="category-count" data-i18n="cat_network_count">4 tools</span>
+    <footer class="site-footer">
+      <div class="shell" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
+          </span>
+          <span>SiteTrace<span class="brand-dot">.</span></span>
+        </a>
+        <p>A little clarity. A lot fewer questions.</p>
+        <span>© 2026 SiteTrace · Stay curious</span>
       </div>
-      <div class="tool-grid">
+    </footer>
+  </div>
 
-        <a href="/ip-lookup/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></span>
-            <span class="command">$ lookup</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_iplookup_name">IP lookup</h3>
-          <p class="tool-description" data-i18n="tool_iplookup_desc">Look up any IPv4 or IPv6 — geolocation, ASN, owner.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_iplookup_tag">ANY IPv4 / IPv6</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/ip-reputation/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-            <span class="command">$ reputation</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_iprep_name">IP reputation</h3>
-          <p class="tool-description" data-i18n="tool_iprep_desc">Check any IPv4 against 7 DNS blacklists (Spamhaus, Spamcop, Barracuda, CBL, ...).</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_iprep_tag">DNSBL / SCORE</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/vpn-checker/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.5 9 9 11 5.5-2 9-6 9-11V6l-9-4z"/></svg></span>
-            <span class="command">$ vpn-check</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_vpn_name">VPN detector</h3>
-          <p class="tool-description" data-i18n="tool_vpn_desc">See if an IP is a known VPN, proxy, or Tor exit.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_vpn_tag">VPN / PROXY / TOR</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/subnet-calculator/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg></span>
-            <span class="command">$ subnet</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_snc_name">Subnet calculator</h3>
-          <p class="tool-description" data-i18n="tool_snc_desc">Paste a CIDR, get network, broadcast, host range, wildcard, IP class.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_snc_tag">CIDR / RANGE</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-      </div>
-
-      <!-- ===== Category: DNS & connectivity ===== -->
-      <div class="category">
-        <h3 class="category-title" data-i18n="cat_dns">DNS &amp; connectivity</h3>
-        <span class="category-count" data-i18n="cat_dns_count">3 tools</span>
-      </div>
-      <div class="tool-grid">
-
-        <a href="/ping/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg></span>
-            <span class="command">$ dig</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_ping_name">Domain inspector</h3>
-          <p class="tool-description" data-i18n="tool_ping_desc">DNS + HTTP + 9-server latency for any domain in one shot.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_ping_tag">DNS / HTTP / LATENCY</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/dns-tools/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-            <span class="command">$ dig +short</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_dns_name">DNS lookup</h3>
-          <p class="tool-description" data-i18n="tool_dns_desc">A, AAAA, MX, TXT, NS, CNAME, SOA via DNS-over-HTTPS.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_dns_tag">A / AAAA / MX / TXT</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/dns-propagation-checker/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg></span>
-            <span class="command">$ propagate</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_dnsprop_name">DNS propagation</h3>
-          <p class="tool-description" data-i18n="tool_dnsprop_desc">Check a record across 8 global resolvers.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_dnsprop_tag">8 RESOLVERS</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-      </div>
-
-      <!-- ===== Category: Web status & headers ===== -->
-      <div class="category">
-        <h3 class="category-title" data-i18n="cat_web">Web status &amp; headers</h3>
-        <span class="category-count" data-i18n="cat_web_count">4 tools</span>
-      </div>
-      <div class="tool-grid">
-
-        <a href="/is-it-down/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
-            <span class="command">$ status</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_status_name">Is it down</h3>
-          <p class="tool-description" data-i18n="tool_status_desc">URL reachability + live status of 50+ popular services.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_status_tag">50+ SERVICES</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/website-down-checker/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 9 4-18 3 9h4"/></svg></span>
-            <span class="command">$ bulk</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_bulk_name">Bulk URL status</h3>
-          <p class="tool-description" data-i18n="tool_bulk_desc">Check up to 20 URLs in one pass — status + latency + content type.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_bulk_tag">20 URLs / PASS</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/http-headers/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
-            <span class="command">$ curl -I</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_http_name">HTTP headers</h3>
-          <p class="tool-description" data-i18n="tool_http_desc">Full response headers + 0-100 security grade.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_http_tag">RESPONSE / GRADE</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/headers-checker/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
-            <span class="command">$ sec-headers</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_sheaders_name">Security headers</h3>
-          <p class="tool-description" data-i18n="tool_sheaders_desc">Grade any site's response headers against Mozilla's observatory baseline.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_sheaders_tag">CSP / HSTS / X-FRAME</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-      </div>
-
-      <!-- ===== Category: Email & certs ===== -->
-      <div class="category">
-        <h3 class="category-title" data-i18n="cat_email">Email &amp; certs</h3>
-        <span class="category-count" data-i18n="cat_email_count">2 tools</span>
-      </div>
-      <div class="tool-grid">
-
-        <a href="/email-deliverability/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
-            <span class="command">$ spf</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_email_name">Email deliverability</h3>
-          <p class="tool-description" data-i18n="tool_email_desc">SPF + DKIM (20 selectors) + DMARC + MX + BIMI. 0-100 score.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_email_tag">SPF / DKIM / DMARC</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/cert-checker/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-            <span class="command">$ cert</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_cert_name">SSL certificate</h3>
-          <p class="tool-description" data-i18n="tool_cert_desc">Inspect any HTTPS site's certificate — issuer, expiry, key, SANs.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_cert_tag">EXPIRY / ISSUER</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-      </div>
-
-      <!-- ===== Category: SEO & preview ===== -->
-      <div class="category">
-        <h3 class="category-title" data-i18n="cat_seo">SEO &amp; preview</h3>
-        <span class="category-count" data-i18n="cat_seo_count">2 tools</span>
-      </div>
-      <div class="tool-grid">
-
-        <a href="/seo-checker/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M11 3a8 8 0 1 0 5.3 14L21 21"/><path d="M11 7v4l3 2"/></svg></span>
-            <span class="command">$ audit</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_seo_name">SEO checker</h3>
-          <p class="tool-description" data-i18n="tool_seo_desc">12-point audit: title, meta, H1, canonical, OG, alt, robots.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_seo_tag">12-POINT AUDIT</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/og-preview/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-            <span class="command">$ og</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_og_name">OG preview</h3>
-          <p class="tool-description" data-i18n="tool_og_desc">See how any URL looks as an Open Graph / Twitter / Slack card.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_og_tag">OG / TWITTER / SLACK</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-      </div>
-
-      <!-- ===== Category: Utilities ===== -->
-      <div class="category">
-        <h3 class="category-title" data-i18n="cat_util">Utilities</h3>
-        <span class="category-count" data-i18n="cat_util_count">5 tools</span>
-      </div>
-      <div class="tool-grid">
-
-        <a href="/password/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-            <span class="command">$ pwgen</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_pw_name">Password generator</h3>
-          <p class="tool-description" data-i18n="tool_pw_desc">Cryptographic random passwords up to 64 chars. Entropy + crack-time.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_pw_tag">64 CHARS / ENTROPY</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/random-color/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></span>
-            <span class="command">$ color</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_color_name">Random color</h3>
-          <p class="tool-description" data-i18n="tool_color_desc">Generate random colors — HEX, RGB, HSL, with contrast ratio.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_color_tag">HEX / RGB / HSL</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/word-counter/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16"/></svg></span>
-            <span class="command">$ wc</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_wc_name">Word counter</h3>
-          <p class="tool-description" data-i18n="tool_wc_desc">Words, characters, sentences, paragraphs, reading time. Runs locally.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_wc_tag">WORDS / TIME</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/check/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-            <span class="command">$ check</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_check_name">Smart dispatcher</h3>
-          <p class="tool-description" data-i18n="tool_check_desc">Paste a URL / domain / IP. Runs 5 checks in parallel, unified result.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_check_tag">5 CHECKS / 1 PASTE</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-        <a href="/tools/" class="tool-card" data-fade-in>
-          <div class="card-top">
-            <span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></span>
-            <span class="command">$ ls</span>
-          </div>
-          <h3 class="tool-name" data-i18n="tool_ls_name">All tools</h3>
-          <p class="tool-description" data-i18n="tool_ls_desc">Full directory — 20 tools grouped by what they do.</p>
-          <div class="card-bottom">
-            <span class="tool-tag" data-i18n="tool_ls_tag">20 TOOLS</span>
-            <span class="card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></span>
-          </div>
-        </a>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <a href="/" class="footer-brand">
-        <span class="brand-mark"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="#050810" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
-        <span>SiteTrace<span class="text-green">.</span></span>
-      </a>
-      <span class="footer-note" data-i18n="footer_note">A little more clarity. A lot less guesswork.</span>
-      <span class="footer-meta">OPEN SOURCE · NO LOGS · NO ACCOUNTS</span>
-    </div>
-  </footer>
-
-  <script src="/js/i18n.js?v=32"></script>
+  <script src="/js/matrix-rain.js" defer></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (window.I18N && window.I18N.setLanguage) {
-        var saved = sessionStorage.getItem('sitetrace.lang');
-        if (!saved) { try { saved = (navigator.language || 'en').slice(0,2); } catch(_) { saved = 'en'; } }
-        if (saved !== 'en' && saved !== 'es') saved = 'en';
-        window.I18N.setLanguage(saved, { skipPersist: true });
+    // Local-time clock in the header
+    (function () {
+      var t = document.getElementById('header-time');
+      if (!t) return;
+      function tick() {
+        var d = new Date();
+        var h = String(d.getHours()).padStart(2, '0');
+        var m = String(d.getMinutes()).padStart(2, '0');
+        var s = String(d.getSeconds()).padStart(2, '0');
+        t.textContent = h + ':' + m + ':' + s;
+        t.setAttribute('datetime', d.toISOString());
       }
-      if (window.SiteTrace && window.SiteTrace.layout && window.SiteTrace.layout.mount) {
-        window.SiteTrace.layout.mount({ active: 'nav_home' });
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // Tool filter buttons
+    (function () {
+      var filters = document.querySelectorAll('.tool-filter');
+      var categories = document.querySelectorAll('.tool-category');
+      var search = document.getElementById('tool-search-input');
+      function applyFilter(cat) {
+        categories.forEach(function (c) {
+          if (cat === 'all' || c.dataset.category === cat) c.style.display = '';
+          else c.style.display = 'none';
+        });
       }
-    });
+      function applySearch(q) {
+        q = (q || '').toLowerCase().trim();
+        var cards = document.querySelectorAll('.tool-card');
+        cards.forEach(function (card) {
+          var txt = card.textContent.toLowerCase();
+          card.style.display = (!q || txt.indexOf(q) !== -1) ? '' : 'none';
+        });
+      }
+      filters.forEach(function (f) {
+        f.addEventListener('click', function () {
+          filters.forEach(function (x) { x.classList.remove('active'); });
+          f.classList.add('active');
+          applyFilter(f.dataset.filter);
+          if (search) search.value = '';
+          applySearch('');
+        });
+      });
+      if (search) {
+        search.addEventListener('input', function () { applySearch(search.value); });
+      }
+      // ⌘K to focus search
+      document.addEventListener('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (search) search.focus();
+        }
+      });
+    })();
   </script>
-<script src="/js/layout.js?v=32"></script>
 </body>
 </html>
