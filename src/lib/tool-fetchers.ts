@@ -12,6 +12,10 @@ import {
   checkHttpHeaders,
   checkSeo,
   checkEmailDeliverability,
+  checkIsItDown,
+  checkBulkUrlStatus,
+  checkHttpLatency,
+  checkOpenGraph,
 } from "./server-tools";
 
 // Cloudflare Workers/Pages Functions are ignored when _worker.js is
@@ -33,18 +37,6 @@ async function fetchJson(url: string, init?: RequestInit): Promise<unknown> {
     const r = await fetch(url, { ...init, signal: ctrl.signal });
     if (!r.ok) throw new Error(`Request failed (HTTP ${r.status})`);
     return await r.json();
-  } finally {
-    clearTimeout(t);
-  }
-}
-
-async function fetchText(url: string, init?: RequestInit): Promise<string> {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
-  try {
-    const r = await fetch(url, { ...init, signal: ctrl.signal });
-    if (!r.ok) throw new Error(`Request failed (HTTP ${r.status})`);
-    return await r.text();
   } finally {
     clearTimeout(t);
   }
@@ -342,6 +334,35 @@ export async function fetchWhoisLookup(domain: string): Promise<ToolResult> {
   const findEvent = (action: string) => events.find(e => e.eventAction === action)?.eventDate ?? "—";
   const registrar = (data.entities ?? []).find(e => e.roles?.includes("registrar"));
   const registrarName = (registrar?.vcardArray?.[1] as unknown[] | undefined)?.find((c: unknown) => Array.isArray(c) && c[0] === "fn")?.[3] as string | undefined;
+  // Translate the EPP status codes into plain English. Most domains have
+  // a stack of "clientXxx prohibited" boilerplate that says little to a
+  // typical user. We collapse the common locks and surface the rest.
+  const EPP: Record<string, string> = {
+    "client transfer prohibited": "Transfer locked at registrar",
+    "client update prohibited": "Updates locked at registrar",
+    "client delete prohibited": "Deletion locked at registrar",
+    "client renew prohibited": "Renewal locked at registrar",
+    "client hold": "Suspended by registrar",
+    "server transfer prohibited": "Server-side transfer lock",
+    "server update prohibited": "Server-side update lock",
+    "server delete prohibited": "Server-side deletion lock",
+    "server renew prohibited": "Server-side renewal lock",
+    "server hold": "Suspended by registry",
+    "ok": "Active (no locks)",
+    "pending create": "Registration pending",
+    "pending renew": "Renewal pending",
+    "pending transfer": "Transfer pending",
+    "pending update": "Update pending",
+    "pending delete": "Deletion pending",
+  };
+  const rawStatus = data.status ?? [];
+  const translated = rawStatus.map(s => EPP[s] ?? s);
+  const locks = translated.filter(t =>
+    /lock|suspend|prohibit|hold/i.test(t),
+  );
+  const statusSummary = locks.length === 0
+    ? (translated.join(" · ") || "Active")
+    : `${locks.length} lock${locks.length === 1 ? "" : "s"} active`;
   return {
     title: "Domain registration",
     metrics: [
@@ -349,7 +370,7 @@ export async function fetchWhoisLookup(domain: string): Promise<ToolResult> {
       ["Registered", findEvent("registration")],
       ["Last updated", findEvent("last changed")],
       ["Expires", findEvent("expiration")],
-      ["Status", (data.status ?? []).join(", ") || "—"],
+      ["Status", statusSummary],
     ],
     columns: ["Field", "Value"],
     rows: [
@@ -357,6 +378,7 @@ export async function fetchWhoisLookup(domain: string): Promise<ToolResult> {
       ["Creation date", findEvent("registration")],
       ["Updated date", findEvent("last changed")],
       ["Expiration date", findEvent("expiration")],
+      ["Locks", locks.length ? locks.join(" · ") : "None"],
       ["Nameservers", (data.nameservers ?? []).map(n => n.ldhName ?? "").filter(Boolean).join(" · ") || "—"],
       ["DNSSEC", data.secureDNS?.delegationSigned ? "signedDelegation" : "unsigned"],
       ["Source", "RDAP · live"],
@@ -366,114 +388,91 @@ export async function fetchWhoisLookup(domain: string): Promise<ToolResult> {
 }
 
 // =====================================================================
-// HTTP latency breakdown (Performance API — DNS, TCP, TLS, TTFB, download)
-// Uses the browser's resource timing entries to slice a request into phases.
+// HTTP latency breakdown (server-side — total + TTFB + download)
+//
+// Honest disclaimer: a Cloudflare Worker can measure total time, TTFB, and
+// download duration, but the per-phase breakdown (DNS, TCP, TLS) is opaque —
+// the platform handles those and we can't see them. We show what we can
+// actually measure and tell the user which phases aren't surfaced.
 // =====================================================================
 export async function fetchHttpLatency(url: string): Promise<ToolResult> {
-  const target = url.startsWith("http") ? url : `https://${url}`;
-  const start = performance.now();
-  const response = await fetch(target, { method: "GET", cache: "no-store" });
-  // Drain the body so download timing is meaningful.
-  await response.text();
-  const total = Math.round(performance.now() - start);
-  // Pull the most recent entry with this URL from the resource timing buffer.
-  const entries = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
-  const last = entries.filter(e => e.name === target || e.name.startsWith(target)).slice(-1)[0];
-  let dns = 0, tcp = 0, tls = 0, ttfb = 0, download = 0;
-  if (last) {
-    dns = Math.round(last.domainLookupEnd - last.domainLookupStart);
-    tcp = Math.round(last.connectEnd - last.connectStart);
-    ttfb = Math.round(last.responseStart - last.requestStart);
-    download = Math.round(last.responseEnd - last.responseStart);
-    // TLS sits inside connect. Heuristic: if secureConnectionStart > 0, TLS used some of the connect time.
-    if (last.secureConnectionStart > 0) tls = Math.round(last.connectEnd - last.secureConnectionStart);
-  } else {
-    // No resource entry (cross-origin opaque). Estimate split from total.
-    dns = Math.round(total * 0.08);
-    tcp = Math.round(total * 0.18);
-    tls = Math.round(total * 0.15);
-    ttfb = Math.round(total * 0.50);
-    download = total - dns - tcp - tls - ttfb;
-  }
-  const phases: Array<[string, number, string]> = [
-    ["DNS lookup", dns, "Resolved hostname"],
-    ["TCP connect", tcp, "Established socket"],
-    ["TLS handshake", tls, "Negotiated encryption"],
-    ["Time to first byte", ttfb, "Server response"],
-    ["Content download", download, "Body received"],
-  ];
-  const measured = dns + tcp + tls + ttfb + download;
+  const data = await checkHttpLatency({ data: { url } }) as {
+    error?: string; message?: string;
+    inputUrl?: string; finalUrl?: string; status?: number; statusText?: string;
+    totalMs?: number; ttfbMs?: number; downloadMs?: number; bytes?: number; note?: string;
+  };
+  if (data.error) throw new Error(data.message ?? "Latency check failed.");
+  const target = data.inputUrl ?? url;
+  const total = data.totalMs ?? 0;
+  const ttfb = data.ttfbMs ?? 0;
+  const download = data.downloadMs ?? 0;
   return {
     title: "Latency breakdown",
     metrics: [
       ["URL", target],
-      ["Status", `${response.status} ${response.statusText}`],
+      ["Status", data.status ? `${data.status} ${data.statusText ?? ""}`.trim() : "—"],
       ["Total time", `${total} ms`],
-      ["Measured phases", `${measured} ms`],
+      ["TTFB", `${ttfb} ms`],
     ],
     columns: ["Phase", "Time", "Note"],
     rows: [
-      ...phases.map(([label, ms, note]) => [label, `${ms} ms`, note]),
+      ["DNS lookup", "—", "Not exposed server-side (handled by platform)"],
+      ["TCP connect", "—", "Not exposed server-side (handled by platform)"],
+      ["TLS handshake", "—", "Not exposed server-side (handled by platform)"],
+      ["Time to first byte", `${ttfb} ms`, "Server response start"],
+      ["Content download", `${download} ms`, `${(data.bytes ?? 0).toLocaleString("en-US")} bytes received`],
       ["Total", `${total} ms`, "End-to-end"],
-      ["Source", "Browser Performance API · live", ""],
+      ["Source", "Server fetch · live (no CORS)"],
+      ["Note", data.note ?? ""],
     ],
   };
 }
 
 // =====================================================================
-// Is it down? (browser fetch + status check)
+// Is it down? (server-side fetch — no CORS)
 // =====================================================================
 export async function fetchIsItDown(url: string): Promise<ToolResult> {
-  const target = url.startsWith("http") ? url : `https://${url}`;
-  const start = performance.now();
-  try {
-    const r = await fetch(target, { method: "HEAD", redirect: "follow", cache: "no-store" });
-    const ms = Math.round(performance.now() - start);
-    const reachable = r.ok || (r.status >= 200 && r.status < 500);
-    return {
-      title: "Availability report",
-      metrics: [
-        ["Website", target],
-        ["HTTP status", `${r.status} ${r.statusText}`],
-        ["Response time", `${ms} ms`],
-        ["Availability", reachable ? "Reachable" : "Errors"],
-      ],
-      columns: ["Check", "Result"],
-      rows: [
-        ["Final URL", r.url],
-        ["HTTP status", `${r.status} ${r.statusText}`],
-        ["Response time", `${ms} ms`],
-        ["Availability", reachable ? "Reachable" : "Errors"],
-        ["Source", "Browser fetch · live"],
-      ],
-    };
-  } catch (e) {
-    return {
-      title: "Availability report",
-      metrics: [["Website", target], ["HTTP status", "Unreachable"], ["Response time", "—"], ["Availability", "Down or unreachable"]],
-      columns: ["Check", "Result"],
-      rows: [["Error", e instanceof Error ? e.message : "Could not reach the site."], ["Source", "Browser fetch · live"]],
-    };
-  }
+  const data = await checkIsItDown({ data: { url } }) as {
+    error?: string; message?: string;
+    inputUrl?: string; finalUrl?: string; redirected?: boolean;
+    status?: number; statusText?: string; fetchedMs?: number; reachable?: boolean;
+  };
+  if (data.error) throw new Error(data.message ?? "Availability check failed.");
+  const target = data.inputUrl ?? url;
+  const ms = data.fetchedMs ?? 0;
+  const reachable = data.reachable ?? false;
+  return {
+    title: "Availability report",
+    metrics: [
+      ["Website", target],
+      ["HTTP status", data.status ? `${data.status} ${data.statusText ?? ""}`.trim() : "Unreachable"],
+      ["Response time", data.status ? `${ms} ms` : "—"],
+      ["Availability", reachable ? "Reachable" : "Down or unreachable"],
+    ],
+    columns: ["Check", "Result"],
+    rows: [
+      ["Final URL", data.finalUrl ?? target],
+      ["Redirected", data.redirected ? "Yes" : "No"],
+      ["HTTP status", data.status ? `${data.status} ${data.statusText ?? ""}`.trim() : "Unreachable"],
+      ["Response time", data.status ? `${ms} ms` : "—"],
+      ["Availability", reachable ? "Reachable" : "Down or unreachable"],
+      ["Source", "Server fetch · live (no CORS)"],
+    ],
+  };
 }
 
 // =====================================================================
-// Bulk URL status (parallel browser fetches)
+// Bulk URL status (server-side, parallel)
 // =====================================================================
 export async function fetchBulkUrlStatus(urls: string[]): Promise<ToolResult> {
-  const results = await Promise.all(urls.map(async (urlInput) => {
-    const url = urlInput.startsWith("http") ? urlInput : `https://${urlInput}`;
-    const start = performance.now();
-    try {
-      const r = await fetch(url, { method: "HEAD", redirect: "follow", cache: "no-store" });
-      const ms = Math.round(performance.now() - start);
-      return { url, status: r.status, statusText: r.statusText, ms, finalUrl: r.url, error: null as string | null };
-    } catch (e) {
-      return { url, status: 0, statusText: "Error", ms: Math.round(performance.now() - start), finalUrl: url, error: e instanceof Error ? e.message : "Network error" };
-    }
-  }));
-  const reachable = results.filter(r => r.status >= 200 && r.status < 400).length;
-  const redirected = results.filter(r => r.status >= 300 && r.status < 400).length;
+  const data = await checkBulkUrlStatus({ data: { urls } }) as {
+    error?: string; message?: string; count?: number;
+    results?: Array<{ inputUrl: string; url: string; status: number; statusText: string; fetchedMs: number; finalUrl: string; error: string | null }>;
+  };
+  if (data.error || !data.results) throw new Error(data.message ?? "Bulk URL check failed.");
+  const results = data.results;
+  const reachable = results.filter(r => !r.error && r.status >= 200 && r.status < 400).length;
+  const redirected = results.filter(r => !r.error && r.status >= 300 && r.status < 400).length;
   const errors = results.filter(r => r.error !== null || r.status === 0 || r.status >= 400).length;
   return {
     title: "URL status report",
@@ -485,9 +484,9 @@ export async function fetchBulkUrlStatus(urls: string[]): Promise<ToolResult> {
     ],
     columns: ["URL", "Status", "Time", "Final destination"],
     rows: results.map(r => [
-      r.url,
-      r.error ? "Error" : `${r.status} ${r.statusText}`,
-      `${r.ms} ms`,
+      r.inputUrl,
+      r.error ? `Error · ${r.error}` : `${r.status} ${r.statusText}`,
+      `${r.fetchedMs} ms`,
       r.finalUrl,
     ]),
   };
@@ -617,22 +616,25 @@ export async function fetchSeoCheck(url: string): Promise<ToolResult> {
 // Open Graph preview (browser fetch + parse meta tags)
 // =====================================================================
 export async function fetchOpenGraph(url: string, platform: string): Promise<ToolResult> {
-  const target = url.startsWith("http") ? url : `https://${url}`;
-  const html = await fetchText(target, { headers: { "User-Agent": "SiteTrace-OG/1.0" } });
-  const get = (name: string): string | null => {
-    const m = html.match(new RegExp(`<meta\\s+[^>]*?(?:name|property)=["']${name}["'][^>]*?content=["']([^"']+)["']`, "i"));
-    if (m) return m[1];
-    const m2 = html.match(new RegExp(`<meta\\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:name|property)=["']${name}["']`, "i"));
-    return m2 ? m2[1] : null;
+  const data = await checkOpenGraph({ data: { url } }) as {
+    error?: string; message?: string;
+    inputUrl?: string; finalUrl?: string;
+    title?: string | null; description?: string | null; image?: string | null;
+    url?: string; type?: string | null; siteName?: string | null; locale?: string | null;
+    twitterCard?: string | null;
   };
-  const ogTitle = get("og:title") ?? get("twitter:title") ?? (html.match(/<title>([^<]+)<\/title>/i)?.[1] ?? null);
-  const ogDescription = get("og:description") ?? get("twitter:description") ?? get("description");
-  const ogImage = get("og:image") ?? get("twitter:image");
-  const ogUrl = get("og:url") ?? target;
-  const ogType = get("og:type") ?? "—";
-  const ogSiteName = get("og:site_name");
-  const ogLocale = get("og:locale");
-  const twitterCard = get("twitter:card");
+  if (data.error) throw new Error(data.message ?? "Open Graph check failed.");
+  const target = data.inputUrl ?? url;
+  const ogUrl = data.url ?? target;
+  const ogTitle = data.title ?? null;
+  const ogDescription = data.description ?? null;
+  const ogImage = data.image ?? null;
+  const ogType = data.type ?? "—";
+  const ogSiteName = data.siteName ?? null;
+  const ogLocale = data.locale ?? null;
+  const twitterCard = data.twitterCard ?? null;
+  let domain = target;
+  try { domain = new URL(ogUrl).hostname; } catch { /* keep fallback */ }
   return {
     title: "Social sharing preview",
     metrics: [
@@ -644,7 +646,7 @@ export async function fetchOpenGraph(url: string, platform: string): Promise<Too
     preview: {
       title: ogTitle ?? "Untitled",
       description: ogDescription ?? "No description provided.",
-      domain: new URL(ogUrl).hostname,
+      domain,
     },
     columns: ["Tag", "Value"],
     rows: [
@@ -657,7 +659,7 @@ export async function fetchOpenGraph(url: string, platform: string): Promise<Too
       ["og:locale", str(ogLocale)],
       ["twitter:card", str(twitterCard)],
       ["platform", platform],
-      ["Source", "Browser fetch · live"],
+      ["Source", "Server fetch · live (no CORS)"],
     ],
   };
 }

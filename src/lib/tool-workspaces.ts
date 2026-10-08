@@ -43,10 +43,21 @@ export function validateTarget(slug: string, values: Record<string, string>) {
   if (slug === "subnet-calculator") return /^\d{1,3}(\.\d{1,3}){3}\/\d{1,2}$/.test(target) && target.split("/")[0]?.split(".").every(n => Number(n) <= 255) && Number(target.split("/")[1]) <= 32 ? "" : "Enter an IPv4 network with a prefix from /0 to /32.";
   const validIp = (value: string) => /^\d{1,3}(\.\d{1,3}){3}$/.test(value) ? value.split(".").every(n => Number(n) <= 255) : (() => { try { return value.includes(":") && new URL(`http://[${value}]/`).hostname.length > 0; } catch { return false; } })();
   const validHost = (value: string) => validIp(value) || (value.length <= 253 && value.includes(".") && value.split(".").every(part => /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/i.test(part)));
-  const validUrl = (value: string) => { try { const parsed = new URL(value); return ["http:", "https:"].includes(parsed.protocol) && validHost(parsed.hostname.replace(/^\[|\]$/g, "")); } catch { return false; } };
+  // Accept either an explicit URL (http://example.com or https://...) or a bare host
+  // (example.com, sub.example.com). The fetcher adds the https:// prefix if missing.
+  const validUrlOrHost = (value: string) => {
+    if (validHost(value)) return true;
+    try {
+      const parsed = new URL(value);
+      return ["http:", "https:"].includes(parsed.protocol) && validHost(parsed.hostname.replace(/^\[|\]$/g, ""));
+    } catch { return false; }
+  };
   if (["ip-lookup", "ip-reputation", "vpn-check"].includes(slug)) return validIp(target) ? "" : "Enter a valid IPv4 or IPv6 address.";
-  if (slug === "bulk-url-status") { const urls = target.split(/\n/).map(line => line.trim()).filter(Boolean); return urls.length > 0 && urls.length <= 50 && urls.every(validUrl) ? "" : "Enter up to 50 valid HTTP or HTTPS URLs, one per line."; }
+  if (slug === "bulk-url-status") {
+    const urls = target.split(/\n/).map(line => line.trim()).filter(Boolean);
+    return urls.length > 0 && urls.length <= 50 && urls.every(validUrlOrHost) ? "" : "Enter up to 50 hosts or URLs, one per line.";
+  }
   if (slug === "whois-lookup") return validHost(target) ? "" : "Enter a valid domain (no protocol).";
-  if (["is-it-down", "http-headers", "security-headers", "seo-checker", "open-graph-preview", "http-latency"].includes(slug)) return validUrl(target) ? "" : "Enter a full HTTP or HTTPS URL.";
-  return validHost(target) || (slug === "smart-dispatcher" && validUrl(target)) ? "" : "Enter a valid domain or IP address.";
+  if (["is-it-down", "http-headers", "security-headers", "seo-checker", "open-graph-preview", "http-latency"].includes(slug)) return validUrlOrHost(target) ? "" : "Enter a domain or full URL.";
+  return validHost(target) || (slug === "smart-dispatcher" && validUrlOrHost(target)) ? "" : "Enter a valid domain or IP address.";
 }

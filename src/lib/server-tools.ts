@@ -511,3 +511,175 @@ export const detectMyIp = createServerFn({ method: "GET" })
     } catch { /* both failed */ }
     return { error: "lookup_failed", message: "IP lookup services are rate-limiting from this network. Try again in a minute.", detectedIp };
   });
+
+// =====================================================================
+// Is it down? (server-side fetch — no CORS, follows redirects)
+// =====================================================================
+export const checkIsItDown = createServerFn({ method: "GET" })
+  .validator(z.object({ url: z.string() }))
+  .handler(async ({ data }) => {
+    let url = (data.url || "").trim();
+    if (!url) return { error: "invalid_url", message: "Please provide a URL or domain." };
+    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+    const blockReason = isBlockedUrl(url);
+    if (blockReason) return { error: "blocked_url", message: blockReason };
+    const start = Date.now();
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 12000);
+    try {
+      const r = await fetch(url, { method: "HEAD", redirect: "follow", signal: ctrl.signal, headers: { "User-Agent": "SiteTrace-IsItDown/1.0" } });
+      const ms = Date.now() - start;
+      const reachable = r.ok || (r.status >= 200 && r.status < 500);
+      return { inputUrl: url, finalUrl: r.url || url, redirected: (r.url || url) !== url, status: r.status, statusText: r.statusText, fetchedMs: ms, reachable, error: null as string | null };
+    } catch (e) {
+      return { inputUrl: url, error: e instanceof Error ? e.message : "Network error", reachable: false };
+    } finally { clearTimeout(t); }
+  });
+
+// =====================================================================
+// Bulk URL status (parallel server-side fetches)
+// =====================================================================
+export const checkBulkUrlStatus = createServerFn({ method: "GET" })
+  .validator(z.object({ urls: z.array(z.string()).max(50) }))
+  .handler(async ({ data }) => {
+    const norm = data.urls.map(u => {
+      let url = (u || "").trim();
+      if (!url) return { original: u, url: "" };
+      if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+      return { original: u, url };
+    }).filter(x => x.url);
+    if (norm.length === 0) return { error: "no_urls", message: "Provide at least one URL." };
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 30000);
+    const results = await Promise.all(norm.map(async (entry) => {
+      const blockReason = isBlockedUrl(entry.url);
+      if (blockReason) return { inputUrl: entry.original, url: entry.url, status: 0, statusText: "Blocked", fetchedMs: 0, finalUrl: entry.url, error: blockReason };
+      const start = Date.now();
+      try {
+        const r = await fetch(entry.url, { method: "HEAD", redirect: "follow", signal: ctrl.signal, headers: { "User-Agent": "SiteTrace-BulkStatus/1.0" } });
+        return { inputUrl: entry.original, url: entry.url, status: r.status, statusText: r.statusText, fetchedMs: Date.now() - start, finalUrl: r.url || entry.url, error: null as string | null };
+      } catch (e) {
+        return { inputUrl: entry.original, url: entry.url, status: 0, statusText: "Error", fetchedMs: Date.now() - start, finalUrl: entry.url, error: e instanceof Error ? e.message : "Network error" };
+      }
+    }));
+    clearTimeout(t);
+    return { results, count: results.length };
+  });
+
+// =====================================================================
+// HTTP latency breakdown (server-side, returns phase timings)
+// =====================================================================
+export const checkHttpLatency = createServerFn({ method: "GET" })
+  .validator(z.object({ url: z.string() }))
+  .handler(async ({ data }) => {
+    let url = (data.url || "").trim();
+    if (!url) return { error: "invalid_url", message: "Please provide a URL or domain." };
+    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+    const blockReason = isBlockedUrl(url);
+    if (blockReason) return { error: "blocked_url", message: blockReason };
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 15000);
+    const start = Date.now();
+    try {
+      // Server-side fetch: We can't access the network-stack timing breakdown
+      // the way the browser's Performance API can. What we *can* measure:
+      //   - DNS resolve (via getaddrinfo if we cared to break it out, but on Workers
+      //     we don't get this — the platform resolves)
+      //   - TLS connect (also opaque on Workers)
+      //   - TTFB (response start) — yes
+      //   - Total time — yes
+      // So on the server we report the honest total + TTFB + status, and tell
+      // the user the phase breakdown requires a browser-side run.
+      const r = await fetch(url, { method: "GET", redirect: "follow", signal: ctrl.signal, headers: { "User-Agent": "SiteTrace-Latency/1.0" } });
+      const ttfb = Date.now() - start;
+      // Drain body up to a cap
+      const reader = r.body?.getReader();
+      let received = 0;
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          received += (value && value.byteLength) || 0;
+          if (received > 1024 * 1024) { try { await reader.cancel(); } catch { /* ignore */ } break; }
+        }
+      }
+      const total = Date.now() - start;
+      return {
+        inputUrl: url,
+        finalUrl: r.url || url,
+        status: r.status,
+        statusText: r.statusText,
+        totalMs: total,
+        ttfbMs: ttfb,
+        downloadMs: Math.max(0, total - ttfb),
+        bytes: received,
+        note: "Phase breakdown (DNS/TCP/TLS) requires browser Performance API; server reports TTFB + total.",
+      };
+    } catch (e) {
+      return { inputUrl: url, error: e instanceof Error ? e.message : "Network error" };
+    } finally { clearTimeout(t); }
+  });
+
+// =====================================================================
+// Open Graph (server-side fetch + parse meta tags)
+// =====================================================================
+export const checkOpenGraph = createServerFn({ method: "GET" })
+  .validator(z.object({ url: z.string() }))
+  .handler(async ({ data }) => {
+    let url = (data.url || "").trim();
+    if (!url) return { error: "invalid_url", message: "Please provide a URL or domain." };
+    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+    const blockReason = isBlockedUrl(url);
+    if (blockReason) return { error: "blocked_url", message: blockReason };
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 12000);
+    try {
+      const r = await fetch(url, { method: "GET", redirect: "follow", signal: ctrl.signal, headers: { "User-Agent": "SiteTrace-OG/1.0", Accept: "text/html,application/xhtml+xml" } });
+      if (!r.ok) return { inputUrl: url, finalUrl: r.url || url, error: "fetch_failed", message: `The site returned HTTP ${r.status}.` };
+      const reader = r.body?.getReader();
+      let html = "";
+      if (reader) {
+        const decoder = new TextDecoder("utf-8", { fatal: false });
+        let received = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          html += decoder.decode(value, { stream: true });
+          received += (value && value.byteLength) || 0;
+          if (received > 1024 * 1024) break;
+        }
+        html += decoder.decode();
+      } else {
+        html = await r.text();
+      }
+      const get = (name: string): string | null => {
+        const m = html.match(new RegExp(`<meta\\s+[^>]*?(?:name|property)=["']${name}["'][^>]*?content=["']([^"']+)["']`, "i"));
+        if (m) return m[1] ?? null;
+        const m2 = html.match(new RegExp(`<meta\\s+[^>]*?content=["']([^"']+)["'][^>]*?(?:name|property)=["']${name}["']`, "i"));
+        return m2 ? (m2[1] ?? null) : null;
+      };
+      const ogTitle = get("og:title") ?? get("twitter:title") ?? (html.match(/<title[^>]*>([^<]+)<\/title>/i)?.[1]?.trim() ?? null);
+      const ogDescription = get("og:description") ?? get("twitter:description") ?? get("description");
+      const ogImage = get("og:image") ?? get("twitter:image");
+      const ogImageAbsolute = ogImage ? (ogImage.startsWith("http") ? ogImage : new URL(ogImage, r.url || url).toString()) : null;
+      const ogUrl = get("og:url") ?? (r.url || url);
+      const ogType = get("og:type");
+      const ogSiteName = get("og:site_name");
+      const ogLocale = get("og:locale");
+      const twitterCard = get("twitter:card");
+      return {
+        inputUrl: url,
+        finalUrl: r.url || url,
+        title: ogTitle,
+        description: ogDescription,
+        image: ogImageAbsolute,
+        url: ogUrl,
+        type: ogType,
+        siteName: ogSiteName,
+        locale: ogLocale,
+        twitterCard,
+      };
+    } catch (e) {
+      return { inputUrl: url, error: e instanceof Error ? e.message : "Network error" };
+    } finally { clearTimeout(t); }
+  });
