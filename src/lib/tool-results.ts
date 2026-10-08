@@ -13,8 +13,8 @@ import {
   fetchEmailDeliverability,
   fetchSeoCheck,
   fetchOpenGraph,
+  fetchMyIp,
 } from "./tool-fetchers";
-import { detectMyIp } from "./server-tools";
 
 // Live diagnostic integration boundary: replace this function for remote checks.
 // These responses deliberately remain fixed fixtures, never inferred live data.
@@ -40,16 +40,14 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
   if (slug === "seo-checker") return await fetchSeoCheck(text);
   if (slug === "open-graph-preview") return await fetchOpenGraph(text, values["platform"] ?? "Open Graph");
   if (slug === "what-is-my-ip") {
-    const result = await detectMyIp({}) as { error?: string; message?: string; detectedIp?: string; geo?: Record<string, unknown> };
-    if (result.error) throw new Error(result.message ?? "Could not detect your network.");
-    const data = result.geo ?? {};
+    const data = await fetchMyIp();
     const str = (v: unknown, fallback = "—") => (typeof v === "string" || typeof v === "number") && v !== "" ? String(v) : fallback;
     const yesNo = (v: unknown) => v === true ? "Yes" : v === false ? "No" : "—";
     const langs = Array.isArray(data.languages) ? (data.languages as string[]).join(", ") : "—";
     return {
       title: "Your network",
       metrics: [
-        ["Public IP", result.detectedIp ?? "Unknown"],
+        ["Public IP", str(data.ip, "Unknown")],
         ["Country", data.country_name ? `${str(data.country_name)} (${str(data.country_code, "?")})` : "Unknown"],
         ["City", `${str(data.city, "Unknown")}, ${str(data.region)}`],
         ["ISP", str(data.org, "Unknown")],
@@ -83,7 +81,7 @@ export async function runLocalUtility(slug: string, values: Record<string, strin
         ["Color depth", typeof screen !== "undefined" ? `${screen.colorDepth} bit` : "—"],
         ["Cookies", typeof navigator !== "undefined" ? (navigator.cookieEnabled ? "Enabled" : "Disabled") : "—"],
         ["CPU cores", typeof navigator !== "undefined" ? str(navigator.hardwareConcurrency, "Unknown") : "—"],
-        ["Source", "ipapi.co · live detection (server)"],
+        ["Source", `${str(data.provider)} · live detection (browser)`],
         ["Cached", "Not stored"],
       ],
       live: true,

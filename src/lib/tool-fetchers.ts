@@ -125,6 +125,90 @@ export async function fetchIpReputation(ip: string): Promise<ToolResult> {
 }
 
 // =====================================================================
+// What is my IP (browser-direct fetch — auto-detects caller's IP from
+// the request. CORS works on ipwho.is + ip-api.com. Server-side fetches
+// from Cloudflare Pages get HTTP 429'd because the edge IP range is
+// shared and rate-limited by every geo provider's free tier.)
+// =====================================================================
+export async function fetchMyIp(): Promise<Record<string, unknown>> {
+  // Provider 1: ipwho.is (no IP arg → auto-detects caller's IP)
+  try {
+    const r = await fetch("https://ipwho.is/", { signal: AbortSignal.timeout(TIMEOUT_MS) });
+    if (r.ok) {
+      const raw = await r.json() as Record<string, unknown>;
+      if (raw.success !== false) {
+        const conn = (raw.connection && typeof raw.connection === "object" ? raw.connection : {}) as Record<string, unknown>;
+        const tz = (raw.timezone && typeof raw.timezone === "object" ? raw.timezone : {}) as Record<string, unknown>;
+        return {
+          provider: "ipwho.is",
+          ip: raw.ip,
+          version: raw.type,
+          country_name: raw.country,
+          country_code: raw.country_code,
+          region: raw.region,
+          region_code: raw.region_code,
+          city: raw.city,
+          postal: raw.postal,
+          latitude: raw.latitude,
+          longitude: raw.longitude,
+          timezone: tz.id,
+          utc_offset: tz.offset,
+          country_calling_code: raw.calling_code,
+          country_capital: raw.capital,
+          country_tld: "",
+          continent_code: raw.continent_code,
+          in_eu: raw.is_eu,
+          currency_name: "",
+          languages: "",
+          country_area: 0,
+          country_population: 0,
+          asn: conn.asn,
+          org: conn.org,
+          isp: conn.isp,
+        };
+      }
+    }
+  } catch { /* try fallback */ }
+  // Provider 2: ip-api.com (no IP arg → auto-detects caller's IP)
+  try {
+    const r = await fetch("https://ip-api.com/json/?fields=status,country,countryCode,region,regionName,city,zip,lat,lon,timezone,offset,isp,org,as,query,countryCode3,continent,continentCode,callingCode,capital,inEU", { signal: AbortSignal.timeout(TIMEOUT_MS) });
+    if (r.ok) {
+      const raw = await r.json() as Record<string, unknown>;
+      if (raw.status !== "fail") {
+        return {
+          provider: "ip-api.com",
+          ip: raw.query,
+          version: typeof raw.query === "string" && raw.query.includes(":") ? "IPv6" : "IPv4",
+          country_name: raw.country,
+          country_code: raw.countryCode,
+          region: raw.regionName,
+          region_code: raw.region,
+          city: raw.city,
+          postal: raw.zip,
+          latitude: raw.lat,
+          longitude: raw.lon,
+          timezone: raw.timezone,
+          utc_offset: typeof raw.offset === "number" ? raw.offset : 0,
+          country_calling_code: raw.callingCode,
+          country_capital: raw.capital,
+          country_tld: "",
+          continent_code: raw.continentCode,
+          in_eu: raw.inEU,
+          currency_name: "",
+          languages: "",
+          country_area: 0,
+          country_population: 0,
+          asn: raw.as,
+          org: raw.org,
+          isp: raw.isp,
+        };
+      }
+    }
+  } catch { /* both failed */ }
+  throw new Error("IP lookup services are rate-limiting from this network. Try again in a minute.");
+}
+
+// =====================================================================
 // VPN check (ipapi.co — has proxy/hosting/mobile fields)
 // =====================================================================
 export async function fetchVpnCheck(ip: string): Promise<ToolResult> {
