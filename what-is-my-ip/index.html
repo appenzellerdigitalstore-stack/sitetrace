@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#070a12" />
   <title>What is my IP address? Free public IP lookup — SiteTrace</title>
-  <meta name="sitetrace-tool" data-tool-name="What is my IP" data-tool-url="/what-is-my-ip/" />
   <meta name="description" content="Find your public IP address, geolocation, ISP, and connection privacy status (VPN, proxy, Tor). Built by Edy Appenzeller, runs on Cloudflare's edge in 300+ cities. Free, no login, no tracking, no cookies." />
   <meta name="keywords" content="what is my ip, my ip, my ip address, what is my ip address, ip address, public ip, ipv4, ipv6, ip lookup, ip checker, ip geolocation, ip location, find my ip, my ip location, my ip country, my ip city, my ip isp, ip whois, vpn check, is my vpn working, vpn detector, proxy check, proxy detector, tor check, tor exit node, am i using vpn, am i exposed" />
   <meta name="robots" content="index, follow" />
@@ -61,9 +60,9 @@
       darkMode: 'class',
       theme: { extend: {
         fontFamily: { sans: ['IBM Plex Sans','system-ui','sans-serif'], mono: ['JetBrains Mono','ui-monospace','monospace'] },
-        colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e' }, brand: { 300:'#86efac', 400:'#4ade80', 500:'#22c55e' } },
-        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#4ade80 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(74, 222, 128, 0.18), transparent 70%)' },
-        boxShadow: { 'glow-brand': '0 0 0 1px rgba(74, 222, 128, 0.22), 0 12px 40px -12px rgba(74, 222, 128, 0.4)' }
+        colors: { ink: { 900:'#0a0e1a', 800:'#0d1424', 700:'#111a2e' }, brand: { 300:'#67e8f9', 400:'#22d3ee', 500:'#06b6d4' } },
+        backgroundImage: { 'brand-gradient': 'linear-gradient(135deg,#22d3ee 0%,#14b8a6 50%,#0d9488 100%)', 'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%)' },
+        boxShadow: { 'glow-brand': '0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4)' }
       } }
     };
   </script>
@@ -77,18 +76,18 @@
   <style>
     /* ===== SiteTrace — premium overrides (no Inter, no AI purple) =====
        IBM Plex Sans for prose (warmer than Inter, distinctly humanist).
-       JetBrains Mono for technical content. Cyan accent (#4ade80).
+       JetBrains Mono for technical content. Cyan accent (#22d3ee).
        ============================================================ */
 
     :root {
       --trace-bg: #070a12;
       --trace-bg-soft: #0b1120;
       --trace-card: #0f172a;
-      --trace-border: rgba(74, 222, 128, 0.08);
-      --trace-border-strong: rgba(74, 222, 128, 0.18);
-      --trace-cyan: #4ade80;
-      --trace-cyan-soft: #86efac;
-      --trace-cyan-deep: #16a34a;
+      --trace-border: rgba(34, 211, 238, 0.08);
+      --trace-border-strong: rgba(34, 211, 238, 0.18);
+      --trace-cyan: #22d3ee;
+      --trace-cyan-soft: #67e8f9;
+      --trace-cyan-deep: #0891b2;
       --trace-amber: #fbbf24;
       --trace-safe: #34d399;
       --trace-warn: #fb923c;
@@ -101,26 +100,26 @@
     }
 
     /* Override the page-level Tailwind classes that the inline Tailwind config
-       generates. Inline config still defines the color palette (text-green-400
+       generates. Inline config still defines the color palette (text-cyan-400
        etc.) but we override the specific elements that were brand-blue before. */
     .font-sans { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important; }
     .font-mono, code, pre, kbd, samp { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace !important; }
 
     /* Replace brand-blue gradients with cyan */
     .bg-brand-gradient {
-      background: linear-gradient(135deg, #4ade80 0%, #14b8a6 50%, #0d9488 100%) !important;
+      background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 50%, #0d9488 100%) !important;
     }
     .bg-hero-glow {
-      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(74, 222, 128, 0.18), transparent 70%) !important;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.18), transparent 70%) !important;
     }
     .shadow-glow-brand {
-      box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.22), 0 12px 40px -12px rgba(74, 222, 128, 0.4) !important;
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.22), 0 12px 40px -12px rgba(34, 211, 238, 0.4) !important;
     }
 
     /* Replace brand-blue text colors with cyan */
-    .text-brand-300 { color: #86efac !important; }
-    .text-brand-400 { color: #4ade80 !important; }
-    .text-brand-500 { color: #22c55e !important; }
+    .text-brand-300 { color: #67e8f9 !important; }
+    .text-brand-400 { color: #22d3ee !important; }
+    .text-brand-500 { color: #06b6d4 !important; }
 
     /* Subtle grid background — engineers recognize this immediately */
     body::before {
@@ -128,8 +127,8 @@
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(74, 222, 128, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74, 222, 128, 0.025) 1px, transparent 1px);
+        linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
       background-size: 32px 32px;
       pointer-events: none;
       z-index: 0;
@@ -149,7 +148,7 @@
     /* Big IP display — terminal-style with subtle pulse */
     #ip-display {
       color: var(--trace-cyan-soft);
-      text-shadow: 0 0 24px rgba(74, 222, 128, 0.35);
+      text-shadow: 0 0 24px rgba(34, 211, 238, 0.35);
       letter-spacing: -0.02em;
     }
 
@@ -158,7 +157,7 @@
     .status-badge--exposed { color: var(--trace-amber) !important; border-color: rgba(245, 158, 11, 0.35) !important; }
 
     /* Data list rows — dashed cyan hairline */
-    .data-list > div { border-bottom-color: rgba(74, 222, 128, 0.06) !important; }
+    .data-list > div { border-bottom-color: rgba(34, 211, 238, 0.06) !important; }
 
     /* Author byline — small terminal-style attribution */
     .byline {
@@ -212,32 +211,25 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.68rem;
       color: var(--trace-cyan);
-      background: rgba(74, 222, 128, 0.08);
+      background: rgba(34, 211, 238, 0.08);
       border: 1px solid var(--trace-border);
       text-decoration: none;
       transition: all 150ms ease;
     }
     .source-link:hover {
       color: var(--trace-cyan-soft);
-      background: rgba(74, 222, 128, 0.14);
+      background: rgba(34, 211, 238, 0.14);
       border-color: var(--trace-border-strong);
     }
 
-    /* Soft pulse — replaces harsh 2s animate-pulse on LIVE indicators */
-    @keyframes pulseSoft {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.88; }
-    }
-    .pulse-soft { animation: pulseSoft 4s ease-in-out infinite; }
-
     /* Reduce focus-ring blue to cyan */
-    :focus-visible { outline-color: rgba(74, 222, 128, 0.7) !important; }
+    :focus-visible { outline-color: rgba(34, 211, 238, 0.7) !important; }
   </style>
 </head>
 
-<body class="min-h-screen text-slate-100 antialiased selection:bg-green-500/30 selection:text-white">
+<body class="min-h-screen text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-white">
 
-  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-[#070a12]/80 border-b border-green-500/10">
+  <header class="site-header sticky top-0 z-40 backdrop-blur-xl bg-[#070a12]/80 border-b border-cyan-500/10">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <a href="/" data-route="home" class="flex items-center gap-2.5 group">
         <span class="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center shadow-glow-brand transition-transform group-hover:scale-105">
@@ -245,8 +237,8 @@
             <path d="M30 50 L45 50 L52 35 L62 65 L70 50 L80 50" stroke="#070a12" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </span>
-        <span class="text-base sm:text-lg font-bold tracking-tight font-sans">
-          SiteTrace<span class="text-green-400">.</span>
+        <span class="text-base sm:text-lg font-bold tracking-tight font-mono">
+          <span data-i18n="brand">SiteTrace</span>
           <span class="hidden sm:inline text-slate-500 font-normal text-xs ml-2 font-sans" data-i18n="tagline">Free network tools</span>
         </span>
       </a>
@@ -265,138 +257,65 @@
           <span class="support-header-link-icon" aria-hidden="true">&#9749;</span>
           <span data-i18n="support_header">Support</span>
         </a>
-        <div class="relative ml-1 sm:ml-2" id="lang-wrap">
-          <button id="lang-toggle" class="nav-icon-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-            <span id="lang-current" class="text-[11px] font-semibold uppercase tracking-wider">EN</span>
-          </button>
-          <ul id="lang-menu" role="listbox" class="hidden absolute right-0 mt-2 w-40 rounded-xl border border-white/10 bg-ink-800/95 backdrop-blur-xl shadow-2xl py-1 text-sm">
-            <li><button class="lang-option is-active" data-lang="en" role="option">English</button></li>
-            <li><button class="lang-option" data-lang="es" role="option">Espa&ntilde;ol</button></li>
-          </ul>
-        </div>
       </nav>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-20">
 
-    <!-- Hero (compact, landing-style) -->
-    <section class="pt-12 sm:pt-16 space-y-5">
+    <!-- Hero (compact) -->
+    <section class="pt-8 sm:pt-12 space-y-4">
       <nav class="text-xs text-slate-500 font-mono" aria-label="Breadcrumb">
-        <a href="/" class="hover:text-slate-300">SiteTrace</a><span class="text-green-400">.</span>
-        <span class="mx-1.5 text-slate-700">/</span>
-        <a href="/tools/" class="hover:text-slate-300">Tools</a>
-        <span class="mx-1.5 text-slate-700">/</span>
+        <a href="/" class="hover:text-slate-300">SiteTrace</a>
+        <span class="mx-1.5 text-cyan-700">/</span>
         <span data-i18n="nav_whatismyip">what-is-my-ip</span>
       </nav>
-
-      <div class="flex flex-wrap items-end justify-between gap-4">
-        <div class="space-y-3">
-          <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-400/20 font-mono text-xs tracking-[0.06em] text-green-300">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-400 shadow-[0_0_0_3px_rgba(74,222,128,0.22)]"></span>
-            IP DETECTED · LIVE
-          </p>
-          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.05] text-white">What is my IP address?</h1>
-          <p class="text-slate-400 text-sm sm:text-base max-w-xl">Your public IP, geolocation, and whether your connection is exposed, protected, or routed through a VPN.</p>
-        </div>
-        <div class="hidden sm:block text-right">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-400/20 font-mono text-[11px] text-green-300">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
-            All systems operational
-          </div>
-          <p class="mt-2 font-mono text-xs text-slate-500">v2.0.0 · last deployed 2026-10-05</p>
-        </div>
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <p class="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-cyan-300 font-mono" data-i18n="hero_eyebrow">// your public network profile</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-white">What is my IP address?</h1>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">A single, instant look at your IP, geolocation, and whether your connection is exposed, protected, or routed through a VPN or proxy. Free, no login, no cookies.</p>
+        <p class="byline justify-center">last updated 2026-10-01 · built by edy appenzeller · open source</p>
       </div>
     </section>
 
 
     <!-- Main grid -->
-    <div class="grid lg:grid-cols-3 gap-5 mt-10">
-      <div class="lg:col-span-2 space-y-5">
-
-      <!-- IP card — landing tool-card visual with the IP number as the "result" -->
-      <div class="card relative overflow-hidden" style="position: relative; display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem; border-radius: 1rem; background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005)); border: 1px solid rgba(148, 163, 184, 0.10); backdrop-filter: blur(8px);">
-        <div class="flex items-center justify-between gap-3">
-          <span class="tool-icon">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          </span>
-          <span class="command">$ ip</span>
+    <div class="grid lg:grid-cols-3 gap-5 mt-8">
+      <div class="lg:col-span-2 card relative overflow-hidden">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <span class="text-xs uppercase tracking-widest text-slate-500 font-mono">ip address</span>
+          <div class="flex gap-2">
+            <button id="btn-recheck" class="btn-ghost" data-i18n="cta_recheck">Re-check</button>
+            <button id="btn-copy" class="btn-ghost" data-i18n="cta_copy">Copy IP</button>
+          </div>
         </div>
 
-        <div>
-          <div class="font-mono text-xs uppercase tracking-widest text-slate-500 mb-2">Your IP</div>
-          <div id="ip-display" class="font-mono text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight break-all leading-none" style="color: var(--trace-cyan-soft); text-shadow: 0 0 32px rgba(74, 222, 128, 0.40); letter-spacing: -0.025em;">
+        <div class="flex items-center gap-3 sm:gap-4">
+          <div id="ip-display" class="font-mono text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight break-all">
             <span class="ip-placeholder">—</span>
           </div>
-          <div id="ip-type" class="mt-2 text-xs text-slate-500 font-mono">IPv4</div>
         </div>
 
-        <div class="flex flex-wrap gap-x-6 gap-y-2 pt-4 border-t border-dashed" style="border-color: rgba(148, 163, 184, 0.12);">
-          <div class="flex items-baseline gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-widest text-slate-500">country</span>
-            <span id="loc-country" class="font-medium text-white"><span class="ip-placeholder">—</span></span>
-          </div>
-          <div class="flex items-baseline gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-widest text-slate-500">city</span>
-            <span id="loc-city" class="font-medium text-white"><span class="ip-placeholder">—</span></span>
-          </div>
-          <div class="flex items-baseline gap-2">
-            <span class="font-mono text-[10px] uppercase tracking-widest text-slate-500">isp</span>
-            <span id="net-isp" class="font-medium text-white truncate max-w-[200px]"><span class="ip-placeholder">—</span></span>
-          </div>
-        </div>
+        <div id="ip-type" class="mt-2 text-xs text-slate-500 font-mono"></div>
 
-        <div class="flex items-center justify-between gap-3 pt-1">
-          <span class="font-mono text-xs" style="color: rgb(100 116 139);">Free · no signup · no tracking</span>
-          <div class="flex gap-2">
-            <button id="btn-recheck" class="text-xs px-3 py-1.5 rounded-md font-mono" style="border: 1px solid rgba(74, 222, 128, 0.20); color: #4ade80; background: rgba(74, 222, 128, 0.06);">Re-check</button>
-            <button id="btn-copy" class="text-xs px-3 py-1.5 rounded-md font-mono" style="border: 1px solid rgba(148, 163, 184, 0.20); color: rgb(203 213 225); background: rgba(15, 23, 42, 0.6);">Copy IP</button>
+        <div class="mt-6 pt-6 border-t border-cyan-500/10 grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+          <div>
+            <div class="text-slate-500 text-xs mb-1 font-mono">country</div>
+            <div id="loc-country" class="flex items-center gap-2 font-medium">
+              <span class="ip-placeholder">—</span>
+            </div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1 font-mono">city</div>
+            <div id="loc-city" class="font-medium"><span class="ip-placeholder">—</span></div>
+          </div>
+          <div>
+            <div class="text-slate-500 text-xs mb-1 font-mono">isp</div>
+            <div id="net-isp" class="font-medium truncate"><span class="ip-placeholder">—</span></div>
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
-          <svg class="w-4 h-4 text-green-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-7 8-13a8 8 0 1 0-16 0c0 6 8 13 8 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          <span>Location</span>
-        </div>
-        <dl class="data-list">
-          <div><dt>Country</dt><dd id="d-country"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>Region</dt><dd id="d-region"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>City</dt><dd id="d-city"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>Postal code</dt><dd id="d-postal"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>Coordinates</dt><dd id="d-coords" class="font-mono"><span class="ip-placeholder">—</span></dd></div>
-        </dl>
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <svg class="w-4 h-4 text-green-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>
-          <span>Network</span>
-        </div>
-        <dl class="data-list">
-          <div><dt>ISP</dt><dd id="d-isp"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>Organization</dt><dd id="d-org"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>ASN</dt><dd id="d-asn" class="font-mono"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>Timezone</dt><dd id="d-timezone"><span class="ip-placeholder">—</span></dd></div>
-          <div><dt>IP type</dt><dd id="d-type" class="font-mono"><span class="ip-placeholder">—</span></dd></div>
-        </dl>
-      </div>
-
-      <div class="card">
-        <div class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-mono">privacy in 5 seconds</div>
-        <p class="text-sm text-slate-300 mb-3">Your public IP reveals:</p>
-        <ul class="space-y-2 text-sm">
-          <li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">●</span><span class="text-slate-300">Approximate city, region, country, ISP</span></li>
-          <li class="flex items-start gap-2"><span class="text-amber-300 mt-0.5">●</span><span class="text-slate-300">Connection type (residential / mobile / hosting / VPN)</span></li>
-          <li class="flex items-start gap-2"><span class="text-emerald-300 mt-0.5">○</span><span class="text-slate-400">Not your name, home address, phone, or browsing history</span></li>
-        </ul>
-        <a href="/blog/what-is-my-ip-address/" class="mt-4 inline-flex items-center gap-1 text-green-300 hover:text-green-200 text-sm font-mono">Read the full explainer →</a>
-      </div>
-      </div>
-
-      <div class="lg:col-span-1 space-y-5">
       <div class="card relative overflow-hidden">
         <div class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-mono">connection status</div>
         <div id="status-badge" class="status-badge status-badge--loading">
@@ -424,34 +343,59 @@
           </li>
         </ul>
       </div>
+    </div>
+
+    <!-- Detail cards -->
+    <div class="grid md:grid-cols-3 gap-5 mt-5">
+      <div class="card">
+        <div class="card-header">
+          <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-7 8-13a8 8 0 1 0-16 0c0 6 8 13 8 13z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span>Location</span>
+        </div>
+        <dl class="data-list">
+          <div><dt>Country</dt><dd id="d-country"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>Region</dt><dd id="d-region"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>City</dt><dd id="d-city"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>Postal code</dt><dd id="d-postal"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>Coordinates</dt><dd id="d-coords" class="font-mono"><span class="ip-placeholder">—</span></dd></div>
+        </dl>
+      </div>
 
       <div class="card">
         <div class="card-header">
-          <svg class="w-4 h-4 text-green-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg>
+          <span>Network</span>
+        </div>
+        <dl class="data-list">
+          <div><dt>ISP</dt><dd id="d-isp"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>Organization</dt><dd id="d-org"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>ASN</dt><dd id="d-asn" class="font-mono"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>Timezone</dt><dd id="d-timezone"><span class="ip-placeholder">—</span></dd></div>
+          <div><dt>IP type</dt><dd id="d-type" class="font-mono"><span class="ip-placeholder">—</span></dd></div>
+        </dl>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           <span>Local time</span>
         </div>
         <div id="local-time" class="text-2xl font-mono font-bold text-white"><span class="ip-placeholder">—</span></div>
         <div id="local-tz" class="text-sm text-slate-400 mt-1"><span class="ip-placeholder">—</span></div>
-      </div>
-
-      <div class="card">
-        <div class="text-xs uppercase tracking-widest text-slate-500 mb-3 font-mono">what this means</div>
-        <p class="text-sm text-slate-300 leading-relaxed">Your public IP is the address your ISP assigns to your connection. Every site you visit sees this number — it's how the internet knows where to send responses back to you.</p>
-        <p class="text-sm text-slate-400 leading-relaxed mt-3">Country-level accuracy is close to 100%; city-level is less reliable on mobile, VPN, or shared-IP connections.</p>
-        <div class="mt-4 pt-4 border-t border-green-500/10">
-          <a href="/blog/what-is-my-ip-address/" class="text-green-300 hover:text-green-200 text-sm font-mono">Read the explainer →</a>
+        <div class="mt-4 pt-4 border-t border-cyan-500/10">
+          <div class="text-xs text-slate-500 mb-1 font-mono">connection status</div>
+          <div id="status-mini" class="text-sm text-slate-300"><span class="ip-placeholder">—</span></div>
         </div>
       </div>
-    </div>
     </div>
 
     <section class="mt-12 card">
       <h2 class="text-base font-bold mb-3 font-mono">// more tools</h2>
       <div class="flex flex-wrap gap-3 text-sm">
-        <a href="/ping/" class="text-green-300 hover:text-green-200">Domain inspector →</a>
-        <a href="/dns-tools/" class="text-green-300 hover:text-green-200">DNS lookup →</a>
-        <a href="/is-it-down/" class="text-green-300 hover:text-green-200">Is it down? →</a>
-        <a href="/" class="text-green-300 hover:text-green-200">All tools</a>
+        <a href="/ping/" class="text-cyan-300 hover:text-cyan-200">Domain inspector →</a>
+        <a href="/dns-tools/" class="text-cyan-300 hover:text-cyan-200">DNS lookup →</a>
+        <a href="/is-it-down/" class="text-cyan-300 hover:text-cyan-200">Is it down? →</a>
+        <a href="/" class="text-cyan-300 hover:text-cyan-200">All tools</a>
       </div>
     </section>
 
@@ -472,15 +416,14 @@
       </p>
     </section>
 
-    <div id="report-export-mount" hidden></div>
   </main>
 
-  <footer class="border-t border-green-500/10 mt-12">
+  <footer class="border-t border-cyan-500/10 mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 grid sm:grid-cols-[2fr_1fr_1fr] gap-8 text-sm">
       <div>
         <div class="flex items-center gap-2 mb-3">
           <span class="w-7 h-7 rounded-lg bg-brand-gradient"></span>
-          <span class="font-bold font-sans">SiteTrace<span class="text-green-400">.</span></span>
+          <span class="font-bold font-mono">SiteTrace</span>
         </div>
         <p class="text-slate-400 text-xs leading-relaxed max-w-md">Free, no-login network tools. No accounts, no tracking, no cookies, no nonsense. Funded by ads and the developer&rsquo;s other products.</p>
       </div>
@@ -502,7 +445,7 @@
         </ul>
       </div>
     </div>
-    <div class="border-t border-green-500/10">
+    <div class="border-t border-cyan-500/10">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono">
         <span>&copy; 2026 SiteTrace · all rights reserved</span>
         <span>v2.0.0 · last deployed 2026-10-01</span>
@@ -511,7 +454,7 @@
   </footer>
 
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200">
-    <div class="px-4 py-2.5 rounded-xl bg-slate-900/95 border border-green-500/20 backdrop-blur text-sm text-white shadow-2xl font-mono">
+    <div class="px-4 py-2.5 rounded-xl bg-slate-900/95 border border-cyan-500/20 backdrop-blur text-sm text-white shadow-2xl font-mono">
       <span id="toast-text"></span>
     </div>
   </div>
@@ -542,8 +485,6 @@
       }
     });
   </script>
-<script src="/js/matrix-bg.js?v=1" defer></script>
 <script src="/js/layout.js?v=32"></script>
-  <script src="/js/report-export.js?v=32"></script>
 </body>
 </html>
