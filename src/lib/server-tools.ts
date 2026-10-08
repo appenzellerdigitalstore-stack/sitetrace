@@ -409,8 +409,9 @@ export const checkEmailDeliverability = createServerFn({ method: "GET" })
 // =====================================================================
 // What is my IP (reads CF-Connecting-IP server-side, then geolocates)
 // Avoids CORS issues that affect browser-direct ipapi.co calls.
-// Uses ipwho.is because ipapi.co free tier rate-limits Cloudflare's shared
-// edge IP (HTTP 429 after a handful of visits per day).
+// Tries ipwho.is first, then ip-api.com as fallback. Cloudflare's shared
+// edge IP gets 429-throttled on multiple geo providers, so chaining keeps
+// the live result available.
 // =====================================================================
 export const detectMyIp = createServerFn({ method: "GET" })
   .handler(async ({ request }: { request?: Request } = {}) => {
@@ -426,38 +427,87 @@ export const detectMyIp = createServerFn({ method: "GET" })
     } catch { /* ignore */ }
     if (!detectedIp) return { error: "no_ip", message: "Could not detect your network. Try refreshing." };
     const start = Date.now();
-    const response = await fetch(`https://ipwho.is/${encodeURIComponent(detectedIp)}`);
-    if (!response.ok) return { error: "lookup_failed", message: `IP lookup service returned HTTP ${response.status}.`, detectedIp };
-    const raw = await response.json() as Record<string, unknown>;
-    if (raw.success === false) return { error: "lookup_failed", message: str(raw.message, "IP lookup service returned an error."), detectedIp };
-    // Normalise to ipapi.co-shaped fields so tool-results.ts doesn't change.
-    const conn = (raw.connection && typeof raw.connection === "object" ? raw.connection : {}) as Record<string, unknown>;
-    const tz = (raw.timezone && typeof raw.timezone === "object" ? raw.timezone : {}) as Record<string, unknown>;
-    const data: Record<string, unknown> = {
-      ip: raw.ip,
-      version: raw.type,
-      country_name: raw.country,
-      country_code: raw.country_code,
-      region: raw.region,
-      region_code: raw.region_code,
-      city: raw.city,
-      postal: raw.postal,
-      latitude: raw.latitude,
-      longitude: raw.longitude,
-      timezone: tz.id,
-      utc_offset: tz.offset,
-      country_calling_code: raw.calling_code,
-      country_capital: raw.capital,
-      country_tld: "",
-      continent_code: raw.continent_code,
-      in_eu: raw.is_eu,
-      currency_name: "",
-      languages: "",
-      country_area: 0,
-      country_population: 0,
-      asn: conn.asn,
-      org: conn.org,
-      isp: conn.isp,
-    };
-    return { detectedIp, fetchedMs: Date.now() - start, geo: data };
+    // Provider 1: ipwho.is (no rate limit per IP, but Cloudflare's range gets 429'd sometimes)
+    try {
+      const r = await fetch(`https://ipwho.is/${encodeURIComponent(detectedIp)}`);
+      if (r.ok) {
+        const raw = await r.json() as Record<string, unknown>;
+        if (raw.success !== false) {
+          const conn = (raw.connection && typeof raw.connection === "object" ? raw.connection : {}) as Record<string, unknown>;
+          const tz = (raw.timezone && typeof raw.timezone === "object" ? raw.timezone : {}) as Record<string, unknown>;
+          return {
+            detectedIp,
+            fetchedMs: Date.now() - start,
+            provider: "ipwho.is",
+            geo: {
+              ip: raw.ip,
+              version: raw.type,
+              country_name: raw.country,
+              country_code: raw.country_code,
+              region: raw.region,
+              region_code: raw.region_code,
+              city: raw.city,
+              postal: raw.postal,
+              latitude: raw.latitude,
+              longitude: raw.longitude,
+              timezone: tz.id,
+              utc_offset: tz.offset,
+              country_calling_code: raw.calling_code,
+              country_capital: raw.capital,
+              country_tld: "",
+              continent_code: raw.continent_code,
+              in_eu: raw.is_eu,
+              currency_name: "",
+              languages: "",
+              country_area: 0,
+              country_population: 0,
+              asn: conn.asn,
+              org: conn.org,
+              isp: conn.isp,
+            } as Record<string, unknown>,
+          };
+        }
+      }
+    } catch { /* try fallback */ }
+    // Provider 2: ip-api.com (free, 45 req/min, returns ipapi.co-shaped fields)
+    try {
+      const r = await fetch(`https://ip-api.com/json/${encodeURIComponent(detectedIp)}?fields=status,country,countryCode,region,regionName,city,zip,lat,lon,timezone,offset,isp,org,as,query,countryCode3,continent,continentCode,callingCode,capital,inEU`);
+      if (r.ok) {
+        const raw = await r.json() as Record<string, unknown>;
+        if (raw.status !== "fail") {
+          return {
+            detectedIp,
+            fetchedMs: Date.now() - start,
+            provider: "ip-api.com",
+            geo: {
+              ip: raw.query,
+              version: typeof raw.query === "string" && raw.query.includes(":") ? "IPv6" : "IPv4",
+              country_name: raw.country,
+              country_code: raw.countryCode,
+              region: raw.regionName,
+              region_code: raw.region,
+              city: raw.city,
+              postal: raw.zip,
+              latitude: raw.lat,
+              longitude: raw.lon,
+              timezone: raw.timezone,
+              utc_offset: typeof raw.offset === "number" ? raw.offset : 0,
+              country_calling_code: raw.callingCode,
+              country_capital: raw.capital,
+              country_tld: "",
+              continent_code: raw.continentCode,
+              in_eu: raw.inEU,
+              currency_name: "",
+              languages: "",
+              country_area: 0,
+              country_population: 0,
+              asn: raw.as,
+              org: raw.org,
+              isp: raw.isp,
+            } as Record<string, unknown>,
+          };
+        }
+      }
+    } catch { /* both failed */ }
+    return { error: "lookup_failed", message: "IP lookup services are rate-limiting from this network. Try again in a minute.", detectedIp };
   });
