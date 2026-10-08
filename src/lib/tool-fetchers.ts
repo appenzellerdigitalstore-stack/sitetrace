@@ -7,6 +7,17 @@
 // Everything else calls free public APIs directly from the browser.
 
 import type { ToolResult } from "./tool-workspaces";
+import {
+  checkIpReputation,
+  checkHttpHeaders,
+  checkSeo,
+  checkEmailDeliverability,
+} from "./server-tools";
+
+// Cloudflare Workers/Pages Functions are ignored when _worker.js is
+// present (the TanStack Start SSR bundle). The four diagnostic Workers
+// in functions/api/*.js were ported to src/lib/server-tools.ts and are
+// called via createServerFn wrappers, so the fetcher layer is unchanged.
 
 const IPAPI = (ip: string) => `https://ipapi.co/${encodeURIComponent(ip)}/json/`;
 const DOH_CF = "https://cloudflare-dns.com/dns-query";
@@ -77,7 +88,7 @@ export async function fetchIpLookup(ip: string): Promise<ToolResult> {
 // IP reputation (/api/ip-reputation, existing Worker — 7 DNSBLs + geo)
 // =====================================================================
 export async function fetchIpReputation(ip: string): Promise<ToolResult> {
-  const data = await fetchJson(`/api/ip-reputation?ip=${encodeURIComponent(ip)}`) as {
+  const data = await checkIpReputation({ data: { ip } }) as {
     error?: string; message?: string; ip?: string; score?: number; risk?: string;
     dnsbl?: { checked: number; listed: number; total: number; results: Array<{ label: string; listed: boolean | null; codes: string[]; error: string | null }> };
     geo?: { country?: string; city?: string; isp?: string; org?: string; proxy?: boolean; hosting?: boolean; mobile?: boolean } | null;
@@ -330,7 +341,7 @@ export async function fetchBulkUrlStatus(urls: string[]): Promise<ToolResult> {
 // HTTP headers (/api/http-headers, existing Worker)
 // =====================================================================
 export async function fetchHttpHeaders(url: string, method: "GET" | "HEAD"): Promise<ToolResult> {
-  const data = await fetchJson(`/api/http-headers?url=${encodeURIComponent(url)}&method=${method}`) as {
+  const data = await checkHttpHeaders({ data: { url, method } }) as {
     error?: string; message?: string; status?: number; statusText?: string; fetchedMs?: number;
     finalUrl?: string; redirected?: boolean; httpVersion?: string; headers?: Record<string, string>;
   };
@@ -353,7 +364,7 @@ export async function fetchHttpHeaders(url: string, method: "GET" | "HEAD"): Pro
 // Security headers (uses the same Worker — renders a security analysis view)
 // =====================================================================
 export async function fetchSecurityHeaders(url: string): Promise<ToolResult> {
-  const data = await fetchJson(`/api/http-headers?url=${encodeURIComponent(url)}`) as {
+  const data = await checkHttpHeaders({ data: { url, method: "GET" } }) as {
     error?: string; message?: string; score?: number; grade?: string; present?: number; total?: number;
     checks?: Array<{ id: string; name: string; present: boolean; value: string; recommendation: string; weight: number }>;
     infoLeaks?: Array<{ header: string; value: string }>;
@@ -384,8 +395,7 @@ export async function fetchSecurityHeaders(url: string): Promise<ToolResult> {
 // Email deliverability (/api/email-deliverability, existing Worker)
 // =====================================================================
 export async function fetchEmailDeliverability(domain: string, selector: string): Promise<ToolResult> {
-  const params = new URLSearchParams({ domain, selector });
-  const data = await fetchJson(`/api/email-deliverability?${params}`) as {
+  const data = await checkEmailDeliverability({ data: { domain, selector } }) as {
     error?: string; message?: string; domain?: string; score?: number; risk?: string; issues?: string[];
     records?: {
       spf?: { present: boolean; valid: boolean; raw: string[]; record: string };
@@ -422,7 +432,7 @@ export async function fetchEmailDeliverability(domain: string, selector: string)
 // SEO checker (/api/seo-check, existing Worker)
 // =====================================================================
 export async function fetchSeoCheck(url: string): Promise<ToolResult> {
-  const data = await fetchJson(`/api/seo-check?url=${encodeURIComponent(url)}`) as {
+  const data = await checkSeo({ data: { url } }) as {
     error?: string; message?: string; score?: number; total?: number;
     counts?: { passing: number; warnings: number; total: number };
     results?: Array<{ id: string; pass: boolean | null; message: string; value: unknown; weight: number }>;
