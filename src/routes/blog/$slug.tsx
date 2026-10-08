@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { ArrowLeft, ArrowUpRight, BookOpen, Check, Copy, Terminal } from "lucide-react";
 import { MatrixRain } from "@/components/matrix-rain";
