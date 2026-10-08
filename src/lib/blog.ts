@@ -17,11 +17,13 @@ export type BlogPost = {
 export type WalkthroughStep = { line: string; explanation: string };
 
 function parseFrontmatter(raw: string): { meta: Record<string, string>; body: string } {
-  if (!raw.startsWith("---")) return { meta: {}, body: raw };
-  const end = raw.indexOf("\n---", 3);
-  if (end < 0) return { meta: {}, body: raw };
-  const fmBlock = raw.slice(3, end).trim();
-  const body = raw.slice(end + 4).replace(/^\r?\n/, "");
+  // Strip a UTF-8 BOM if present (PowerShell's Set-Content -Encoding UTF8 adds one).
+  const text = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
+  if (!text.startsWith("---")) return { meta: {}, body: text };
+  const end = text.indexOf("\n---", 3);
+  if (end < 0) return { meta: {}, body: text };
+  const fmBlock = text.slice(3, end).trim();
+  const body = text.slice(end + 4).replace(/^\r?\n/, "");
   const meta: Record<string, string> = {};
   for (const line of fmBlock.split(/\r?\n/)) {
     const m = line.match(/^([a-zA-Z0-9_-]+):\s*(.*)$/);
