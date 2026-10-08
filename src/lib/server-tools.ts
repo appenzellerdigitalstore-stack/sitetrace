@@ -409,6 +409,8 @@ export const checkEmailDeliverability = createServerFn({ method: "GET" })
 // =====================================================================
 // What is my IP (reads CF-Connecting-IP server-side, then geolocates)
 // Avoids CORS issues that affect browser-direct ipapi.co calls.
+// Uses ipwho.is because ipapi.co free tier rate-limits Cloudflare's shared
+// edge IP (HTTP 429 after a handful of visits per day).
 // =====================================================================
 export const detectMyIp = createServerFn({ method: "GET" })
   .handler(async ({ request }: { request?: Request } = {}) => {
@@ -424,9 +426,38 @@ export const detectMyIp = createServerFn({ method: "GET" })
     } catch { /* ignore */ }
     if (!detectedIp) return { error: "no_ip", message: "Could not detect your network. Try refreshing." };
     const start = Date.now();
-    const response = await fetch(`https://ipapi.co/${encodeURIComponent(detectedIp)}/json/`);
-    if (!response.ok) return { error: "lookup_failed", message: `IP lookup service returned HTTP ${response.status}.` };
-    const data = await response.json() as Record<string, unknown>;
-    if (data.error) return { error: "lookup_failed", message: str(data.reason, "IP lookup service returned an error.") };
+    const response = await fetch(`https://ipwho.is/${encodeURIComponent(detectedIp)}`);
+    if (!response.ok) return { error: "lookup_failed", message: `IP lookup service returned HTTP ${response.status}.`, detectedIp };
+    const raw = await response.json() as Record<string, unknown>;
+    if (raw.success === false) return { error: "lookup_failed", message: str(raw.message, "IP lookup service returned an error."), detectedIp };
+    // Normalise to ipapi.co-shaped fields so tool-results.ts doesn't change.
+    const conn = (raw.connection && typeof raw.connection === "object" ? raw.connection : {}) as Record<string, unknown>;
+    const tz = (raw.timezone && typeof raw.timezone === "object" ? raw.timezone : {}) as Record<string, unknown>;
+    const data: Record<string, unknown> = {
+      ip: raw.ip,
+      version: raw.type,
+      country_name: raw.country,
+      country_code: raw.country_code,
+      region: raw.region,
+      region_code: raw.region_code,
+      city: raw.city,
+      postal: raw.postal,
+      latitude: raw.latitude,
+      longitude: raw.longitude,
+      timezone: tz.id,
+      utc_offset: tz.offset,
+      country_calling_code: raw.calling_code,
+      country_capital: raw.capital,
+      country_tld: "",
+      continent_code: raw.continent_code,
+      in_eu: raw.is_eu,
+      currency_name: "",
+      languages: "",
+      country_area: 0,
+      country_population: 0,
+      asn: conn.asn,
+      org: conn.org,
+      isp: conn.isp,
+    };
     return { detectedIp, fetchedMs: Date.now() - start, geo: data };
   });
