@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronRight, Copy, Download, Info, LoaderCircle, RotateCcw, ScanLine, Image, Terminal } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Check, ChevronRight, Copy, Download, Info, LoaderCircle, RotateCcw, ScanLine, Image, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MatrixRain } from "./matrix-rain";
 import { SiteHeader } from "./site-header";
 import { getToolSlug, tools, type Tool } from "@/lib/tools";
 import { defaultValues, validateTarget, workspaces, type ToolResult } from "@/lib/tool-workspaces";
 import { getDiagnosticSample, runLocalUtility } from "@/lib/tool-results";
+import { guides } from "@/lib/blog-guides";
 
 type OS = "windows" | "darwin" | "linux";
 
@@ -81,6 +82,7 @@ export function ToolWorkspace({ tool }: { tool: Tool }) {
   const commandText = workspace.command ? interpolateCommand(workspace.command[selectedOS], values) : "";
   const sampleOutput = workspace.command ? interpolateCommand(workspace.command.sampleOutput, values) : "";
   return <div className="site-page"><MatrixRain /><SiteHeader /><main className="shell tool-page">
+    {guides[slug] ? <p className="guide-cta-top">New to {tool.name.toLowerCase()}? <Link to="/blog/$slug" params={{ slug }}><BookOpen size={12} />Learn how to read the output<ArrowUpRight size={12} /></Link></p> : null}
     <nav aria-label="Breadcrumb" className="tool-breadcrumb"><Link to="/">SiteTrace</Link><ChevronRight size={12} /><Link to="/" hash="tools">All tools</Link><ChevronRight size={12} /><span>{tool.name}</span></nav>
     <div className="workspace-heading"><div><div className="eyebrow">{tool.category}</div><h1>{tool.name}<span className="brand-dot">.</span></h1><p>{tool.description}</p><span className={badgeClass}><span className="status-dot" />{badgeLabel}</span></div><div className="workspace-symbol"><tool.icon /></div></div>
     <div className="workspace-layout">

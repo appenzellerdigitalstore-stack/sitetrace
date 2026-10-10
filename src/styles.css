@@ -45,7 +45,50 @@
   --gloss: linear-gradient(180deg, oklch(0.88 0.19 150), var(--primary) 60%, oklch(0.73 0.2 150));
   --shadow-glow: 0 0 24px oklch(0.8 0.2 150 / 17%);
   --shadow-terminal: 0 30px 70px oklch(0.03 0 0 / 75%);
+  --reading-surface: oklch(0.095 0 0);
+  --reading-muted: oklch(0.75 0.006 160);
 }
+
+/* Blog guide page (Lovable-style reading layout) */
+.blog-controls { background: var(--reading-surface); padding: 16px; border: 1px solid var(--border); border-radius: 8px; }
+.blog-count { font: 10px var(--font-mono); color: var(--reading-muted); margin-block: 22px 16px; }
+.guide-cta-top { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 18px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--subtle-green); color: var(--reading-muted); font: 11px/1.6 var(--font-sans); }
+.guide-cta-top a { display: inline-flex; align-items: center; gap: 4px; color: var(--primary); text-decoration: none; font-weight: 500; }
+.guide-cta-top a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.blog-empty-link { margin-top: 32px; }
+.guide-page { padding-block: 30px 70px; }
+.guide-surface { max-width: 900px; margin-inline: auto; background: var(--reading-surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.guide-header { padding: 44px 48px 36px; border-bottom: 1px solid var(--border); }
+.guide-header h1 { font-size: 40px; font-weight: 600; line-height: 1.2; margin: 20px 0; overflow-wrap: anywhere; }
+.guide-header p { color: var(--reading-muted); line-height: 1.8; margin-bottom: 26px; font-size: 17px; }
+.guide-section { padding: 30px 48px; border-bottom: 1px solid var(--border); }
+.guide-section h2 { font-size: 23px; font-weight: 600; margin: 0 0 18px; }
+.guide-section h3 { font-size: 17px; font-weight: 500; margin: 25px 0 12px; }
+.guide-section p, .guide-steps { color: var(--reading-muted); font-size: 15px; line-height: 1.9; margin: 0; }
+.guide-steps { padding-left: 23px; }
+.guide-steps li { padding-left: 8px; margin-block: 10px; }
+.guide-steps li::marker { color: var(--primary); font-family: var(--font-mono); }
+.guide-disclosure { border-left: 2px solid var(--primary); padding-left: 16px; font-size: 13px; color: var(--reading-muted); }
+.guide-section .guide-disclosure { margin-top: 22px; font-size: 12px; }
+.guide-figure { margin: 0; }
+.guide-figure a { display: block; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--reading-surface); }
+.guide-figure img { display: block; width: 100%; height: auto; }
+.guide-figure figcaption { margin-top: 12px; color: var(--reading-muted); font: 10px/1.8 var(--font-mono); }
+.guide-definitions { margin: 0; }
+.guide-definitions > div { padding: 18px 0; border-bottom: 1px solid var(--border); }
+.guide-definitions > div:last-child { border-bottom: none; }
+.guide-definitions dt { color: var(--primary); font: 13px/1.7 var(--font-mono); margin-bottom: 7px; }
+.guide-definitions dd { margin: 0; color: var(--reading-muted); font-size: 15px; line-height: 1.9; }
+.guide-platforms { display: flex; gap: 5px; padding-bottom: 8px; }
+.guide-platforms [aria-pressed="true"] { color: var(--primary); }
+.guide-command { margin-top: 20px; border: 1px solid var(--border); border-radius: 4px; background: var(--secondary); }
+.guide-command > div { display: flex; align-items: center; justify-content: space-between; padding: 4px 12px; border-bottom: 1px solid var(--border); color: var(--reading-muted); font: 10px var(--font-mono); }
+.guide-command pre { padding: 16px; margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--primary); font: 12px/1.9 var(--font-mono); }
+.guide-footer { display: flex; justify-content: space-between; gap: 12px; padding: 30px 48px; flex-wrap: wrap; }
+.guide-related { margin-top: 45px; }
+.guide-related > h2 { font-size: 23px; margin-bottom: 22px; }
+@media (max-width: 1000px) { .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .blog-controls { flex-direction: column-reverse; } .blog-controls .search-box { width: 100%; } }
+@media (max-width: 760px) { .guide-header, .guide-section { padding: 26px 22px; } .guide-header h1 { font-size: 30px; } .guide-section h2 { font-size: 21px; } .guide-header p { font-size: 15px; } .guide-footer { padding: 24px 22px; } .guide-footer a { font-size: 11px; } }
 @layer base {
   * { border-color: var(--border); letter-spacing: 0; }
   html { scroll-behavior: smooth; scroll-padding-top: 100px; }
