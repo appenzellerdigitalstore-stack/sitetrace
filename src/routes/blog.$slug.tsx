@@ -5,10 +5,15 @@ import { tools, getToolSlug } from "@/lib/tools";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => {
+    // Some guides (ping-test, traceroute, port-check, ssl-certificate) exist
+    // for tools that were removed from /tools because the browser can't run
+    // them. Show the guide anyway and let BlogGuide degrade gracefully
+    // (no "Open X" CTA, breadcrumb uses the slug as the name).
     const tool = tools.find(item => getToolSlug(item) === params.slug);
     const guide = guides[params.slug];
-    if (!tool || !guide) throw notFound();
-    return { slug: params.slug, name: tool.name, summary: guide.summary };
+    if (!guide) throw notFound();
+    const name = tool ? tool.name : params.slug.split("-").map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+    return { slug: params.slug, name, summary: guide.summary };
   },
   head: ({ loaderData }) => ({ meta: [
     { title: loaderData ? `${loaderData.name}: Results & Mac/Windows Guide — SiteTrace` : "Guide not found — SiteTrace" },
