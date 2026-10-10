@@ -27,7 +27,7 @@ const OLD_TO_NEW = {
   "/home": "/",
   // Browser-can't-do tools moved to blog (Oct 2026).
   "/tools/traceroute": "/blog/traceroute/",
-  "/tools/ping-test": "/blog/ping/",
+  "/tools/ping-test": "/blog/ping-test/",
   "/tools/port-check": "/blog/port-check/",
   "/tools/ssl-certificate": "/blog/ssl-certificate/",
 } as const;
