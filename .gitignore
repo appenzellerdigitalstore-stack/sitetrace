@@ -35,3 +35,27 @@ dist-ssr
 # This token lacks `workflow` scope, so any workflow file here
 # causes push rejection. Keep this rule permanent.
 .github/workflows/
+
+# ---- Build artifacts that should never be committed ----
+
+# Verification scratch: staged HTML dumps + screenshots from past audit runs
+.verify/
+
+# Editor / manual backup files
+*.bak
+*.orig
+*.rej
+
+# Loose screenshots at the repo root, from ad-hoc browser checks.
+# Real site imagery lives in og/, tools/, or per-tool directories - only
+# the root-level screenshot debris is ignored.
+/*.png
+/*.jpg
+/*.jpeg
+
+# One-off console output captured during debugging
+/gh-*.txt
+/gh-create*.txt
+/nc-*.txt
+/r-*.txt
+/final-*.txt

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0f0d" />
+  <title>IP lookup — SiteTrace</title>
+  <meta name="sitetrace-tool" data-tool-name="IP lookup" data-tool-url="/tools/ip-lookup/" />
+  <meta name="description" content="Look up any IPv4 or IPv6 address — geolocation, organization, ASN, and hostname. Free, no signup, no tracking." />
+  <meta name="keywords" content="ip lookup, ip address lookup, geolocation, asn, whois, free ip lookup, sitetrace" />
+  <meta name="robots" content="index, follow, noai, noimageai" />
+  <meta name="author" content="Edy Appenzeller" />
+  <link rel="canonical" href="https://sitetrace.it.com/tools/ip-lookup/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="IP lookup — SiteTrace" />
+  <meta property="og:description" content="Look up any IPv4 or IPv6 — geolocation, organization, ASN, hostname." />
+  <meta property="og:image" content="https://sitetrace.it.com/og/ip-lookup.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://sitetrace.it.com/tools/ip-lookup/" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IP lookup — SiteTrace",
+    "url": "https://sitetrace.it.com/tools/ip-lookup/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "Edy Appenzeller" },
+    "description": "Look up the location, organization, network, and hostname of any IPv4 or IPv6 address. Diagnostic preview uses sample data — no live network request is made."
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"SiteTrace","item":"https://sitetrace.it.com/"},
+      {"@type":"ListItem","position":2,"name":"All tools","item":"https://sitetrace.it.com/#tools"},
+      {"@type":"ListItem","position":3,"name":"IP lookup","item":"https://sitetrace.it.com/tools/ip-lookup/"}
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/sitetrace.css?v=2" />
+</head>
+<body>
+  <div class="site-page">
+
+    <div class="matrix-background" aria-hidden="true">
+      <canvas class="matrix-rain"></canvas>
+      <div class="matrix-shade"></div>
+    </div>
+
+    <header class="site-header" id="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="SiteTrace home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
+          </span>
+          <span>SiteTrace<span class="brand-dot">.</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a class="nav-link" href="/#tools" data-nav-key="tools">Diagnostic tools</a>
+          <a class="nav-link" href="/about/" data-nav-key="about">About</a>
+          <a class="nav-link" href="/blog/" data-nav-key="blog">Blog</a>
+        </nav>
+        <div class="header-clock" aria-label="Current local time">
+          <span class="live-dot" aria-hidden="true"></span>
+          <time id="header-time" datetime="">--:--:--</time>
+          <span>LOCAL</span>
+        </div>
+        <button class="header-search" aria-label="Open quick search" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="shell tool-page">
+
+      <nav aria-label="Breadcrumb" class="tool-breadcrumb">
+        <a href="/">SiteTrace</a>
+        <svg class="crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="/#tools">All tools</a>
+        <svg class="crumb-sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        <span>IP lookup</span>
+      </nav>
+
+      <div class="workspace-heading">
+        <div>
+          <div class="eyebrow">Network &amp; IP</div>
+          <h1>IP lookup<span class="brand-dot">.</span></h1>
+          <p>Every IP has a story. Find its location, ISP, and network.</p>
+          <span class="status-pill">
+            <span class="status-dot"></span>DIAGNOSTIC PREVIEW
+          </span>
+        </div>
+        <div class="workspace-symbol" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+      </div>
+
+      <div class="workspace-layout">
+
+        <form class="workspace-input" id="lookup-form" novalidate>
+          <h2>Locate an address</h2>
+          <div class="workspace-fields">
+            <label class="workspace-field">
+              <span>IP address</span>
+              <input type="text" id="ip-input" value="8.8.8.8" placeholder="8.8.8.8" required autocomplete="off" spellcheck="false" autocapitalize="none" />
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary workspace-submit">
+            <span class="submit-label">Preview lookup</span>
+            <svg class="submit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <p class="workspace-note">Sample results only. No live network request is made.</p>
+          <p class="workspace-error" id="workspace-error" role="alert" hidden></p>
+        </form>
+
+        <section class="workspace-results" aria-label="Tool results">
+          <div class="results-toolbar">
+            <h2 id="result-title">Results</h2>
+            <div class="results-actions">
+              <span class="result-state" id="result-state" hidden>
+                <span class="status-dot"></span>SAMPLE
+              </span>
+              <button class="btn-icon btn-ghost" id="btn-copy" type="button" title="Copy results" aria-label="Copy results" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button class="btn-icon btn-ghost" id="btn-download" type="button" title="Download results" aria-label="Download results" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+              </button>
+              <button class="btn-icon btn-ghost" id="btn-reset" type="button" title="Reset tool" aria-label="Reset tool">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="sample-disclosure" id="sample-disclosure" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span>Sample data for example.com / 8.8.8.8. Results are illustrative, not a diagnosis of your submitted target.</span>
+          </div>
+
+          <div id="results-region" aria-live="polite" aria-busy="false">
+            <div class="results-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+              <h3>Ready when you are.</h3>
+              <p>Your diagnostic preview will appear here.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <section class="workspace-related">
+        <div class="workspace-related-heading">
+          <h2>More in Network &amp; IP</h2>
+          <a class="related-back" href="/#tools">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            All tools
+          </a>
+        </div>
+        <div class="tool-grid related-grid">
+
+          <a href="/tools/ip-reputation/" class="tool-card">
+            <div class="tool-card-top">
+              <span class="tool-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <span class="tool-command">$ nslookup 8.8.8.8.zen.spamhaus.org</span>
+            </div>
+            <h4>IP reputation</h4>
+            <p>Check an IP against blocklists. Know who you're connecting to.</p>
+            <div class="tool-card-bottom">
+              <span>Open tool</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+          </a>
+
+          <a href="/tools/vpn-check/" class="tool-card">
+            <div class="tool-card-top">
+              <span class="tool-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11a4 4 0 0 0-4 4v1a4 4 0 0 0 8 0v-1a4 4 0 0 0-4-4z"/><path d="M12 11V7"/><path d="M9 7h6"/><circle cx="12" cy="5" r="1"/><path d="M6 11V8a6 6 0 0 1 12 0v3"/></svg>
+              </span>
+              <span class="tool-command">$ curl https://ipinfo.io/8.8.8.8</span>
+            </div>
+            <h4>VPN check</h4>
+            <p>Uncover VPN, proxy, and hosting signals behind an IP.</p>
+            <div class="tool-card-bottom">
+              <span>Open tool</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+          </a>
+
+          <a href="/tools/subnet-calculator/" class="tool-card">
+            <div class="tool-card-top">
+              <span class="tool-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6"/></svg>
+              </span>
+              <span class="tool-command">$ python3 -c "import ipaddress; …"</span>
+            </div>
+            <h4>Subnet calculator</h4>
+            <p>From CIDR to address ranges. Make your network make sense.</p>
+            <div class="tool-card-bottom">
+              <span>Open tool</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+            </div>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer" id="site-footer">
+      <div class="shell" style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px;flex-wrap:wrap">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
+          </span>
+          <span>SiteTrace<span class="brand-dot">.</span></span>
+        </a>
+        <p style="margin:0">Free, no-login network tools. No accounts, no tracking, no nonsense.</p>
+        <span>© 2026 SiteTrace</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="/js/matrix-rain.js?v=1" defer></script>
+  <script src="/js/layout.js?v=33" defer></script>
+  <script src="/js/i18n.js?v=32" defer></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var SLUG = 'ip-lookup';
+    var DEFAULT_INPUT = '8.8.8.8';
+
+    var SAMPLE = {
+      title: 'IP overview',
+      metrics: [
+        ['IP address', '8.8.8.8'],
+        ['Organization', 'Google LLC'],
+        ['Location', 'Mountain View, US'],
+        ['Network', 'AS15169']
+      ],
+      columns: ['Property', 'Value'],
+      rows: [
+        ['Country', 'United States'],
+        ['Region', 'California'],
+        ['Timezone', 'America/Los_Angeles'],
+        ['Address type', 'IPv4 · Public'],
+        ['Hostname', 'dns.google']
+      ]
+    };
+
+    var icons = {
+      copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>',
+      scan: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>',
+      spinner: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="spin"><circle cx="12" cy="12" r="9" stroke-opacity="0.25"/><path d="M12 3a9 9 0 0 1 9 9"/></svg>'
+    };
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function buildExportText() {
+      var parts = [
+        SAMPLE.title,
+        'SAMPLE DATA — not a live diagnostic',
+        ''
+      ];
+      SAMPLE.metrics.forEach(function (m) {
+        parts.push(m[0] + ': ' + m[1]);
+      });
+      parts.push('');
+      parts.push(SAMPLE.columns.join('\t'));
+      SAMPLE.rows.forEach(function (r) {
+        parts.push(r.join('\t'));
+      });
+      return parts.filter(function (x) { return x !== undefined; }).join('\n');
+    }
+
+    function isValidIp(v) {
+      v = String(v || '').trim();
+      if (/^\d{1,3}(\.\d{1,3}){3}$/.test(v)) {
+        return v.split('.').every(function (n) { return Number(n) <= 255; });
+      }
+      // crude IPv6 check
+      if (/^[0-9a-fA-F:]+$/.test(v) && v.includes(':') && v.split(':').length >= 3) {
+        return v.length <= 45;
+      }
+      return false;
+    }
+
+    function getEls() {
+      return {
+        form: document.getElementById('lookup-form'),
+        input: document.getElementById('ip-input'),
+        submit: document.querySelector('.workspace-submit'),
+        submitLabel: document.querySelector('.workspace-submit .submit-label'),
+        error: document.getElementById('workspace-error'),
+        region: document.getElementById('results-region'),
+        title: document.getElementById('result-title'),
+        state: document.getElementById('result-state'),
+        disclosure: document.getElementById('sample-disclosure'),
+        btnCopy: document.getElementById('btn-copy'),
+        btnDownload: document.getElementById('btn-download'),
+        btnReset: document.getElementById('btn-reset')
+      };
+    }
+
+    function renderEmpty() {
+      var e = getEls();
+      e.region.innerHTML =
+        '<div class="results-empty">' +
+          icons.scan +
+          '<h3>Ready when you are.</h3>' +
+          '<p>Your diagnostic preview will appear here.</p>' +
+        '</div>';
+      e.title.textContent = 'Results';
+      e.state.hidden = true;
+      e.disclosure.hidden = true;
+      e.btnCopy.disabled = true;
+      e.btnDownload.disabled = true;
+      e.region.setAttribute('aria-busy', 'false');
+    }
+
+    function renderBusy() {
+      var e = getEls();
+      e.region.innerHTML =
+        '<div class="results-empty">' +
+          icons.spinner +
+          '<h3>Preparing sample results…</h3>' +
+        '</div>';
+      e.region.setAttribute('aria-busy', 'true');
+    }
+
+    function renderResult() {
+      var e = getEls();
+      var metricHtml = SAMPLE.metrics.map(function (m) {
+        return '<div class="result-metric"><dt>' + escapeHtml(m[0]) + '</dt><dd>' + escapeHtml(m[1]) + '</dd></div>';
+      }).join('');
+      var headHtml = SAMPLE.columns.map(function (c) { return '<th scope="col">' + escapeHtml(c) + '</th>'; }).join('');
+      var rowHtml = SAMPLE.rows.map(function (r) {
+        return '<tr>' + r.map(function (c) { return '<td>' + escapeHtml(c) + '</td>'; }).join('') + '</tr>';
+      }).join('');
+
+      e.region.innerHTML =
+        '<dl class="result-metrics">' + metricHtml + '</dl>' +
+        '<div class="result-table-scroll">' +
+          '<table class="result-table">' +
+            '<caption class="sr-only">' + escapeHtml(SAMPLE.title) + ' — sample data</caption>' +
+            '<thead><tr>' + headHtml + '</tr></thead>' +
+            '<tbody>' + rowHtml + '</tbody>' +
+          '</table>' +
+        '</div>';
+      e.title.textContent = SAMPLE.title;
+      e.state.hidden = false;
+      e.disclosure.hidden = false;
+      e.btnCopy.disabled = false;
+      e.btnDownload.disabled = false;
+      e.region.setAttribute('aria-busy', 'false');
+    }
+
+    function showError(msg) {
+      var e = getEls();
+      e.error.hidden = false;
+      e.error.textContent = msg;
+    }
+
+    function clearError() {
+      var e = getEls();
+      e.error.hidden = true;
+      e.error.textContent = '';
+    }
+
+    var busy = false;
+    var timer = null;
+
+    function onSubmit(ev) {
+      ev.preventDefault();
+      if (busy) return;
+      var e = getEls();
+      var v = e.input.value.trim();
+      if (!v) v = DEFAULT_INPUT;
+
+      clearError();
+      if (!isValidIp(v)) {
+        showError('Enter a valid IPv4 or IPv6 address.');
+        e.input.focus();
+        return;
+      }
+
+      busy = true;
+      e.submit.disabled = true;
+      e.submitLabel.textContent = 'Preparing preview';
+      renderBusy();
+
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () {
+        renderResult();
+        busy = false;
+        e.submit.disabled = false;
+        e.submitLabel.textContent = 'Preview lookup';
+      }, 550);
+    }
+
+    function onCopy() {
+      var e = getEls();
+      if (e.btnCopy.disabled) return;
+      var text = buildExportText();
+      var done = function () {
+        var orig = e.btnCopy.innerHTML;
+        e.btnCopy.classList.add('is-success');
+        e.btnCopy.innerHTML = icons.check;
+        setTimeout(function () {
+          e.btnCopy.classList.remove('is-success');
+          e.btnCopy.innerHTML = orig;
+        }, 1500);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text) || done(); });
+      } else {
+        if (fallbackCopy(text)) done();
+      }
+    }
+
+    function fallbackCopy(text) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      } catch (e) { return false; }
+    }
+
+    function onDownload() {
+      var e = getEls();
+      if (e.btnDownload.disabled) return;
+      var text = buildExportText();
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'sitetrace-' + SLUG + '.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    }
+
+    function onReset() {
+      if (timer) { clearTimeout(timer); timer = null; }
+      var e = getEls();
+      e.input.value = DEFAULT_INPUT;
+      busy = false;
+      e.submit.disabled = false;
+      e.submitLabel.textContent = 'Preview lookup';
+      clearError();
+      renderEmpty();
+    }
+
+    function init() {
+      var e = getEls();
+      if (!e.form) return;
+      e.form.addEventListener('submit', onSubmit);
+      e.btnCopy.addEventListener('click', onCopy);
+      e.btnDownload.addEventListener('click', onDownload);
+      e.btnReset.addEventListener('click', onReset);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>
