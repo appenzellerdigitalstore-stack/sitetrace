@@ -1,9 +1,19 @@
-// Cloudflare Pages Function: redirect old sitetrace URLs to the new
-// TanStack Start routes. Runs before any other Function, including
-// dist/_worker.js (the SSR Function).
+// ARCHIVED 2026-10-22 — restored by moving back to functions/_middleware.js
 //
-// The dist/_redirects file is unreliable because Nitro's cloudflare-pages
-// preset overwrites it with an empty file during the build.
+// This Pages Function duplicated the legacy-URL redirect map that now lives in
+// _redirects -> src/generated/redirects.ts -> src/lib/legacy-redirect.ts.
+//
+// It went stale: it still mapped
+//   /privacy/ -> /tools/ip-lookup/
+//   /about/   -> /
+// which sent Google's crawler away from the real privacy and about pages.
+// That is exactly the problem the redirect work was meant to fix.
+//
+// Kept for reference only. Do not restore it. If you need to change a
+// redirect, edit the root _redirects file and run:
+//   node scripts/generate-redirects.mjs
+// then verify with:
+//   node scripts/check-redirect-logic.mjs
 
 const REDIRECTS = {
   "/downdetector": "/tools/is-it-down/",
@@ -36,8 +46,8 @@ const REDIRECTS = {
   "/seo-checker": "/tools/seo-checker/",
   "/http-headers/": "/tools/http-headers/",
   "/http-headers": "/tools/http-headers/",
-  "/privacy/": "/tools/ip-lookup/",
-  "/about/": "/",
+  "/privacy/": "/tools/ip-lookup/", // stale: blocked the real privacy page
+  "/about/": "/", // stale: blocked the real about page
   "/home": "/",
 };
 

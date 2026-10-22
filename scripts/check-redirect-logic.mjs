@@ -3,7 +3,7 @@
 // Run: node scripts/check-redirect-logic.mjs
 // Exits non-zero if any expectation fails.
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -52,6 +52,8 @@ const cases = [
   ["/vs/alpha-vs-beta", "/blog", "comparison wildcard"],
   ["/home", "/", "retired /home"],
   ["/sponsor", "/about", "retired /sponsor -> about"],
+  ["/tools/traceroute", "/blog/traceroute", "browser-only tool -> blog guide"],
+  ["/tools/ssl-certificate", "/blog/ssl-certificate", "browser-only tool -> blog guide"],
   ["/privacy", undefined, "canonical privacy page is NOT redirected"],
   ["/about", undefined, "canonical about page is NOT redirected"],
   ["/terms", undefined, "canonical terms page is NOT redirected"],
@@ -88,6 +90,36 @@ for (const [from, to] of Object.entries(EXACT)) {
   if (to.length > 1 && to.endsWith("/")) {
     failed++;
     console.log(`FAIL  non-canonical destination: ${from} -> ${to}`);
+  }
+}
+
+// Guard rail: there must be exactly one redirect map in the repo.
+// A stale second copy previously sat in vite.config.ts (nitro.routeRules) and
+// functions/_middleware.js, and it won over the correct one - it sent
+// /privacy to /tools/ip-lookup/ and /about to /.
+//
+// Comments are stripped first so that *documenting* the old location (as
+// vite.config.ts now does) does not trip the guard.
+const stripComments = (source) =>
+  source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+
+const duplicateSources = [
+  ["vite.config.ts routeRules", resolve(ROOT, "vite.config.ts"), /\brouteRules\b/],
+  ["functions/_middleware.js", resolve(ROOT, "functions", "_middleware.js"), /\bREDIRECTS\b/],
+];
+for (const [label, path, pattern] of duplicateSources) {
+  if (!existsSync(path)) continue;
+  if (!pattern.test(stripComments(readFileSync(path, "utf8")))) continue;
+  failed++;
+  console.log(`FAIL  duplicate redirect map still present: ${label} (${path})`);
+}
+
+// Guard rail: the legal pages must never be redirected away from themselves.
+for (const page of ["/privacy", "/terms", "/about"]) {
+  const target = EXACT[page];
+  if (target) {
+    failed++;
+    console.log(`FAIL  legal page ${page} is redirected to ${target}`);
   }
 }
 

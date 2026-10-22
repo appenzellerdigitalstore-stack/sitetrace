@@ -46,6 +46,12 @@
 # --- Comparison pages ("a-vs-b"); no comparison route exists here ---
 /vs/*                    /blog                          301
 
+# --- Tools a browser cannot run were moved to blog guides (Oct 2026) ---
+/tools/traceroute        /blog/traceroute               301
+/tools/ping-test         /blog/ping-test                301
+/tools/port-check        /blog/port-check               301
+/tools/ssl-certificate   /blog/ssl-certificate          301
+
 # --- Retired top-level pages ---
 /home                    /                              301
 /sponsor                 /about                         301

@@ -6,38 +6,6 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-const OLD_TO_NEW = {
-  "/downdetector": "/tools/is-it-down/",
-  "/ip-lookup": "/tools/ip-lookup/",
-  "/dns-tools": "/tools/dns-lookup/",
-  "/headers-checker": "/tools/security-headers/",
-  "/cert-checker": "/blog/ssl-certificate/",
-  "/og-preview": "/tools/open-graph-preview/",
-  "/what-is-my-ip": "/tools/what-is-my-ip/",
-  "/ping": "/blog/ping/",
-  "/is-it-down": "/tools/is-it-down/",
-  "/website-down-checker": "/tools/bulk-url-status/",
-  "/vpn-checker": "/tools/vpn-check/",
-  "/subnet-calculator": "/tools/subnet-calculator/",
-  "/email-deliverability": "/tools/email-deliverability/",
-  "/seo-checker": "/tools/seo-checker/",
-  "/http-headers": "/tools/http-headers/",
-  "/privacy": "/tools/ip-lookup/",
-  "/about": "/",
-  "/home": "/",
-  // Browser-can't-do tools moved to blog (Oct 2026).
-  "/tools/traceroute": "/blog/traceroute/",
-  "/tools/ping-test": "/blog/ping-test/",
-  "/tools/port-check": "/blog/port-check/",
-  "/tools/ssl-certificate": "/blog/ssl-certificate/",
-} as const;
-
-const routeRules: Record<string, { redirect: string; statusCode: number }> = {};
-for (const [oldPath, newPath] of Object.entries(OLD_TO_NEW)) {
-  routeRules[oldPath] = { redirect: newPath, statusCode: 301 };
-  routeRules[`${oldPath}/`] = { redirect: newPath, statusCode: 301 };
-}
-
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
@@ -49,10 +17,22 @@ export default defineConfig({
     // cloudflare-pages produces a _worker.js at the output root + a public/ folder,
     // which Cloudflare Pages serves as a Pages Function (SSR) over static assets.
     preset: "cloudflare-pages",
-    // Compile the old-sitetrace URL redirects into the Function itself.
-    // Cloudflare's _worker.js takes priority over functions/_middleware.js, and
-    // Nitro's cloudflare-pages preset wipes dist/_redirects to an empty file,
-    // so routeRules is the only place these redirects reliably live.
-    routeRules,
+
+    // NOTE: do not add `routeRules` redirects back here.
+    //
+    // This file previously carried an OLD_TO_NEW map that sent
+    // /privacy -> /tools/ip-lookup/ and /about -> /, which shadowed the real
+    // legal pages. Legacy-URL redirects now live in exactly one place:
+    //
+    //   _redirects  ->  (generated)  src/generated/redirects.ts
+    //                ->  applied by src/lib/legacy-redirect.ts in src/server.ts
+    //
+    // That runs before the router and before any Nitro route rules, and it is
+    // covered by scripts/check-redirect-logic.mjs. A second map here would
+    // silently win over that one and reintroduce the same bug.
+    //
+    // Cloudflare Pages also ignores the _redirects file when a _worker.js is
+    // present, which is why the rules are applied in code rather than left in
+    // the file alone.
   },
 });
