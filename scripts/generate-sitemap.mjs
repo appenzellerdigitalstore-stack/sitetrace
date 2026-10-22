@@ -39,9 +39,19 @@ const toolSlugs = [
 
 const today = new Date().toISOString().split("T")[0];
 
+// Static site pages (real SSR routes). Legal + about pages are required for
+// AdSense review and were previously missing from the sitemap entirely.
+const staticPages = [
+  { loc: "/about", priority: "0.7", changefreq: "monthly", lastmod: today },
+  { loc: "/privacy", priority: "0.5", changefreq: "yearly", lastmod: today },
+  { loc: "/terms", priority: "0.5", changefreq: "yearly", lastmod: today },
+  { loc: "/tools", priority: "0.9", changefreq: "weekly", lastmod: today },
+];
+
 const urls = [
   { loc: SITE_CONFIG.base + "/", priority: SITE_CONFIG.priority.home, changefreq: SITE_CONFIG.changefreq.home, lastmod: today },
   { loc: SITE_CONFIG.base + "/blog", priority: "0.9", changefreq: SITE_CONFIG.changefreq.blog, lastmod: today },
+  ...staticPages.map(p => ({ loc: SITE_CONFIG.base + p.loc, priority: p.priority, changefreq: p.changefreq, lastmod: p.lastmod })),
   ...blogSlugs.map(s => ({ loc: `${SITE_CONFIG.base}/blog/${s}`, priority: SITE_CONFIG.priority.blog, changefreq: SITE_CONFIG.changefreq.blog })),
   ...toolSlugs.map(s => ({ loc: `${SITE_CONFIG.base}/tools/${s}`, priority: SITE_CONFIG.priority.tool, changefreq: SITE_CONFIG.changefreq.tool })),
 ];
@@ -58,4 +68,4 @@ ${urls.map(u => `  <url>
 
 const out = resolve(ROOT, "public", "sitemap.xml");
 writeFileSync(out, xml, "utf8");
-console.log(`OK: wrote ${urls.length} URLs to ${out} (1 home + 1 blog index + ${blogSlugs.length} guides + ${toolSlugs.length} tools)`);
+console.log(`OK: wrote ${urls.length} URLs to ${out} (1 home + 1 blog index + ${staticPages.length} static + ${blogSlugs.length} guides + ${toolSlugs.length} tools)`);

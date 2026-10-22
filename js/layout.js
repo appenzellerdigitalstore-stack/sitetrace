@@ -150,9 +150,10 @@
         + '    <div><div class="flex items-center gap-2 mb-3"><span class="w-7 h-7 rounded-lg bg-brand-gradient"></span><span class="font-bold" data-i18n="brand">' + escapeHtml(t('brand')) + '</span></div>'
         + '    <p class="text-slate-400 text-xs leading-relaxed max-w-md" data-i18n="footer_disclaimer">' + escapeHtml(t('footer_disclaimer')) + '</p></div>'
         + '    <div><div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="footer_about">' + escapeHtml(t('footer_about')) + '</div>'
-        + '    <ul class="space-y-1 text-slate-300"><li><a href="/about/" class="hover:text-white">' + escapeHtml(t('footer_about')) + '</a></li>'
-        + '    <li><a href="/blog/" class="hover:text-white">Blog</a></li>'
-        + '    <li><a href="/privacy/" class="hover:text-white">' + escapeHtml(t('footer_privacy')) + '</a></li></ul></div>'
+        + '    <ul class="space-y-1 text-slate-300"><li><a href="/about" class="hover:text-white">' + escapeHtml(t('footer_about')) + '</a></li>'
+        + '    <li><a href="/blog" class="hover:text-white">Blog</a></li>'
+        + '    <li><a href="/privacy" class="hover:text-white">' + escapeHtml(t('footer_privacy')) + '</a></li>'
+        + '    <li><a href="/terms" class="hover:text-white">Terms</a></li></ul></div>'
         + '    <div><div class="text-slate-500 text-xs uppercase tracking-widest mb-2" data-i18n="language">' + escapeHtml(t('language')) + '</div>'
         + '    <ul class="space-y-1 text-slate-300 text-sm">'
         +       Object.keys(LANG_LABELS).map(function(code){ return '<li><button class="lang-link hover:text-white" data-lang="' + code + '">' + escapeHtml(LANG_LABELS[code]) + '</button></li>'; }).join('')
