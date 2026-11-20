@@ -12,6 +12,13 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SiteFooter } from "@/components/site-footer";
+
+// Google AdSense. The publisher id matches the one declared in public/ads.txt.
+// The script has to be present on the site for the AdSense site review to
+// verify ad placement - without it the review panel only shows a generic
+// "we found some policy violations" message with no named reason.
+const ADSENSE_CLIENT = "ca-pub-8749554989768993";
 
 function NotFoundComponent() {
   return (
@@ -99,6 +106,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "preconnect", href: "https://pagead2.googlesyndication.com" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" },
       {
         rel: "stylesheet",
@@ -109,6 +117,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon-16.png", type: "image/png", sizes: "16x16" },
       { rel: "apple-touch-icon", href: "/favicon-180.png", sizes: "180x180" },
       { rel: "manifest", href: "/manifest.webmanifest" },
+    ],
+    scripts: [
+      {
+        src: `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`,
+        async: true,
+        crossOrigin: "anonymous",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -125,6 +140,7 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <SiteFooter />
         <Scripts />
       </body>
     </html>

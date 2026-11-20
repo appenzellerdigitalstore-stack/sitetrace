@@ -35,6 +35,16 @@ export function BlogGuide({ slug }: { slug: string }) {
       <section className="guide-section"><h2>Keep this in mind</h2><p>{guide.limit}</p></section>
       <footer className="guide-footer"><Button variant="outline" asChild><Link to="/blog"><ArrowLeft />All guides</Link></Button>{toolExists ? <Button variant="glossy" asChild><Link to="/tools/$slug" params={{ slug }}>Try {toolName}<ArrowUpRight /></Link></Button> : null}</footer>
     </article>
-    {related.length > 0 && <section className="guide-related"><h2>Keep exploring</h2><div className="blog-grid">{related.map(item => <Button variant="ghost" className="blog-card" asChild key={item.name}><Link to="/blog/$slug" params={{ slug: getToolSlug(item) }}><span className="eyebrow">{item.category}</span><h3>A simple guide to {item.name.toLowerCase()}</h3><p>{guides[getToolSlug(item)]?.summary}</p><span className="blog-card-bottom">Read the guide<ArrowUpRight size={18} /></span></Link></Button>)}</div></section>}
+    {related.length > 0 && <section className="guide-related"><h2>Keep exploring</h2><div className="blog-grid">{related.map(item => {
+      const itemSlug = getToolSlug(item);
+      const itemGuide = guides[itemSlug];
+      // Not every tool has a written guide yet. Linking those to /blog/<slug>
+      // produced 404s, so they point at the tool page instead.
+      return <Button variant="ghost" className="blog-card" asChild key={item.name}>
+        {itemGuide
+          ? <Link to="/blog/$slug" params={{ slug: itemSlug }}><span className="eyebrow">{item.category}</span><h3>A simple guide to {item.name.toLowerCase()}</h3><p>{itemGuide.summary}</p><span className="blog-card-bottom">Read the guide<ArrowUpRight size={18} /></span></Link>
+          : <Link to="/tools/$slug" params={{ slug: itemSlug }}><span className="eyebrow">{item.category}</span><h3>{item.name}</h3><p>{item.description}</p><span className="blog-card-bottom">Open the tool<ArrowUpRight size={18} /></span></Link>}
+      </Button>;
+    })}</div></section>}
   </main></div>;
 }

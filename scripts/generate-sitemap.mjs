@@ -43,6 +43,7 @@ const today = new Date().toISOString().split("T")[0];
 // AdSense review and were previously missing from the sitemap entirely.
 const staticPages = [
   { loc: "/about", priority: "0.7", changefreq: "monthly", lastmod: today },
+  { loc: "/contact", priority: "0.6", changefreq: "monthly", lastmod: today },
   { loc: "/privacy", priority: "0.5", changefreq: "yearly", lastmod: today },
   { loc: "/terms", priority: "0.5", changefreq: "yearly", lastmod: today },
   { loc: "/tools", priority: "0.9", changefreq: "weekly", lastmod: today },

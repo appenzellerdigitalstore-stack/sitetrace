@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, ArrowDown, Terminal, Search, ShieldCheck, Zap
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { MatrixRain } from "@/components/matrix-rain";
-import { SiteHeader, BrandMark } from "@/components/site-header";
+import { SiteHeader } from "@/components/site-header";
 import { categories, tools, getToolSlug } from "@/lib/tools";
 
 export const Route = createFileRoute("/")({
@@ -18,8 +18,6 @@ export const Route = createFileRoute("/")({
     { name: "twitter:card", content: "summary_large_image" },
   ] }),
 });
-
-function Brand() { return <a href="#" className="brand" aria-label="SiteTrace home"><span className="brand-mark"><BrandMark /></span><span>SiteTrace<span className="brand-dot">.</span></span></a>; }
 
 function Index() {
   const [category, setCategory] = useState("All tools");
@@ -64,7 +62,6 @@ function Index() {
         </section>
         <section id="about" className="about-band"><div className="shell about-inner"><div><div className="eyebrow">A little more clarity</div><h2>The internet is complex.<br />Your tools shouldn't be.</h2></div><div className="about-values"><div className="about-value"><Zap /><h3>Purposefully simple</h3><p>Focused tools. Nothing between you and the details.</p></div><div className="about-value"><LockKeyhole /><h3>Privacy by design</h3><p>No account required. Your curiosity stays yours.</p></div><div className="about-value"><Globe /><h3>Open to everyone</h3><p>For builders, problem solvers, and curious minds.</p></div></div></div></section>
       </main>
-      <footer className="shell footer"><Brand /><p>A little clarity. A lot fewer questions.</p><span className="footer-meta">© {new Date().getFullYear()} SiteTrace · Stay curious</span></footer>
       <Dialog open={quickOpen} onOpenChange={setQuickOpen}><DialogContent><DialogTitle>Find your next answer.</DialogTitle><DialogDescription>Search the SiteTrace toolkit.</DialogDescription><label className="search-box w-full"><Search /><input aria-label="Quick tool search" autoFocus placeholder="IP, DNS, security…" value={query} onChange={e => setQuery(e.target.value)} /></label><div className="max-h-72 overflow-y-auto">{filtered.map(tool => <Button key={tool.name} variant="ghost" className="w-full justify-start" asChild><Link to="/tools/$slug" params={{ slug: getToolSlug(tool) }} onClick={() => setQuickOpen(false)}><tool.icon /><span>{tool.name}</span><ArrowUpRight className="ml-auto" /></Link></Button>)}{!filtered.length && <p className="modal-note">No matching tools.</p>}</div></DialogContent></Dialog>
     </div>
   );
