@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { legacyRedirectResponse } from "./lib/legacy-redirect";
+import { withCanonical } from "./lib/canonical";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -55,7 +56,11 @@ export default {
 
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      // Every page gets a self-referencing canonical link. Without one Google
+      // reports the page as a duplicate of itself and has to guess which
+      // address is the real one.
+      return await withCanonical(normalized, request);
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
