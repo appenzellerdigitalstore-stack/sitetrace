@@ -17,24 +17,24 @@ const SITE_CONFIG = {
   priority: { home: "1.0", blog: "0.8", tool: "0.7" },
 };
 
-// 22 blog guide slugs (4 orphans + 18 in index)
+// 26 blog guide slugs (22 that have a matching tool page + 4 command-line only)
 const blogSlugs = [
   "bulk-url-status", "dns-lookup", "dns-propagation", "email-deliverability",
-  "http-headers", "ip-lookup", "ip-reputation", "is-it-down", "open-graph-preview",
-  "password-generator", "random-color", "security-headers", "seo-checker",
-  "smart-dispatcher", "subnet-calculator", "vpn-check", "what-is-my-ip", "word-counter",
-  // 4 orphan guides (not in /blog/ index but exist as direct URLs)
+  "email-header-parser", "http-headers", "http-latency", "ip-lookup", "ip-reputation",
+  "is-it-down", "jwt-decoder", "open-graph-preview", "password-generator", "random-color",
+  "security-headers", "seo-checker", "smart-dispatcher", "subnet-calculator", "vpn-check",
+  "what-is-my-ip", "whois-lookup", "word-counter",
+  // 4 guides for techniques with no browser tool - they are command-line only
   "ping-test", "traceroute", "port-check", "ssl-certificate",
 ];
 
-// 22 tool slugs (18 with guides + 4 without)
+// 22 tool slugs (all of them now have a matching guide)
 const toolSlugs = [
   "bulk-url-status", "dns-lookup", "dns-propagation", "email-deliverability",
-  "http-headers", "ip-lookup", "ip-reputation", "is-it-down", "open-graph-preview",
-  "password-generator", "random-color", "security-headers", "seo-checker",
-  "smart-dispatcher", "subnet-calculator", "vpn-check", "what-is-my-ip", "word-counter",
-  // 4 tools without blog guides
-  "whois-lookup", "http-latency", "email-header-parser", "jwt-decoder",
+  "email-header-parser", "http-headers", "http-latency", "ip-lookup", "ip-reputation",
+  "is-it-down", "jwt-decoder", "open-graph-preview", "password-generator", "random-color",
+  "security-headers", "seo-checker", "smart-dispatcher", "subnet-calculator", "vpn-check",
+  "what-is-my-ip", "whois-lookup", "word-counter",
 ];
 
 const today = new Date().toISOString().split("T")[0];
