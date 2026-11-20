@@ -271,6 +271,28 @@
 .workspace-related-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .workspace-related-heading h2 { font-size: 16px; font-weight: 500; }
 .workspace-related .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* ==== Tool page editorial block ==== */
+.tool-guide { margin-top: 56px; border-top: 1px solid var(--border); padding-top: 32px; }
+.tool-guide-overview h2 { font-size: 22px; font-weight: 600; margin: 0 0 14px; }
+.tool-guide-overview p { color: var(--reading-muted); font-size: 15px; line-height: 1.9; margin: 0; max-width: 78ch; }
+.tool-guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; margin-top: 32px; }
+.tool-guide-block h3 { font: 10px var(--font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--primary); margin: 0 0 14px; }
+.tool-guide-block ol, .tool-guide-block ul { margin: 0; padding-left: 19px; }
+.tool-guide-block li { color: var(--reading-muted); font-size: 13px; line-height: 1.8; margin-bottom: 11px; }
+.tool-guide-block li::marker { color: var(--primary); font-family: var(--font-mono); }
+.tool-guide-next { margin-top: 32px; border-left: 2px solid var(--primary); padding: 2px 0 2px 18px; }
+.tool-guide-next h3 { font-size: 15px; font-weight: 600; margin: 0 0 10px; }
+.tool-guide-next p { color: var(--reading-muted); font-size: 14px; line-height: 1.85; margin: 0; max-width: 82ch; }
+.tool-guide-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; color: var(--primary); font-size: 13px; font-weight: 500; }
+.tool-guide-link:hover { text-decoration: underline; }
+
+/* ==== Tools index ==== */
+.tools-index-group { margin-top: 42px; }
+.tools-index-intro { max-width: 80ch; margin-bottom: 22px; }
+.tools-index-intro h2 { font-size: 20px; font-weight: 600; margin: 0 0 10px; }
+.tools-index-intro p { color: var(--reading-muted); font-size: 14px; line-height: 1.85; margin: 0; }
+@media (max-width: 760px) { .tool-guide-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; } }
 @media (max-width: 760px) { .tool-page { padding-top: 24px; } .tool-breadcrumb { margin-bottom: 28px; } .workspace-heading h1 { font-size: 32px; } .workspace-symbol { width: 48px; height: 48px; flex-shrink: 0; } .workspace-symbol svg { width: 22px; } .workspace-layout { grid-template-columns: minmax(0, 1fr); } .workspace-input { padding: 20px; } .workspace-related .tool-grid { grid-template-columns: minmax(0, 1fr); } .workspace-related .tool-card { height: 185px; } .result-state { display: none; } .workspace-related-heading { gap: 12px; } .workspace-related-heading h2 { font-size: 14px; } .result-text code { font-size: 15px; } }
 @keyframes reveal { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes blink { 50% { opacity: 0; } }

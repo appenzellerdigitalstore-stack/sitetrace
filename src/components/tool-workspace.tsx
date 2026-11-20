@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { MatrixRain } from "./matrix-rain";
 import { SiteHeader } from "./site-header";
 import { getToolSlug, tools, type Tool } from "@/lib/tools";
+import { getToolPageGuide } from "@/lib/tool-guides";
 import { defaultValues, validateTarget, workspaces, type ToolResult } from "@/lib/tool-workspaces";
 import { getDiagnosticSample, runLocalUtility } from "@/lib/tool-results";
 import { guides } from "@/lib/blog-guides";
@@ -48,6 +49,7 @@ export function ToolWorkspace({ tool }: { tool: Tool }) {
   const noFields = workspace?.fields.length === 0;
   if (!workspace) return null;
   const related = tools.filter(item => item.category === tool.category && item.name !== tool.name).slice(0, 3);
+  const guide = getToolPageGuide(slug);
   const change = (key: string, value: string) => { setValues(previous => ({ ...previous, [key]: value })); setError(""); };
   const run = async () => {
     setError(""); setCopied(false); setResult(null);
@@ -83,7 +85,7 @@ export function ToolWorkspace({ tool }: { tool: Tool }) {
   const sampleOutput = workspace.command ? interpolateCommand(workspace.command.sampleOutput, values) : "";
   return <div className="site-page"><MatrixRain /><SiteHeader /><main className="shell tool-page">
     {guides[slug] ? <p className="guide-cta-top">New to {tool.name.toLowerCase()}? <Link to="/blog/$slug" params={{ slug }}><BookOpen size={12} />Learn how to read the output<ArrowUpRight size={12} /></Link></p> : null}
-    <nav aria-label="Breadcrumb" className="tool-breadcrumb"><Link to="/">SiteTrace</Link><ChevronRight size={12} /><Link to="/" hash="tools">All tools</Link><ChevronRight size={12} /><span>{tool.name}</span></nav>
+    <nav aria-label="Breadcrumb" className="tool-breadcrumb"><Link to="/">SiteTrace</Link><ChevronRight size={12} /><Link to="/tools">All tools</Link><ChevronRight size={12} /><span>{tool.name}</span></nav>
     <div className="workspace-heading"><div><div className="eyebrow">{tool.category}</div><h1>{tool.name}<span className="brand-dot">.</span></h1><p>{tool.description}</p><span className={badgeClass}><span className="status-dot" />{badgeLabel}</span></div><div className="workspace-symbol"><tool.icon /></div></div>
     <div className="workspace-layout">
       {isCommand && workspace.command ? <div className="workspace-input">
@@ -118,7 +120,32 @@ export function ToolWorkspace({ tool }: { tool: Tool }) {
       <div aria-live="polite" aria-busy={busy}>{result ? <><dl className="result-metrics">{result.metrics.map(([label, value]) => <div className="result-metric" key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>{result.text && <div className="result-text">{result.color && <ColorSwatch color={result.color} />}<code>{result.text}</code></div>}{result.preview && <div className="social-preview"><div className="social-preview-image"><Image size={28} /><span>No social image</span></div><div className="social-preview-body"><span>{result.preview.domain}</span><h3>{result.preview.title}</h3><p>{result.preview.description}</p></div></div>}{result.columns && <div className="result-table-scroll"><table className="result-table"><caption className="sr-only">{result.title}{resultSource === "live" ? "" : " — sample data"}</caption><thead><tr>{result.columns.map(column => <th scope="col" key={column}>{column}</th>)}</tr></thead><tbody>{result.rows?.map((row, index) => <tr key={index}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>)}</tbody></table></div>}</> : <div className="results-empty">{busy ? <LoaderCircle size={30} className="animate-spin" /> : <ScanLine size={30} />}<h3>{busy ? (isLive ? "Fetching live data" : "Preparing sample results") : "Ready when you are."}</h3><p>{workspace.local ? (isCommand ? "Type a target above to build the command." : "Your result will appear here.") : "Your diagnostic preview will appear here."}</p></div>}</div>
       {result && slug === "smart-dispatcher" && <div className="mt-5 flex flex-wrap gap-2">{result.rows?.map(([name]) => { const suggested = tools.find(item => item.name === name); return suggested ? <Button key={name} variant="outline" size="sm" asChild><Link to="/tools/$slug" params={{ slug: getToolSlug(suggested) }}>{name}<ArrowUpRight /></Link></Button> : null; })}</div>}
     </section></div>
-    <section className="workspace-related"><div className="workspace-related-heading"><h2>More in {tool.category}</h2><Button variant="ghost" size="sm" asChild><Link to="/" hash="tools"><ArrowLeft />All tools</Link></Button></div><div className="tool-grid">{related.map(item => <Button variant="tool" key={item.name} asChild><Link to="/tools/$slug" params={{ slug: getToolSlug(item) }}><div className="tool-card-top"><span className="tool-icon"><item.icon /></span><span className="tool-command">$ {item.label}</span></div><h4>{item.name}</h4><p>{item.description}</p><div className="tool-card-bottom"><span>Open tool</span><ArrowUpRight /></div></Link></Button>)}</div></section>
+    {guide ? <section className="tool-guide" aria-label={`About ${tool.name}`}>
+      <div className="tool-guide-overview">
+        <h2>What this tool does</h2>
+        <p>{guide.overview}</p>
+      </div>
+      <div className="tool-guide-grid">
+        <div className="tool-guide-block">
+          <h3>How to use it</h3>
+          <ol>{guide.howToUse.map(step => <li key={step}>{step}</li>)}</ol>
+        </div>
+        <div className="tool-guide-block">
+          <h3>Reading the result</h3>
+          <ul>{guide.readingResults.map(item => <li key={item}>{item}</li>)}</ul>
+        </div>
+        <div className="tool-guide-block">
+          <h3>What it cannot tell you</h3>
+          <ul>{guide.limits.map(item => <li key={item}>{item}</li>)}</ul>
+        </div>
+      </div>
+      <div className="tool-guide-next">
+        <h3>What to do next</h3>
+        <p>{guide.nextSteps}</p>
+        {guides[slug] ? <Link to="/blog/$slug" params={{ slug }} className="tool-guide-link">Read the full {tool.name.toLowerCase()} guide<ArrowUpRight size={14} /></Link> : null}
+      </div>
+    </section> : null}
+    <section className="workspace-related"><div className="workspace-related-heading"><h2>More in {tool.category}</h2><Button variant="ghost" size="sm" asChild><Link to="/tools"><ArrowLeft />All tools</Link></Button></div><div className="tool-grid">{related.map(item => <Button variant="tool" key={item.name} asChild><Link to="/tools/$slug" params={{ slug: getToolSlug(item) }}><div className="tool-card-top"><span className="tool-icon"><item.icon /></span><span className="tool-command">$ {item.label}</span></div><h4>{item.name}</h4><p>{item.description}</p><div className="tool-card-bottom"><span>Open tool</span><ArrowUpRight /></div></Link></Button>)}</div></section>
   </main></div>;
 }
 

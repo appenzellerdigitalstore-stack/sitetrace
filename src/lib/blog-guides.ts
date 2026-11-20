@@ -20,7 +20,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "An IP address is a network address, not a person's identity. A lookup helps you recognize the provider behind a connection and understand where its network is registered.",
     "steps": [
       "Enter an IPv4 or IPv6 address, such as 8.8.8.8.",
-      "Choose Preview lookup. The current diagnostic uses a fixed example, even if you enter a different address.",
+      "Choose Look up IP. The lookup runs live against a public IP database and answers for the address you typed.",
       "Start with the organization and network, then treat the location as an estimate."
     ],
     "terms": [
@@ -45,7 +45,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "Reputation checks look for an address on known abuse or spam lists. They help investigate suspicious traffic or mail delivery problems, but a listing needs context.",
     "steps": [
       "Enter the IP address you want to investigate.",
-      "Choose Preview reputation to view the four-source example report.",
+      "Choose Check reputation. The check runs live and queries the four blocklists for the address you entered.",
       "Read each source individually and verify any real listing with that source's official lookup."
     ],
     "terms": [
@@ -57,14 +57,14 @@ export const guides: Record<string, Guide> = {
     "takeaway": "The example has no reported listings. Keep normal security checks in place; an unlisted address can still cause harm.",
     "mac": { "note": "On Mac, open the relevant blocklist's official lookup page in a browser and paste the address. No Terminal command or installation is needed." },
     "windows": { "note": "On Windows, use the same official browser lookup. Read the listing reason and follow the owner's removal process if it is your address." },
-    "limit": "The sources shown are illustrative and may no longer operate. DNS blocklist queries have provider access rules and error codes; do not treat every 127.x reply as a listing."
+    "limit": "Blocklists answer live, so a listing can appear or disappear between checks. DNS blocklist queries have provider access rules and error codes; do not treat every 127.x reply as a listing."
   },
   "vpn-check": {
     "summary": "Learn the difference between VPN, proxy, Tor, and hosting signals.",
     "purpose": "This check describes how a network connection may be routed. It is useful for understanding unusual traffic, but it cannot prove who is using an address.",
     "steps": [
       "Enter an IP address.",
-      "Choose Preview signals. The example is a Google datacenter address.",
+      "Choose Inspect IP. The check runs live and classifies the address you entered from the network operator's registered details.",
       "Compare all four signals instead of relying on a single yes or no."
     ],
     "terms": [
@@ -108,7 +108,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "Ping sends small test packets and waits for replies. It helps compare connection delay and spot dropped replies from your own connection.",
     "steps": [
       "Enter a domain or IP, then choose packet count and region.",
-      "Choose Preview ping to see four sample replies.",
+      "Run the ping command below with four packets and read the replies.",
       "Read packet loss first, then compare average, minimum, and maximum delay."
     ],
     "terms": [
@@ -120,14 +120,14 @@ export const guides: Record<string, Guide> = {
     "takeaway": "This short example shows consistent replies with no loss. Repeat a real test before blaming the connection for an occasional spike.",
     "mac": { "command": "ping -c 4 example.com", "note": "Open Terminal and run this command. -c 4 stops after four packets." },
     "windows": { "command": "ping -n 4 example.com", "note": "Open PowerShell or Command Prompt. -n 4 sends four packets. Time is shown in milliseconds." },
-    "limit": "Some hosts block ping but still serve websites normally. A timeout alone does not mean the site is down. Your own test does not use the preview's selected region."
+    "limit": "Some hosts block ping but still serve websites normally. A timeout alone does not mean the site is down. Your own test runs from your machine and on your own network."
   },
   "dns-lookup": {
     "summary": "Find a domain's DNS records and understand addresses, mail routes, and TTL.",
     "purpose": "DNS translates names into records. You can use it to find a website's address, a domain's mail servers, or verification text.",
     "steps": [
       "Enter a domain without https://, such as example.com.",
-      "Choose a record type and resolver, then Preview records.",
+      "Choose a record type, then Resolve. The lookup runs live and returns what a public resolver holds right now.",
       "Compare the returned name, type, and value with the record you expected."
     ],
     "terms": [
@@ -146,7 +146,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "After a DNS change, different resolvers may keep old cached answers for a while. Comparing them helps explain why different users see different destinations.",
     "steps": [
       "Enter the domain and the record type you changed.",
-      "Choose Preview propagation to see six illustrative resolver locations.",
+      "Choose Check propagation. The check queries six public resolvers live and shows whether they still agree.",
       "Look at the answer in each row, not just the agreement count."
     ],
     "terms": [
@@ -171,8 +171,8 @@ export const guides: Record<string, Guide> = {
     "purpose": "A website check follows the connection through DNS, encrypted transport, and HTTP. It helps narrow down whether the failure is local, network-related, or at the server.",
     "steps": [
       "Enter the full URL, including https://.",
-      "Choose a region and Preview availability.",
-      "Check the status, then inspect DNS, TLS, and redirects."
+      "Choose Check availability. The request runs live against the URL you entered.",
+      "Read the status and response time, then check the redirect count and final destination."
     ],
     "terms": [
       { "label": "200 OK", "meaning": "The server returned a successful response. The page can still contain an error message or broken application." },
@@ -190,7 +190,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "A bulk check is useful after publishing or moving pages. It shows which URLs respond, which redirect, and which need attention.",
     "steps": [
       "Paste full HTTP or HTTPS URLs, one per line, up to 50.",
-      "Choose Preview URL report for the fixed three-URL example.",
+      "Choose Check URLs. The tool checks every URL in the box live, up to 50 at a time.",
       "Review errors first, then confirm that redirected pages reach the intended destination."
     ],
     "terms": [
@@ -208,14 +208,14 @@ export const guides: Record<string, Guide> = {
       "command": "\"https://example.com\", \"https://example.org\" | ForEach-Object {\n  Write-Output $_\n  curl.exe -s -o NUL -w \"%{http_code}\\n\" $_\n}",
       "note": "Paste into PowerShell on Windows 10/11. 000 indicates no HTTP status was received; inspect the connection error."
     },
-    "limit": "Only check URLs you are allowed to access, and avoid large rapid batches. This example does not follow redirects; add curl's -L only when you intend to follow them."
+    "limit": "Only check URLs you are allowed to access, and avoid large rapid batches. The tool follows redirects and reports the final destination, so a 301 is not a failure; add curl's -L only when you intend to follow them."
   },
   "http-headers": {
     "summary": "Understand the small response fields that control caching and content delivery.",
     "purpose": "Headers are instructions and metadata sent with an HTTP response. They help investigate caching, content types, redirects, and how a server delivers a page.",
     "steps": [
       "Enter a full website URL.",
-      "Choose HEAD or GET and the redirect setting, then Preview headers.",
+      "Choose HEAD or GET, then Fetch headers. The request runs live and the panel shows the headers the server actually returned.",
       "Read the status first and then the header relevant to your problem."
     ],
     "terms": [
@@ -234,7 +234,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "Security headers instruct browsers to restrict certain behaviors. They can reduce risks, but they do not fix unsafe application code or replace a security review.",
     "steps": [
       "Enter the full HTTPS URL.",
-      "Choose Preview security report to see the illustrative B grade.",
+      "Choose Audit security. The site is fetched live and graded on the headers it really returns.",
       "Review missing headers and the actual values of headers marked present."
     ],
     "terms": [
@@ -246,7 +246,7 @@ export const guides: Record<string, Guide> = {
     "takeaway": "The example needs a considered CSP and Permissions-Policy. A present header with a weak value may still need improvement.",
     "mac": { "command": "curl -I https://example.com", "note": "Read the response headers in Terminal. The command displays values; it does not calculate a security grade." },
     "windows": { "command": "curl.exe -I https://example.com", "note": "Read the headers in PowerShell. Browser developer tools also show headers under Network → the document request." },
-    "limit": "The B grade is illustrative. A valid header configuration depends on your app; copy-pasting strict policies can break scripts, embeds, or sign-in."
+    "limit": "The grade reflects the headers the site returns at the moment of the check. A valid configuration depends on your app; copy-pasting strict policies can break scripts, embeds, or sign-in."
   },
   "email-deliverability": {
     "summary": "Learn what SPF, DKIM, and DMARC say about your domain's mail setup.",
@@ -254,7 +254,7 @@ export const guides: Record<string, Guide> = {
     "steps": [
       "Enter your sending domain, not a full email address.",
       "Enter the DKIM selector supplied by your email service.",
-      "Choose Preview email report and read SPF, DKIM, DMARC, and MX together."
+      "Choose Check email. The records are read live from DNS, and SPF, DKIM, DMARC and MX come back together."
     ],
     "terms": [
       { "label": "SPF: Valid", "meaning": "The sample TXT record authorizes specified senders. ~all is a soft fail for others. Real validity also depends on DNS lookup limits." },
@@ -278,7 +278,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "A TLS certificate helps your browser authenticate a website and encrypt the connection. People often call it an SSL certificate, although modern sites use TLS.",
     "steps": [
       "Enter the domain and port, normally 443.",
-      "Choose Preview certificate for the illustrative certificate details.",
+      "Run the openssl command below to read the certificate details yourself.",
       "Check the hostname, validity dates, and trust chain—not just the issuer."
     ],
     "terms": [
@@ -297,7 +297,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "An on-page SEO check looks at information search engines use to understand a page. It helps identify missing or confusing metadata, not predict search rankings.",
     "steps": [
       "Enter the page's full URL.",
-      "Choose Preview SEO audit for the six-check example.",
+      "Choose Audit SEO. The page is fetched live and the checks run against the markup it actually serves.",
       "Fix meaningful warnings first, and check that each page has its own accurate title and summary."
     ],
     "terms": [
@@ -316,7 +316,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "Open Graph metadata describes a page to social platforms. A preview helps catch missing images or vague titles before sharing, though each platform renders cards differently.",
     "steps": [
       "Enter the full page URL and choose a platform.",
-      "Choose Preview social card. The current sample uses the same illustrative card across platforms.",
+      "Choose Preview social. The page is fetched live and the card is built from the Open Graph tags it really has.",
       "Compare title, description, domain, and image with the page you intend to share."
     ],
     "terms": [
@@ -411,7 +411,7 @@ export const guides: Record<string, Guide> = {
     "purpose": "Traceroute asks successive routers along a path to reply. It helps locate where replies stop or delay increases, but the return path and router policies affect the result.",
     "steps": [
       "Enter a domain or IP and choose a hop limit and region.",
-      "Choose Preview route to see the fixed five-hop example.",
+      "Run the traceroute command below and follow the hops in order.",
       "Follow the rows in order and compare later hops before interpreting one slow row."
     ],
     "terms": [
@@ -431,7 +431,7 @@ export const guides: Record<string, Guide> = {
     "steps": [
       "Use a host you own or are authorized to test.",
       "Enter its port, such as 443 for HTTPS, and choose a protocol.",
-      "Choose Preview port check. The fixed sample shows a successful TCP connection."
+      "Run the port check command below to test the TCP connection yourself."
     ],
     "terms": [
       { "label": "Port: 443", "meaning": "The conventional HTTPS port. A different application can still use this number." },
