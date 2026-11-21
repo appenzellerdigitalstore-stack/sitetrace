@@ -20,14 +20,14 @@
 /dns-tools/              /tools/dns-lookup              301
 /headers-checker         /tools/security-headers        301
 /headers-checker/        /tools/security-headers        301
-/cert-checker            /tools/ssl-certificate         301
-/cert-checker/           /tools/ssl-certificate         301
+/cert-checker            /blog/ssl-certificate         301
+/cert-checker/           /blog/ssl-certificate         301
 /og-preview              /tools/open-graph-preview      301
 /og-preview/             /tools/open-graph-preview      301
 /what-is-my-ip           /tools/what-is-my-ip           301
 /what-is-my-ip/          /tools/what-is-my-ip           301
-/ping                    /tools/ping-test               301
-/ping/                   /tools/ping-test               301
+/ping                    /blog/ping-test               301
+/ping/                   /blog/ping-test               301
 /is-it-down              /tools/is-it-down              301
 /is-it-down/             /tools/is-it-down              301
 /website-down-checker    /tools/bulk-url-status         301
@@ -55,6 +55,70 @@
 # --- Retired top-level pages ---
 /home                    /                              301
 /sponsor                 /about                         301
+
+# --- The old static site (commit c61e91d, 2026-10-05) published its own
+#     editorial under different slugs. The TanStack app replaced those with
+#     /blog/<tool-slug> guides, which left 28 of the old URLs answering 404.
+#     Each one now points at the guide that covers the same ground.
+/blog/ip-geolocation-explained        /blog/ip-lookup           301
+/blog/ip-geolocation-explained/       /blog/ip-lookup           301
+/blog/ip-reputation-dnsbl-explained   /blog/ip-reputation       301
+/blog/ip-reputation-dnsbl-explained/  /blog/ip-reputation       301
+/blog/vpn-detection-explained         /blog/vpn-check           301
+/blog/vpn-detection-explained/        /blog/vpn-check           301
+/blog/subnetting-cidr-explained       /blog/subnet-calculator   301
+/blog/subnetting-cidr-explained/      /blog/subnet-calculator   301
+/blog/dns-records-explained           /blog/dns-lookup          301
+/blog/dns-records-explained/          /blog/dns-lookup          301
+/blog/bulk-url-monitoring              /blog/bulk-url-status     301
+/blog/bulk-url-monitoring/             /blog/bulk-url-status     301
+/blog/how-to-check-if-site-is-down    /blog/is-it-down          301
+/blog/how-to-check-if-site-is-down/   /blog/is-it-down          301
+/blog/http-response-headers           /blog/http-headers        301
+/blog/http-response-headers/          /blog/http-headers        301
+/blog/security-headers-grade          /blog/security-headers    301
+/blog/security-headers-grade/         /blog/security-headers    301
+/blog/email-deliverability-explained  /blog/email-deliverability 301
+/blog/email-deliverability-explained/ /blog/email-deliverability 301
+/blog/latency-ping-explained          /blog/ping-test           301
+/blog/latency-ping-explained/         /blog/ping-test           301
+/blog/how-to-read-ping-results        /blog/ping-test           301
+/blog/how-to-read-ping-results/       /blog/ping-test           301
+/blog/tls-certificate-transparency    /blog/ssl-certificate     301
+/blog/tls-certificate-transparency/   /blog/ssl-certificate     301
+/blog/on-page-seo-explained           /blog/seo-checker         301
+/blog/on-page-seo-explained/          /blog/seo-checker         301
+/blog/open-graph-previews             /blog/open-graph-preview  301
+/blog/open-graph-previews/            /blog/open-graph-preview  301
+/blog/password-entropy-explained      /blog/password-generator  301
+/blog/password-entropy-explained/     /blog/password-generator  301
+/blog/read-time-keyword-density       /blog/word-counter        301
+/blog/read-time-keyword-density/      /blog/word-counter        301
+/blog/wcag-color-contrast             /blog/random-color        301
+/blog/wcag-color-contrast/            /blog/random-color        301
+/blog/network-query-dispatcher        /blog/smart-dispatcher    301
+/blog/network-query-dispatcher/       /blog/smart-dispatcher    301
+/blog/what-is-my-ip-address           /blog/what-is-my-ip       301
+/blog/what-is-my-ip-address/          /blog/what-is-my-ip       301
+/blog/index.html                      /blog                     301
+
+# --- Old landing pages that never got a route ---
+/network-tools          /tools                          301
+/network-tools/         /tools                          301
+/check                  /tools/smart-dispatcher          301
+/check/                 /tools/smart-dispatcher          301
+/dns-propagation-checker /tools/dns-propagation          301
+/dns-propagation-checker/ /tools/dns-propagation        301
+/password               /tools/password-generator       301
+/password/              /tools/password-generator       301
+/random-color           /tools/random-color             301
+/random-color/          /tools/random-color             301
+/word-counter           /tools/word-counter             301
+/word-counter/          /tools/word-counter             301
+/ip-reputation          /tools/ip-reputation            301
+/ip-reputation/         /tools/ip-reputation            301
+/api                    /about                          301
+/api/                   /about                          301
 
 # --- Trailing slash -> canonical. The framework default is a 307, which
 #     Google reads as a temporary move; 301 is the correct permanent signal. ---
